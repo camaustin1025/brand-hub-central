@@ -101,10 +101,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Ordergroove Brand Hub" },
       {
         property: "og:description",
-        content: "Guidelines, assets, and the tools to stay on brand.",
+        content: "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Ordergroove Brand Hub" },
+      { name: "twitter:description", content: "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png" },
     ],
     links: [
       {
