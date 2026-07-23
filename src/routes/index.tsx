@@ -20,8 +20,8 @@ const CORE_TILES = [
     badges: ["WCAG AAA", "Primary BG"],
     tile: "bg-og-midnight border border-white/10 hover:border-white/30",
     title: "text-white",
-    sub: "text-white/70",
-    icon: "text-white/45",
+    sub: "text-white",
+    icon: "text-white",
     span: "md:row-span-2",
   },
   {
@@ -39,8 +39,8 @@ const CORE_TILES = [
     note: "#009A50 · light bg",
     tile: "bg-og-green-light hover:brightness-105",
     title: "text-white",
-    sub: "text-white/75",
-    icon: "text-white/80",
+    sub: "text-white",
+    icon: "text-white",
   },
   {
     name: "White",
@@ -49,7 +49,7 @@ const CORE_TILES = [
     tile: "bg-white hover:brightness-97",
     title: "text-og-midnight",
     sub: "text-muted-foreground",
-    icon: "text-muted-foreground/70",
+    icon: "text-muted-foreground",
     span: "md:col-span-2",
   },
 ] as const;
@@ -161,7 +161,7 @@ function Index() {
                   {t.badges.map((b) => (
                     <span
                       key={b}
-                      className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/90"
+                      className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white"
                     >
                       {b}
                     </span>
