@@ -39,9 +39,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur">
-      <div className="site-container flex h-16 items-center justify-between gap-4">
+      <div className="site-container flex h-24 items-center justify-between gap-4">
         <Link to="/" className="flex items-center" aria-label="Ordergroove Brand Hub, home">
-          <img src="/logo-white.png" alt="Ordergroove" className="h-6 w-auto" />
+          <img src="/logo-white.png" alt="Ordergroove" className="h-12 w-auto" />
         </Link>
 
         {/* Desktop nav — simplified to three groups + search */}
