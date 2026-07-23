@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
-import { searchHits } from "@/data/search";
+import { STATIC_HITS, assetHits, searchHits } from "@/data/search";
+import { assetsQueryOptions } from "@/lib/assets-query";
 import { cn } from "@/lib/utils";
 
 type Mode = "search" | "ask";
@@ -48,7 +50,10 @@ function ModeChip({
 /**
  * The hero omni bar: one input, two modes.
  *
- * Search runs against the local index in data/search.ts and is live in v1.
+ * Search is live in v1. It runs against data/search.ts: canon (pages, colors,
+ * gradients) from the bundle, plus the published asset rows from the same
+ * query Downloads renders, so the two can't disagree.
+ *
  * Ask routes to the brand assistant, which is not deployed yet — rather than
  * pretend, that mode says so and points at the page that explains the skills.
  */
@@ -66,7 +71,15 @@ export function OmniBar() {
     if (hash === "search") input.current?.focus();
   }, [hash]);
 
-  const hits = useMemo(() => (mode === "search" ? searchHits(query) : []), [mode, query]);
+  // Non-suspense on purpose: pages, colors, and gradients stay searchable even
+  // while the assets query is in flight, or if the table is unreachable.
+  const { data: assetData } = useQuery(assetsQueryOptions);
+  const index = useMemo(() => [...STATIC_HITS, ...assetHits(assetData?.assets ?? [])], [assetData]);
+
+  const hits = useMemo(
+    () => (mode === "search" ? searchHits(query, index) : []),
+    [mode, query, index],
+  );
   const showPanel = open && query.trim().length >= 2;
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {

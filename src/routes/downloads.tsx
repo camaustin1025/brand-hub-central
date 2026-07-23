@@ -1,13 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { AssetCard } from "@/components/brand/AssetCard";
-import { listAssets } from "@/lib/assets.functions";
-
-const assetsQueryOptions = queryOptions({
-  queryKey: ["assets", "published"],
-  queryFn: () => listAssets(),
-});
+import { assetsQueryOptions } from "@/lib/assets-query";
 
 export const Route = createFileRoute("/downloads")({
   head: () => ({

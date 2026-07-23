@@ -1,9 +1,13 @@
 /**
- * Asset model — flat enough for the v1 Downloads page but carrying the tags,
- * type, and formats fields the v1.5 DAM-lite will filter and search on, so the
- * DAM is additive rather than a rebuild.
+ * The asset model. Shared by the Downloads grid, the /admin editor, and the
+ * Home search index.
  *
- * `href: null` marks assets still being re-sourced (every old-hub download
+ * Types only. The asset rows themselves live in the `assets` table and are
+ * read through lib/assets-query.ts — a second hardcoded copy here is what let
+ * search and Downloads drift apart, so don't reintroduce one. The original
+ * seed rows are in supabase/migrations/, and git history has the old array.
+ *
+ * `href: null` marks an asset still being re-sourced (every old-hub download
  * link was dead — see docs/Phase 0 - Old Hub Content Audit.md).
  */
 
@@ -22,95 +26,3 @@ export type Asset = {
   previewBg?: "midnight" | "light";
   href: string | null;
 };
-
-export const ASSET_CATEGORIES: { type: AssetType; label: string }[] = [
-  { type: "logo", label: "Logo kit" },
-  { type: "font", label: "Font kit" },
-  { type: "token", label: "Design tokens" },
-  { type: "background", label: "Backgrounds" },
-  { type: "social", label: "Social graphics" },
-];
-
-export const ASSETS: Asset[] = [
-  {
-    id: "logo-dark",
-    title: "Logo — on dark",
-    description: "Primary lockup: white wordmark, Groovy Green rings, on Midnight.",
-    type: "logo",
-    formats: ["PNG", "SVG"],
-    tags: ["logo", "dark", "primary"],
-    preview: "/logo-dark.png",
-    href: "/logo-dark.png",
-  },
-  {
-    id: "logo-light",
-    title: "Logo — on light",
-    description: "Primary lockup: Midnight wordmark and rings, on white. Ring green pending audit D1.",
-    type: "logo",
-    formats: ["PNG", "SVG"],
-    tags: ["logo", "light", "primary"],
-    preview: "/logo-white.png",
-    previewBg: "light",
-    href: "/logo-white.png",
-  },
-  {
-    id: "logomark",
-    title: "Isolated logomark",
-    description: "The interlocking rings alone. Default: Groovy Green on Midnight.",
-    type: "logo",
-    formats: ["PNG", "SVG"],
-    tags: ["logo", "logomark", "mark"],
-    preview: "/logomark.png",
-    href: "/logomark.png",
-  },
-  {
-    id: "font-kit",
-    title: "Figtree font kit",
-    description: "Static weights 400 to 800. The only brand typeface.",
-    type: "font",
-    formats: ["TTF", "ZIP"],
-    tags: ["font", "figtree", "typography"],
-    preview: null,
-    href: null, // TODO bundle /public/fonts into a zip
-  },
-  {
-    id: "tokens-json",
-    title: "tokens.json",
-    description: "Canonical color, type, and gradient values as JSON.",
-    type: "token",
-    formats: ["JSON"],
-    tags: ["tokens", "developers"],
-    preview: null,
-    href: null, // TODO generate after audit D1/D2 land
-  },
-  {
-    id: "tokens-css",
-    title: "tokens.css",
-    description: "The same values as CSS custom properties.",
-    type: "token",
-    formats: ["CSS"],
-    tags: ["tokens", "developers", "css"],
-    preview: null,
-    href: null, // TODO generate after audit D1/D2 land
-  },
-  {
-    id: "zoom-bg",
-    title: "Zoom background — Groovy Green",
-    description: "Midnight canvas with the paired-circle gradient.",
-    type: "background",
-    formats: ["PNG"],
-    tags: ["zoom", "background", "circles"],
-    preview: "/midnight_bg.png",
-    href: "/midnight_bg.png",
-  },
-  {
-    id: "social-linkedin",
-    title: "LinkedIn banner",
-    description: "Approved company banner, sized for LinkedIn.",
-    type: "social",
-    formats: ["PNG"],
-    tags: ["social", "linkedin", "banner"],
-    preview: null,
-    href: null, // TODO regenerate at current dimensions
-  },
-];
