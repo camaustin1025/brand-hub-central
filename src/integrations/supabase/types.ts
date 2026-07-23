@@ -14,7 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      asset_categories: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      assets: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          description: string
+          formats: string[]
+          id: string
+          is_published: boolean
+          preview_bg: string | null
+          preview_path: string | null
+          slug: string
+          sort_order: number
+          storage_path: string | null
+          tags: string[]
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          description?: string
+          formats?: string[]
+          id?: string
+          is_published?: boolean
+          preview_bg?: string | null
+          preview_path?: string | null
+          slug: string
+          sort_order?: number
+          storage_path?: string | null
+          tags?: string[]
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          description?: string
+          formats?: string[]
+          id?: string
+          is_published?: boolean
+          preview_bg?: string | null
+          preview_path?: string | null
+          slug?: string
+          sort_order?: number
+          storage_path?: string | null
+          tags?: string[]
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assets_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "asset_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
