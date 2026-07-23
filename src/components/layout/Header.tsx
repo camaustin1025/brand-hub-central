@@ -41,6 +41,9 @@ export function Header() {
   // set in Lovable rather than the design's 88px bar / 30px logo.
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white">
+      <div className="bg-og-midnight py-2 text-center">
+        <p className="text-xs font-medium text-white">WIP ⚠️ Updates ongoing</p>
+      </div>
       <div className="site-container flex h-24 items-center justify-between gap-4">
         <Link to="/" className="flex items-center" aria-label="Ordergroove Brand Hub, home">
           <img src="/logo-white.png" alt="Ordergroove" className="h-12 w-auto" />
