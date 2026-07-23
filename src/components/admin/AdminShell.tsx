@@ -29,7 +29,7 @@ export function AdminShell() {
                   "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   active
                     ? "bg-primary/10 text-primary"
-                    : "text-foreground/70 hover:bg-secondary hover:text-foreground",
+                    : "text-foreground hover:bg-secondary hover:text-foreground",
                 )}
               >
                 <Icon size={16} />
@@ -41,7 +41,7 @@ export function AdminShell() {
         <div className="border-t border-border p-3 space-y-1">
           <Link
             to="/"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-secondary hover:text-foreground"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary hover:text-foreground"
           >
             <ExternalLink size={16} />
             View site
@@ -51,7 +51,7 @@ export function AdminShell() {
               sessionStorage.removeItem("og-admin-unlocked");
               window.location.reload();
             }}
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-secondary hover:text-foreground"
+            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary hover:text-foreground"
           >
             <LogOut size={16} />
             Lock admin

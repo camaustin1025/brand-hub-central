@@ -122,7 +122,7 @@ export function OmniBar() {
                 onKeyDown={onKeyDown}
                 placeholder={PLACEHOLDER[mode]}
                 aria-label={mode === "search" ? "Search the brand hub" : "Ask the brand assistant"}
-                className="min-w-0 flex-1 border-none bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground/80"
+                className="min-w-0 flex-1 border-none bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
               />
             </div>
             <div className="flex shrink-0 gap-1 self-start rounded-full bg-secondary p-[3px] sm:self-auto">
