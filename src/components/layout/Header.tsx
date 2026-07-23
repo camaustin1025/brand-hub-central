@@ -38,10 +38,10 @@ export function Header() {
   const [guidelines, assets, more] = NAV;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur">
-      <div className="site-container flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 border-b border-border bg-white">
+      <div className="site-container flex h-[88px] items-center justify-between gap-4">
         <Link to="/" className="flex items-center" aria-label="Ordergroove Brand Hub, home">
-          <img src="/logo-white.png" alt="Ordergroove" className="h-6 w-auto" />
+          <img src="/logo-white.png" alt="Ordergroove" className="h-[30px] w-auto" />
         </Link>
 
         {/* Desktop nav — simplified to three groups + search */}
@@ -54,12 +54,15 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-1">
-          <button
+          {/* Search lives in the Home hero; this jumps there and focuses it. */}
+          <Link
+            to="/"
+            hash="search"
             className="rounded-full p-2 text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
-            aria-label="Search (coming in v1.5)"
+            aria-label="Search the brand hub"
           >
             <Search size={18} />
-          </button>
+          </Link>
           <button
             className="rounded-full p-2 text-foreground/70 hover:bg-secondary lg:hidden"
             onClick={() => setOpen((v) => !v)}

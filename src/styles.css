@@ -112,7 +112,13 @@
   --tracking-eyebrow: 0.16em;
 }
 
-:root {
+/*
+ * `.light` mirrors `.dark`: it resets the semantic tokens back to the light
+ * surface so a white module can nest inside a Midnight island (the hero omni
+ * bar) and still resolve --primary to #009A50 rather than #00FF85.
+ */
+:root,
+.light {
   --radius: 0.625rem;
 
   /* Light surface — green is #009A50 */
@@ -212,6 +218,29 @@
 }
 
 @layer components {
+  /*
+   * Material Symbols — the ratified Ordergroove icon set (July 2025 brand deck,
+   * audit D12): Weight 300, Fill Off, Grade Normal. The face is loaded in
+   * __root.tsx; these settings are the brand spec, so don't tune them per use.
+   */
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 300,
+      "GRAD" 0,
+      "opsz" 24;
+  }
+
   /* Eyebrow label — ALL CAPS, tracked, in the correct-contrast green */
   .eyebrow {
     font-size: 0.75rem;

@@ -76,3 +76,40 @@ export const NAV: NavMode[] = [
 
 /** Flat list of every routed page. */
 export const ALL_ROUTES: NavItem[] = NAV.flatMap((g) => g.items);
+
+/**
+ * The three Midnight cards on Home. One per mode, each pointing at the entry
+ * page for that mode rather than at a sub-page.
+ */
+export type ExploreCard = {
+  /** Material Symbols glyph name. */
+  icon: string;
+  title: string;
+  blurb: string;
+  cta: string;
+  path: string;
+};
+
+export const EXPLORE: ExploreCard[] = [
+  {
+    icon: "menu_book",
+    title: "Guidelines",
+    blurb: "Read the visual and verbal guidelines for how to use our logo, color, copy and more.",
+    cta: "Go to guidelines",
+    path: "/foundation",
+  },
+  {
+    icon: "photo_library",
+    title: "Assets",
+    blurb: "Browse and grab-and-go assets including copy, photography, illustration and more.",
+    cta: "Go to assets",
+    path: "/downloads",
+  },
+  {
+    icon: "smart_toy",
+    title: "AI & GTM Tools",
+    blurb: "Use the brand skills and templates that keep new work on brand from the first draft.",
+    cta: "Explore the tools",
+    path: "/ai-skills",
+  },
+];
