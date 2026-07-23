@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Figtree — the only brand typeface (canon 5.3). Static weights       */
+/* bundled from /assets, served from /public/fonts.                    */
+/* ------------------------------------------------------------------ */
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/Figtree-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/Figtree-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/Figtree-SemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/Figtree-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/Figtree-ExtraBold.ttf") format("truetype");
+}
+
+/* ------------------------------------------------------------------ */
+/* shadcn/ui semantic tokens, mapped to Ordergroove canon.             */
+/* :root = LIGHT surface (green #009A50).                              */
+/* .dark = MIDNIGHT surface (green #00FF85). App defaults to .dark.    */
+/* This split is how the green contrast rule is enforced structurally. */
+/* ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    --background: 240 20% 97%; /* soft off-white page canvas (#F5F5F8) */
+    --foreground: 249 42% 13%;
+    --card: 0 0% 100%; /* white cards lift off the canvas */
+    --card-foreground: 249 42% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 249 42% 13%;
+    --primary: 151 100% 30%; /* #009A50 — green for light bg */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 20% 97%;
+    --secondary-foreground: 249 42% 13%;
+    --muted: 240 20% 97%;
+    --muted-foreground: 250 11% 43%;
+    --accent: 240 20% 97%;
+    --accent-foreground: 249 42% 13%;
+    --destructive: 346 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 247 11% 86%;
+    --input: 247 11% 86%;
+    --ring: 151 100% 30%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 249 42% 13%; /* Midnight #17132F */
+    --foreground: 250 3% 93%; /* Gray-900 #EBEAF0 */
+    --card: 248 26% 22%; /* Dark Indigo #2E2A47 */
+    --card-foreground: 250 3% 93%;
+    --popover: 248 26% 22%;
+    --popover-foreground: 250 3% 93%;
+    --primary: 151 100% 50%; /* #00FF85 — green for dark bg */
+    --primary-foreground: 249 42% 13%;
+    --secondary: 248 26% 22%;
+    --secondary-foreground: 250 3% 93%;
+    --muted: 248 26% 22%;
+    --muted-foreground: 247 11% 70%;
+    --accent: 248 26% 22%;
+    --accent-foreground: 250 3% 93%;
+    --destructive: 346 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 249 18% 30%;
+    --input: 249 18% 30%;
+    --ring: 151 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01", "cv01";
+  }
+  /* Statements, not sentences: no trailing periods on display type (canon 5.3) */
+  /* Figtree headings on the live site run tight: negative tracking, close leading. */
+  h1, h2, h3 {
+    @apply font-figtree font-bold tracking-tight;
+    line-height: 1.08;
+  }
+}
+
+@layer components {
+  /* Eyebrow label — ALL CAPS, tracked (canon type hierarchy) */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-eyebrow text-primary;
+  }
+
+  /* ----------------------------------------------------------------- */
+  /* Card modules — uniform 20px radius, matching the live OG site and  */
+  /* the Carta brand hub. The asymmetric "Visual Container" shape from  */
+  /* the 2022 guide is kept as an opt-in accent (.notch-br) for         */
+  /* signature brand moments rather than every card.                    */
+  /* ----------------------------------------------------------------- */
+  .visual-container,
+  .visual-container-left {
+    border-radius: 20px;
+  }
+  /* Opt-in signature shape: three rounded corners + one square corner. */
+  .notch-br {
+    border-bottom-right-radius: 0;
+  }
+  .notch-bl {
+    border-bottom-left-radius: 0;
+  }
+}

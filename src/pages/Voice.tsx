@@ -1,0 +1,100 @@
+import { PageHeader } from "@/components/layout/PageHeader";
+
+const RULES = [
+  'Never lead with "AI" or "AI agents." No "AI-powered." The category and outcome lead; the technology supports.',
+  '"Subscriptions" must appear in any hero subhead.',
+  "No em-dashes anywhere. Use commas, colons, or periods.",
+  '"Everychannel" is one word. Always.',
+  "Never name competitors in any external material.",
+  'No "out of the box." Say "ready on day one" or "no custom builds required."',
+  'No "heartland intelligence." Say "diversified data."',
+  'No "Relationship Commerce." The category is Autonomous Subscriptions.',
+  'Avoid "build" as the adoption verb. Use launch, deploy, activate, adopt.',
+  'Never frame the company as "new." Ordergroove is 16 years old.',
+  'No AI-tells: delve, seamless, innovative, game-changing, "excited to announce," "experience" as filler.',
+];
+
+const TERMS: [string, string][] = [
+  ["Subscribers", "Users, customers (in subscription context)"],
+  ["Retention", "Churn prevention"],
+  ["Flexible subscriptions", "Locked-in programs"],
+  ["Everychannel / omnichannel", "Multi-channel"],
+  ["Recurring revenue", "MRR/ARR in marketing copy"],
+  ["Built for scale", "Enterprise-grade"],
+  ["Diversified data", "Heartland intelligence"],
+  ["Autonomous Subscriptions", "Relationship Commerce"],
+  ["Launch, deploy, activate", "Build (as adoption verb)"],
+  ["Ready on day one", "Out of the box"],
+];
+
+export default function Voice() {
+  return (
+    <>
+      <PageHeader
+        eyebrow="Voice & Language Rules"
+        title="How we sound, and the lines we don't cross"
+        subhead="Ordergroove sounds like the confident operator in the room who doesn't need to shout. Calm authority earned from 15+ years of doing the work."
+      />
+
+      <section className="container max-w-3xl space-y-12 pb-16">
+        <div>
+          <h2 className="text-2xl font-bold">Personality</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="visual-container border border-border bg-card p-5">
+              <p className="eyebrow mb-2">We are</p>
+              <p className="text-sm">
+                Confident, precise, operator-minded, direct, evidence-led.
+              </p>
+            </div>
+            <div className="visual-container-left border border-border bg-card p-5">
+              <p className="eyebrow mb-2">We are not</p>
+              <p className="text-sm">
+                Hype-driven, breathless, salesy, academic, cute for cuteness's sake.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-bold">The pass/fail rules</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            These are binary checks. If a draft violates any of them, it fails
+            review. Each exists because of a real cost we've already paid.
+          </p>
+          <ol className="mt-5 space-y-3">
+            {RULES.map((rule, i) => (
+              <li key={i} className="flex gap-3">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-destructive/15 text-xs font-bold text-destructive">
+                  {i + 1}
+                </span>
+                <span className="text-sm">{rule}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-bold">Use this, not that</h2>
+          <div className="mt-5 overflow-hidden rounded-xl border border-border">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-card">
+                  <th className="p-3 text-left font-semibold text-primary">Use</th>
+                  <th className="p-3 text-left font-semibold text-muted-foreground">Avoid</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TERMS.map(([use, avoid]) => (
+                  <tr key={use} className="border-t border-border">
+                    <td className="p-3 font-medium">{use}</td>
+                    <td className="p-3 text-muted-foreground">{avoid}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
