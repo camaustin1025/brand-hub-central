@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VoiceRouteImport } from './routes/voice'
 import { Route as VisualIdentityRouteImport } from './routes/visual-identity'
+import { Route as UnlockRouteImport } from './routes/unlock'
 import { Route as ToolkitRouteImport } from './routes/toolkit'
 import { Route as TokensRouteImport } from './routes/tokens'
 import { Route as FoundationRouteImport } from './routes/foundation'
@@ -32,6 +33,11 @@ const VoiceRoute = VoiceRouteImport.update({
 const VisualIdentityRoute = VisualIdentityRouteImport.update({
   id: '/visual-identity',
   path: '/visual-identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnlockRoute = UnlockRouteImport.update({
+  id: '/unlock',
+  path: '/unlock',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolkitRoute = ToolkitRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/foundation': typeof FoundationRoute
   '/tokens': typeof TokensRoute
   '/toolkit': typeof ToolkitRoute
+  '/unlock': typeof UnlockRoute
   '/visual-identity': typeof VisualIdentityRoute
   '/voice': typeof VoiceRoute
   '/admin/assets': typeof AdminAssetsRouteWithChildren
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/foundation': typeof FoundationRoute
   '/tokens': typeof TokensRoute
   '/toolkit': typeof ToolkitRoute
+  '/unlock': typeof UnlockRoute
   '/visual-identity': typeof VisualIdentityRoute
   '/voice': typeof VoiceRoute
   '/admin/assets': typeof AdminAssetsRouteWithChildren
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/foundation': typeof FoundationRoute
   '/tokens': typeof TokensRoute
   '/toolkit': typeof ToolkitRoute
+  '/unlock': typeof UnlockRoute
   '/visual-identity': typeof VisualIdentityRoute
   '/voice': typeof VoiceRoute
   '/admin/assets': typeof AdminAssetsRouteWithChildren
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/foundation'
     | '/tokens'
     | '/toolkit'
+    | '/unlock'
     | '/visual-identity'
     | '/voice'
     | '/admin/assets'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/foundation'
     | '/tokens'
     | '/toolkit'
+    | '/unlock'
     | '/visual-identity'
     | '/voice'
     | '/admin/assets'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/foundation'
     | '/tokens'
     | '/toolkit'
+    | '/unlock'
     | '/visual-identity'
     | '/voice'
     | '/admin/assets'
@@ -201,6 +213,7 @@ export interface RootRouteChildren {
   FoundationRoute: typeof FoundationRoute
   TokensRoute: typeof TokensRoute
   ToolkitRoute: typeof ToolkitRoute
+  UnlockRoute: typeof UnlockRoute
   VisualIdentityRoute: typeof VisualIdentityRoute
   VoiceRoute: typeof VoiceRoute
 }
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/visual-identity'
       fullPath: '/visual-identity'
       preLoaderRoute: typeof VisualIdentityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unlock': {
+      id: '/unlock'
+      path: '/unlock'
+      fullPath: '/unlock'
+      preLoaderRoute: typeof UnlockRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/toolkit': {
@@ -344,19 +364,10 @@ const rootRouteChildren: RootRouteChildren = {
   FoundationRoute: FoundationRoute,
   TokensRoute: TokensRoute,
   ToolkitRoute: ToolkitRoute,
+  UnlockRoute: UnlockRoute,
   VisualIdentityRoute: VisualIdentityRoute,
   VoiceRoute: VoiceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

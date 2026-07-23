@@ -7,10 +7,12 @@ import {
   useRouterState,
   HeadContent,
   Scripts,
+  redirect,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { checkUnlocked } from "@/lib/gate.functions";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -78,6 +80,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  beforeLoad: async ({ location }) => {
+    if (location.pathname === "/unlock") return;
+    const { unlocked } = await checkUnlocked();
+    if (!unlocked) {
+      throw redirect({ to: "/unlock" });
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
