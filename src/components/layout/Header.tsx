@@ -4,13 +4,13 @@ import { ChevronDown, Menu, Search, X } from "lucide-react";
 import { NAV, type NavItem } from "@/data/nav";
 
 const linkBase =
-  "text-sm font-medium text-foreground/80 transition-colors hover:text-primary data-[status=active]:text-primary";
+  "text-sm font-medium text-foreground transition-colors hover:text-primary data-[status=active]:text-primary";
 
 /** Desktop dropdown for a nav group with more than one destination. */
 function NavGroup({ label, items }: { label: string; items: NavItem[] }) {
   return (
     <div className="group relative">
-      <button className="inline-flex items-center gap-1 text-sm font-medium text-foreground/80 transition-colors group-hover:text-primary">
+      <button className="inline-flex items-center gap-1 text-sm font-medium text-foreground transition-colors group-hover:text-primary">
         {label}
         <ChevronDown size={15} className="transition-transform group-hover:rotate-180" />
       </button>
@@ -60,13 +60,13 @@ export function Header() {
           <Link
             to="/"
             hash="search"
-            className="rounded-full p-2 text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
+            className="rounded-full p-2 text-foreground transition-colors hover:bg-secondary hover:text-foreground"
             aria-label="Search the brand hub"
           >
             <Search size={18} />
           </Link>
           <button
-            className="rounded-full p-2 text-foreground/70 hover:bg-secondary lg:hidden"
+            className="rounded-full p-2 text-foreground hover:bg-secondary lg:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
           >
