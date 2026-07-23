@@ -9,8 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VoiceRouteImport } from './routes/voice'
+import { Route as VisualIdentityRouteImport } from './routes/visual-identity'
+import { Route as ToolkitRouteImport } from './routes/toolkit'
+import { Route as TokensRouteImport } from './routes/tokens'
+import { Route as FoundationRouteImport } from './routes/foundation'
+import { Route as DownloadsRouteImport } from './routes/downloads'
+import { Route as AiSkillsRouteImport } from './routes/ai-skills'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VoiceRoute = VoiceRouteImport.update({
+  id: '/voice',
+  path: '/voice',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VisualIdentityRoute = VisualIdentityRouteImport.update({
+  id: '/visual-identity',
+  path: '/visual-identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolkitRoute = ToolkitRouteImport.update({
+  id: '/toolkit',
+  path: '/toolkit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TokensRoute = TokensRouteImport.update({
+  id: '/tokens',
+  path: '/tokens',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundationRoute = FoundationRouteImport.update({
+  id: '/foundation',
+  path: '/foundation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadsRoute = DownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiSkillsRoute = AiSkillsRouteImport.update({
+  id: '/ai-skills',
+  path: '/ai-skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +61,130 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-skills': typeof AiSkillsRoute
+  '/downloads': typeof DownloadsRoute
+  '/foundation': typeof FoundationRoute
+  '/tokens': typeof TokensRoute
+  '/toolkit': typeof ToolkitRoute
+  '/visual-identity': typeof VisualIdentityRoute
+  '/voice': typeof VoiceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-skills': typeof AiSkillsRoute
+  '/downloads': typeof DownloadsRoute
+  '/foundation': typeof FoundationRoute
+  '/tokens': typeof TokensRoute
+  '/toolkit': typeof ToolkitRoute
+  '/visual-identity': typeof VisualIdentityRoute
+  '/voice': typeof VoiceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-skills': typeof AiSkillsRoute
+  '/downloads': typeof DownloadsRoute
+  '/foundation': typeof FoundationRoute
+  '/tokens': typeof TokensRoute
+  '/toolkit': typeof ToolkitRoute
+  '/visual-identity': typeof VisualIdentityRoute
+  '/voice': typeof VoiceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ai-skills'
+    | '/downloads'
+    | '/foundation'
+    | '/tokens'
+    | '/toolkit'
+    | '/visual-identity'
+    | '/voice'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ai-skills'
+    | '/downloads'
+    | '/foundation'
+    | '/tokens'
+    | '/toolkit'
+    | '/visual-identity'
+    | '/voice'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai-skills'
+    | '/downloads'
+    | '/foundation'
+    | '/tokens'
+    | '/toolkit'
+    | '/visual-identity'
+    | '/voice'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiSkillsRoute: typeof AiSkillsRoute
+  DownloadsRoute: typeof DownloadsRoute
+  FoundationRoute: typeof FoundationRoute
+  TokensRoute: typeof TokensRoute
+  ToolkitRoute: typeof ToolkitRoute
+  VisualIdentityRoute: typeof VisualIdentityRoute
+  VoiceRoute: typeof VoiceRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/voice': {
+      id: '/voice'
+      path: '/voice'
+      fullPath: '/voice'
+      preLoaderRoute: typeof VoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/visual-identity': {
+      id: '/visual-identity'
+      path: '/visual-identity'
+      fullPath: '/visual-identity'
+      preLoaderRoute: typeof VisualIdentityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/toolkit': {
+      id: '/toolkit'
+      path: '/toolkit'
+      fullPath: '/toolkit'
+      preLoaderRoute: typeof ToolkitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tokens': {
+      id: '/tokens'
+      path: '/tokens'
+      fullPath: '/tokens'
+      preLoaderRoute: typeof TokensRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/foundation': {
+      id: '/foundation'
+      path: '/foundation'
+      fullPath: '/foundation'
+      preLoaderRoute: typeof FoundationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/downloads': {
+      id: '/downloads'
+      path: '/downloads'
+      fullPath: '/downloads'
+      preLoaderRoute: typeof DownloadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-skills': {
+      id: '/ai-skills'
+      path: '/ai-skills'
+      fullPath: '/ai-skills'
+      preLoaderRoute: typeof AiSkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +197,24 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiSkillsRoute: AiSkillsRoute,
+  DownloadsRoute: DownloadsRoute,
+  FoundationRoute: FoundationRoute,
+  TokensRoute: TokensRoute,
+  ToolkitRoute: ToolkitRoute,
+  VisualIdentityRoute: VisualIdentityRoute,
+  VoiceRoute: VoiceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

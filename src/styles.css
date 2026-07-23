@@ -5,18 +5,51 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
+ * Ordergroove Brand Hub design system.
  *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * Semantic tokens (:root = light, .dark = accent islands) carry brand values in
+ * oklch. The green contrast rule is structural: light --primary is #009A50,
+ * dark --primary is #00FF85, so green never renders as text on white.
+ * The og-* palette below exposes the raw brand colors as utilities
+ * (bg-og-midnight, text-og-green, ...). Figtree is the only typeface.
  */
+
+/* --- Figtree (self-hosted, /public/fonts) --- */
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/Figtree-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/Figtree-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/Figtree-SemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/Figtree-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/Figtree-ExtraBold.ttf") format("truetype");
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -26,6 +59,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -59,77 +93,99 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Ordergroove raw palette (verified against brand.md) */
+  --color-og-midnight: #17132f;
+  --color-og-indigo: #2e2a47;
+  --color-og-green: #00ff85;
+  --color-og-green-light: #009a50;
+  --color-og-cyan: #00faff;
+  --color-og-lemon: #eaff00;
+  --color-og-carrot: #ff8500;
+  --color-og-radish: #d32e55;
+  --color-og-flamingo: #ff61d3;
+  --color-og-eggplant: #8500ff;
+
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-figtree: "Figtree", ui-sans-serif, system-ui, sans-serif;
+
+  --tracking-eyebrow: 0.16em;
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+
+  /* Light surface — green is #009A50 */
+  --background: oklch(0.971 0.004 286.3); /* #F5F5F8 */
+  --foreground: oklch(0.209 0.054 287.3); /* Midnight #17132F */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.209 0.054 287.3);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --popover-foreground: oklch(0.209 0.054 287.3);
+  --primary: oklch(0.601 0.156 152.6); /* #009A50 */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.943 0.009 292.8); /* #ECEBF2 */
+  --secondary-foreground: oklch(0.209 0.054 287.3);
+  --muted: oklch(0.943 0.009 292.8);
+  --muted-foreground: oklch(0.508 0.036 293); /* #666279 */
+  --accent: oklch(0.943 0.009 292.8);
+  --accent-foreground: oklch(0.209 0.054 287.3);
+  --destructive: oklch(0.573 0.199 13.4); /* #D32E55 */
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.882 0.011 291.9); /* #D8D7DF */
+  --input: oklch(0.882 0.011 291.9);
+  --ring: oklch(0.601 0.156 152.6);
+
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.209 0.054 287.3);
+  --sidebar-primary: oklch(0.601 0.156 152.6);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.943 0.009 292.8);
+  --sidebar-accent-foreground: oklch(0.209 0.054 287.3);
+  --sidebar-border: oklch(0.882 0.011 291.9);
+  --sidebar-ring: oklch(0.601 0.156 152.6);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
+  /* Midnight surface — green is #00FF85 */
+  --background: oklch(0.209 0.054 287.3); /* Midnight */
+  --foreground: oklch(0.94 0.008 293.9); /* #EBEAF0 */
+  --card: oklch(0.303 0.052 289.3); /* Dark Indigo #2E2A47 */
+  --card-foreground: oklch(0.94 0.008 293.9);
+  --popover: oklch(0.303 0.052 289.3);
+  --popover-foreground: oklch(0.94 0.008 293.9);
+  --primary: oklch(0.876 0.23 152); /* #00FF85 */
+  --primary-foreground: oklch(0.209 0.054 287.3);
+  --secondary: oklch(0.303 0.052 289.3);
+  --secondary-foreground: oklch(0.94 0.008 293.9);
+  --muted: oklch(0.303 0.052 289.3);
+  --muted-foreground: oklch(0.742 0.024 291.2); /* #ABA9BA */
+  --accent: oklch(0.303 0.052 289.3);
+  --accent-foreground: oklch(0.94 0.008 293.9);
+  --destructive: oklch(0.573 0.199 13.4);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  --ring: oklch(0.876 0.23 152);
+
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --sidebar: oklch(0.303 0.052 289.3);
+  --sidebar-foreground: oklch(0.94 0.008 293.9);
+  --sidebar-primary: oklch(0.876 0.23 152);
+  --sidebar-primary-foreground: oklch(0.209 0.054 287.3);
+  --sidebar-accent: oklch(0.303 0.052 289.3);
+  --sidebar-accent-foreground: oklch(0.94 0.008 293.9);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.876 0.23 152);
 }
 
 @layer base {
@@ -140,5 +196,64 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-figtree);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Figtree headings run tight, matching the live ordergroove.com site. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-figtree);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+  }
+}
+
+@layer components {
+  /* Eyebrow label — ALL CAPS, tracked, in the correct-contrast green */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--color-primary);
+  }
+
+  /* Centered content wrapper (Tailwind v4's `container` no longer centers/pads). */
+  .site-container {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 1200px;
+    padding-inline: 1.5rem;
+  }
+
+  /* Card modules — uniform 20px, matching the live site and the Carta hub. */
+  .visual-container,
+  .visual-container-left {
+    border-radius: 20px;
+  }
+  /* Opt-in signature shape: three rounded corners + one square corner. */
+  .notch-br {
+    border-bottom-right-radius: 0;
+  }
+  .notch-bl {
+    border-bottom-left-radius: 0;
+  }
+}
+
+@layer utilities {
+  .bg-og-signature {
+    background-image: linear-gradient(135deg, #00ff85, #00faff);
+  }
+  .bg-og-web {
+    background-image: linear-gradient(135deg, #e0fe00, #0bfe5f, #00fefe);
+  }
+  .bg-og-purple {
+    background-image: linear-gradient(135deg, #7821f5, #71acff, #00ff85);
+  }
+  .bg-og-warm {
+    background-image: linear-gradient(135deg, #ff8500, #eaff00);
   }
 }

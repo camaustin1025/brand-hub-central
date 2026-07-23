@@ -1,0 +1,20 @@
+# Ordergroove Brand Hub
+
+> The internal home for the Ordergroove brand: guidelines, downloadable assets,
+> design tokens, and the tools to stay on brand. Ordergroove is the enterprise
+> standard for subscriptions and recurring revenue.
+
+## Canon
+- Category: Autonomous Subscriptions (never "Relationship Commerce")
+- Typeface: Figtree everywhere
+- Core color: Midnight #17132F, Groovy Green #00FF85 (dark bg) / #009A50 (light bg)
+- Never lead with "AI". No em-dashes. "Everychannel" is one word. Never name competitors.
+
+## Pages
+- [Foundation & Messaging](/foundation): who we are, the category, the message ladder
+- [Voice & Language Rules](/voice): how we sound, plus the pass/fail language rules
+- [Visual Identity](/visual-identity): color, logo, gradients, signature shapes
+- [Design Tokens](/tokens): the canonical values for code
+- [Downloads](/downloads): logo kit, font kit, token kits, social graphics
+- [GTM & Employee Toolkit](/toolkit): decks, docs, signatures, new-hire graphics
+- [AI & Skills](/ai-skills): the brand skills and the assistant
