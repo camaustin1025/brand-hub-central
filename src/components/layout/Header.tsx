@@ -37,11 +37,13 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [guidelines, assets, more] = NAV;
 
+  // Solid white per the Home design; the bar and logo keep the larger scale
+  // set in Lovable rather than the design's 88px bar / 30px logo.
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white">
-      <div className="site-container flex h-[88px] items-center justify-between gap-4">
+      <div className="site-container flex h-24 items-center justify-between gap-4">
         <Link to="/" className="flex items-center" aria-label="Ordergroove Brand Hub, home">
-          <img src="/logo-white.png" alt="Ordergroove" className="h-[30px] w-auto" />
+          <img src="/logo-white.png" alt="Ordergroove" className="h-12 w-auto" />
         </Link>
 
         {/* Desktop nav — simplified to three groups + search */}

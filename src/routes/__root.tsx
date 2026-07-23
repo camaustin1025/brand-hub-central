@@ -4,15 +4,20 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
+  redirect,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { checkUnlocked } from "@/lib/gate.functions";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { Toaster } from "@/components/ui/sonner";
+
 
 function NotFoundComponent() {
   return (
@@ -75,6 +80,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  beforeLoad: async ({ location }) => {
+    if (location.pathname === "/unlock") return;
+    const { unlocked } = await checkUnlocked();
+    if (!unlocked) {
+      throw redirect({ to: "/unlock" });
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -89,10 +101,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Ordergroove Brand Hub" },
       {
         property: "og:description",
-        content: "Guidelines, assets, and the tools to stay on brand.",
+        content: "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Ordergroove Brand Hub" },
+      { name: "twitter:description", content: "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png" },
     ],
     links: [
       {
@@ -131,17 +147,24 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      {isAdmin ? (
+        <Outlet />
+      ) : (
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+      )}
+      <Toaster />
     </QueryClientProvider>
   );
 }
+

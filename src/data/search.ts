@@ -5,6 +5,11 @@
  * It is deliberately small and client-side. v1.5 swaps the matcher for
  * Postgres FTS or Algolia against the assets table without changing the shape
  * of a `SearchHit`, so the omni bar's UI survives the switch.
+ *
+ * KNOWN DRIFT: Downloads now reads the `assets` table (lib/assets.functions.ts)
+ * while this index still reads the static data/assets.ts. The table was seeded
+ * from that file, so they agree today — but anything added through /admin/assets
+ * won't be searchable until this pulls from the same server function.
  */
 
 import { ALL_ROUTES } from "@/data/nav";

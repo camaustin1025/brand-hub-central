@@ -11,12 +11,19 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VoiceRouteImport } from './routes/voice'
 import { Route as VisualIdentityRouteImport } from './routes/visual-identity'
+import { Route as UnlockRouteImport } from './routes/unlock'
 import { Route as ToolkitRouteImport } from './routes/toolkit'
 import { Route as TokensRouteImport } from './routes/tokens'
 import { Route as FoundationRouteImport } from './routes/foundation'
 import { Route as DownloadsRouteImport } from './routes/downloads'
 import { Route as AiSkillsRouteImport } from './routes/ai-skills'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as AdminAssetsRouteImport } from './routes/admin.assets'
+import { Route as AdminAssetsNewRouteImport } from './routes/admin.assets.new'
+import { Route as AdminAssetsIdRouteImport } from './routes/admin.assets.$id'
 
 const VoiceRoute = VoiceRouteImport.update({
   id: '/voice',
@@ -26,6 +33,11 @@ const VoiceRoute = VoiceRouteImport.update({
 const VisualIdentityRoute = VisualIdentityRouteImport.update({
   id: '/visual-identity',
   path: '/visual-identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnlockRoute = UnlockRouteImport.update({
+  id: '/unlock',
+  path: '/unlock',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolkitRoute = ToolkitRouteImport.update({
@@ -53,21 +65,58 @@ const AiSkillsRoute = AiSkillsRouteImport.update({
   path: '/ai-skills',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAssetsRoute = AdminAssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAssetsNewRoute = AdminAssetsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AdminAssetsRoute,
+} as any)
+const AdminAssetsIdRoute = AdminAssetsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminAssetsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/ai-skills': typeof AiSkillsRoute
   '/downloads': typeof DownloadsRoute
   '/foundation': typeof FoundationRoute
   '/tokens': typeof TokensRoute
   '/toolkit': typeof ToolkitRoute
+  '/unlock': typeof UnlockRoute
   '/visual-identity': typeof VisualIdentityRoute
   '/voice': typeof VoiceRoute
+  '/admin/assets': typeof AdminAssetsRouteWithChildren
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/assets/$id': typeof AdminAssetsIdRoute
+  '/admin/assets/new': typeof AdminAssetsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,31 +125,51 @@ export interface FileRoutesByTo {
   '/foundation': typeof FoundationRoute
   '/tokens': typeof TokensRoute
   '/toolkit': typeof ToolkitRoute
+  '/unlock': typeof UnlockRoute
   '/visual-identity': typeof VisualIdentityRoute
   '/voice': typeof VoiceRoute
+  '/admin/assets': typeof AdminAssetsRouteWithChildren
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/assets/$id': typeof AdminAssetsIdRoute
+  '/admin/assets/new': typeof AdminAssetsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/ai-skills': typeof AiSkillsRoute
   '/downloads': typeof DownloadsRoute
   '/foundation': typeof FoundationRoute
   '/tokens': typeof TokensRoute
   '/toolkit': typeof ToolkitRoute
+  '/unlock': typeof UnlockRoute
   '/visual-identity': typeof VisualIdentityRoute
   '/voice': typeof VoiceRoute
+  '/admin/assets': typeof AdminAssetsRouteWithChildren
+  '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/assets/$id': typeof AdminAssetsIdRoute
+  '/admin/assets/new': typeof AdminAssetsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/ai-skills'
     | '/downloads'
     | '/foundation'
     | '/tokens'
     | '/toolkit'
+    | '/unlock'
     | '/visual-identity'
     | '/voice'
+    | '/admin/assets'
+    | '/admin/categories'
+    | '/admin/'
+    | '/admin/assets/$id'
+    | '/admin/assets/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,27 +178,42 @@ export interface FileRouteTypes {
     | '/foundation'
     | '/tokens'
     | '/toolkit'
+    | '/unlock'
     | '/visual-identity'
     | '/voice'
+    | '/admin/assets'
+    | '/admin/categories'
+    | '/admin'
+    | '/admin/assets/$id'
+    | '/admin/assets/new'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/ai-skills'
     | '/downloads'
     | '/foundation'
     | '/tokens'
     | '/toolkit'
+    | '/unlock'
     | '/visual-identity'
     | '/voice'
+    | '/admin/assets'
+    | '/admin/categories'
+    | '/admin/'
+    | '/admin/assets/$id'
+    | '/admin/assets/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AiSkillsRoute: typeof AiSkillsRoute
   DownloadsRoute: typeof DownloadsRoute
   FoundationRoute: typeof FoundationRoute
   TokensRoute: typeof TokensRoute
   ToolkitRoute: typeof ToolkitRoute
+  UnlockRoute: typeof UnlockRoute
   VisualIdentityRoute: typeof VisualIdentityRoute
   VoiceRoute: typeof VoiceRoute
 }
@@ -148,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/visual-identity'
       fullPath: '/visual-identity'
       preLoaderRoute: typeof VisualIdentityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unlock': {
+      id: '/unlock'
+      path: '/unlock'
+      fullPath: '/unlock'
+      preLoaderRoute: typeof UnlockRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/toolkit': {
@@ -185,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiSkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -192,16 +290,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/assets': {
+      id: '/admin/assets'
+      path: '/assets'
+      fullPath: '/admin/assets'
+      preLoaderRoute: typeof AdminAssetsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/assets/new': {
+      id: '/admin/assets/new'
+      path: '/new'
+      fullPath: '/admin/assets/new'
+      preLoaderRoute: typeof AdminAssetsNewRouteImport
+      parentRoute: typeof AdminAssetsRoute
+    }
+    '/admin/assets/$id': {
+      id: '/admin/assets/$id'
+      path: '/$id'
+      fullPath: '/admin/assets/$id'
+      preLoaderRoute: typeof AdminAssetsIdRouteImport
+      parentRoute: typeof AdminAssetsRoute
+    }
   }
 }
 
+interface AdminAssetsRouteChildren {
+  AdminAssetsIdRoute: typeof AdminAssetsIdRoute
+  AdminAssetsNewRoute: typeof AdminAssetsNewRoute
+}
+
+const AdminAssetsRouteChildren: AdminAssetsRouteChildren = {
+  AdminAssetsIdRoute: AdminAssetsIdRoute,
+  AdminAssetsNewRoute: AdminAssetsNewRoute,
+}
+
+const AdminAssetsRouteWithChildren = AdminAssetsRoute._addFileChildren(
+  AdminAssetsRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminAssetsRoute: typeof AdminAssetsRouteWithChildren
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAssetsRoute: AdminAssetsRouteWithChildren,
+  AdminCategoriesRoute: AdminCategoriesRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AiSkillsRoute: AiSkillsRoute,
   DownloadsRoute: DownloadsRoute,
   FoundationRoute: FoundationRoute,
   TokensRoute: TokensRoute,
   ToolkitRoute: ToolkitRoute,
+  UnlockRoute: UnlockRoute,
   VisualIdentityRoute: VisualIdentityRoute,
   VoiceRoute: VoiceRoute,
 }
