@@ -170,7 +170,7 @@
   --secondary: oklch(0.303 0.052 289.3);
   --secondary-foreground: oklch(0.94 0.008 293.9);
   --muted: oklch(0.303 0.052 289.3);
-  --muted-foreground: oklch(0.742 0.024 291.2); /* #ABA9BA */
+  --muted-foreground: oklch(0.94 0.008 293.9); /* was #ABA9BA — bumped to full foreground */
   --accent: oklch(0.303 0.052 289.3);
   --accent-foreground: oklch(0.94 0.008 293.9);
   --destructive: oklch(0.573 0.199 13.4);
