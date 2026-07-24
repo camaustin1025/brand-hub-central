@@ -40,16 +40,25 @@ export function AdminGate({ children }: { children: ReactNode }) {
           <p className="mt-1 text-sm text-muted-foreground">
             Enter the admin passphrase to continue.
           </p>
+          <label
+            htmlFor="admin-passphrase"
+            className="mt-4 block text-sm font-medium text-foreground"
+          >
+            Passphrase
+          </label>
           <input
+            id="admin-passphrase"
+            name="admin-passphrase"
             type="password"
+            autoComplete="current-password"
             autoFocus
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
               setError(false);
             }}
-            className="mt-4 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-            placeholder="Passphrase"
+            className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            placeholder="Enter passphrase"
           />
           {error && (
             <p className="mt-2 text-xs text-destructive">Incorrect passphrase.</p>

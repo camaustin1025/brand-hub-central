@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Menu, Search, X } from "lucide-react";
+import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
 import { NAV, type NavItem } from "@/data/nav";
 
 const linkBase =
@@ -76,7 +77,10 @@ export function Header() {
       </div>
 
       <div className="bg-og-midnight py-3 text-center">
-        <p className="text-sm font-medium text-white">WIP ⚠️ Updates ongoing</p>
+        <p className="flex items-center justify-center gap-1.5 text-sm font-medium text-white">
+          <MaterialSymbol name="warning" size={16} className="text-og-green" />
+          WIP · Updates ongoing
+        </p>
       </div>
 
       {/* Mobile nav */}

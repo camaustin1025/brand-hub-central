@@ -1,13 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Copy } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Swatch } from "@/components/brand/Swatch";
+import { CopyToast } from "@/components/brand/CopyToast";
 import { COLOR_GROUPS, GRADIENTS } from "@/data/tokens";
+import { useCopyToast } from "@/hooks/use-copy-toast";
 
 export const Route = createFileRoute("/visual-identity")({
   component: VisualIdentity,
 });
 
 function VisualIdentity() {
+  const { copy, toast } = useCopyToast();
+
   return (
     <>
       <PageHeader
@@ -42,8 +47,20 @@ function VisualIdentity() {
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {GRADIENTS.map((g) => (
-            <div key={g.name} className="visual-container overflow-hidden border border-border bg-card">
-              <div className="h-28 w-full" style={{ backgroundImage: g.css }} />
+            <button
+              key={g.name}
+              type="button"
+              onClick={() => copy(g.css, `the ${g.name} gradient`)}
+              aria-label={`Copy the ${g.name} gradient CSS`}
+              className="group visual-container block overflow-hidden border border-border bg-card text-left transition-shadow hover:shadow-2xl hover:shadow-og-midnight/10"
+            >
+              <div className="relative h-28 w-full" style={{ backgroundImage: g.css }}>
+                <span className="absolute inset-0 flex items-start justify-end p-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                  <span className="rounded-md bg-black/40 p-1.5 text-white backdrop-blur">
+                    <Copy size={16} />
+                  </span>
+                </span>
+              </div>
               <div className="space-y-1 p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold">{g.name}</span>
@@ -55,7 +72,7 @@ function VisualIdentity() {
                 </div>
                 <code className="block truncate text-xs text-muted-foreground">{g.css}</code>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </section>
