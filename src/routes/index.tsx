@@ -48,8 +48,8 @@ const CORE_TILES = [
     note: "#FFFFFF · click any card to copy its hex",
     tile: "bg-white hover:brightness-97",
     title: "text-og-midnight",
-    sub: "text-muted-foreground",
-    icon: "text-muted-foreground",
+    sub: "text-og-midnight",
+    icon: "text-og-midnight",
     span: "md:col-span-2",
   },
 ] as const;
@@ -99,7 +99,7 @@ function Index() {
           <div className="relative flex max-w-[640px] flex-col items-start">
             <p className="eyebrow mb-4">Ordergroove Brand Hub</p>
             <h1 className="text-[40px] font-extrabold md:text-[60px]">The brand, in one place</h1>
-            <p className="mt-5 max-w-[520px] text-lg leading-relaxed text-muted-foreground md:text-[19px]">
+            <p className="mt-5 max-w-[520px] text-lg leading-relaxed text-white md:text-[19px]">
               Everything you need to build on-brand subscriptions work: the guidelines, the assets,
               and the tools that keep it consistent.
             </p>
@@ -182,12 +182,12 @@ function Index() {
             <div className="mt-4 text-[44px] font-extrabold leading-none tracking-[-0.02em]">
               Figtree
             </div>
-            <p className="mt-2 text-[15px] text-muted-foreground">
+            <p className="mt-2 text-[15px] text-foreground">
               Aa Bb Cc 0123 — <span className="font-bold">Bold</span>{" "}
               <span className="font-semibold">SemiBold</span>{" "}
               <span className="font-medium">Medium</span> <span>Regular</span>
             </p>
-            <p className="mt-2.5 mb-5 flex-1 text-[13.5px] leading-relaxed text-muted-foreground">
+            <p className="mt-2.5 mb-5 flex-1 text-[13.5px] leading-relaxed text-foreground">
               The only brand font, for everything from decks to product.
             </p>
             <Button asChild size="sm" className="self-start px-5 text-[13px]">
@@ -203,7 +203,7 @@ function Index() {
                 <MaterialSymbol key={name} name={name} size={30} />
               ))}
             </div>
-            <p className="mt-4 mb-5 flex-1 text-[13.5px] leading-relaxed text-muted-foreground">
+            <p className="mt-4 mb-5 flex-1 text-[13.5px] leading-relaxed text-foreground">
               Material Symbols — weight 300, fill off, grade normal.
             </p>
             <a
@@ -236,7 +236,7 @@ function Index() {
                 </button>
               ))}
             </div>
-            <p className="mt-3.5 flex-1 text-[13.5px] leading-relaxed text-muted-foreground">
+            <p className="mt-3.5 flex-1 text-[13.5px] leading-relaxed text-foreground">
               Signature and approved gradients. Click a bar to copy its CSS.
             </p>
           </div>
