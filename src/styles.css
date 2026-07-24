@@ -133,7 +133,7 @@
   --secondary: oklch(0.943 0.009 292.8); /* #ECEBF2 */
   --secondary-foreground: oklch(0.209 0.054 287.3);
   --muted: oklch(0.943 0.009 292.8);
-  --muted-foreground: oklch(0.508 0.036 293); /* #666279 */
+  --muted-foreground: oklch(0.209 0.054 287.3); /* was #666279 — bumped to full foreground */
   --accent: oklch(0.943 0.009 292.8);
   --accent-foreground: oklch(0.209 0.054 287.3);
   --destructive: oklch(0.573 0.199 13.4); /* #D32E55 */
