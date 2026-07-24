@@ -48,8 +48,8 @@ const CORE_TILES = [
     note: "#FFFFFF · click any card to copy its hex",
     tile: "bg-white hover:brightness-97",
     title: "text-og-midnight",
-    sub: "text-muted-foreground",
-    icon: "text-muted-foreground",
+    sub: "text-og-midnight",
+    icon: "text-og-midnight",
     span: "md:col-span-2",
   },
 ] as const;
@@ -99,7 +99,7 @@ function Index() {
           <div className="relative flex max-w-[640px] flex-col items-start">
             <p className="eyebrow mb-4">Ordergroove Brand Hub</p>
             <h1 className="text-[40px] font-extrabold md:text-[60px]">The brand, in one place</h1>
-            <p className="mt-5 max-w-[520px] text-lg leading-relaxed text-muted-foreground md:text-[19px]">
+            <p className="mt-5 max-w-[520px] text-lg leading-relaxed text-white md:text-[19px]">
               Everything you need to build on-brand subscriptions work: the guidelines, the assets,
               and the tools that keep it consistent.
             </p>
