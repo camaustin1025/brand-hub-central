@@ -83,7 +83,7 @@ function Toolkit() {
               // state (muted, no external-arrow) so it never reads as a dead link.
               <span
                 aria-disabled="true"
-                className="mt-4 inline-flex cursor-default items-center gap-1.5 text-sm font-medium text-muted-foreground/80"
+                className="mt-4 inline-flex cursor-default items-center gap-1.5 text-sm font-medium text-muted-foreground"
               >
                 <Clock size={14} /> Coming soon
               </span>
