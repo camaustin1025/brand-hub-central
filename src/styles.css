@@ -206,6 +206,22 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /*
+   * Respect the OS "reduce motion" setting (PRODUCT.md accessibility commitment):
+   * near-instant transitions/animations, no smooth scroll. The hover-lift, chevron
+   * spin, and result-panel fade still change state — they just don't animate.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   /* Figtree headings run tight, matching the live ordergroove.com site. */
   h1,
   h2,

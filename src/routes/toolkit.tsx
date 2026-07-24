@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Clock } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 
@@ -79,8 +79,13 @@ function Toolkit() {
                 {t.cta} <ArrowUpRight size={15} />
               </a>
             ) : (
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground">
-                {t.cta} <ArrowUpRight size={15} />
+              // Not a live link yet — render as a clearly non-actionable pending
+              // state (muted, no external-arrow) so it never reads as a dead link.
+              <span
+                aria-disabled="true"
+                className="mt-4 inline-flex cursor-default items-center gap-1.5 text-sm font-medium text-muted-foreground/80"
+              >
+                <Clock size={14} /> Coming soon
               </span>
             )}
           </div>

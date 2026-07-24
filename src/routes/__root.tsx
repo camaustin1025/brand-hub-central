@@ -148,11 +148,13 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isAdmin = pathname.startsWith("/admin");
+  // Full-bleed surfaces that render without the site header/footer: the admin
+  // app and the unlock gate (nav chrome there is just non-functional clutter).
+  const isBare = pathname.startsWith("/admin") || pathname === "/unlock";
 
   return (
     <QueryClientProvider client={queryClient}>
-      {isAdmin ? (
+      {isBare ? (
         <Outlet />
       ) : (
         <div className="flex min-h-screen flex-col">
