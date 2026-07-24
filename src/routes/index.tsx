@@ -182,12 +182,12 @@ function Index() {
             <div className="mt-4 text-[44px] font-extrabold leading-none tracking-[-0.02em]">
               Figtree
             </div>
-            <p className="mt-2 text-[15px] text-muted-foreground">
+            <p className="mt-2 text-[15px] text-foreground">
               Aa Bb Cc 0123 — <span className="font-bold">Bold</span>{" "}
               <span className="font-semibold">SemiBold</span>{" "}
               <span className="font-medium">Medium</span> <span>Regular</span>
             </p>
-            <p className="mt-2.5 mb-5 flex-1 text-[13.5px] leading-relaxed text-muted-foreground">
+            <p className="mt-2.5 mb-5 flex-1 text-[13.5px] leading-relaxed text-foreground">
               The only brand font, for everything from decks to product.
             </p>
             <Button asChild size="sm" className="self-start px-5 text-[13px]">
@@ -203,7 +203,7 @@ function Index() {
                 <MaterialSymbol key={name} name={name} size={30} />
               ))}
             </div>
-            <p className="mt-4 mb-5 flex-1 text-[13.5px] leading-relaxed text-muted-foreground">
+            <p className="mt-4 mb-5 flex-1 text-[13.5px] leading-relaxed text-foreground">
               Material Symbols — weight 300, fill off, grade normal.
             </p>
             <a
@@ -236,7 +236,7 @@ function Index() {
                 </button>
               ))}
             </div>
-            <p className="mt-3.5 flex-1 text-[13.5px] leading-relaxed text-muted-foreground">
+            <p className="mt-3.5 flex-1 text-[13.5px] leading-relaxed text-foreground">
               Signature and approved gradients. Click a bar to copy its CSS.
             </p>
           </div>
