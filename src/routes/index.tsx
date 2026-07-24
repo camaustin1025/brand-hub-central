@@ -121,7 +121,7 @@ function Index() {
             >
               <MaterialSymbol name={card.icon} size={32} className="text-primary" />
               <h3 className="mt-5 text-xl font-bold text-foreground">{card.title}</h3>
-              <p className="mt-2 mb-6 flex-1 text-[14.5px] leading-relaxed text-muted-foreground">
+              <p className="mt-2 mb-6 flex-1 text-[14.5px] leading-relaxed text-foreground">
                 {card.blurb}
               </p>
               <Button asChild size="sm" className="self-start px-5 text-[13.5px]">
