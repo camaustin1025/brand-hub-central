@@ -23,7 +23,7 @@ const START_STEPS = [
   },
   {
     step: "Step 02",
-    title: "Pull the assets you need",
+    title: "Grab what you need",
     blurb: "Logos, fonts, colors, and templates — all downloadable, all current.",
     path: "/downloads",
   },
