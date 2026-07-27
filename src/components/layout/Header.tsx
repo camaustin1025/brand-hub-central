@@ -68,7 +68,7 @@ export function Header() {
             Sys.status
           </span>
           <span className="text-[12.5px] font-medium text-og-indigo">
-            Rolling updates in progress — some sections are still being written.
+            Live and building. Some sections are still in draft.
           </span>
           <span className="text-xs font-semibold uppercase tracking-[0.16em] text-og-soft">
             Maintained by Brand &amp; Content
