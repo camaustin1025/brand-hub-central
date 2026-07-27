@@ -39,9 +39,7 @@ function ModeChip({
       aria-pressed={active}
       className={cn(
         "inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-bold uppercase tracking-[0.14em] transition-colors",
-        active
-          ? "bg-og-green text-og-midnight"
-          : "text-white/70 hover:text-white",
+        active ? "bg-og-green text-og-midnight" : "text-white/70 hover:text-white",
       )}
     >
       {icon && <MaterialSymbol name={icon} size={14} />}
@@ -142,17 +140,24 @@ export function OmniBar() {
           <div className="absolute inset-x-0 top-full z-50 mt-2.5 overflow-hidden border border-border bg-white shadow-[0_21px_46px_rgba(23,19,47,0.14),0_85px_85px_rgba(23,19,47,0.08)]">
             {mode === "ask" ? (
               <div className="flex items-start gap-3 p-[18px_22px]">
-                <MaterialSymbol name="auto_awesome" size={18} className="mt-0.5 text-og-green-light" />
-                <p className="text-[14.5px] leading-relaxed text-og-indigo">
+                <MaterialSymbol
+                  name="auto_awesome"
+                  size={18}
+                  className="mt-0.5 text-og-green-light"
+                />
+                <p className="text-[15px] leading-relaxed text-og-indigo">
                   The brand assistant isn't live yet. The canon it will answer from is written up on{" "}
-                  <Link to="/ai-skills" className="font-semibold text-og-green-light hover:underline">
+                  <Link
+                    to="/ai-skills"
+                    className="font-semibold text-og-green-light hover:underline"
+                  >
                     AI &amp; Skills
                   </Link>
                   .
                 </p>
               </div>
             ) : hits.length === 0 ? (
-              <p className="p-[18px_22px] text-[14.5px] text-og-indigo">
+              <p className="p-[18px_22px] text-[15px] text-og-indigo">
                 Nothing matches "{query.trim()}" yet. Try a color name, a hex, or a page title.
               </p>
             ) : (
@@ -166,10 +171,10 @@ export function OmniBar() {
                     >
                       <MaterialSymbol name={h.icon} size={19} className="text-og-green-light" />
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[14.5px] font-semibold text-og-midnight">
+                        <span className="block truncate text-[15px] font-semibold text-og-midnight">
                           {h.title}
                         </span>
-                        <span className="block truncate text-[12.5px] text-og-soft">
+                        <span className="block truncate text-[14px] text-og-soft">
                           {h.subtitle}
                         </span>
                       </span>

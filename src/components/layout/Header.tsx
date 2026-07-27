@@ -67,7 +67,7 @@ export function Header() {
             <MaterialSymbol name="bolt" size={15} />
             Sys.status
           </span>
-          <span className="text-[12.5px] font-medium text-og-indigo">
+          <span className="text-[14px] font-medium text-og-indigo">
             Live and building. Some sections are still in draft.
           </span>
           <span className="text-xs font-semibold uppercase tracking-[0.16em] text-og-soft">

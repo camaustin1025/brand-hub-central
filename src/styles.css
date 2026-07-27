@@ -366,16 +366,16 @@
 
 @layer utilities {
   .bg-og-signature {
-    background-image: linear-gradient(135deg, #00ff85, #00faff);
+    background-image: linear-gradient(112deg, #00ff85, #00faff);
   }
   .bg-og-web {
-    background-image: linear-gradient(135deg, #e0fe00, #0bfe5f, #00fefe);
+    background-image: linear-gradient(112deg, #e0fe00, #0bfe5f, #00fefe);
   }
   .bg-og-purple {
-    background-image: linear-gradient(135deg, #7821f5, #71acff, #00ff85);
+    background-image: linear-gradient(112deg, #7821f5, #71acff, #00ff85);
   }
   .bg-og-warm {
-    background-image: linear-gradient(135deg, #ff8500, #eaff00);
+    background-image: linear-gradient(112deg, #ff8500, #eaff00);
   }
   /* Placeholder tile for asset/template thumbnails not yet dropped in — a faint
      diagonal hatch on the light surface, both tones from the palette. */

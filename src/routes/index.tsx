@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { CardLink } from "@/components/brand/CardLink";
 import { CopyToast } from "@/components/brand/CopyToast";
+import { Kicker } from "@/components/brand/Kicker";
 import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
+import { Aside, SectionHead } from "@/components/brand/SectionHead";
 import { OmniBar } from "@/components/home/OmniBar";
 import { useCopyToast } from "@/hooks/use-copy-toast";
 import { cn } from "@/lib/utils";
@@ -12,28 +14,6 @@ export const Route = createFileRoute("/")({
 
 /** The signature gradient marquee — Green → Cyan → Lemon, locked to 112°. */
 const HERO_GRADIENT = "linear-gradient(112deg, #00FF85 0%, #00FAFF 52%, #EAFF00 100%)";
-
-/** New-to-the-brand path: three steps that map to the three doors below. */
-const START_STEPS = [
-  {
-    step: "Step 01",
-    title: "Learn what we sound and look like",
-    blurb: "Fifteen minutes in Foundation and Voice covers most of what you'll need.",
-    path: "/foundation",
-  },
-  {
-    step: "Step 02",
-    title: "Grab what you need",
-    blurb: "Logos, fonts, colors, and templates — all downloadable, all current.",
-    path: "/downloads",
-  },
-  {
-    step: "Step 03",
-    title: "Check the work before it ships",
-    blurb: "Run it past the brand skills, or request a review from Brand & Content.",
-    path: "/ai-skills",
-  },
-] as const;
 
 /** The three doors — Guidelines leads on a Midnight island, the other two on white. */
 const DOORS = [
@@ -180,70 +160,13 @@ const UPDATES = [
   },
 ] as const;
 
-/** The recurring small-cap kicker. Defaults to the correct-contrast light green. */
-function Kicker({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <span
-      className={cn(
-        "text-xs font-bold uppercase tracking-[0.16em] text-og-green-light",
-        className,
-      )}
-    >
-      {children}
-    </span>
-  );
-}
-
-/** Section opener: a green kicker and a right-aligned aside over a Midnight rule. */
-function SectionHead({ kicker, aside }: { kicker: string; aside?: ReactNode }) {
-  return (
-    <div className="flex items-baseline justify-between gap-6 border-b border-og-midnight pb-3.5">
-      <Kicker>{kicker}</Kicker>
-      {aside}
-    </div>
-  );
-}
-
-/** A muted right-aligned section tag (hidden on small screens). */
-function Aside({ children }: { children: ReactNode }) {
-  return (
-    <span className="hidden text-xs font-semibold uppercase tracking-[0.16em] text-og-soft md:block">
-      {children}
-    </span>
-  );
-}
-
-/** The green "eyebrow → link" affordance at the bottom of a card. */
-function CardLink({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.16em] text-og-green-light",
-        className,
-      )}
-    >
-      {children}
-      <MaterialSymbol name="arrow_outward" size={15} />
-    </span>
-  );
-}
-
 function Index() {
   const { copy, toast } = useCopyToast();
 
   return (
     <div className="bg-white">
       {/* HERO — the full-bleed gradient marquee. */}
-      <section
-        className="relative overflow-hidden"
-        style={{ backgroundImage: HERO_GRADIENT }}
-      >
+      <section className="relative overflow-hidden" style={{ backgroundImage: HERO_GRADIENT }}>
         <div className="site-container pb-32 pt-[72px]">
           <div className="flex items-center gap-4">
             <Kicker className="text-og-midnight">Ordergroove Brand Hub</Kicker>
@@ -267,43 +190,24 @@ function Index() {
         <OmniBar />
       </div>
 
-      {/* START HERE */}
-      <section className="site-container pt-20">
-        <SectionHead kicker="Start here" aside={<Aside>Path.01 — New to the brand</Aside>} />
-        <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-3">
-          {START_STEPS.map((s) => (
-            <Link
-              key={s.step}
-              to={s.path}
-              className="flex min-h-[200px] flex-col border border-og-border p-[26px] transition-colors hover:border-og-midnight hover:bg-og-surface"
-            >
-              <Kicker className="tracking-[0.16em]">{s.step}</Kicker>
-              <span className="mt-auto text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
-                {s.title}
-              </span>
-              <span className="mt-3 text-[14.5px] leading-normal text-og-indigo">{s.blurb}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* THE THREE DOORS */}
+      {/* THE THREE DOORS — the first module under the hero. */}
       <section id="guidelines" className="site-container pt-20">
-        <SectionHead kicker="The three doors" aside={<Aside>Sec.02</Aside>} />
+        <SectionHead kicker="The three doors" aside={<Aside>Sec.01</Aside>} />
         <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-3">
           {DOORS.map((d) =>
             d.dark ? (
+              // `dark` flips --primary to #00FF85 for everything inside.
               <Link
                 key={d.n}
                 to={d.path}
-                className="flex min-h-[270px] flex-col bg-og-midnight p-[30px] transition-transform hover:-translate-y-1"
+                className="dark flex min-h-[270px] flex-col bg-og-midnight p-[30px] transition-transform hover:-translate-y-1"
               >
-                <span className="text-xs font-bold tracking-[0.16em] text-og-green">{d.n}</span>
+                <span className="text-xs font-bold tracking-[0.16em] text-primary">{d.n}</span>
                 <span className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-white">
                   {d.title}
                 </span>
                 <span className="mt-3.5 text-[15px] leading-normal text-white/66">{d.blurb}</span>
-                <CardLink className="mt-[22px] text-og-green">{d.cta}</CardLink>
+                <CardLink className="mt-[22px]">{d.cta}</CardLink>
               </Link>
             ) : (
               <Link
@@ -311,9 +215,7 @@ function Index() {
                 to={d.path}
                 className="flex min-h-[270px] flex-col border border-og-border bg-white p-[30px] transition-colors hover:border-og-midnight hover:bg-og-surface"
               >
-                <span className="text-xs font-bold tracking-[0.16em] text-og-green-light">
-                  {d.n}
-                </span>
+                <span className="text-xs font-bold tracking-[0.16em] text-primary">{d.n}</span>
                 <span className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-og-midnight">
                   {d.title}
                 </span>
@@ -350,7 +252,7 @@ function Index() {
                   )}
                 >
                   <span className={cn("text-[15px] font-bold", s.title)}>{s.name}</span>
-                  <span className={cn("text-[13px]", s.sub)}>{s.note}</span>
+                  <span className={cn("text-[14px]", s.sub)}>{s.note}</span>
                 </button>
               ))}
             </div>
@@ -378,7 +280,7 @@ function Index() {
                 </p>
               </div>
               <div className="flex flex-col items-start justify-between gap-5 pt-6 sm:flex-row sm:items-end">
-                <p className="max-w-[32ch] text-[14.5px] leading-normal text-og-indigo text-pretty">
+                <p className="max-w-[32ch] text-[15px] leading-normal text-og-indigo text-pretty">
                   The only brand font, for everything from decks to product. Soleil is sunsetted;
                   never Helvetica or Arial.
                 </p>
@@ -452,10 +354,18 @@ function Index() {
             </div>
             <div className="mt-[18px] grid grid-cols-2 gap-2">
               <div className="flex h-[82px] items-center justify-center border border-og-hairline bg-white p-4">
-                <img src="/logo-white.png" alt="Ordergroove wordmark, dark" className="h-[18px] w-auto" />
+                <img
+                  src="/logo-white.png"
+                  alt="Ordergroove wordmark, dark"
+                  className="h-[18px] w-auto"
+                />
               </div>
               <div className="flex h-[82px] items-center justify-center bg-og-midnight p-4">
-                <img src="/logo-dark.png" alt="Ordergroove wordmark, white" className="h-[18px] w-auto" />
+                <img
+                  src="/logo-dark.png"
+                  alt="Ordergroove wordmark, white"
+                  className="h-[18px] w-auto"
+                />
               </div>
             </div>
             <p className="mb-[18px] mt-[18px] flex-1 text-[14px] leading-normal text-og-indigo text-pretty">
@@ -475,7 +385,7 @@ function Index() {
           aside={
             <Link
               to="/downloads"
-              className="text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-og-green-light"
+              className="text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
             >
               All downloads →
             </Link>
@@ -495,7 +405,7 @@ function Index() {
                 <span className="text-base font-bold tracking-[-0.01em] text-og-midnight">
                   {a.title}
                 </span>
-                <span className="text-[13px] text-og-soft">{a.meta}</span>
+                <span className="text-[14px] text-og-soft">{a.meta}</span>
               </span>
             </Link>
           ))}
@@ -507,7 +417,7 @@ function Index() {
 
       {/* TEMPLATES & TOOLKIT */}
       <section id="templates" className="site-container pt-20">
-        <SectionHead kicker="Templates & toolkit" aside={<Aside>Sec.04</Aside>} />
+        <SectionHead kicker="Templates & toolkit" aside={<Aside>Sec.02</Aside>} />
         <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-3">
           {TEMPLATES.map((t) => (
             <Link
@@ -520,10 +430,10 @@ function Index() {
               </span>
               <span className="flex flex-col gap-2 p-[22px]">
                 <span className="flex items-center gap-2.5">
-                  <span className="text-[19px] font-bold tracking-[-0.015em] text-og-midnight">
+                  <span className="text-xl font-bold tracking-[-0.015em] text-og-midnight">
                     {t.title}
                   </span>
-                  <span className="shrink-0 whitespace-nowrap border border-og-border px-2 py-[3px] text-[10.5px] font-bold uppercase tracking-[0.12em] text-og-soft">
+                  <span className="shrink-0 whitespace-nowrap border border-og-border px-2 py-[3px] text-[11px] font-bold uppercase tracking-[0.12em] text-og-soft">
                     {t.tag}
                   </span>
                 </span>
@@ -534,8 +444,8 @@ function Index() {
         </div>
       </section>
 
-      {/* ASSISTANT BAND — full-bleed Midnight */}
-      <section id="assistant" className="relative mt-20 overflow-hidden bg-og-midnight">
+      {/* ASSISTANT BAND — full-bleed Midnight. `dark` resolves green to #00FF85. */}
+      <section id="assistant" className="dark relative mt-20 overflow-hidden bg-og-midnight">
         <div
           aria-hidden
           className="pointer-events-none absolute -right-64 -top-72 h-[820px] w-[820px] rounded-full opacity-25 mix-blend-screen"
@@ -547,8 +457,8 @@ function Index() {
         <div className="site-container relative flex flex-col items-start justify-between gap-12 py-[72px] lg:flex-row lg:items-center">
           <div className="max-w-[56ch]">
             <div className="flex items-center gap-3.5">
-              <Kicker className="text-og-green">AI & Skills</Kicker>
-              <span className="shrink-0 whitespace-nowrap border border-white/28 px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-[0.12em] text-white/70">
+              <Kicker>AI &amp; Skills</Kicker>
+              <span className="shrink-0 whitespace-nowrap border border-white/28 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white/70">
                 Coming soon
               </span>
             </div>
@@ -592,7 +502,7 @@ function Index() {
               to={u.path}
               className="grid grid-cols-[80px_1fr] items-baseline gap-x-5 gap-y-1 border-b border-og-hairline py-5 transition-colors hover:bg-og-surface sm:grid-cols-[96px_1fr_130px] sm:gap-6"
             >
-              <span className="text-[12.5px] font-bold uppercase tracking-[0.12em] text-og-soft">
+              <span className="text-[14px] font-bold uppercase tracking-[0.12em] text-og-soft">
                 {u.date}
               </span>
               <span className="col-start-2 sm:col-start-2">
@@ -603,7 +513,7 @@ function Index() {
                   {u.blurb}
                 </span>
               </span>
-              <span className="col-start-2 text-xs font-bold uppercase tracking-[0.14em] text-og-green-light sm:col-start-3 sm:justify-self-end">
+              <span className="col-start-2 text-xs font-bold uppercase tracking-[0.14em] text-primary sm:col-start-3 sm:justify-self-end">
                 {u.kind}
               </span>
             </Link>
@@ -616,7 +526,7 @@ function Index() {
             <span className="mt-4 text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
               Request a brand review
             </span>
-            <span className="mt-3 text-[14.5px] leading-normal text-og-indigo text-pretty">
+            <span className="mt-3 text-[15px] leading-normal text-og-indigo text-pretty">
               Send a deck, page, or campaign to Brand & Content and we'll mark it up within two
               working days.
             </span>
@@ -633,7 +543,7 @@ function Index() {
             <span className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-midnight">
               #brand-help
             </span>
-            <span className="mt-2.5 text-[14.5px] leading-normal text-og-indigo">
+            <span className="mt-2.5 text-[15px] leading-normal text-og-indigo">
               Quick questions, one-off asks, and "is this on brand?" gut checks.
             </span>
           </div>
@@ -643,7 +553,7 @@ function Index() {
             <span className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-soft">
               Brand training &amp; onboarding
             </span>
-            <span className="mt-2.5 text-[14.5px] leading-normal text-og-soft">
+            <span className="mt-2.5 text-[15px] leading-normal text-og-soft">
               A short course for new hires lives here once it's recorded.
             </span>
           </div>

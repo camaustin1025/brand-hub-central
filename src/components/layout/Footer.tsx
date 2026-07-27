@@ -41,7 +41,7 @@ export function Footer() {
       <div className="site-container grid grid-cols-1 gap-y-10 py-14 md:grid-cols-12 md:gap-y-0">
         <div className="flex flex-col gap-3.5 md:col-span-5 md:pr-10">
           <img src="/logo-dark.png" alt="Ordergroove" className="h-6 w-auto self-start" />
-          <p className="max-w-[34ch] text-[14.5px] leading-relaxed text-white/72">
+          <p className="max-w-[34ch] text-[15px] leading-relaxed text-white/72">
             The internal home for the Ordergroove brand. Guidelines, assets, and the tools to stay
             on brand.
           </p>
@@ -59,7 +59,7 @@ export function Footer() {
                 <Link
                   key={l.label}
                   to={l.to}
-                  className="text-[14.5px] text-white transition-colors hover:text-og-green"
+                  className="text-[15px] text-white transition-colors hover:text-og-green"
                 >
                   {l.label}
                 </Link>
