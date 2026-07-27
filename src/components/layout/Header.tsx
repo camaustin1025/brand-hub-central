@@ -1,100 +1,95 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Menu, Search, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
-import { NAV, type NavItem } from "@/data/nav";
+import { NAV } from "@/data/nav";
+
+/** Flat primary nav, in the order the Gradient Marquee home lays out its doors. */
+const NAV_LINKS = [
+  { label: "Guidelines", to: "/foundation" as const },
+  { label: "Downloads", to: "/downloads" as const },
+  { label: "Toolkit", to: "/toolkit" as const },
+];
 
 const linkBase =
-  "text-sm font-medium text-foreground transition-colors hover:text-primary data-[status=active]:text-primary";
-
-/** Desktop dropdown for a nav group with more than one destination. */
-function NavGroup({ label, items }: { label: string; items: NavItem[] }) {
-  return (
-    <div className="group relative">
-      <button className="inline-flex items-center gap-1 text-sm font-medium text-foreground transition-colors group-hover:text-primary">
-        {label}
-        <ChevronDown size={15} className="transition-transform group-hover:rotate-180" />
-      </button>
-      {/* pt-3 is the hover bridge to the panel */}
-      <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-        <div className="w-72 rounded-2xl border border-border bg-white p-2 shadow-xl shadow-og-midnight/5">
-          {items.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="block rounded-xl px-3 py-2.5 transition-colors hover:bg-secondary"
-            >
-              <span className="block text-sm font-semibold text-foreground">{item.label}</span>
-              <span className="block text-xs text-foreground">{item.blurb}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+  "text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-og-green-light data-[status=active]:text-og-green-light";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [guidelines, assets, more] = NAV;
 
-  // Solid white per the Home design; the bar and logo keep the larger scale
-  // set in Lovable rather than the design's 88px bar / 30px logo.
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-white">
-      <div className="site-container flex h-24 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center" aria-label="Ordergroove Brand Hub, home">
-          <img src="/logo-white.png" alt="Ordergroove" className="h-12 w-auto" />
-        </Link>
-
-        {/* Desktop nav — simplified to three groups + search */}
-        <nav className="hidden items-center gap-8 lg:flex">
-          <NavGroup label={guidelines.label} items={guidelines.items} />
-          <Link to={assets.items[0].path} className={linkBase}>
-            {assets.items[0].label}
+    <header className="sticky top-0 z-[60] border-b border-border bg-white">
+      <div className="site-container flex h-[76px] items-center justify-between gap-6">
+        <div className="flex items-center gap-[18px]">
+          <Link to="/" className="flex items-center" aria-label="Ordergroove Brand Hub, home">
+            <img src="/logo-white.png" alt="Ordergroove" className="h-[26px] w-auto" />
           </Link>
-          <NavGroup label="More" items={more.items} />
-        </nav>
+          <span aria-hidden className="hidden h-[22px] w-px bg-border sm:block" />
+          <span className="hidden text-xs font-bold uppercase tracking-[0.16em] text-og-green-light sm:block">
+            Brand Hub
+          </span>
+        </div>
 
-        <div className="flex items-center gap-1">
+        {/* Desktop nav — flat links + the sticky search affordance. */}
+        <nav className="hidden items-center gap-[30px] lg:flex">
+          {NAV_LINKS.map((l) => (
+            <Link key={l.to} to={l.to} className={linkBase}>
+              {l.label}
+            </Link>
+          ))}
+          <Link to="/" hash="updates" className={`${linkBase} hidden xl:block`}>
+            What's New
+          </Link>
           {/* Search lives in the Home hero; this jumps there and focuses it. */}
           <Link
             to="/"
             hash="search"
-            className="rounded-full p-2 text-foreground transition-colors hover:bg-secondary hover:text-foreground"
             aria-label="Search the brand hub"
+            className="flex border border-border p-2 text-og-midnight transition-colors hover:border-og-midnight"
           >
             <Search size={18} />
           </Link>
-          <button
-            className="rounded-full p-2 text-foreground hover:bg-secondary lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
-          >
-            {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
+        </nav>
+
+        <button
+          className="rounded-full p-2 text-og-midnight transition-colors hover:bg-secondary lg:hidden"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Close menu" : "Open menu"}
+        >
+          {open ? <X size={18} /> : <Menu size={18} />}
+        </button>
+      </div>
+
+      {/* System status strip — a quiet tonal band, dropped on small screens. */}
+      <div className="hidden border-t border-og-hairline bg-og-surface md:block">
+        <div className="site-container flex h-9 items-center justify-between gap-4">
+          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-og-green-light">
+            <MaterialSymbol name="bolt" size={15} />
+            Sys.status
+          </span>
+          <span className="text-[12.5px] font-medium text-og-indigo">
+            Rolling updates in progress — some sections are still being written.
+          </span>
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-og-soft">
+            Maintained by Brand &amp; Content
+          </span>
         </div>
       </div>
 
-      <div className="bg-og-midnight py-3 text-center">
-        <p className="flex items-center justify-center gap-1.5 text-sm font-medium text-white">
-          <MaterialSymbol name="warning" size={16} className="text-og-green" />
-          WIP · Updates ongoing
-        </p>
-      </div>
-
-      {/* Mobile nav */}
+      {/* Mobile nav — the full grouped map, since the desktop bar is flattened. */}
       {open && (
         <nav className="border-t border-border bg-white lg:hidden">
           <div className="site-container flex flex-col gap-5 py-5">
             {NAV.map((group) => (
               <div key={group.mode} className="flex flex-col gap-2">
-                <span className="eyebrow">{group.label}</span>
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-og-green-light">
+                  {group.label}
+                </span>
                 {group.items.map((item) => (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={linkBase}
+                    className="text-sm font-medium text-og-midnight transition-colors hover:text-og-green-light"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}

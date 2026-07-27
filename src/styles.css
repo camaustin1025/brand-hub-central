@@ -105,6 +105,12 @@
   --color-og-radish: #d32e55;
   --color-og-flamingo: #ff61d3;
   --color-og-eggplant: #8500ff;
+  /* Neutrals the light page leans on (all documented in DESIGN.md). */
+  --color-og-surface: #f5f5f8; /* surface-light */
+  --color-og-border: #d8d7df; /* border-light */
+  --color-og-hairline: #ebeaf0; /* faint divider on light */
+  --color-og-soft: #666279; /* muted-ink, secondary text on light */
+  --color-og-ink: #ebeaf0; /* ink-on-dark, body text on Midnight */
 
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
   --font-figtree: "Figtree", ui-sans-serif, system-ui, sans-serif;
@@ -266,12 +272,19 @@
     color: var(--color-primary);
   }
 
-  /* Centered content wrapper (Tailwind v4's `container` no longer centers/pads). */
+  /* Centered content wrapper (Tailwind v4's `container` no longer centers/pads).
+     1280px / 40px gutter matches the Gradient Marquee home; steps down to 24px
+     below md so 40px doesn't crowd a phone. */
   .site-container {
     margin-inline: auto;
     width: 100%;
-    max-width: 1200px;
-    padding-inline: 1.5rem;
+    max-width: 1280px;
+    padding-inline: 2.5rem;
+  }
+  @media (width < 48rem) {
+    .site-container {
+      padding-inline: 1.5rem;
+    }
   }
 
   /* Card modules — uniform 20px, matching the live site and the Carta hub. */
@@ -279,12 +292,75 @@
   .visual-container-left {
     border-radius: 20px;
   }
+  /*
+   * The hero island's signature radius (DESIGN.md rounded.hero). It lives here
+   * rather than as a `rounded-[28px]` utility so `.notch-br` below can still
+   * square the corner — utilities beat components in the cascade, so pairing
+   * the notch with a radius utility silently loses the notch.
+   */
+  .hero-island {
+    border-radius: 28px;
+  }
+
   /* Opt-in signature shape: three rounded corners + one square corner. */
   .notch-br {
     border-bottom-right-radius: 0;
   }
   .notch-bl {
     border-bottom-left-radius: 0;
+  }
+
+  /*
+   * --- Modernist grid ---------------------------------------------------
+   * A strict 12-column field at the system's 24px gutter. Spans are set per
+   * module with Tailwind's col-span-* so the asymmetry (8/4, 6/3/3) stays
+   * readable at the call site.
+   *
+   * The track count stays at 12 on every width — the collapse to single column
+   * at md (768px) happens through the spans (`col-span-12 md:col-span-8`), not
+   * by re-templating the container. Dropping to one track here would leave
+   * `col-span-12` children spanning into 11 implicit columns.
+   */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+  }
+  @media (width < 48rem) {
+    .grid-12 {
+      gap: 16px;
+    }
+  }
+
+  /*
+   * A hairline-joined set of modules: a 1px grid gap over a border-colored bed,
+   * so neighbours share a single edge instead of floating as separate cards.
+   * Radius stays at rounded.md (8px) — tighter than a standalone .visual-container
+   * card on purpose, so a run of shared borders reads as one continuous system.
+   * Children must set their own background (usually bg-card).
+   */
+  .module-set {
+    display: grid;
+    gap: 1px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-border);
+    overflow: hidden;
+  }
+
+  /*
+   * The thin chrome rail that labels a grid band — an instrument-panel strip,
+   * never content. Its labels are .eyebrow and are aria-hidden.
+   */
+  .chrome-rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 34px;
+    padding-inline: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
   }
 }
 
@@ -300,5 +376,11 @@
   }
   .bg-og-warm {
     background-image: linear-gradient(135deg, #ff8500, #eaff00);
+  }
+  /* Placeholder tile for asset/template thumbnails not yet dropped in — a faint
+     diagonal hatch on the light surface, both tones from the palette. */
+  .thumb-hatch {
+    background-color: #f5f5f8;
+    background-image: repeating-linear-gradient(45deg, #d8d7df 0 1px, transparent 1px 10px);
   }
 }
