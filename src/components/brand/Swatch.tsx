@@ -1,24 +1,8 @@
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import type { Swatch as SwatchData } from "@/data/tokens";
+import { contrast } from "@/lib/contrast";
 import { cn } from "@/lib/utils";
-
-/** WCAG relative luminance for a #rrggbb hex. */
-function luminance(hex: string): number {
-  const v = hex.replace("#", "");
-  const rgb = [0, 2, 4].map((i) => {
-    const c = parseInt(v.slice(i, i + 2), 16) / 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
-}
-
-/** Contrast ratio between two hex colors (1–21). */
-function contrast(a: string, b: string): number {
-  const la = luminance(a);
-  const lb = luminance(b);
-  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
-}
 
 const WHITE = "#FFFFFF";
 const MIDNIGHT = "#17132F";
@@ -26,9 +10,11 @@ const MIDNIGHT = "#17132F";
 function ContrastBadge({ label, ok, ratio }: { label: string; ok: boolean; ratio: number }) {
   return (
     <span
+      // Solid fill, not a /15 tint: the tinted version measured 3.9–4.1:1, so
+      // the badge that reports the contrast rule was itself failing it.
       className={cn(
         "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium",
-        ok ? "bg-primary/15 text-primary" : "bg-destructive/15 text-destructive",
+        ok ? "bg-primary text-primary-foreground" : "bg-destructive text-destructive-foreground",
       )}
       title={`Contrast ratio ${ratio.toFixed(2)}:1 (WCAG AA text needs 4.5:1)`}
     >
@@ -70,7 +56,7 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
           <span className="font-semibold">{swatch.name}</span>
           <button
             onClick={copy}
-            className="font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="flex min-h-11 items-center font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {copied ? "Copied" : swatch.hex}
           </button>
@@ -78,7 +64,11 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
         <p className="text-sm text-muted-foreground">{swatch.usage}</p>
         <div className="flex flex-wrap gap-1.5 pt-1">
           <ContrastBadge label="Light bg" ok={swatch.onLight} ratio={contrast(swatch.hex, WHITE)} />
-          <ContrastBadge label="Dark bg" ok={swatch.onDark} ratio={contrast(swatch.hex, MIDNIGHT)} />
+          <ContrastBadge
+            label="Dark bg"
+            ok={swatch.onDark}
+            ratio={contrast(swatch.hex, MIDNIGHT)}
+          />
         </div>
       </div>
     </div>
