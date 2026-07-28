@@ -147,14 +147,26 @@
  * cannot tell a group boundary from an internal gap at a glance, which is
  * exactly what the single `pt-20` was failing at.
  *
- * `--stick` is the sticky chrome height (76px bar + 36px status strip); it
- * drives `scroll-margin-top` so an in-page anchor never lands underneath it.
+ * `--stick` is the sticky chrome height; it drives `scroll-margin-top` so an
+ * in-page anchor never lands underneath it, and it is also the header height
+ * and the side rail's sticky offset, so the three can never disagree. It was
+ * 112px (76px bar + 36px status strip) until the status strip moved into the
+ * side nav's foot; one value now holds at every width.
+ *
+ * `--sidenav` is the rail's width. It flips to the icon width off a
+ * `data-sidenav` attribute that RootShell stamps before first paint, so a
+ * collapsed rail does not jump on load.
  */
 :root {
   --step-section: 6rem; /* 96px */
   --step-module: 3rem; /* 48px */
   --step-block: 1.5rem; /* 24px */
-  --stick: 7rem; /* 112px */
+  --stick: 4.75rem; /* 76px */
+  --sidenav: 16rem; /* 256px */
+  --sidenav-icon: 4rem; /* 64px */
+}
+:root[data-sidenav="icon"] {
+  --sidenav: var(--sidenav-icon);
 }
 /* Compressed on a phone, but the doubling is preserved — 20 / 40 / 72. Shrinking
    only the section step (the first thing that fits) would flatten the ratio and
@@ -164,7 +176,6 @@
     --step-section: 4.5rem; /* 72px */
     --step-module: 2.5rem; /* 40px */
     --step-block: 1.25rem; /* 20px */
-    --stick: 4.75rem; /* 76px — the status strip is hidden below md */
   }
 }
 

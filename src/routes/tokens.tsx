@@ -5,19 +5,11 @@ import { CopyToast } from "@/components/brand/CopyToast";
 import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
 import { CORE, GRADIENTS } from "@/data/tokens";
 import { useCopyToast } from "@/hooks/use-copy-toast";
-import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
 import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/tokens")({
   component: Tokens,
 });
-
-const SECTIONS: PageSection[] = [
-  { id: "kits", label: "Downloadable token kits" },
-  { id: "core-color", label: "Core color" },
-  { id: "type", label: "Type" },
-  { id: "gradients", label: "Gradients" },
-];
 
 /** A single copyable cell: fills the table cell, copies its value, shows a copy
  *  glyph on hover/focus. Copies exactly what's displayed (WYSIWYG). */
@@ -50,10 +42,10 @@ function Tokens() {
         subhead="Marketing canon: Figtree, Groovy Green #00FF85 on dark and #009A50 on light, Midnight #17132F. Product reconciliation is a later decision."
       />
 
-      {/* Prose sits in the same 8-column measure PageHeader's title block uses,
-          so the masthead and the body share one left edge. */}
+      {/* The contents rail that used to hold columns 9–12 moved into the side
+          nav, so the token tables take the full field. */}
       <section className="site-container grid-12 section-step section-end">
-        <div className="col-span-12 space-y-[var(--step-module)] md:col-span-8">
+        <div className="col-span-12 space-y-[var(--step-module)]">
           <div>
             <ModuleHead
               id="kits"
@@ -162,8 +154,6 @@ function Tokens() {
             </div>
           </div>
         </div>
-
-        <OnThisPage sections={SECTIONS} />
       </section>
 
       <CopyToast toast={toast} />

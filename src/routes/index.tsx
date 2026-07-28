@@ -4,6 +4,7 @@ import { CopyToast } from "@/components/brand/CopyToast";
 import { Kicker } from "@/components/brand/Kicker";
 import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
 import { Aside, SectionHead } from "@/components/brand/SectionHead";
+import { Door, type DoorSpec } from "@/components/home/Door";
 import { OmniBar } from "@/components/home/OmniBar";
 import { useCopyToast } from "@/hooks/use-copy-toast";
 import { cn } from "@/lib/utils";
@@ -15,8 +16,15 @@ export const Route = createFileRoute("/")({
 /** The signature gradient marquee — Green → Cyan → Lemon, locked to 112°. */
 const HERO_GRADIENT = "linear-gradient(112deg, #00FF85 0%, #00FAFF 52%, #EAFF00 100%)";
 
-/** The three doors — Guidelines leads on a Midnight island, the other two on white. */
-const DOORS = [
+/**
+ * The three doors — Guidelines leads on a Midnight island, the other two on
+ * white. The 1-dark/2-light rhythm stays: this module sits ~200px under a
+ * full-bleed neon gradient, and three Midnight cards there would stack two
+ * heavy bands at the top of the page.
+ *
+ * `diagram` names the verb the card's drawing has to carry, not a picture.
+ */
+const DOORS: DoorSpec[] = [
   {
     n: "01",
     title: "Guidelines",
@@ -24,6 +32,7 @@ const DOORS = [
     cta: "Read the rules",
     path: "/foundation",
     dark: true,
+    diagram: "measure",
   },
   {
     n: "02",
@@ -32,6 +41,7 @@ const DOORS = [
     cta: "Grab assets",
     path: "/downloads",
     dark: false,
+    diagram: "retrieve",
   },
   {
     n: "03",
@@ -40,8 +50,9 @@ const DOORS = [
     cta: "Open the toolkit",
     path: "/toolkit",
     dark: false,
+    diagram: "assemble",
   },
-] as const;
+];
 
 /** Core color mini-matrix. Each tile copies its hex. */
 const CORE_SWATCHES = [
@@ -179,7 +190,11 @@ function Index() {
               Internal · v2.0
             </span>
           </div>
-          <h1 className="mt-10 max-w-[16ch] text-[clamp(56px,9vw,132px)] font-extrabold leading-[0.86] tracking-[-0.04em] text-og-midnight text-balance">
+          {/* 11cqi, not 9vw: the side rail owns 256px of the viewport, so vw
+              stopped describing the box this type sits in. Measured against the
+              main pane, 11cqi reproduces the old ramp almost exactly — 113px at
+              1280 where 9vw gave 115, 130px at 1440 where it gave 130. */}
+          <h1 className="mt-10 max-w-[16ch] text-[clamp(56px,11cqi,132px)] font-extrabold leading-[0.86] tracking-[-0.04em] text-og-midnight text-balance">
             The brand, in one place.
           </h1>
           <p className="mt-9 max-w-[46ch] text-xl font-medium leading-normal text-og-midnight text-pretty">
@@ -197,45 +212,15 @@ function Index() {
 
       {/* THE THREE DOORS — the first module under the hero.
           The index number sits on its own hairline so the interval below it
-          reads as a bounded field rather than 90px of unexplained air, and the
-          title / blurb / link group tightly at the foot as one unit. */}
+          reads as a bounded field rather than 90px of unexplained air; that
+          field now holds the card's diagram, and the title / blurb / link group
+          tightly at the foot as one unit. */}
       <section id="guidelines" className="site-container section-step">
         <SectionHead kicker="The three doors" aside={<Aside>Sec.01</Aside>} />
         <div className="block-step grid grid-cols-1 gap-5 md:grid-cols-3">
-          {DOORS.map((d) =>
-            d.dark ? (
-              // `dark` flips --primary to #00FF85 for everything inside.
-              <Link
-                key={d.n}
-                to={d.path}
-                className="dark flex min-h-[264px] flex-col bg-og-midnight p-7 transition-transform hover:-translate-y-1"
-              >
-                <span className="border-b border-white/20 pb-4 text-xs font-bold tracking-[0.16em] text-primary">
-                  {d.n}
-                </span>
-                <h3 className="mt-auto pt-10 text-4xl font-bold leading-none tracking-[-0.03em] text-white">
-                  {d.title}
-                </h3>
-                <span className="mt-3 text-[15px] leading-normal text-white/66">{d.blurb}</span>
-                <CardLink className="mt-5">{d.cta}</CardLink>
-              </Link>
-            ) : (
-              <Link
-                key={d.n}
-                to={d.path}
-                className="flex min-h-[264px] flex-col border border-og-border bg-white p-7 transition-colors hover:border-og-midnight hover:bg-og-surface"
-              >
-                <span className="border-b border-og-border pb-4 text-xs font-bold tracking-[0.16em] text-primary">
-                  {d.n}
-                </span>
-                <h3 className="mt-auto pt-10 text-4xl font-bold leading-none tracking-[-0.03em] text-og-midnight">
-                  {d.title}
-                </h3>
-                <span className="mt-3 text-[15px] leading-normal text-og-indigo">{d.blurb}</span>
-                <CardLink className="mt-5">{d.cta}</CardLink>
-              </Link>
-            ),
-          )}
+          {DOORS.map((d) => (
+            <Door key={d.n} door={d} />
+          ))}
         </div>
       </section>
 

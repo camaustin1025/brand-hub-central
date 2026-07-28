@@ -1,21 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DraftBadge } from "@/components/brand/DraftBadge";
-import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
 import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/foundation")({
   component: Foundation,
 });
-
-const SECTIONS: PageSection[] = [
-  { id: "category", label: "The category we own" },
-  { id: "belief", label: "Central belief" },
-  { id: "audience", label: "Who we serve" },
-  { id: "rights", label: "Rights to Win" },
-  { id: "ladder", label: "The message ladder" },
-  { id: "boilerplate", label: "Company boilerplate" },
-];
 
 const RIGHTS = [
   {
@@ -57,19 +47,21 @@ function Foundation() {
         subhead="Ordergroove is the enterprise standard for subscriptions and recurring revenue. Always ladder down from the category, never up from features."
       />
 
-      {/* Prose sits in the same 8-column measure PageHeader's title block uses,
-          so the masthead and the body share one left edge. */}
+      {/* The body used to stop at 8 columns so the contents rail could hold
+          9–12. The rail moved into the side nav, so the body takes the full
+          field and running prose carries its own 68ch cap instead — the same
+          measure ModuleHead's note already uses, so they share a right edge. */}
       <section className="site-container grid-12 section-step section-end">
-        <div className="col-span-12 space-y-[var(--step-module)] md:col-span-8">
+        <div className="col-span-12 space-y-[var(--step-module)]">
           <div>
             <ModuleHead id="category" title="The category we own" />
-            <p className="block-step text-muted-foreground">
+            <p className="block-step max-w-[68ch] text-muted-foreground">
               Our lead message is a category move, not a product pitch.
               <strong className="text-foreground"> Autonomous Subscriptions</strong> is the category
               we are defining: a team of AI agents that help enterprise brands recover revenue,
               reduce churn, and act on subscriber data faster.
             </p>
-            <p className="mt-3 text-sm text-muted-foreground">
+            <p className="mt-3 max-w-[68ch] text-sm text-muted-foreground">
               Cleared for external use since June 17, 2026. "Autonomous Commerce" stays internal for
               now. "Relationship Commerce" is retired, never use it.
             </p>
@@ -77,7 +69,7 @@ function Foundation() {
 
           <div>
             <ModuleHead id="belief" title="Central belief" />
-            <p className="block-step text-muted-foreground">
+            <p className="block-step max-w-[68ch] text-muted-foreground">
               Subscriptions aren't programs. They're relationships. Growth comes from flexibility,
               not lock-in, and the best retention is giving customers control, not friction.
             </p>
@@ -85,7 +77,7 @@ function Foundation() {
 
           <div>
             <ModuleHead id="audience" title="Who we serve" />
-            <p className="block-step text-muted-foreground">
+            <p className="block-step max-w-[68ch] text-muted-foreground">
               Enterprise and mid-market B2C brands with repeat purchase patterns (CPG, beauty,
               wellness, pet, food, retail, omnichannel), typically $50M+ GMV. Buyers are VP/Director
               of eCommerce, VP/Head of Digital, and retention, loyalty, CRM, and subscription
@@ -148,8 +140,6 @@ function Foundation() {
             </p>
           </div>
         </div>
-
-        <OnThisPage sections={SECTIONS} />
       </section>
     </>
   );

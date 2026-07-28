@@ -1,26 +1,24 @@
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, Search, X } from "lucide-react";
-import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
-import { NAV } from "@/data/nav";
+import { Search } from "lucide-react";
+import { NavDrawer } from "@/components/layout/SideNav";
 
-/** Flat primary nav, in the order the Gradient Marquee home lays out its doors. */
-const NAV_LINKS = [
-  { label: "Guidelines", to: "/foundation" as const },
-  { label: "Downloads", to: "/downloads" as const },
-  { label: "Toolkit", to: "/toolkit" as const },
-];
-
-const linkBase =
-  "flex min-h-11 items-center text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary data-[status=active]:text-primary";
-
+/**
+ * The masthead: identity, the search affordance, and the drawer trigger below
+ * xl. Nothing else.
+ *
+ * It used to carry three flat nav links and a tonal Sys.status strip. The links
+ * were a hand-maintained subset of `data/nav.ts` — they marked three of seven
+ * routes active and left the other four with no active state anywhere — and are
+ * now the side nav's job. The status strip said one static sentence and cost
+ * 36px of sticky height on every scroll of every page to say it; it moved to
+ * the side nav's foot, which is why --stick drops 112px → 76px.
+ */
 export function Header() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <header className="sticky top-0 z-[60] border-b border-border bg-white">
-      <div className="site-container flex h-[76px] items-center justify-between gap-6">
+    <header className="sticky top-0 z-[60] h-[var(--stick)] border-b border-border bg-white">
+      <div className="site-container flex h-full items-center justify-between gap-6">
         <div className="flex items-center gap-[18px]">
+          <NavDrawer />
           <Link
             to="/"
             className="flex min-h-11 items-center"
@@ -40,18 +38,12 @@ export function Header() {
           </span>
         </div>
 
-        {/* Desktop nav — flat links + the sticky search affordance. */}
-        <nav className="hidden items-center gap-[30px] lg:flex">
-          {NAV_LINKS.map((l) => (
-            <Link key={l.to} to={l.to} className={linkBase}>
-              {l.label}
-            </Link>
-          ))}
+        <div className="flex items-center gap-[30px]">
           <Link
             to="/"
             hash="updates"
             activeOptions={{ includeHash: true }}
-            className={`${linkBase} hidden xl:flex`}
+            className="hidden min-h-11 items-center text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary sm:flex"
           >
             What's New
           </Link>
@@ -64,57 +56,8 @@ export function Header() {
           >
             <Search size={18} />
           </Link>
-        </nav>
-
-        <button
-          className="flex size-11 items-center justify-center rounded-full text-og-midnight transition-colors hover:bg-secondary lg:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-        >
-          {open ? <X size={18} /> : <Menu size={18} />}
-        </button>
-      </div>
-
-      {/* System status strip — a quiet tonal band, dropped on small screens. */}
-      <div className="hidden border-t border-og-hairline bg-og-surface md:block">
-        <div className="site-container flex h-9 items-center justify-between gap-4">
-          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary">
-            <MaterialSymbol name="bolt" size={15} />
-            Sys.status
-          </span>
-          <span className="text-[14px] font-medium text-og-indigo">
-            Live and building. Some sections are still in draft.
-          </span>
-          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-og-soft">
-            Maintained by Brand &amp; Content
-          </span>
         </div>
       </div>
-
-      {/* Mobile nav — the full grouped map, since the desktop bar is flattened. */}
-      {open && (
-        <nav className="border-t border-border bg-white lg:hidden">
-          <div className="site-container flex flex-col gap-5 py-5">
-            {NAV.map((group) => (
-              <div key={group.mode} className="flex flex-col gap-2">
-                <span className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
-                  {group.label}
-                </span>
-                {group.items.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className="flex min-h-11 items-center text-sm font-medium text-og-midnight transition-colors hover:text-primary"
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
-          </div>
-        </nav>
-      )}
     </header>
   );
 }

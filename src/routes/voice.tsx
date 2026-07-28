@@ -1,17 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
 import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/voice")({
   component: Voice,
 });
-
-const SECTIONS: PageSection[] = [
-  { id: "personality", label: "Personality" },
-  { id: "pass-fail", label: "The pass/fail rules" },
-  { id: "use-this", label: "Use this, not that" },
-];
 
 const RULES = [
   'Never lead with "AI" or "AI agents." No "AI-powered." The category and outcome lead; the technology supports.',
@@ -49,11 +42,10 @@ function Voice() {
         subhead="Ordergroove sounds like the confident operator in the room who doesn't need to shout. Calm authority earned from 15+ years of doing the work."
       />
 
-      {/* Prose sits in the same 8-column measure PageHeader's title block uses,
-          so the masthead and the body share one left edge. Columns 9–12 carry
-          the contents rail rather than standing empty. */}
+      {/* The contents rail that used to hold columns 9–12 moved into the side
+          nav, so the body takes the full field. */}
       <section className="site-container grid-12 section-step section-end">
-        <div className="col-span-12 md:col-span-8">
+        <div className="col-span-12">
           <div>
             <ModuleHead id="personality" title="Personality" />
             <div className="block-step grid gap-4 sm:grid-cols-2">
@@ -116,8 +108,6 @@ function Voice() {
             </div>
           </div>
         </div>
-
-        <OnThisPage sections={SECTIONS} />
       </section>
     </>
   );

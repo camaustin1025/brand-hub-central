@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { checkUnlocked } from "@/lib/gate.functions";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/layout/Header";
+import { SideRail } from "@/components/layout/SideNav";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -148,6 +149,18 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/*
+          Stamps the side nav's collapsed state before first paint. Without it a
+          user who collapsed the rail gets a 192px layout jump on every full
+          page load, because React only learns the stored preference in an
+          effect. The CSS var carries the width, so this one attribute is
+          enough — see --sidenav in styles.css.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("og-sidenav")==="icon")document.documentElement.dataset.sidenav="icon"}catch(e){}`,
+          }}
+        />
       </head>
       <body>
         {children}
@@ -182,9 +195,21 @@ function RootComponent() {
             Skip to content
           </a>
           <Header />
-          <main id="main" tabIndex={-1} className="flex-1">
-            <Outlet />
-          </main>
+          {/*
+            `items-start` so the rail sizes to its own sticky height rather than
+            stretching to the row; `min-w-0` so a wide table inside a route
+            cannot push the rail off its track.
+
+            The pane is the container query context: the hero marquee is sized
+            against the width it actually has, not the viewport, which is what
+            "full bleed" means once a rail owns the left edge.
+          */}
+          <div className="flex flex-1 items-start">
+            <SideRail />
+            <main id="main" tabIndex={-1} className="min-w-0 flex-1 [container-type:inline-size]">
+              <Outlet />
+            </main>
+          </div>
           <Footer />
         </div>
       )}

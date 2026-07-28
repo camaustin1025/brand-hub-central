@@ -1,17 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DraftBadge } from "@/components/brand/DraftBadge";
-import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
 import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/ai-skills")({
   component: AISkills,
 });
-
-const SECTIONS: PageSection[] = [
-  { id: "available", label: "Available now" },
-  { id: "assistant", label: "The brand assistant" },
-];
 
 const SKILLS = [
   {
@@ -41,10 +35,10 @@ function AISkills() {
         subhead="The end state is a brand that enforces itself. These skills load the rules automatically so the first draft is already on brand."
       />
 
-      {/* Prose sits in the same 8-column measure PageHeader's title block uses,
-          so the masthead and the body share one left edge. */}
+      {/* The contents rail that used to hold columns 9–12 moved into the side
+          nav, so the body takes the full field. */}
       <section className="site-container grid-12 section-step section-end">
-        <div className="col-span-12 space-y-[var(--step-module)] md:col-span-8">
+        <div className="col-span-12 space-y-[var(--step-module)]">
           <div>
             <ModuleHead id="available" title="Available now" />
             <div className="block-step grid gap-4 sm:grid-cols-2">
@@ -70,8 +64,6 @@ function AISkills() {
             </p>
           </div>
         </div>
-
-        <OnThisPage sections={SECTIONS} />
       </section>
     </>
   );

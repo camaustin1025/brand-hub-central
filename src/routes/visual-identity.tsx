@@ -125,9 +125,19 @@ function VisualIdentity() {
           A fixed `lg:grid-cols-4` stranded a fifth swatch alone on its own row
           (Supporting neutrals has five) and split Secondary 4 + 2. `auto-fit`
           collapses the tracks a group doesn't use and stretches the rest, so at
-          desktop each group fills exactly one row at its own tile size — 4 × 288,
-          5 × 227, 6 × 187 — and no group ends on an orphan. The tile floor is
-          low enough for six, which is why Swatch's name/hex row wraps. */}
+          desktop each group fills exactly one row at its own tile size, and no
+          group ends on an orphan. The tile floor is low enough for six, which is
+          why Swatch's name/hex row wraps.
+
+          The floor dropped 186 → 170 when the side rail took 256px out of the
+          pane: six 186px tiles plus their gaps need 1196px and the content box
+          at 1440 is now 1104, so Secondary was wrapping 5 + 1. Tracks are `1fr`,
+          so the floor only decides how many fit — at ≥1536, where the container
+          is back at its 1200px cap, six still land at 187 apiece.
+
+          This does not hold at 1280, where the content box is 944 and six tiles
+          would be 144px. That group wraps there; collapsing the rail to icons
+          returns the full width. */}
       {COLOR_GROUPS.map((group) => (
         <section key={group.title} className="site-container section-step">
           <ModuleHead
@@ -138,7 +148,7 @@ function VisualIdentity() {
               <span className="text-sm text-muted-foreground">{group.swatches.length} values</span>
             }
           />
-          <div className="block-step grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(186px,1fr))]">
+          <div className="block-step grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(170px,1fr))]">
             {group.swatches.map((s) => (
               <Swatch key={s.hex} swatch={s} />
             ))}
@@ -153,7 +163,7 @@ function VisualIdentity() {
           title="Gradients"
           note="The signature is Green to Cyan on dark. Reserve gradients for the payoff line, one per section."
         />
-        <div className="block-step grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(186px,1fr))]">
+        <div className="block-step grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(170px,1fr))]">
           {GRADIENTS.map((g) => (
             <button
               key={g.name}

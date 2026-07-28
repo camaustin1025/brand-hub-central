@@ -109,8 +109,17 @@ rounded:
   full: "9999px"
 spacing:
   gutter: "24px"
-  section: "72px"
-  container-max: "1200px"
+  # The three vertical steps, which double. See Layout → The Rhythm Rule.
+  step-block: "24px"
+  step-module: "48px"
+  step-section: "96px"
+  # The sticky chrome height, and therefore every anchor's scroll-margin.
+  stick: "76px"
+  # The side nav, expanded and collapsed to its icon rail.
+  sidenav: "256px"
+  sidenav-icon: "64px"
+  container-max: "1280px"
+  container-content-max: "1200px"
 components:
   button-primary:
     backgroundColor: "{colors.green-light}"
@@ -227,7 +236,7 @@ The ramp runs in two tiers. **Display** sizes are per-moment and set explicitly;
 
 **Display tier** — set these values directly, and only for the moment named:
 
-- **Marquee** (800, `clamp(56px, 9vw, 132px)`, line-height 0.86, tracking −0.04em): The home hero, and nothing else.
+- **Marquee** (800, `clamp(56px, 11cqi, 132px)`, line-height 0.86, tracking −0.04em): The home hero, and nothing else. `cqi`, not `vw` — see The Full-Bleed Rule. The ramp is unchanged; only the box it measures is (130px at 1440 either way).
 - **Specimen** (800, `82px`, 0.9, −0.04em): The Figtree specimen on the Foundations module. It is a type sample, so it is set at sample scale.
 - **Band** (700, `52px`, 1.0, −0.03em): The full-bleed Midnight band headline.
 - **Display** (700, `clamp(2rem, 5vw, 3.25rem)`, 1.08, −0.02em): Page titles (`PageHeader`).
@@ -253,7 +262,27 @@ The ramp runs in two tiers. **Display** sizes are per-moment and set explicitly;
 
 ## Layout
 
-Content is centered in a `1200px` max-width container (`.site-container`) with `24px` inline padding. Vertical rhythm between major sections runs large — roughly `64–72px` (`pt-16` / `pt-[72px]`) — giving the page an unhurried, scannable cadence. Card grids use explicit column templates (e.g. `2fr 1fr 1fr` with fixed `150px` rows for the color grid) rather than uniform auto-fit, so featured items get more room. Spacing follows the Tailwind 4px base scale; the recurring gutter is `24px`. Responsive shifts happen mainly at the `md` (768px) breakpoint: multi-column grids collapse to single column, and hero padding steps down from `88px` to `64px` vertical.
+The page is a fixed left rail and a fluid content pane. The rail (`--sidenav`, `256px`, or `64px` collapsed to icons) is persistent from `xl` (1280px) up and off-canvas below it. The pane holds `.site-container`: centered, `1280px` max-width, `40px` inline padding, stepping down to `24px` below `md` — so the content box is `1200px` wherever there is room for it.
+
+The rail takes its width out of the pane, not out of the container's cap, which means the container only binds once the pane exceeds 1280px. Measured, with the rail expanded:
+
+| viewport | pane  | content box |
+| -------- | ----- | ----------- |
+| 1280px   | 1024  | 944         |
+| 1440px   | 1184  | 1104        |
+| ≥1536px  | ≥1280 | 1200        |
+
+Collapsing the rail to its icon width returns the full 1200px from 1344px up. That is the icon rail's job — it is a width control, not a decluttering one.
+
+Card grids use explicit column templates (e.g. `2fr 1fr 1fr` for the home color grid) or `auto-fit` with a tile floor where a group's item count varies, rather than a fixed column count that strands orphans. Spacing follows the Tailwind 4px base scale; the recurring gutter is `24px`. Multi-column grids collapse to single column at `md` (768px).
+
+`--stick` is the sticky chrome height (`76px` — the masthead, and nothing else). It is the header's height, the rail's sticky offset, and the `scroll-margin-top` on every `.section-step` and `ModuleHead`, so the three cannot disagree and an in-page anchor always lands `--step-block` clear of the chrome.
+
+### Named Rules
+
+**The Rhythm Rule.** Three vertical intervals, and they double: `--step-block` 24, `--step-module` 48, `--step-section` 96, applied as `.block-step` / `.module-step` / `.section-step`. Block is a head to the content it introduces; module is related sub-modules inside one section; section is one top-level module to the next. Below `md` they compress to 20 / 40 / 72, preserving the ratio — shrinking only the section step would flatten it and put the monotony back. Anything smaller than a block step is a Tailwind 4px step inside a single block; there is no fourth interval.
+
+**The Full-Bleed Rule.** "Full bleed" means the width of the content pane, not the viewport — the rail owns the left edge, and a surface that ran under it would be a bug, not a bleed. The pane is a container query context, so anything sized to the bleed sizes in `cqi` rather than `vw`. The home marquee is the one live case: `clamp(56px, 11cqi, 132px)`.
 
 ## Elevation & Depth
 
@@ -275,7 +304,7 @@ The signature form is **the notch**: a module with three rounded corners and one
 
 ### Named Rules
 
-**The Notch Rule.** The notch (three rounded corners + one square) is a signature accent, not a default. Apply it to a hero moment or a featured tile to sign the surface as Ordergroove; do not notch every card, or it stops meaning anything.
+**The Notch Rule.** The notch (three rounded corners + one square) is a signature accent, not a default. Apply it to a hero moment or a featured tile to sign the surface as Ordergroove; do not notch every card, or it stops meaning anything. The three-door module is the worked example: the Midnight lead card is notched and the two beside it are not. Three notched cards in a row would be a pattern, and a pattern is not a signature.
 
 ## Components
 
@@ -290,6 +319,19 @@ The signature form is **the notch**: a module with three rounded corners and one
 
 - **Style:** Pill (`rounded-full`), small (`~11px` text, `4px 10px` padding). On dark islands, a `white/10` fill with white text; on light, a muted surface fill.
 - **State:** Used for metadata and status ticks (e.g. contrast badges), not primary navigation.
+
+### Section Openers
+
+- **`SectionHead`** — a green kicker on a Midnight rule, with an optional muted `Aside` chrome tag. Home's rhythm marker; its sections are short modules you scan past.
+- **`ModuleHead`** — the same rule at heading weight, for the inner routes, where the headings _are_ the scanning structure. `id` is required: it is the anchor the side nav's section list targets and the element its observer watches.
+
+### Doors (Home)
+
+The three-door module is the one place on the hub that carries diagrams. `DoorDiagram` draws them on a shared grammar: a 240×112 field, 1px strokes, and **exactly one green element per drawing — the verb**. Guidelines measures, Downloads retrieves, Toolkit assembles. Inline SVG taking its colour from `--primary` and `og-soft`/`white-40`, so one component draws on both surfaces.
+
+The rule the grammar enforces: a drawing has to name a verb the card's label implies. A door labelled "Downloads" gets retrieval, not a generic swoosh. If you cannot name the verb, the drawing is decoration and does not belong.
+
+Diagram strokes carry meaning, so they owe 3:1 against their surface (SC 1.4.11). That rules out `og-border` on white (`#D8D7DF` is 1.3:1) — use `og-soft` (5.3:1) on light and `white/40` (4.6:1) on Midnight.
 
 ### Cards / Containers
 
@@ -307,7 +349,21 @@ The signature form is **the notch**: a module with three rounded corners and one
 
 ### Navigation
 
-- Grouped by the three brand-hub modes — **Read** (Guidelines), **Grab** (Downloads), **Build** (Toolkit). Labels in Figtree label weight; active/hover states in the correct-contrast green. Retrieval-first: the nav's job is fast wayfinding, not decoration.
+**One rail, on Midnight.** `SideNav` is the hub's only navigation surface. It groups every route by the three brand-hub modes — **Read** (Guidelines), **Grab** (Assets), **Build** (Toolkit) — and nests the active route's own headings one indent below it, so site position and page position are answered by the same element.
+
+- **Groups** are Radix `Collapsible`, plural — more than one open at a time, all three open by default. Not an `Accordion`: with seven routes, seeing the whole map at once is the feature.
+- **Sections** appear only under the active route, scroll-spied. They are contextual, not a preference, so they are never persisted.
+- **Collapse** to a `64px` icon rail, persisted to `localStorage` and stamped onto `data-sidenav` before first paint so a collapsed rail does not jump on load. Collapsed, glyphs are the only identifier, so each carries a tooltip and every route in `data/nav.ts` must declare an `icon`.
+- **Below `xl`** the same component renders in a drawer. One component, two containers — the previous header kept a second hand-written copy of the nav for mobile, which is how the desktop bar drifted to three links while the drawer showed seven.
+- **`aria-current`** has two values and they are distinct: `page` on route links, `location` on section links. Two things can be current on one page; they must not both claim it the same way.
+- **The `Sys.status` line** lives in the rail's foot, not in a sticky strip under the masthead. As chrome it cost 36px of sticky height on every scroll of every page to carry one static sentence, and it was the entire reason `--stick` was 112px. The signal it carries — the hub is live, not archival — is the North Star, so this is a real reduction in its prominence, taken deliberately for the height.
+- Retrieval-first: the nav's job is fast wayfinding, not decoration.
+
+### Named Rules
+
+**The Chrome-Island Rule.** Midnight chrome is a departure from accent islands, and it is confined to chrome. The side nav is a committed Midnight surface; the content pane is not, and no page surface inherits this. The reason it is worth the departure: on Midnight the nav's accents resolve to the real `#00FF85` through `--primary`, which the white masthead could never do. If you find yourself reaching for Midnight on a _content_ surface because "the nav does it," that is the drift this rule exists to catch.
+
+**No Second Rail.** A page gets one navigation rail. Contents, breadcrumbs, and route lists belong in the side nav or nowhere — a right-hand contents rail plus a left nav boxes the reading column between two maps and costs more width than either is worth. Section labels live in `data/sections.ts`, keyed by path, and must match the `id` on the route's `ModuleHead`.
 
 ### Icons (Signature)
 
@@ -321,7 +377,8 @@ The signature form is **the notch**: a module with three rounded corners and one
 - **Do** open major sections with an uppercase eyebrow tracked to `0.16em` in green.
 - **Do** keep headings tight — 700 weight, `-0.02em` tracking, `1.08` line-height.
 - **Do** create depth with contrast, tonal surfaces, and borders; reserve shadow for hover only.
-- **Do** use the notch as a sparing signature on hero or featured surfaces.
+- **Do** use the notch as a sparing signature on hero or featured surfaces — one card in a set, not the set.
+- **Do** reach for `.block-step` / `.module-step` / `.section-step` instead of ad-hoc vertical padding.
 - **Do** render icons as Material Symbols at `wght 300, FILL 0, GRAD 0, opsz 24`.
 - **Do** let retrieval win: when expression and scannability conflict, choose scannability.
 
@@ -331,5 +388,7 @@ The signature form is **the notch**: a module with three rounded corners and one
 - **Don't** give surfaces a resting drop shadow, and never a hard gray one.
 - **Don't** notch every card, or introduce a second typeface — Figtree only.
 - **Don't** lead with the secondary neons; they are decorative pop, never the primary action.
-- **Don't** let the hub drift toward a gray SaaS-admin look or a static exported-PDF feel.
+- **Don't** let the hub drift toward a gray SaaS-admin look or a static exported-PDF feel. The Midnight rail is the guard against that, not a licence for it.
+- **Don't** add a second navigation rail to a page, or let Midnight leak from chrome onto a content surface.
+- **Don't** draw a diagram you cannot name the verb of, and never with `og-border` strokes — they are 1.3:1 on white.
 - **Don't** retune the Material Symbols axes per use — they are ratified brand spec.

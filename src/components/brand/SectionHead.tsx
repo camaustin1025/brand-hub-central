@@ -37,9 +37,10 @@ export function SectionHead({
  * are the scanning structure, so downgrading them to a kicker would flatten the
  * page. Same rule, same rhythm, different weight above it.
  *
- * `id` is required: it is the anchor the OnThisPage rail links to and the
- * element its observer watches, so a module without one silently drops out of
- * the page's contents.
+ * `id` is required: it is the anchor the side nav's section list links to and
+ * the element its observer watches, so a module without one silently drops out
+ * of the page's contents. The labels live in `data/sections.ts`, keyed by path
+ * — change an id here and change it there.
  */
 export function ModuleHead({
   id,

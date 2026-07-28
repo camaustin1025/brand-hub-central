@@ -10,6 +10,12 @@ export type NavItem = {
   path: string;
   /** One-line description used on the Home "explore" cards. */
   blurb: string;
+  /**
+   * Material Symbols glyph for the side nav. Required, not optional: when the
+   * rail collapses to icons the glyph is the *only* thing identifying the
+   * route, so a route without one would collapse to a blank row.
+   */
+  icon: string;
 };
 
 export type NavMode = {
@@ -27,21 +33,25 @@ export const NAV: NavMode[] = [
         label: "Foundation & Messaging",
         path: "/foundation",
         blurb: "Who we are, the category we own, and the message ladder.",
+        icon: "foundation",
       },
       {
         label: "Voice & Language Rules",
         path: "/voice",
         blurb: "How we sound, plus the pass/fail language rules.",
+        icon: "record_voice_over",
       },
       {
         label: "Visual Identity",
         path: "/visual-identity",
         blurb: "Color, logo, gradients, and the signature shapes. Click to copy.",
+        icon: "palette",
       },
       {
         label: "Design Tokens",
         path: "/tokens",
         blurb: "The canonical values, ready to pull into code.",
+        icon: "data_object",
       },
     ],
   },
@@ -53,6 +63,7 @@ export const NAV: NavMode[] = [
         label: "Downloads",
         path: "/downloads",
         blurb: "Logo kit, font kit, token kits, and social graphics.",
+        icon: "download",
       },
     ],
   },
@@ -64,11 +75,13 @@ export const NAV: NavMode[] = [
         label: "GTM & Employee Toolkit",
         path: "/toolkit",
         blurb: "Decks, docs, signatures, and new-hire graphics.",
+        icon: "handyman",
       },
       {
         label: "AI & Skills",
         path: "/ai-skills",
         blurb: "The brand skills and the assistant that keep work on brand.",
+        icon: "smart_toy",
       },
     ],
   },
