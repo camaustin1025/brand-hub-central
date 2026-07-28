@@ -134,7 +134,10 @@ export function OmniBar() {
               onKeyDown={onKeyDown}
               placeholder={PLACEHOLDER[mode]}
               aria-label={mode === "search" ? "Search the brand hub" : "Ask the brand assistant"}
-              className="min-w-0 flex-1 border-none bg-transparent py-2 text-base text-white outline-none placeholder:text-white/45 sm:py-0"
+              // white/55, not white/45: the placeholder is the only copy in the
+              // bar until you type, and at 45% it measures 4.47:1 on Midnight —
+              // under the 4.5:1 body text owes. 55% is 6.07:1.
+              className="min-w-0 flex-1 border-none bg-transparent py-2 text-base text-white outline-none placeholder:text-white/55 sm:py-0"
             />
           </div>
           <div className="flex shrink-0 gap-1 border-t border-white/12 pt-1 sm:border-t-0 sm:pt-0">

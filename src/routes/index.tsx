@@ -6,6 +6,7 @@ import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
 import { Aside, SectionHead } from "@/components/brand/SectionHead";
 import { Door, type DoorSpec } from "@/components/home/Door";
 import { OmniBar } from "@/components/home/OmniBar";
+import { ThumbCard } from "@/components/home/ThumbCard";
 import { useCopyToast } from "@/hooks/use-copy-toast";
 import { cn } from "@/lib/utils";
 
@@ -54,7 +55,15 @@ const DOORS: DoorSpec[] = [
   },
 ];
 
-/** Core color mini-matrix. Each tile copies its hex. */
+/**
+ * Core color matrix. Each tile copies its hex.
+ *
+ * `span` is responsive because the template is. Three columns on a phone gave
+ * each tile about 107px, which wrapped "Groovy Green" onto two lines and its
+ * hex note onto two more — the note being the one thing this module exists to
+ * make checkable. Below `sm` it becomes two columns and three rows: Midnight
+ * across the top, the two greens paired, White across the foot.
+ */
 const CORE_SWATCHES = [
   {
     name: "Midnight",
@@ -63,7 +72,7 @@ const CORE_SWATCHES = [
     tile: "bg-og-midnight",
     title: "text-white",
     sub: "text-white/72",
-    span: "row-span-2",
+    span: "col-span-2 sm:col-span-1 sm:row-span-2",
   },
   {
     name: "Groovy Green",
@@ -205,8 +214,13 @@ function Index() {
       </section>
 
       {/* Search overlaps the gradient; z-40 lifts it and the results panel clear.
-          `id` is the target the header's search button jumps to. */}
-      <div id="search" className="site-container relative z-40">
+          `id` is the target the header's search button jumps to — and it needs
+          the same scroll-margin every .section-step carries, or the one control
+          the masthead points at arrives underneath the masthead. */}
+      <div
+        id="search"
+        className="site-container relative z-40 scroll-mt-[calc(var(--stick)+var(--step-block))]"
+      >
         <OmniBar />
       </div>
 
@@ -217,7 +231,10 @@ function Index() {
           tightly at the foot as one unit. */}
       <section id="guidelines" className="site-container section-step">
         <SectionHead kicker="The three doors" aside={<Aside>Sec.01</Aside>} />
-        <div className="block-step grid grid-cols-1 gap-5 md:grid-cols-3">
+        {/* lg, not md: at 768 three tracks give each door 227px, and a 36px
+            title plus a 240-wide diagram does not fit in it. No 2-column stage
+            either — the third door would strand at half width. */}
+        <div className="block-step grid grid-cols-1 gap-5 lg:grid-cols-3">
           {DOORS.map((d) => (
             <Door key={d.n} door={d} />
           ))}
@@ -245,8 +262,9 @@ function Index() {
           </div>
           {/* A floor, not fixed rows: the tiles keep their proportion as the
               field grows. No flex-1 any more — there is no sibling column left
-              to end level with. */}
-          <div className="grid min-h-[288px] grid-cols-[1.4fr_1fr_1fr] grid-rows-2">
+              to end level with. Two columns and a taller floor below sm, where
+              three tracks leave each tile too narrow to hold its own hex. */}
+          <div className="grid min-h-[400px] grid-cols-2 grid-rows-3 sm:min-h-[288px] sm:grid-cols-[1.4fr_1fr_1fr] sm:grid-rows-2">
             {CORE_SWATCHES.map((s) => (
               <button
                 key={s.hex}
@@ -410,28 +428,16 @@ function Index() {
             </Link>
           }
         />
+        {/* The hatch panel already reads as a placeholder. The line that used to
+            sit under this grid — "Thumbnails pending, real asset previews to be
+            dropped in" — added the apology on top of it, on the home page, to
+            every visitor. Cut: an unfinished thing looks better unremarked than
+            annotated. */}
         <div className="block-step grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {POPULAR.map((a) => (
-            <Link
-              key={a.title}
-              to="/downloads"
-              className="flex flex-col border border-og-border transition-colors hover:border-og-midnight"
-            >
-              <span className="thumb-hatch flex h-[150px] items-center justify-center border-b border-og-border">
-                <MaterialSymbol name={a.icon} size={32} className="text-og-soft" />
-              </span>
-              <div className="flex flex-col gap-1.5 p-[18px]">
-                <h3 className="text-base font-bold tracking-[-0.01em] text-og-midnight">
-                  {a.title}
-                </h3>
-                <span className="text-[14px] text-og-soft">{a.meta}</span>
-              </div>
-            </Link>
+            <ThumbCard key={a.title} to="/downloads" icon={a.icon} title={a.title} meta={a.meta} />
           ))}
         </div>
-        <p className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-og-soft">
-          Thumbnails pending — real asset previews to be dropped in
-        </p>
       </section>
 
       {/* TEMPLATES & TOOLKIT — a module step, not a section step: it belongs to
@@ -441,28 +447,19 @@ function Index() {
         className="site-container module-step scroll-mt-[calc(var(--stick)+var(--step-block))]"
       >
         <SectionHead kicker="Templates & toolkit" aside={<Aside>Sec.02</Aside>} />
-        <div className="block-step grid grid-cols-1 gap-5 md:grid-cols-3">
+        {/* 1 → 3 at lg, with no 2-column stage: three items in two tracks strand
+            the third at half width beside an equal-sized hole. Four-item grids
+            (Most downloaded, above) divide evenly at both stages and do step. */}
+        <div className="block-step grid grid-cols-1 gap-5 lg:grid-cols-3">
           {TEMPLATES.map((t) => (
-            <Link
+            <ThumbCard
               key={t.title}
               to="/toolkit"
-              className="flex flex-col border border-og-border transition-colors hover:border-og-midnight"
-            >
-              <span className="thumb-hatch flex aspect-[16/9] items-center justify-center border-b border-og-border">
-                <MaterialSymbol name={t.icon} size={36} className="text-og-soft" />
-              </span>
-              <div className="flex flex-col gap-2 p-[22px]">
-                <div className="flex items-center gap-2.5">
-                  <h3 className="text-xl font-bold tracking-[-0.015em] text-og-midnight">
-                    {t.title}
-                  </h3>
-                  <span className="shrink-0 whitespace-nowrap border border-og-border px-2 py-[3px] text-[11px] font-bold uppercase tracking-[0.12em] text-og-soft">
-                    {t.tag}
-                  </span>
-                </div>
-                <span className="text-[14px] leading-normal text-og-indigo">{t.blurb}</span>
-              </div>
-            </Link>
+              icon={t.icon}
+              title={t.title}
+              meta={t.blurb}
+              tag={t.tag}
+            />
           ))}
         </div>
       </section>
@@ -550,12 +547,18 @@ function Index() {
         </div>
 
         {/*
-          One module of stacked rows, not three floating cards. Three separate
-          bordered boxes made this column ~260px taller than the updates list
-          beside it, which left a hole in the bottom-left corner of the page and
-          read as unfinished. Joined on shared hairlines the column lands close
-          to the list, and its own SectionHead starts it on the same rule the
-          left column starts on.
+          One module of stacked rows, not floating cards. Separate bordered
+          boxes made this column much taller than the updates list beside it,
+          which left a hole in the bottom-left corner of the page. Joined on
+          shared hairlines the column lands close to the list, and its own
+          SectionHead starts it on the same rule the left column starts on.
+
+          A third row used to sit here reserving space for a new-hire course
+          that has not been recorded. It advertised an absence: a greyed-out
+          heading and a sentence saying the thing is not here yet, in the module
+          people open when they are already stuck. Two rows that work beat three
+          where one is an IOU — and the column now lands 401px against the
+          list's 425 rather than overhanging it by 102.
         */}
         <div id="help" className="scroll-mt-[calc(var(--stick)+var(--step-block))]">
           <SectionHead kicker="Need a hand" aside={<Aside>Help</Aside>} />
@@ -583,18 +586,6 @@ function Index() {
               </h3>
               <span className="mt-2 text-[15px] leading-normal text-og-indigo">
                 Quick questions, one-off asks, and "is this on brand?" gut checks.
-              </span>
-            </div>
-            {/* Reserved slot — the new-hire course lands here once it's recorded.
-                The dashed edge that used to mark it can't survive inside a
-                shared-hairline stack, so the muted ink carries the state. */}
-            <div className="flex flex-col border-t border-dashed border-og-border p-6 py-5">
-              <Kicker className="text-og-soft">Reserved</Kicker>
-              <h3 className="mt-2.5 text-xl font-bold tracking-[-0.02em] text-og-soft">
-                Brand training &amp; onboarding
-              </h3>
-              <span className="mt-2 text-[15px] leading-normal text-og-soft">
-                A short course for new hires lives here once it's recorded.
               </span>
             </div>
           </div>

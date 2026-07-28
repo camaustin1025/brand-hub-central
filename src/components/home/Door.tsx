@@ -37,12 +37,18 @@ export function Door({ door }: { door: DoorSpec }) {
         // 340, not 264: the old floor left 40px between the rule and the title,
         // which is a gap, not a band. 112px of drawing plus its interval needs
         // the extra 76.
-        "visual-container flex min-h-[340px] flex-col p-7",
+        // The lift is shared by all three. It used to be the Midnight card's
+        // alone, with the white pair answering a hover by changing border and
+        // fill instead — one component reacting two different ways depending on
+        // its colour. The lift is the only cue both surfaces can carry, so it
+        // is the one they share; the white pair keeps the border change on top
+        // of it, since a white card on a white page needs the edge to move too.
+        "visual-container flex min-h-[340px] flex-col p-7 transition hover:-translate-y-1",
         dark
           ? // The notch signs the lead door and only the lead door. Three
             // notched cards in a row is a pattern; a pattern is not a signature.
-            "dark notch-br bg-og-midnight transition-transform hover:-translate-y-1"
-          : "border border-og-border bg-white transition-colors hover:border-og-midnight hover:bg-og-surface",
+            "dark notch-br bg-og-midnight"
+          : "border border-og-border bg-white hover:border-og-midnight hover:bg-og-surface",
       )}
     >
       <span
