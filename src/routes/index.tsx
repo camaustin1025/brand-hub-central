@@ -264,7 +264,7 @@ function Index() {
               field grows. No flex-1 any more — there is no sibling column left
               to end level with. Two columns and a taller floor below sm, where
               three tracks leave each tile too narrow to hold its own hex. */}
-          <div className="grid min-h-[400px] grid-cols-2 grid-rows-3 sm:min-h-[288px] sm:grid-cols-[1.4fr_1fr_1fr] sm:grid-rows-2">
+          <div className="visual-container grid min-h-[400px] grid-cols-2 grid-rows-3 overflow-hidden sm:min-h-[288px] sm:grid-cols-[1.4fr_1fr_1fr] sm:grid-rows-2">
             {CORE_SWATCHES.map((s) => (
               <button
                 key={s.hex}
@@ -299,7 +299,7 @@ function Index() {
             <Kicker as="h3">Typography</Kicker>
             <Aside>F.02</Aside>
           </div>
-          <div className="grid gap-6 border border-og-border bg-white p-[26px] lg:grid-cols-[1fr_minmax(0,34ch)] lg:items-end lg:gap-10">
+          <div className="visual-container grid gap-6 border border-og-border bg-white p-[26px] lg:grid-cols-[1fr_minmax(0,34ch)] lg:items-end lg:gap-10">
             <div>
               <div className="text-[82px] font-extrabold leading-[0.9] tracking-[-0.04em] text-og-midnight">
                 Figtree
@@ -325,7 +325,7 @@ function Index() {
 
         <div className="module-step grid grid-cols-1 gap-5 md:grid-cols-3">
           {/* Gradients */}
-          <div className="flex flex-col border border-og-border p-6">
+          <div className="visual-container flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
               <Kicker as="h3">Gradients</Kicker>
               <Aside>F.03</Aside>
@@ -354,7 +354,7 @@ function Index() {
           </div>
 
           {/* Icons */}
-          <div className="flex flex-col border border-og-border p-6">
+          <div className="visual-container flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
               <Kicker as="h3">Icons</Kicker>
               <Aside>F.04</Aside>
@@ -378,7 +378,7 @@ function Index() {
           </div>
 
           {/* Logo */}
-          <div className="flex flex-col border border-og-border p-6">
+          <div className="visual-container flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
               <Kicker as="h3">Logo</Kicker>
               <Aside>F.05</Aside>
@@ -562,7 +562,7 @@ function Index() {
         */}
         <div id="help" className="scroll-mt-[calc(var(--stick)+var(--step-block))]">
           <SectionHead kicker="Need a hand" aside={<Aside>Help</Aside>} />
-          <div className="block-step flex flex-col border border-og-border">
+          <div className="visual-container block-step flex flex-col overflow-hidden border border-og-border">
             <div className="flex flex-col bg-og-surface p-6">
               <h3 className="text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
                 Request a brand review
