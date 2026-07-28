@@ -68,8 +68,9 @@ const CORE_SWATCHES = [
     hex: "#009A50",
     note: "#009A50 · Light bg",
     tile: "bg-og-green-light",
-    title: "text-white",
-    sub: "text-white/85",
+    // Midnight, not white: white on #009A50 is only 3.66:1, Midnight is 4.90:1.
+    title: "text-og-midnight",
+    sub: "text-og-midnight",
     span: "",
   },
   {
@@ -185,8 +186,9 @@ function Index() {
         </div>
       </section>
 
-      {/* Search overlaps the gradient; z-40 lifts it and the results panel clear. */}
-      <div className="site-container relative z-40">
+      {/* Search overlaps the gradient; z-40 lifts it and the results panel clear.
+          `id` is the target the header's search button jumps to. */}
+      <div id="search" className="site-container relative z-40">
         <OmniBar />
       </div>
 
@@ -203,9 +205,9 @@ function Index() {
                 className="dark flex min-h-[270px] flex-col bg-og-midnight p-[30px] transition-transform hover:-translate-y-1"
               >
                 <span className="text-xs font-bold tracking-[0.16em] text-primary">{d.n}</span>
-                <span className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-white">
+                <h3 className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-white">
                   {d.title}
-                </span>
+                </h3>
                 <span className="mt-3.5 text-[15px] leading-normal text-white/66">{d.blurb}</span>
                 <CardLink className="mt-[22px]">{d.cta}</CardLink>
               </Link>
@@ -216,9 +218,9 @@ function Index() {
                 className="flex min-h-[270px] flex-col border border-og-border bg-white p-[30px] transition-colors hover:border-og-midnight hover:bg-og-surface"
               >
                 <span className="text-xs font-bold tracking-[0.16em] text-primary">{d.n}</span>
-                <span className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-og-midnight">
+                <h3 className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-og-midnight">
                   {d.title}
-                </span>
+                </h3>
                 <span className="mt-3.5 text-[15px] leading-normal text-og-indigo">{d.blurb}</span>
                 <CardLink className="mt-[22px]">{d.cta}</CardLink>
               </Link>
@@ -235,7 +237,7 @@ function Index() {
           {/* Core color */}
           <div className="flex flex-col gap-3.5">
             <div className="flex items-center justify-between">
-              <Kicker>Core Color</Kicker>
+              <Kicker as="h3">Core Color</Kicker>
               <Aside>F.01</Aside>
             </div>
             <div className="grid grid-cols-[1.4fr_1fr_1fr] grid-rows-[repeat(2,110px)]">
@@ -256,7 +258,7 @@ function Index() {
                 </button>
               ))}
             </div>
-            <Link to="/tokens" className="self-start">
+            <Link to="/tokens" className="flex min-h-11 items-center self-start">
               <CardLink>All {CORE_SWATCHES.length + 10} color tokens</CardLink>
             </Link>
           </div>
@@ -264,7 +266,7 @@ function Index() {
           {/* Typography */}
           <div id="type" className="flex flex-col gap-3.5">
             <div className="flex items-center justify-between">
-              <Kicker>Typography</Kicker>
+              <Kicker as="h3">Typography</Kicker>
               <Aside>F.02</Aside>
             </div>
             <div className="flex flex-1 flex-col justify-between border border-og-border bg-white p-[26px]">
@@ -284,7 +286,7 @@ function Index() {
                   The only brand font, for everything from decks to product. Soleil is sunsetted;
                   never Helvetica or Arial.
                 </p>
-                <Link to="/downloads" className="shrink-0">
+                <Link to="/downloads" className="flex min-h-11 shrink-0 items-center">
                   <CardLink>Font kit</CardLink>
                 </Link>
               </div>
@@ -296,7 +298,7 @@ function Index() {
           {/* Gradients */}
           <div className="flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
-              <Kicker>Gradients</Kicker>
+              <Kicker as="h3">Gradients</Kicker>
               <Aside>F.03</Aside>
             </div>
             <div className="mt-[18px] flex flex-col gap-2">
@@ -325,7 +327,7 @@ function Index() {
           {/* Icons */}
           <div className="flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
-              <Kicker>Icons</Kicker>
+              <Kicker as="h3">Icons</Kicker>
               <Aside>F.04</Aside>
             </div>
             <div className="mt-5 flex flex-wrap gap-[18px] text-og-midnight">
@@ -340,7 +342,7 @@ function Index() {
               href="https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Outlined"
               target="_blank"
               rel="noreferrer"
-              className="self-start"
+              className="flex min-h-11 items-center self-start"
             >
               <CardLink>Browse the set</CardLink>
             </a>
@@ -349,7 +351,7 @@ function Index() {
           {/* Logo */}
           <div className="flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
-              <Kicker>Logo</Kicker>
+              <Kicker as="h3">Logo</Kicker>
               <Aside>F.05</Aside>
             </div>
             <div className="mt-[18px] grid grid-cols-2 gap-2">
@@ -357,6 +359,8 @@ function Index() {
                 <img
                   src="/logo-white.png"
                   alt="Ordergroove wordmark, dark"
+                  width={512}
+                  height={88}
                   className="h-[18px] w-auto"
                 />
               </div>
@@ -364,6 +368,8 @@ function Index() {
                 <img
                   src="/logo-dark.png"
                   alt="Ordergroove wordmark, white"
+                  width={512}
+                  height={88}
                   className="h-[18px] w-auto"
                 />
               </div>
@@ -371,7 +377,7 @@ function Index() {
             <p className="mb-[18px] mt-[18px] flex-1 text-[14px] leading-normal text-og-indigo text-pretty">
               Clear space equals the height of the mark. Never recolor, stretch, or add effects.
             </p>
-            <Link to="/downloads" className="self-start">
+            <Link to="/downloads" className="flex min-h-11 items-center self-start">
               <CardLink>Logo kit</CardLink>
             </Link>
           </div>
@@ -385,7 +391,7 @@ function Index() {
           aside={
             <Link
               to="/downloads"
-              className="text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
+              className="flex min-h-11 items-center text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
             >
               All downloads →
             </Link>
@@ -399,14 +405,14 @@ function Index() {
               className="flex flex-col border border-og-border transition-colors hover:border-og-midnight"
             >
               <span className="thumb-hatch flex h-[150px] items-center justify-center border-b border-og-border">
-                <MaterialSymbol name={a.icon} size={32} className="text-og-soft/50" />
+                <MaterialSymbol name={a.icon} size={32} className="text-og-soft" />
               </span>
-              <span className="flex flex-col gap-1.5 p-[18px]">
-                <span className="text-base font-bold tracking-[-0.01em] text-og-midnight">
+              <div className="flex flex-col gap-1.5 p-[18px]">
+                <h3 className="text-base font-bold tracking-[-0.01em] text-og-midnight">
                   {a.title}
-                </span>
+                </h3>
                 <span className="text-[14px] text-og-soft">{a.meta}</span>
-              </span>
+              </div>
             </Link>
           ))}
         </div>
@@ -426,19 +432,19 @@ function Index() {
               className="flex flex-col border border-og-border transition-colors hover:border-og-midnight"
             >
               <span className="thumb-hatch flex aspect-[16/9] items-center justify-center border-b border-og-border">
-                <MaterialSymbol name={t.icon} size={36} className="text-og-soft/50" />
+                <MaterialSymbol name={t.icon} size={36} className="text-og-soft" />
               </span>
-              <span className="flex flex-col gap-2 p-[22px]">
-                <span className="flex items-center gap-2.5">
-                  <span className="text-xl font-bold tracking-[-0.015em] text-og-midnight">
+              <div className="flex flex-col gap-2 p-[22px]">
+                <div className="flex items-center gap-2.5">
+                  <h3 className="text-xl font-bold tracking-[-0.015em] text-og-midnight">
                     {t.title}
-                  </span>
+                  </h3>
                   <span className="shrink-0 whitespace-nowrap border border-og-border px-2 py-[3px] text-[11px] font-bold uppercase tracking-[0.12em] text-og-soft">
                     {t.tag}
                   </span>
-                </span>
+                </div>
                 <span className="text-[14px] leading-normal text-og-indigo">{t.blurb}</span>
-              </span>
+              </div>
             </Link>
           ))}
         </div>
@@ -505,14 +511,14 @@ function Index() {
               <span className="text-[14px] font-bold uppercase tracking-[0.12em] text-og-soft">
                 {u.date}
               </span>
-              <span className="col-start-2 sm:col-start-2">
-                <span className="block text-[17px] font-semibold tracking-[-0.01em] text-og-midnight">
+              <div className="col-start-2 sm:col-start-2">
+                <h3 className="text-[17px] font-semibold tracking-[-0.01em] text-og-midnight">
                   {u.title}
-                </span>
+                </h3>
                 <span className="mt-1 block text-[14px] leading-normal text-og-indigo">
                   {u.blurb}
                 </span>
-              </span>
+              </div>
               <span className="col-start-2 text-xs font-bold uppercase tracking-[0.14em] text-primary sm:col-start-3 sm:justify-self-end">
                 {u.kind}
               </span>
@@ -523,9 +529,9 @@ function Index() {
         <div id="help" className="flex flex-col gap-5">
           <div className="flex flex-col bg-og-surface p-[26px]">
             <Kicker>Need a hand</Kicker>
-            <span className="mt-4 text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
+            <h3 className="mt-4 text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
               Request a brand review
-            </span>
+            </h3>
             <span className="mt-3 text-[15px] leading-normal text-og-indigo text-pretty">
               Send a deck, page, or campaign to Brand & Content and we'll mark it up within two
               working days.
@@ -540,9 +546,9 @@ function Index() {
           </div>
           <div className="flex flex-col border border-og-border p-[26px]">
             <Kicker>Ask in Slack</Kicker>
-            <span className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-midnight">
+            <h3 className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-midnight">
               #brand-help
-            </span>
+            </h3>
             <span className="mt-2.5 text-[15px] leading-normal text-og-indigo">
               Quick questions, one-off asks, and "is this on brand?" gut checks.
             </span>
@@ -550,9 +556,9 @@ function Index() {
           {/* Reserved slot — the new-hire course lands here once it's recorded. */}
           <div className="flex flex-col border border-dashed border-og-soft/40 p-[26px]">
             <Kicker className="text-og-soft">Reserved</Kicker>
-            <span className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-soft">
+            <h3 className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-soft">
               Brand training &amp; onboarding
-            </span>
+            </h3>
             <span className="mt-2.5 text-[15px] leading-normal text-og-soft">
               A short course for new hires lives here once it's recorded.
             </span>

@@ -49,14 +49,14 @@ export function AssetCard({ asset }: { asset: Asset }) {
         </div>
 
         {available ? (
-          <Button asChild size="sm" className="w-full">
+          <Button asChild size="sm" className="min-h-11 w-full">
             {/* download attr + GA4 hook point: track('download_asset', { id }) */}
             <a href={asset.href!} download>
               <Download size={16} /> Download
             </a>
           </Button>
         ) : (
-          <Button size="sm" variant="secondary" disabled className="w-full">
+          <Button size="sm" variant="secondary" disabled className="min-h-11 w-full">
             <Clock size={16} /> Re-sourcing
           </Button>
         )}

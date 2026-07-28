@@ -12,7 +12,7 @@ const NAV_LINKS = [
 ];
 
 const linkBase =
-  "text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-og-green-light data-[status=active]:text-og-green-light";
+  "flex min-h-11 items-center text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary data-[status=active]:text-primary";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -21,11 +21,21 @@ export function Header() {
     <header className="sticky top-0 z-[60] border-b border-border bg-white">
       <div className="site-container flex h-[76px] items-center justify-between gap-6">
         <div className="flex items-center gap-[18px]">
-          <Link to="/" className="flex items-center" aria-label="Ordergroove Brand Hub, home">
-            <img src="/logo-white.png" alt="Ordergroove" className="h-[26px] w-auto" />
+          <Link
+            to="/"
+            className="flex min-h-11 items-center"
+            aria-label="Ordergroove Brand Hub, home"
+          >
+            <img
+              src="/logo-white.png"
+              alt="Ordergroove"
+              width={512}
+              height={88}
+              className="h-[26px] w-auto"
+            />
           </Link>
           <span aria-hidden className="hidden h-[22px] w-px bg-border sm:block" />
-          <span className="hidden text-xs font-bold uppercase tracking-[0.16em] text-og-green-light sm:block">
+          <span className="hidden text-xs font-bold uppercase tracking-[0.16em] text-primary sm:block">
             Brand Hub
           </span>
         </div>
@@ -37,7 +47,12 @@ export function Header() {
               {l.label}
             </Link>
           ))}
-          <Link to="/" hash="updates" className={`${linkBase} hidden xl:block`}>
+          <Link
+            to="/"
+            hash="updates"
+            activeOptions={{ includeHash: true }}
+            className={`${linkBase} hidden xl:flex`}
+          >
             What's New
           </Link>
           {/* Search lives in the Home hero; this jumps there and focuses it. */}
@@ -45,14 +60,14 @@ export function Header() {
             to="/"
             hash="search"
             aria-label="Search the brand hub"
-            className="flex border border-border p-2 text-og-midnight transition-colors hover:border-og-midnight"
+            className="flex size-11 items-center justify-center border border-border text-og-midnight transition-colors hover:border-og-midnight"
           >
             <Search size={18} />
           </Link>
         </nav>
 
         <button
-          className="rounded-full p-2 text-og-midnight transition-colors hover:bg-secondary lg:hidden"
+          className="flex size-11 items-center justify-center rounded-full text-og-midnight transition-colors hover:bg-secondary lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -63,7 +78,7 @@ export function Header() {
       {/* System status strip — a quiet tonal band, dropped on small screens. */}
       <div className="hidden border-t border-og-hairline bg-og-surface md:block">
         <div className="site-container flex h-9 items-center justify-between gap-4">
-          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-og-green-light">
+          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary">
             <MaterialSymbol name="bolt" size={15} />
             Sys.status
           </span>
@@ -82,14 +97,14 @@ export function Header() {
           <div className="site-container flex flex-col gap-5 py-5">
             {NAV.map((group) => (
               <div key={group.mode} className="flex flex-col gap-2">
-                <span className="text-xs font-bold uppercase tracking-[0.16em] text-og-green-light">
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
                   {group.label}
                 </span>
                 {group.items.map((item) => (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className="text-sm font-medium text-og-midnight transition-colors hover:text-og-green-light"
+                    className="flex min-h-11 items-center text-sm font-medium text-og-midnight transition-colors hover:text-primary"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}

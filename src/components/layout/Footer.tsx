@@ -37,10 +37,16 @@ const COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="bg-og-midnight text-og-ink">
+    <footer className="dark bg-og-midnight text-og-ink">
       <div className="site-container grid grid-cols-1 gap-y-10 py-14 md:grid-cols-12 md:gap-y-0">
         <div className="flex flex-col gap-3.5 md:col-span-5 md:pr-10">
-          <img src="/logo-dark.png" alt="Ordergroove" className="h-6 w-auto self-start" />
+          <img
+            src="/logo-dark.png"
+            alt="Ordergroove"
+            width={512}
+            height={88}
+            className="h-6 w-auto self-start"
+          />
           <p className="max-w-[34ch] text-[15px] leading-relaxed text-white/72">
             The internal home for the Ordergroove brand. Guidelines, assets, and the tools to stay
             on brand.
@@ -51,15 +57,15 @@ export function Footer() {
             key={col.heading}
             className={`flex flex-col gap-3.5 md:border-l md:border-white/12 md:pl-7 ${col.span}`}
           >
-            <span className="text-xs font-bold uppercase tracking-[0.16em] text-og-green">
+            <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
               {col.heading}
-            </span>
+            </h2>
             <div className="flex flex-col gap-2.5">
               {col.links.map((l) => (
                 <Link
                   key={l.label}
                   to={l.to}
-                  className="text-[15px] text-white transition-colors hover:text-og-green"
+                  className="flex min-h-11 items-center text-[15px] text-white transition-colors hover:text-primary"
                 >
                   {l.label}
                 </Link>

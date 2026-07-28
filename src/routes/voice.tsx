@@ -72,7 +72,7 @@ function Voice() {
             <ol className="mt-5 space-y-3">
               {RULES.map((rule, i) => (
                 <li key={i} className="flex gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-destructive/15 text-xs font-bold text-destructive">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
                     {i + 1}
                   </span>
                   <span className="text-sm">{rule}</span>

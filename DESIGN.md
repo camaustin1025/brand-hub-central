@@ -90,6 +90,16 @@ typography:
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "0.16em"
+  # The icon face. Not a second brand typeface — Figtree remains the only one
+  # for text — but it is a real font the system loads, so it is declared here
+  # rather than living only in the Icons prose below. Axes are brand law:
+  # FILL 0, wght 300, GRAD 0, opsz 24 (July 2025 brand deck, audit D12).
+  icon:
+    fontFamily: "Material Symbols Outlined"
+    fontSize: "24px"
+    fontWeight: 300
+    lineHeight: 1
+    letterSpacing: "normal"
 rounded:
   sm: "6px"
   md: "8px"
@@ -194,7 +204,14 @@ Decorative pop only, never leading, never carrying meaning alone.
 
 ### Named Rules
 
-**The Green-Contrast Rule.** Green is never one color. On light backgrounds it is `#009A50`; on Midnight it is `#00FF85`. This is structural, not stylistic — the semantic `--primary` token flips with the surface, so green never renders as an illegible text color on white. Any nested Midnight island (`.dark`) resolves green to `#00FF85`, and any light module inside it (`.light`) resolves back to `#009A50`.
+**The Green-Contrast Rule.** Green is never one color. On Midnight it is `#00FF85` (13.4:1 — comfortable). On light surfaces it is a green dark enough to read, and the semantic `--primary` token flips with the surface so this happens automatically: any nested Midnight island (`.dark`) resolves green to `#00FF85`, and any light module inside it (`.light`) resolves back to the light value.
+
+**The Light-Green Split.** Measured, `#009A50` is **3.66:1** on white and **3.36:1** on `#F5F5F8`. That clears WCAG AA for large text (3:1) and for UI shapes, but it fails the 4.5:1 required for body and label text — which is most of what the green is actually used for (12px kickers, card links, nav). So the two roles are separated:
+
+- **`#009A50` — the brand swatch.** Brand canon, what `/tokens` and `/visual-identity` publish, and what `--color-og-green-light` holds. Use it where the literal color is the subject: swatches, specimens, gradient stops. Safe as a fill behind Midnight text.
+- **`#008040` — the UI accent.** What `--primary` resolves to on light, and therefore what `Kicker`, `CardLink`, nav links, and every `text-primary` actually paint. **5.05:1** on white, **4.64:1** on `#F5F5F8` — passes AA on both.
+
+Reach for `text-primary`, never a hardcoded green, and the right one applies itself. Note this is an accessibility correction made in the UI layer: **ratifying `#008040` into the published brand palette is a Brand & Content decision that has not been made.** Until it is, the hub deliberately documents `#009A50` while rendering its own chrome in `#008040`.
 
 **The One-Green Accent Rule.** The brand green is the voice, not the wallpaper. Lead every colored moment with the correct-contrast green; the secondary neons appear only as decorative pop (gradients, tiny status ticks), never as the primary action or a meaning-bearing signal.
 

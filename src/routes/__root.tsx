@@ -18,7 +18,6 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -101,14 +100,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Ordergroove Brand Hub" },
       {
         property: "og:description",
-        content: "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand.",
+        content:
+          "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ordergroove Brand Hub" },
-      { name: "twitter:description", content: "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png" },
+      {
+        name: "twitter:description",
+        content:
+          "The internal home for the Ordergroove brand: guidelines, downloadable assets, design tokens, and the tools to stay on brand.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e47fb426-4814-4f56-820a-635cbd06b34b/id-preview-03722999--15e6b569-db8a-4eb5-aa3d-6b31bb6801ec.lovable.app-1784814836980.png",
+      },
     ],
     links: [
       {
@@ -158,8 +170,19 @@ function RootComponent() {
         <Outlet />
       ) : (
         <div className="flex min-h-screen flex-col">
+          {/*
+            Skip link — roughly 50 focusable elements sit between the page top
+            and the content on a route like Home. Visually hidden until it takes
+            keyboard focus, then it pins to the top-left as a Midnight chip.
+          */}
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-og-midnight focus:px-5 focus:py-3 focus:text-xs focus:font-bold focus:uppercase focus:tracking-[0.16em] focus:text-og-green"
+          >
+            Skip to content
+          </a>
           <Header />
-          <main className="flex-1">
+          <main id="main" tabIndex={-1} className="flex-1">
             <Outlet />
           </main>
           <Footer />
@@ -169,4 +192,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

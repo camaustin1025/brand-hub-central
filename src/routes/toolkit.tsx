@@ -63,7 +63,10 @@ function Toolkit() {
 
       <section className="site-container grid gap-5 pb-16 sm:grid-cols-2 lg:grid-cols-3">
         {TOOLS.map((t) => (
-          <div key={t.title} className="visual-container flex flex-col border border-border bg-card p-6">
+          <div
+            key={t.title}
+            className="visual-container flex flex-col border border-border bg-card p-6"
+          >
             <div className="flex-1">
               <div className="flex items-center gap-2">
                 <h2 className="text-lg font-bold">{t.title}</h2>
@@ -74,7 +77,7 @@ function Toolkit() {
             {t.href ? (
               <a
                 href={t.href}
-                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+                className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-primary hover:underline"
               >
                 {t.cta} <ArrowUpRight size={15} />
               </a>

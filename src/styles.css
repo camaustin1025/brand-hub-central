@@ -98,6 +98,14 @@
   --color-og-midnight: #17132f;
   --color-og-indigo: #2e2a47;
   --color-og-green: #00ff85;
+  /*
+   * Brand canon, as published on /tokens and /visual-identity. Measured at
+   * 3.66:1 on white, which clears AA for large text and UI shapes but NOT the
+   * 4.5:1 needed for body/label text — so this stays the documented *swatch*
+   * and `--primary` below carries the darker accent the chrome actually paints
+   * with. Use `bg-og-green-light` only where the literal brand colour is the
+   * subject (swatches, specimens); use `text-primary` for anything readable.
+   */
   --color-og-green-light: #009a50;
   --color-og-cyan: #00faff;
   --color-og-lemon: #eaff00;
@@ -134,7 +142,7 @@
   --card-foreground: oklch(0.209 0.054 287.3);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.209 0.054 287.3);
-  --primary: oklch(0.601 0.156 152.6); /* #009A50 */
+  --primary: oklch(0.525 0.138 152.2); /* #008040 — AA-safe UI accent, see note */
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.943 0.009 292.8); /* #ECEBF2 */
   --secondary-foreground: oklch(0.209 0.054 287.3);
@@ -146,7 +154,7 @@
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.882 0.011 291.9); /* #D8D7DF */
   --input: oklch(0.882 0.011 291.9);
-  --ring: oklch(0.601 0.156 152.6);
+  --ring: oklch(0.525 0.138 152.2);
 
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -155,12 +163,12 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.209 0.054 287.3);
-  --sidebar-primary: oklch(0.601 0.156 152.6);
+  --sidebar-primary: oklch(0.525 0.138 152.2);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.943 0.009 292.8);
   --sidebar-accent-foreground: oklch(0.209 0.054 287.3);
   --sidebar-border: oklch(0.882 0.011 291.9);
-  --sidebar-ring: oklch(0.601 0.156 152.6);
+  --sidebar-ring: oklch(0.525 0.138 152.2);
 }
 
 .dark {
@@ -210,6 +218,18 @@
     color: var(--color-foreground);
     font-family: var(--font-figtree);
     -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * Keyboard focus. The browser default is a 1px UA ring that reads as foreign
+   * chrome on a branded surface, so this replaces it with a 2px ring in the
+   * surface's own green — --ring flips to #00FF85 inside a .dark island, so a
+   * link on the Midnight band stays visible without a per-component override.
+   * :focus-visible (not :focus) so mouse clicks don't paint a ring.
+   */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
   }
 
   /*

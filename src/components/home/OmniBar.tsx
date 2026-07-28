@@ -38,7 +38,7 @@ function ModeChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-bold uppercase tracking-[0.14em] transition-colors",
+        "inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full px-4 text-xs font-bold uppercase tracking-[0.14em] transition-colors",
         active ? "bg-og-green text-og-midnight" : "text-white/70 hover:text-white",
       )}
     >
@@ -140,17 +140,10 @@ export function OmniBar() {
           <div className="absolute inset-x-0 top-full z-50 mt-2.5 overflow-hidden border border-border bg-white shadow-[0_21px_46px_rgba(23,19,47,0.14),0_85px_85px_rgba(23,19,47,0.08)]">
             {mode === "ask" ? (
               <div className="flex items-start gap-3 p-[18px_22px]">
-                <MaterialSymbol
-                  name="auto_awesome"
-                  size={18}
-                  className="mt-0.5 text-og-green-light"
-                />
+                <MaterialSymbol name="auto_awesome" size={18} className="mt-0.5 text-primary" />
                 <p className="text-[15px] leading-relaxed text-og-indigo">
                   The brand assistant isn't live yet. The canon it will answer from is written up on{" "}
-                  <Link
-                    to="/ai-skills"
-                    className="font-semibold text-og-green-light hover:underline"
-                  >
+                  <Link to="/ai-skills" className="font-semibold text-primary hover:underline">
                     AI &amp; Skills
                   </Link>
                   .
@@ -169,7 +162,7 @@ export function OmniBar() {
                       onClick={() => setOpen(false)}
                       className="flex items-center gap-3.5 border-t border-og-hairline px-[22px] py-3.5 transition-colors first:border-t-0 hover:bg-og-surface"
                     >
-                      <MaterialSymbol name={h.icon} size={19} className="text-og-green-light" />
+                      <MaterialSymbol name={h.icon} size={19} className="text-primary" />
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-[15px] font-semibold text-og-midnight">
                           {h.title}
@@ -178,7 +171,7 @@ export function OmniBar() {
                           {h.subtitle}
                         </span>
                       </span>
-                      <span className="shrink-0 text-xs font-bold uppercase tracking-[0.16em] text-og-green-light">
+                      <span className="shrink-0 text-xs font-bold uppercase tracking-[0.16em] text-primary">
                         {h.kind}
                       </span>
                     </Link>
@@ -196,7 +189,7 @@ export function OmniBar() {
         links run Midnight and go green on hover.
       */}
       <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="text-xs font-bold uppercase tracking-[0.16em] text-og-green-light">
+        <span className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
           Quick jump
         </span>
         {QUICK_LINKS.map((q, i) => (
@@ -204,7 +197,7 @@ export function OmniBar() {
             {i > 0 && <span aria-hidden className="h-3 w-px bg-border" />}
             <Link
               to={q.path}
-              className="text-xs font-bold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-og-green-light"
+              className="flex min-h-11 items-center text-xs font-bold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
             >
               {q.label}
             </Link>
