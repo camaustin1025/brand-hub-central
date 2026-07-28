@@ -20,7 +20,9 @@ colors:
 typography:
   marquee:
     fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(56px, 9vw, 132px)"
+    # cqi, not vw: the side rail owns part of the viewport, so the marquee is
+    # measured against the content pane. See Layout → The Full-Bleed Rule.
+    fontSize: "clamp(56px, 11cqi, 132px)"
     fontWeight: 800
     lineHeight: 0.86
     letterSpacing: "-0.04em"
@@ -304,7 +306,7 @@ The signature form is **the notch**: a module with three rounded corners and one
 
 ### Named Rules
 
-**The Notch Rule.** The notch (three rounded corners + one square) is a signature accent, not a default. Apply it to a hero moment or a featured tile to sign the surface as Ordergroove; do not notch every card, or it stops meaning anything. The three-door module is the worked example: the Midnight lead card is notched and the two beside it are not. Three notched cards in a row would be a pattern, and a pattern is not a signature.
+**The Notch Rule.** The notch (three rounded corners + one square) is a signature accent, not a default. Apply it to a hero moment or a featured tile to sign the surface as Ordergroove; do not notch every card, or it stops meaning anything. The three-door module is the worked example: all three cards sit on the same Midnight surface and only the lead one is notched. With the colour constant across the set, the notch is the sole thing marking that door — which is the notch doing more work than it did when it was one cue among two, not less. Three notched cards in a row would be a pattern, and a pattern is not a signature.
 
 ## Components
 
@@ -327,7 +329,11 @@ The signature form is **the notch**: a module with three rounded corners and one
 
 ### Doors (Home)
 
-The three-door module is the one place on the hub that carries diagrams. `DoorDiagram` draws them on a shared grammar: a 240×112 field, 1px strokes, and **exactly one green element per drawing — the verb**. Guidelines measures, Downloads retrieves, Toolkit assembles. Inline SVG taking its colour from `--primary` and `og-soft`/`white-40`, so one component draws on both surfaces.
+**All three doors are Midnight — one band, not an island.** This is the hub's one deliberate exception to leading with accent islands, and the reason is the Green-Contrast Rule rather than composition. `--primary` resolves to `#00FF85` only inside a `.dark` island; on the white page it is the AA-corrected `#008040`. So while the module ran 1-dark / 2-light, two of its three doors were painting their kicker, link and diagram in the corrected green, and the module could never show the brand's actual accent more than once. An all-Midnight band is the only version of it where every door renders `#00FF85`.
+
+The split also kept provoking one question — _why is that one different?_ — which is the tell that a distinction is decorative. The dark card was standing in for "this is the lead", a convention the page never stated. The notch now carries that, and carries it alone.
+
+The three-door module is the one place on the hub that carries diagrams. `DoorDiagram` draws them on a shared grammar: a 240×112 field, 1px strokes, and **exactly one green element per drawing — the verb**. Guidelines measures, Downloads retrieves, Toolkit assembles. Inline SVG taking its colour from `--primary`, with `og-soft`/`white-40` stroke pairs so the component still draws correctly on either surface.
 
 The rule the grammar enforces: a drawing has to name a verb the card's label implies. A door labelled "Downloads" gets retrieval, not a generic swoosh. If you cannot name the verb, the drawing is decoration and does not belong.
 

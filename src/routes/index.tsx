@@ -18,10 +18,23 @@ export const Route = createFileRoute("/")({
 const HERO_GRADIENT = "linear-gradient(112deg, #00FF85 0%, #00FAFF 52%, #EAFF00 100%)";
 
 /**
- * The three doors — Guidelines leads on a Midnight island, the other two on
- * white. The 1-dark/2-light rhythm stays: this module sits ~200px under a
- * full-bleed neon gradient, and three Midnight cards there would stack two
- * heavy bands at the top of the page.
+ * The three doors — one Midnight band of three.
+ *
+ * This ran 1-dark / 2-light, on the island argument: one accent card in three
+ * rather than an accent module. The single question it kept provoking was "why
+ * is that one different?", which is the tell that a distinction is decorative
+ * — the dark card was standing for "this is the lead", a convention the page
+ * never states anywhere.
+ *
+ * All three Midnight answers it and buys the thing the split was quietly
+ * costing: `--primary` resolves to #00FF85 inside a `.dark` island, so on the
+ * white page the other two doors were painting their kicker, link and diagram
+ * in the AA-corrected #008040. Midnight is the only surface on which the real
+ * brand green is legible, so an all-Midnight band is the only version of this
+ * module where every door shows the brand's actual accent.
+ *
+ * `lead` now carries what colour used to: door 01 takes the notch, and with the
+ * surface constant that notch is the only thing marking it.
  *
  * `diagram` names the verb the card's drawing has to carry, not a picture.
  */
@@ -32,7 +45,7 @@ const DOORS: DoorSpec[] = [
     blurb: "Foundation, voice, visual identity, and the tokens behind them.",
     cta: "Read the rules",
     path: "/foundation",
-    dark: true,
+    lead: true,
     diagram: "measure",
   },
   {
@@ -41,7 +54,6 @@ const DOORS: DoorSpec[] = [
     blurb: "Logo kit, font kit, token exports, and social graphics.",
     cta: "Grab assets",
     path: "/downloads",
-    dark: false,
     diagram: "retrieve",
   },
   {
@@ -50,7 +62,6 @@ const DOORS: DoorSpec[] = [
     blurb: "Deck templates, signatures, and the AI skills that check the work.",
     cta: "Open the toolkit",
     path: "/toolkit",
-    dark: false,
     diagram: "assemble",
   },
 ];
