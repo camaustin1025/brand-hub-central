@@ -239,60 +239,112 @@ function StatusFoot({ collapsed }: { collapsed?: boolean }) {
 /* -------------------------------------------------------------------------- */
 
 /**
- * The persistent rail, xl and up.
+ * The persistent rail, md and up.
  *
- * Below 1280 it is off-canvas rather than persistent, and that breakpoint is a
- * measurement, not a taste: at 1024 a 256px rail leaves 688px of content, which
- * is *less* than the 792px body the two-rail layout gave. It only starts paying
- * for itself once there is width to spare.
+ * It used to appear only at xl, on the argument that a 256px rail costs more
+ * content than it buys below 1280. That argument was measuring the wrong thing.
+ * Between 768 and 1280 the page had no visible navigation at all — a borderless
+ * hamburger on a white bar, next to a *bordered* search button, so the one
+ * control that opened the site's map read as less interactive than the one
+ * beside it. A nav you cannot see is not a nav, and retrieval wins ties.
+ *
+ * So the rail is always there from md up; below xl it is always the 64px icon
+ * form. 64px is a price worth paying where 256px was not, and the glyph column
+ * answers "is there navigation here" on its own.
+ *
+ * Pointing at it (or tabbing into it) opens the full panel *over* the content
+ * rather than pushing it, so the labels are one gesture away and nothing
+ * reflows. The reserved track never changes width — only the panel floating in
+ * it does.
  */
 export function SideRail() {
-  const [collapsed, setCollapsed] = useState(false);
+  // `pinned` is the resting state: forced below xl, the stored preference above
+  // it. `hovered` opens the panel on top without touching the reserved track.
+  const [narrow, setNarrow] = useState(false);
+  const [userCollapsed, setUserCollapsed] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  // The width is already correct before first paint — RootShell's inline script
-  // stamps data-sidenav from localStorage. This only syncs React's copy of it,
-  // so the toggle button renders the right affordance.
+  const pinned = narrow || userCollapsed;
+  const collapsed = pinned && !hovered;
+
   useEffect(() => {
-    setCollapsed(document.documentElement.dataset.sidenav === "icon");
+    const mq = window.matchMedia("(min-width: 80rem)");
+    const sync = () => setNarrow(!mq.matches);
+    sync();
+    try {
+      setUserCollapsed(localStorage.getItem("og-sidenav") === "icon");
+    } catch {
+      // Blocked storage: the rail still works, it just forgets the preference.
+    }
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
-  function toggle() {
-    const next = !collapsed;
-    setCollapsed(next);
-    if (next) document.documentElement.dataset.sidenav = "icon";
+  // Only the resting state drives the CSS var, never the hover — the track has
+  // to stay put or the whole page would reflow under the pointer.
+  useEffect(() => {
+    if (pinned) document.documentElement.dataset.sidenav = "icon";
     else delete document.documentElement.dataset.sidenav;
+  }, [pinned]);
+
+  function toggle() {
+    const next = !userCollapsed;
+    setUserCollapsed(next);
     try {
       localStorage.setItem("og-sidenav", next ? "icon" : "full");
     } catch {
-      // Private mode or blocked storage: the rail still toggles, it just
-      // forgets. Not worth failing navigation over.
+      // See above.
     }
   }
 
   return (
-    <TooltipProvider delayDuration={200}>
-      <aside className="dark sticky top-[var(--stick)] hidden h-[calc(100dvh-var(--stick))] w-[var(--sidenav)] shrink-0 flex-col border-r border-white/12 bg-og-midnight transition-[width] duration-200 xl:flex">
-        {/* Only the tree scrolls. Scrolling the whole aside pushed the collapse
-            control off the bottom on a short viewport, which is the one control
-            that has to stay reachable — it is how you get the width back. */}
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <NavTree collapsed={collapsed} />
-        </div>
-        <div className="shrink-0 border-t border-white/12">
-          <StatusFoot collapsed={collapsed} />
-          <button
-            type="button"
-            onClick={toggle}
-            aria-expanded={!collapsed}
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation to icons"}
-            className={cn(
-              "flex min-h-11 w-full cursor-pointer items-center gap-3 border-t border-white/12 px-3 text-xs font-bold uppercase tracking-[0.16em] text-white/70 transition-colors hover:bg-white/6 hover:text-white",
-              collapsed && "justify-center px-0",
+    <TooltipProvider delayDuration={400}>
+      <aside
+        // The aside reserves the track; the panel inside it is what grows.
+        className="sticky top-[var(--stick)] hidden h-[calc(100dvh-var(--stick))] w-[var(--sidenav)] shrink-0 md:block"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocusCapture={() => setHovered(true)}
+        onBlurCapture={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setHovered(false);
+        }}
+      >
+        <div
+          className={cn(
+            "dark absolute inset-y-0 left-0 z-50 flex flex-col border-r border-white/12 bg-og-midnight transition-[width] duration-200",
+            collapsed ? "w-[var(--sidenav-icon)]" : "w-[var(--sidenav-full)]",
+          )}
+        >
+          {/* Only the tree scrolls. Scrolling the whole panel pushed the
+              collapse control off the bottom on a short viewport, which is the
+              one control that has to stay reachable — it is how you get the
+              width back. */}
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <NavTree collapsed={collapsed} />
+          </div>
+          <div className="shrink-0 border-t border-white/12">
+            <StatusFoot collapsed={collapsed} />
+            {/* Hidden below xl: there the icon form is forced by width, so a
+                control claiming to toggle it would be lying. */}
+            {!narrow && (
+              <button
+                type="button"
+                onClick={toggle}
+                aria-expanded={!userCollapsed}
+                aria-label={userCollapsed ? "Pin navigation open" : "Collapse navigation to icons"}
+                className={cn(
+                  "flex min-h-11 w-full cursor-pointer items-center gap-3 border-t border-white/12 px-3 text-xs font-bold uppercase tracking-[0.16em] text-white/70 transition-colors hover:bg-white/6 hover:text-white",
+                  collapsed && "justify-center px-0",
+                )}
+              >
+                <MaterialSymbol
+                  name={userCollapsed ? "right_panel_open" : "left_panel_close"}
+                  size={20}
+                />
+                {!collapsed && (userCollapsed ? "Pin open" : "Collapse")}
+              </button>
             )}
-          >
-            <MaterialSymbol name={collapsed ? "right_panel_open" : "left_panel_close"} size={20} />
-            {!collapsed && "Collapse"}
-          </button>
+          </div>
         </div>
       </aside>
     </TooltipProvider>
@@ -311,10 +363,16 @@ export function NavDrawer() {
     <Sheet open={open} onOpenChange={setOpen}>
       {/* SheetTrigger, not a bare button with onClick: Radix returns focus to
           its trigger on close, so escaping the drawer puts the caret back on
-          the hamburger instead of dropping it on <body>. */}
+          the hamburger instead of dropping it on <body>.
+
+          Bordered, like the search button beside it. Bare, it was the only
+          chromeless glyph on the bar — the control that opens the entire site
+          map reading as less interactive than the one next to it. And md, not
+          xl: from 768 up the rail itself is visible, so the drawer is only for
+          widths that genuinely have no room for one. */}
       <SheetTrigger
         aria-label="Open navigation"
-        className="flex size-11 cursor-pointer items-center justify-center text-og-midnight transition-colors hover:bg-secondary xl:hidden"
+        className="flex size-11 cursor-pointer items-center justify-center border border-border text-og-midnight transition-colors hover:border-og-midnight md:hidden"
       >
         <MaterialSymbol name="menu" size={22} />
       </SheetTrigger>

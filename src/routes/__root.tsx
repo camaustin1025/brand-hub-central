@@ -150,15 +150,15 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
         {/*
-          Stamps the side nav's collapsed state before first paint. Without it a
-          user who collapsed the rail gets a 192px layout jump on every full
-          page load, because React only learns the stored preference in an
-          effect. The CSS var carries the width, so this one attribute is
-          enough — see --sidenav in styles.css.
+          Stamps the side nav's resting width before first paint. Two things
+          force the icon rail — a viewport below xl, or the stored preference —
+          and React only learns either one in an effect, so without this the
+          rail jumps 192px on every full page load. The CSS var carries the
+          width, so this one attribute is enough; see --sidenav in styles.css.
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("og-sidenav")==="icon")document.documentElement.dataset.sidenav="icon"}catch(e){}`,
+            __html: `try{if(!matchMedia("(min-width: 80rem)").matches||localStorage.getItem("og-sidenav")==="icon")document.documentElement.dataset.sidenav="icon"}catch(e){}`,
           }}
         />
       </head>

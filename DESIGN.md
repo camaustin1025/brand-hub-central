@@ -264,7 +264,7 @@ The ramp runs in two tiers. **Display** sizes are per-moment and set explicitly;
 
 ## Layout
 
-The page is a fixed left rail and a fluid content pane. The rail (`--sidenav`, `256px`, or `64px` collapsed to icons) is persistent from `xl` (1280px) up and off-canvas below it. The pane holds `.site-container`: centered, `1280px` max-width, `40px` inline padding, stepping down to `24px` below `md` — so the content box is `1200px` wherever there is room for it.
+The page is a fixed left rail and a fluid content pane. The rail is persistent from `md` (768px) up — expanded to `256px` from `xl` (1280px), and the `64px` icon form between `md` and `xl`. Off-canvas only below `md`. `--sidenav` is the width of the _track_ the rail reserves, not of the panel in it: pointing at the icon rail opens the full panel over the content, and the track never moves. The pane holds `.site-container`: centered, `1280px` max-width, `40px` inline padding, stepping down to `24px` below `md` — so the content box is `1200px` wherever there is room for it.
 
 The rail takes its width out of the pane, not out of the container's cap, which means the container only binds once the pane exceeds 1280px. Measured, with the rail expanded:
 
@@ -359,8 +359,9 @@ Diagram strokes carry meaning, so they owe 3:1 against their surface (SC 1.4.11)
 
 - **Groups** are Radix `Collapsible`, plural — more than one open at a time, all three open by default. Not an `Accordion`: with seven routes, seeing the whole map at once is the feature.
 - **Sections** appear only under the active route, scroll-spied. They are contextual, not a preference, so they are never persisted.
-- **Collapse** to a `64px` icon rail, persisted to `localStorage` and stamped onto `data-sidenav` before first paint so a collapsed rail does not jump on load. Collapsed, glyphs are the only identifier, so each carries a tooltip and every route in `data/nav.ts` must declare an `icon`.
-- **Below `xl`** the same component renders in a drawer. One component, two containers — the previous header kept a second hand-written copy of the nav for mobile, which is how the desktop bar drifted to three links while the drawer showed seven.
+- **The icon rail is the floor, not a hidden state.** Between `md` and `xl` the rail is always the `64px` glyph column, and above `xl` it is the user's stored preference. The rail used to vanish below 1280 behind a hamburger; a nav you cannot see is not a nav, and 64px is a price worth paying where 256px was not. Every route in `data/nav.ts` must declare an `icon`, because in this form the glyph is the only identifier.
+- **Hover or focus opens it over the content.** The panel grows to `256px` and floats; the reserved track stays at `64px`, so nothing reflows under the pointer. Both the resting width and the stored preference are stamped onto `data-sidenav` before first paint, so the rail never jumps on load.
+- **Below `md`** the same component renders in a drawer. One component, two containers — the previous header kept a second hand-written copy of the nav for mobile, which is how the desktop bar drifted to three links while the drawer showed seven. The drawer's trigger is bordered like the search control beside it: bare, it was the only chromeless glyph on the bar, and the control that opens the whole site map read as less interactive than the one next to it.
 - **`aria-current`** has two values and they are distinct: `page` on route links, `location` on section links. Two things can be current on one page; they must not both claim it the same way.
 - **The `Sys.status` line** lives in the rail's foot, not in a sticky strip under the masthead. As chrome it cost 36px of sticky height on every scroll of every page to carry one static sentence, and it was the entire reason `--stick` was 112px. The signal it carries — the hub is live, not archival — is the North Star, so this is a real reduction in its prominence, taken deliberately for the height.
 - Retrieval-first: the nav's job is fast wayfinding, not decoration.

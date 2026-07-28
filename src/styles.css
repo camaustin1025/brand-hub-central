@@ -162,9 +162,15 @@
   --step-module: 3rem; /* 48px */
   --step-block: 1.5rem; /* 24px */
   --stick: 4.75rem; /* 76px */
-  --sidenav: 16rem; /* 256px */
+  --sidenav-full: 16rem; /* 256px */
   --sidenav-icon: 4rem; /* 64px */
+  --sidenav: var(--sidenav-full);
 }
+/*
+ * `--sidenav` is the width of the *track* the rail reserves, not of the panel
+ * sitting in it. The panel grows to --sidenav-full on hover and floats over the
+ * content; the track stays put, or the page would reflow under the pointer.
+ */
 :root[data-sidenav="icon"] {
   --sidenav: var(--sidenav-icon);
 }
