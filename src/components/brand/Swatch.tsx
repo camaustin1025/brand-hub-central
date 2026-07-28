@@ -52,7 +52,10 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
         </span>
       </button>
       <div className="space-y-2 p-4">
-        <div className="flex items-center justify-between">
+        {/* Wraps rather than collides: the swatch grid sizes its tiles to the
+            group (a six-value group gets narrower tiles than a four-value one),
+            so a long name and its hex have to be able to stack. */}
+        <div className="flex flex-wrap items-center justify-between gap-x-2">
           <span className="font-semibold">{swatch.name}</span>
           <button
             onClick={copy}

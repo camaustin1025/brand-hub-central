@@ -8,7 +8,7 @@ import { Link } from "@tanstack/react-router";
 const COLUMNS = [
   {
     heading: "Guidelines",
-    span: "md:col-span-3",
+    span: "md:col-span-4",
     links: [
       { label: "Foundation & Messaging", to: "/foundation" as const },
       { label: "Voice & Language Rules", to: "/voice" as const },
@@ -26,7 +26,7 @@ const COLUMNS = [
   },
   {
     heading: "Toolkit",
-    span: "md:col-span-2",
+    span: "md:col-span-3",
     links: [
       { label: "GTM & Employee Toolkit", to: "/toolkit" as const },
       { label: "AI & Skills", to: "/ai-skills" as const },
@@ -38,8 +38,11 @@ const COLUMNS = [
 export function Footer() {
   return (
     <footer className="dark bg-og-midnight text-og-ink">
+      {/* 3 / 4 / 2 / 3. The identity block used to take 5 of 12 columns for a
+          34ch paragraph, which left it half empty while the link stacks were
+          squeezed into 2 columns each and wrapped. */}
       <div className="site-container grid grid-cols-1 gap-y-10 py-14 md:grid-cols-12 md:gap-y-0">
-        <div className="flex flex-col gap-3.5 md:col-span-5 md:pr-10">
+        <div className="flex flex-col gap-3.5 md:col-span-3 md:pr-10">
           <img
             src="/logo-dark.png"
             alt="Ordergroove"
@@ -60,7 +63,10 @@ export function Footer() {
             <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
               {col.heading}
             </h2>
-            <div className="flex flex-col gap-2.5">
+            {/* No gap: `min-h-11` is already the 44px touch target, so adding
+                10px on top of it gave the footer 54px rows and made three
+                short link lists read as a much bigger block than they are. */}
+            <div className="flex flex-col">
               {col.links.map((l) => (
                 <Link
                   key={l.label}

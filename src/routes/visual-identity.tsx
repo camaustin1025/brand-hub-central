@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Copy } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Swatch } from "@/components/brand/Swatch";
+import { ModuleHead } from "@/components/brand/SectionHead";
 import { CopyToast } from "@/components/brand/CopyToast";
 import { COLOR_GROUPS, GRADIENTS } from "@/data/tokens";
 import { contrast, grade, passesBodyText } from "@/lib/contrast";
@@ -102,6 +103,13 @@ const MISUSE: Misuse[] = [
   },
 ];
 
+/** Anchor id for a colour group, whose titles are free text in the token data. */
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
 function VisualIdentity() {
   const { copy, toast } = useCopyToast();
 
@@ -113,14 +121,24 @@ function VisualIdentity() {
         subhead="Every value is click-to-copy. Watch the contrast badges: they enforce the green rule so you never ship green text on white."
       />
 
-      {/* Color groups */}
+      {/* Color groups.
+          A fixed `lg:grid-cols-4` stranded a fifth swatch alone on its own row
+          (Supporting neutrals has five) and split Secondary 4 + 2. `auto-fit`
+          collapses the tracks a group doesn't use and stretches the rest, so at
+          desktop each group fills exactly one row at its own tile size — 4 × 288,
+          5 × 227, 6 × 187 — and no group ends on an orphan. The tile floor is
+          low enough for six, which is why Swatch's name/hex row wraps. */}
       {COLOR_GROUPS.map((group) => (
-        <section key={group.title} className="site-container py-8">
-          <div className="mb-6 max-w-2xl">
-            <h2 className="text-2xl font-bold">{group.title}</h2>
-            {group.note && <p className="mt-2 text-sm text-muted-foreground">{group.note}</p>}
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section key={group.title} className="site-container section-step">
+          <ModuleHead
+            id={slug(group.title)}
+            title={group.title}
+            note={group.note}
+            aside={
+              <span className="text-sm text-muted-foreground">{group.swatches.length} values</span>
+            }
+          />
+          <div className="block-step grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(186px,1fr))]">
             {group.swatches.map((s) => (
               <Swatch key={s.hex} swatch={s} />
             ))}
@@ -129,15 +147,13 @@ function VisualIdentity() {
       ))}
 
       {/* Gradients */}
-      <section className="site-container py-8">
-        <div className="mb-6 max-w-2xl">
-          <h2 className="text-2xl font-bold">Gradients</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            The signature is Green to Cyan on dark. Reserve gradients for the payoff line, one per
-            section.
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="site-container section-step">
+        <ModuleHead
+          id="gradients"
+          title="Gradients"
+          note="The signature is Green to Cyan on dark. Reserve gradients for the payoff line, one per section."
+        />
+        <div className="block-step grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(186px,1fr))]">
           {GRADIENTS.map((g) => (
             <button
               key={g.name}
@@ -170,17 +186,14 @@ function VisualIdentity() {
       </section>
 
       {/* Green legibility — the contrast rule, demonstrated and measured */}
-      <section className="site-container py-8">
-        <div className="mb-6 max-w-2xl">
-          <h2 className="text-2xl font-bold">Green legibility</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Green is never one value. Every ratio below is measured live against WCAG, so this table
-            is the source of truth, not the prose. AA needs 4.5:1 for body text; 3:1 only counts for
-            24px+, or 18.7px+ bold.
-          </p>
-        </div>
+      <section className="site-container section-step">
+        <ModuleHead
+          id="green-legibility"
+          title="Green legibility"
+          note="Green is never one value. Every ratio below is measured live against WCAG, so this table is the source of truth, not the prose. AA needs 4.5:1 for body text; 3:1 only counts for 24px+, or 18.7px+ bold."
+        />
 
-        <div className="visual-container overflow-hidden border border-border">
+        <div className="visual-container block-step overflow-hidden border border-border">
           {/* Horizontal scroll rather than a squeezed table on small screens. */}
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] text-sm">
@@ -260,15 +273,13 @@ function VisualIdentity() {
       </section>
 
       {/* Logo */}
-      <section className="site-container py-8">
-        <div className="mb-6 max-w-2xl">
-          <h2 className="text-2xl font-bold">Logo</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            White wordmark with Groovy Green rings on Midnight. On white, the wordmark is Midnight
-            (ring green pending an open audit decision).
-          </p>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
+      <section className="site-container section-step">
+        <ModuleHead
+          id="logo"
+          title="Logo"
+          note="White wordmark with Groovy Green rings on Midnight. On white, the wordmark is Midnight (ring green pending an open audit decision)."
+        />
+        <div className="block-step grid gap-4 md:grid-cols-2">
           <div className="visual-container flex items-center justify-center border border-border bg-og-midnight p-12">
             <img src="/logo-dark.png" alt="Ordergroove logo on dark" className="max-h-16" />
           </div>
@@ -279,15 +290,13 @@ function VisualIdentity() {
       </section>
 
       {/* Logo misuse */}
-      <section className="site-container py-8 pb-16">
-        <div className="mb-6 max-w-2xl">
-          <h2 className="text-2xl font-bold">What not to do</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Every tile below is the real wordmark rendered through the thing that breaks it. If a
-            file in the wild looks like one of these, it needs rebuilding from the logo kit.
-          </p>
-        </div>
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="site-container section-step section-end">
+        <ModuleHead
+          id="misuse"
+          title="What not to do"
+          note="Every tile below is the real wordmark rendered through the thing that breaks it. If a file in the wild looks like one of these, it needs rebuilding from the logo kit."
+        />
+        <ul className="block-step grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {MISUSE.map((m) => (
             // bg-card matters: on the page's #F5F5F8 the destructive caption
             // measures 4.50:1, a hair under AA. On white it clears at 4.89:1.

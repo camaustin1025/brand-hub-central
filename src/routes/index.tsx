@@ -168,7 +168,10 @@ function Index() {
     <div className="bg-white">
       {/* HERO — the full-bleed gradient marquee. */}
       <section className="relative overflow-hidden" style={{ backgroundImage: HERO_GRADIENT }}>
-        <div className="site-container pb-32 pt-[72px]">
+        {/* The bar overlaps the gradient by 42px, so the hero's own bottom
+            padding is what sits empty above it. 128px of that on a phone is a
+            dead screenful between the standfirst and the search field. */}
+        <div className="site-container pb-24 pt-[72px] md:pb-32">
           <div className="flex items-center gap-4">
             <Kicker className="text-og-midnight">Ordergroove Brand Hub</Kicker>
             <span aria-hidden className="h-px flex-1 bg-og-midnight/25" />
@@ -192,55 +195,68 @@ function Index() {
         <OmniBar />
       </div>
 
-      {/* THE THREE DOORS — the first module under the hero. */}
-      <section id="guidelines" className="site-container pt-20">
+      {/* THE THREE DOORS — the first module under the hero.
+          The index number sits on its own hairline so the interval below it
+          reads as a bounded field rather than 90px of unexplained air, and the
+          title / blurb / link group tightly at the foot as one unit. */}
+      <section id="guidelines" className="site-container section-step">
         <SectionHead kicker="The three doors" aside={<Aside>Sec.01</Aside>} />
-        <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="block-step grid grid-cols-1 gap-5 md:grid-cols-3">
           {DOORS.map((d) =>
             d.dark ? (
               // `dark` flips --primary to #00FF85 for everything inside.
               <Link
                 key={d.n}
                 to={d.path}
-                className="dark flex min-h-[270px] flex-col bg-og-midnight p-[30px] transition-transform hover:-translate-y-1"
+                className="dark flex min-h-[264px] flex-col bg-og-midnight p-7 transition-transform hover:-translate-y-1"
               >
-                <span className="text-xs font-bold tracking-[0.16em] text-primary">{d.n}</span>
-                <h3 className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-white">
+                <span className="border-b border-white/20 pb-4 text-xs font-bold tracking-[0.16em] text-primary">
+                  {d.n}
+                </span>
+                <h3 className="mt-auto pt-10 text-4xl font-bold leading-none tracking-[-0.03em] text-white">
                   {d.title}
                 </h3>
-                <span className="mt-3.5 text-[15px] leading-normal text-white/66">{d.blurb}</span>
-                <CardLink className="mt-[22px]">{d.cta}</CardLink>
+                <span className="mt-3 text-[15px] leading-normal text-white/66">{d.blurb}</span>
+                <CardLink className="mt-5">{d.cta}</CardLink>
               </Link>
             ) : (
               <Link
                 key={d.n}
                 to={d.path}
-                className="flex min-h-[270px] flex-col border border-og-border bg-white p-[30px] transition-colors hover:border-og-midnight hover:bg-og-surface"
+                className="flex min-h-[264px] flex-col border border-og-border bg-white p-7 transition-colors hover:border-og-midnight hover:bg-og-surface"
               >
-                <span className="text-xs font-bold tracking-[0.16em] text-primary">{d.n}</span>
-                <h3 className="mt-auto text-4xl font-bold leading-none tracking-[-0.03em] text-og-midnight">
+                <span className="border-b border-og-border pb-4 text-xs font-bold tracking-[0.16em] text-primary">
+                  {d.n}
+                </span>
+                <h3 className="mt-auto pt-10 text-4xl font-bold leading-none tracking-[-0.03em] text-og-midnight">
                   {d.title}
                 </h3>
-                <span className="mt-3.5 text-[15px] leading-normal text-og-indigo">{d.blurb}</span>
-                <CardLink className="mt-[22px]">{d.cta}</CardLink>
+                <span className="mt-3 text-[15px] leading-normal text-og-indigo">{d.blurb}</span>
+                <CardLink className="mt-5">{d.cta}</CardLink>
               </Link>
             ),
           )}
         </div>
       </section>
 
-      {/* FOUNDATIONS — color + type, then gradients / icons / logo */}
-      <section id="color" className="site-container pt-20">
+      {/* FOUNDATIONS — color + type, then gradients / icons / logo.
+          The two rows are sub-modules of one section, so they sit a module step
+          apart, not the full section step that separates Foundations from what
+          comes before and after it. */}
+      <section id="color" className="site-container section-step">
         <SectionHead kicker="Foundations" aside={<Aside>Click any swatch to copy</Aside>} />
 
-        <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="block-step grid grid-cols-1 gap-5 md:grid-cols-2">
           {/* Core color */}
           <div className="flex flex-col gap-3.5">
             <div className="flex items-center justify-between">
               <Kicker as="h3">Core Color</Kicker>
               <Aside>F.01</Aside>
             </div>
-            <div className="grid grid-cols-[1.4fr_1fr_1fr] grid-rows-[repeat(2,110px)]">
+            {/* flex-1 + a floor rather than two fixed 110px rows: the swatch
+                block and the type specimen beside it are one band, so they
+                should end on the same line at every width. */}
+            <div className="grid min-h-[224px] flex-1 grid-cols-[1.4fr_1fr_1fr] grid-rows-2">
               {CORE_SWATCHES.map((s) => (
                 <button
                   key={s.hex}
@@ -294,7 +310,7 @@ function Index() {
           </div>
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="module-step grid grid-cols-1 gap-5 md:grid-cols-3">
           {/* Gradients */}
           <div className="flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
@@ -384,8 +400,10 @@ function Index() {
         </div>
       </section>
 
-      {/* MOST DOWNLOADED */}
-      <section id="downloads" className="site-container pt-20">
+      {/* GRAB-AND-GO — "Most downloaded" and "Templates & toolkit" are the same
+          idea (things you take away), so they are one band: a section step
+          before the pair, a module step between them. */}
+      <section id="downloads" className="site-container section-step">
         <SectionHead
           kicker="Most downloaded"
           aside={
@@ -397,7 +415,7 @@ function Index() {
             </Link>
           }
         />
-        <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="block-step grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {POPULAR.map((a) => (
             <Link
               key={a.title}
@@ -421,10 +439,14 @@ function Index() {
         </p>
       </section>
 
-      {/* TEMPLATES & TOOLKIT */}
-      <section id="templates" className="site-container pt-20">
+      {/* TEMPLATES & TOOLKIT — a module step, not a section step: it belongs to
+          the grab-and-go band above it. */}
+      <section
+        id="templates"
+        className="site-container module-step scroll-mt-[calc(var(--stick)+var(--step-block))]"
+      >
         <SectionHead kicker="Templates & toolkit" aside={<Aside>Sec.02</Aside>} />
-        <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="block-step grid grid-cols-1 gap-5 md:grid-cols-3">
           {TEMPLATES.map((t) => (
             <Link
               key={t.title}
@@ -451,7 +473,10 @@ function Index() {
       </section>
 
       {/* ASSISTANT BAND — full-bleed Midnight. `dark` resolves green to #00FF85. */}
-      <section id="assistant" className="dark relative mt-20 overflow-hidden bg-og-midnight">
+      <section
+        id="assistant"
+        className="dark relative mt-[var(--step-section)] overflow-hidden bg-og-midnight scroll-mt-[var(--stick)]"
+      >
         <div
           aria-hidden
           className="pointer-events-none absolute -right-64 -top-72 h-[820px] w-[820px] rounded-full opacity-25 mix-blend-screen"
@@ -460,7 +485,10 @@ function Index() {
               "radial-gradient(circle, #00FAFF 0%, rgba(234,255,0,0.85) 45%, rgba(23,19,47,0) 72%)",
           }}
         />
-        <div className="site-container relative flex flex-col items-start justify-between gap-12 py-[72px] lg:flex-row lg:items-center">
+        {/* Two defined masses, not a paragraph and two floating pills: the
+            action column gets a fixed width so the gap between them reads as
+            composition rather than leftover space. */}
+        <div className="site-container relative flex flex-col items-start justify-between gap-12 py-[var(--step-section)] lg:flex-row lg:items-center">
           <div className="max-w-[56ch]">
             <div className="flex items-center gap-3.5">
               <Kicker>AI &amp; Skills</Kicker>
@@ -477,7 +505,7 @@ function Index() {
               draws from is being written now.
             </p>
           </div>
-          <div className="flex shrink-0 flex-col gap-3">
+          <div className="flex w-full shrink-0 flex-col gap-3 sm:w-[320px]">
             <Link
               to="/ai-skills"
               className="inline-flex items-center justify-center gap-2.5 bg-og-green px-7 py-4 text-xs font-bold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:bg-white"
@@ -498,7 +526,7 @@ function Index() {
       {/* WHAT'S NEW + HELP */}
       <section
         id="updates"
-        className="site-container grid grid-cols-1 items-start gap-5 pb-24 pt-20 lg:grid-cols-[1.5fr_1fr]"
+        className="site-container section-step section-end grid grid-cols-1 items-start gap-x-5 gap-y-10 lg:grid-cols-[1.5fr_1fr]"
       >
         <div>
           <SectionHead kicker="What's new" aside={<Aside>Last 30 days</Aside>} />
@@ -506,7 +534,7 @@ function Index() {
             <Link
               key={u.title}
               to={u.path}
-              className="grid grid-cols-[80px_1fr] items-baseline gap-x-5 gap-y-1 border-b border-og-hairline py-5 transition-colors hover:bg-og-surface sm:grid-cols-[96px_1fr_130px] sm:gap-6"
+              className="grid grid-cols-[80px_1fr] items-baseline gap-x-5 gap-y-1 border-b border-og-hairline py-6 transition-colors hover:bg-og-surface sm:grid-cols-[96px_1fr_130px] sm:gap-6"
             >
               <span className="text-[14px] font-bold uppercase tracking-[0.12em] text-og-soft">
                 {u.date}
@@ -526,42 +554,54 @@ function Index() {
           ))}
         </div>
 
-        <div id="help" className="flex flex-col gap-5">
-          <div className="flex flex-col bg-og-surface p-[26px]">
-            <Kicker>Need a hand</Kicker>
-            <h3 className="mt-4 text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
-              Request a brand review
-            </h3>
-            <span className="mt-3 text-[15px] leading-normal text-og-indigo text-pretty">
-              Send a deck, page, or campaign to Brand & Content and we'll mark it up within two
-              working days.
-            </span>
-            <Link
-              to="/ai-skills"
-              className="mt-5 inline-flex items-center justify-center gap-2.5 bg-og-midnight px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-og-green transition-colors hover:bg-og-indigo"
-            >
-              Start a request
-              <MaterialSymbol name="arrow_forward" size={16} />
-            </Link>
-          </div>
-          <div className="flex flex-col border border-og-border p-[26px]">
-            <Kicker>Ask in Slack</Kicker>
-            <h3 className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-midnight">
-              #brand-help
-            </h3>
-            <span className="mt-2.5 text-[15px] leading-normal text-og-indigo">
-              Quick questions, one-off asks, and "is this on brand?" gut checks.
-            </span>
-          </div>
-          {/* Reserved slot — the new-hire course lands here once it's recorded. */}
-          <div className="flex flex-col border border-dashed border-og-soft/40 p-[26px]">
-            <Kicker className="text-og-soft">Reserved</Kicker>
-            <h3 className="mt-3.5 text-xl font-bold tracking-[-0.02em] text-og-soft">
-              Brand training &amp; onboarding
-            </h3>
-            <span className="mt-2.5 text-[15px] leading-normal text-og-soft">
-              A short course for new hires lives here once it's recorded.
-            </span>
+        {/*
+          One module of stacked rows, not three floating cards. Three separate
+          bordered boxes made this column ~260px taller than the updates list
+          beside it, which left a hole in the bottom-left corner of the page and
+          read as unfinished. Joined on shared hairlines the column lands close
+          to the list, and its own SectionHead starts it on the same rule the
+          left column starts on.
+        */}
+        <div id="help" className="scroll-mt-[calc(var(--stick)+var(--step-block))]">
+          <SectionHead kicker="Need a hand" aside={<Aside>Help</Aside>} />
+          <div className="block-step flex flex-col border border-og-border">
+            <div className="flex flex-col bg-og-surface p-6">
+              <h3 className="text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
+                Request a brand review
+              </h3>
+              <span className="mt-3 text-[15px] leading-normal text-og-indigo text-pretty">
+                Send a deck, page, or campaign to Brand & Content and we'll mark it up within two
+                working days.
+              </span>
+              <Link
+                to="/ai-skills"
+                className="mt-5 inline-flex items-center justify-center gap-2.5 bg-og-midnight px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-og-green transition-colors hover:bg-og-indigo"
+              >
+                Start a request
+                <MaterialSymbol name="arrow_forward" size={16} />
+              </Link>
+            </div>
+            <div className="flex flex-col border-t border-og-border p-6 py-5">
+              <Kicker>Ask in Slack</Kicker>
+              <h3 className="mt-2.5 text-xl font-bold tracking-[-0.02em] text-og-midnight">
+                #brand-help
+              </h3>
+              <span className="mt-2 text-[15px] leading-normal text-og-indigo">
+                Quick questions, one-off asks, and "is this on brand?" gut checks.
+              </span>
+            </div>
+            {/* Reserved slot — the new-hire course lands here once it's recorded.
+                The dashed edge that used to mark it can't survive inside a
+                shared-hairline stack, so the muted ink carries the state. */}
+            <div className="flex flex-col border-t border-dashed border-og-border p-6 py-5">
+              <Kicker className="text-og-soft">Reserved</Kicker>
+              <h3 className="mt-2.5 text-xl font-bold tracking-[-0.02em] text-og-soft">
+                Brand training &amp; onboarding
+              </h3>
+              <span className="mt-2 text-[15px] leading-normal text-og-soft">
+                A short course for new hires lives here once it's recorded.
+              </span>
+            </div>
           </div>
         </div>
       </section>

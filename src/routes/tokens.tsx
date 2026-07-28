@@ -5,10 +5,19 @@ import { CopyToast } from "@/components/brand/CopyToast";
 import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
 import { CORE, GRADIENTS } from "@/data/tokens";
 import { useCopyToast } from "@/hooks/use-copy-toast";
+import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
+import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/tokens")({
   component: Tokens,
 });
+
+const SECTIONS: PageSection[] = [
+  { id: "kits", label: "Downloadable token kits" },
+  { id: "core-color", label: "Core color" },
+  { id: "type", label: "Type" },
+  { id: "gradients", label: "Gradients" },
+];
 
 /** A single copyable cell: fills the table cell, copies its value, shows a copy
  *  glyph on hover/focus. Copies exactly what's displayed (WYSIWYG). */
@@ -43,14 +52,15 @@ function Tokens() {
 
       {/* Prose sits in the same 8-column measure PageHeader's title block uses,
           so the masthead and the body share one left edge. */}
-      <section className="site-container grid-12 pb-16 pt-12">
-        <div className="col-span-12 space-y-10 md:col-span-8">
-          <div className="visual-container border border-border bg-card p-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-lg font-bold">Downloadable token kits</h2>
-              <DraftBadge>Generating after audit D1/D2</DraftBadge>
-            </div>
-            <p className="mt-3 text-sm text-muted-foreground">
+      <section className="site-container grid-12 section-step section-end">
+        <div className="col-span-12 space-y-[var(--step-module)] md:col-span-8">
+          <div>
+            <ModuleHead
+              id="kits"
+              title="Downloadable token kits"
+              aside={<DraftBadge>Generating after audit D1/D2</DraftBadge>}
+            />
+            <p className="visual-container block-step border border-border bg-card p-6 text-sm text-muted-foreground">
               tokens.json and tokens.css will publish here once the two open green decisions land
               (the logo-on-white ring green, and the Green-300 ramp value). Building them now would
               bake in a value we're about to change.
@@ -58,11 +68,14 @@ function Tokens() {
           </div>
 
           <div>
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="text-2xl font-bold">Core color</h2>
-              <p className="text-sm text-muted-foreground">Click any value to copy it.</p>
-            </div>
-            <div className="mt-4 overflow-hidden rounded-xl border border-border">
+            <ModuleHead
+              id="core-color"
+              title="Core color"
+              aside={
+                <span className="text-sm text-muted-foreground">Click any value to copy it.</span>
+              }
+            />
+            <div className="block-step overflow-hidden rounded-xl border border-border">
               <table className="w-full text-sm">
                 <thead className="bg-card">
                   <tr>
@@ -98,8 +111,8 @@ function Tokens() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold">Type</h2>
-            <div className="mt-4 space-y-2 rounded-xl border border-border bg-card p-5 text-sm">
+            <ModuleHead id="type" title="Type" />
+            <div className="block-step space-y-2 rounded-xl border border-border bg-card p-5 text-sm">
               <p>
                 <span className="font-semibold">Family:</span> Figtree everywhere, weights 400 to
                 800.
@@ -116,11 +129,14 @@ function Tokens() {
           </div>
 
           <div>
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="text-2xl font-bold">Gradients</h2>
-              <p className="text-sm text-muted-foreground">Click a row to copy its CSS.</p>
-            </div>
-            <div className="mt-4 space-y-2">
+            <ModuleHead
+              id="gradients"
+              title="Gradients"
+              aside={
+                <span className="text-sm text-muted-foreground">Click a row to copy its CSS.</span>
+              }
+            />
+            <div className="block-step space-y-2">
               {GRADIENTS.map((g) => (
                 <button
                   key={g.name}
@@ -146,6 +162,8 @@ function Tokens() {
             </div>
           </div>
         </div>
+
+        <OnThisPage sections={SECTIONS} />
       </section>
 
       <CopyToast toast={toast} />

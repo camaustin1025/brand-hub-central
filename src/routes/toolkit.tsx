@@ -61,7 +61,9 @@ function Toolkit() {
         subhead="Decks, docs, signatures, and social graphics, plus the skills that generate them. Most links are being re-homed after the old hub went dark."
       />
 
-      <section className="site-container grid gap-5 pb-16 sm:grid-cols-2 lg:grid-cols-3">
+      {/* The grid used to butt straight into PageHeader's closing hairline with
+          no interval at all. */}
+      <section className="site-container section-step section-end grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {TOOLS.map((t) => (
           <div
             key={t.title}

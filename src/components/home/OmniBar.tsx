@@ -38,7 +38,9 @@ function ModeChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full px-4 text-xs font-bold uppercase tracking-[0.14em] transition-colors",
+        // flex-1 below sm so the two chips split the stacked row evenly instead
+        // of huddling at its left edge; auto width once they sit inline.
+        "inline-flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full px-4 text-xs font-bold uppercase tracking-[0.14em] transition-colors sm:flex-none",
         active ? "bg-og-green text-og-midnight" : "text-white/70 hover:text-white",
       )}
     >
@@ -104,29 +106,38 @@ export function OmniBar() {
           if (!wrap.current?.contains(e.relatedTarget as Node | null)) setOpen(false);
         }}
       >
-        {/* Midnight pill on the gradient. The 2px green focus ring rides the
-            whole shell so tabbing into the input is unmissable, offset out so
-            the gradient shows through the gap. */}
-        <div className="flex items-center gap-3 rounded-full bg-og-midnight py-3 pl-7 pr-3 shadow-[0_21px_46px_rgba(23,19,47,0.22),0_85px_85px_rgba(23,19,47,0.10)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-og-green sm:gap-4">
-          <MaterialSymbol
-            name={mode === "search" ? "search" : "auto_awesome"}
-            size={22}
-            className="shrink-0 text-white/70"
-          />
-          <input
-            ref={input}
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setOpen(true);
-            }}
-            onFocus={() => setOpen(true)}
-            onKeyDown={onKeyDown}
-            placeholder={PLACEHOLDER[mode]}
-            aria-label={mode === "search" ? "Search the brand hub" : "Ask the brand assistant"}
-            className="min-w-0 flex-1 border-none bg-transparent text-base text-white outline-none placeholder:text-white/45"
-          />
-          <div className="flex shrink-0 gap-1">
+        {/*
+          Midnight pill on the gradient. The 2px green focus ring rides the
+          whole shell so tabbing into the input is unmissable, offset out so
+          the gradient shows through the gap.
+
+          Below sm the bar stacks: side by side, the two mode chips took the
+          whole width of a 390px phone and left the input showing about nine
+          characters. The chips move to their own row and the shell relaxes to
+          a 28px radius, since a full pill can't hold two stacked rows.
+        */}
+        <div className="flex flex-col gap-2 rounded-[28px] bg-og-midnight p-3 shadow-[0_21px_46px_rgba(23,19,47,0.22),0_85px_85px_rgba(23,19,47,0.10)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-og-green sm:flex-row sm:items-center sm:gap-4 sm:rounded-full sm:py-3 sm:pl-7 sm:pr-3">
+          <div className="flex min-w-0 flex-1 items-center gap-3 pl-3 sm:pl-0">
+            <MaterialSymbol
+              name={mode === "search" ? "search" : "auto_awesome"}
+              size={22}
+              className="shrink-0 text-white/70"
+            />
+            <input
+              ref={input}
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setOpen(true);
+              }}
+              onFocus={() => setOpen(true)}
+              onKeyDown={onKeyDown}
+              placeholder={PLACEHOLDER[mode]}
+              aria-label={mode === "search" ? "Search the brand hub" : "Ask the brand assistant"}
+              className="min-w-0 flex-1 border-none bg-transparent py-2 text-base text-white outline-none placeholder:text-white/45 sm:py-0"
+            />
+          </div>
+          <div className="flex shrink-0 gap-1 border-t border-white/12 pt-1 sm:border-t-0 sm:pt-0">
             <ModeChip active={mode === "search"} onClick={() => setMode("search")}>
               Search
             </ModeChip>
@@ -187,22 +198,28 @@ export function OmniBar() {
         Quick jump — the four things people come here for most, as a single
         rule-separated row. Sits on the white page below the gradient, so the
         links run Midnight and go green on hover.
+
+        The divider rules only exist on one line. When the row wrapped on a
+        phone, the second line opened with a stranded tick mark, so below sm
+        the links become a two-column grid and the ticks drop out entirely.
       */}
-      <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+      <div className="mt-5 sm:flex sm:flex-wrap sm:items-center sm:gap-x-4">
+        <span className="block text-xs font-bold uppercase tracking-[0.16em] text-primary">
           Quick jump
         </span>
-        {QUICK_LINKS.map((q, i) => (
-          <span key={q.label} className="flex items-center gap-x-4">
-            {i > 0 && <span aria-hidden className="h-3 w-px bg-border" />}
-            <Link
-              to={q.path}
-              className="flex min-h-11 items-center text-xs font-bold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
-            >
-              {q.label}
-            </Link>
-          </span>
-        ))}
+        <div className="grid grid-cols-2 gap-x-4 sm:contents">
+          {QUICK_LINKS.map((q, i) => (
+            <span key={q.label} className="flex items-center gap-x-4">
+              {i > 0 && <span aria-hidden className="hidden h-3 w-px bg-border sm:block" />}
+              <Link
+                to={q.path}
+                className="flex min-h-11 items-center text-xs font-bold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
+              >
+                {q.label}
+              </Link>
+            </span>
+          ))}
+        </div>
       </div>
     </>
   );

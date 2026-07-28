@@ -1,10 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DraftBadge } from "@/components/brand/DraftBadge";
+import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
+import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/foundation")({
   component: Foundation,
 });
+
+const SECTIONS: PageSection[] = [
+  { id: "category", label: "The category we own" },
+  { id: "belief", label: "Central belief" },
+  { id: "audience", label: "Who we serve" },
+  { id: "rights", label: "Rights to Win" },
+  { id: "ladder", label: "The message ladder" },
+  { id: "boilerplate", label: "Company boilerplate" },
+];
 
 const RIGHTS = [
   {
@@ -48,11 +59,11 @@ function Foundation() {
 
       {/* Prose sits in the same 8-column measure PageHeader's title block uses,
           so the masthead and the body share one left edge. */}
-      <section className="site-container grid-12 pb-16 pt-12">
-        <div className="col-span-12 space-y-12 md:col-span-8">
+      <section className="site-container grid-12 section-step section-end">
+        <div className="col-span-12 space-y-[var(--step-module)] md:col-span-8">
           <div>
-            <h2 className="text-2xl font-bold">The category we own</h2>
-            <p className="mt-3 text-muted-foreground">
+            <ModuleHead id="category" title="The category we own" />
+            <p className="block-step text-muted-foreground">
               Our lead message is a category move, not a product pitch.
               <strong className="text-foreground"> Autonomous Subscriptions</strong> is the category
               we are defining: a team of AI agents that help enterprise brands recover revenue,
@@ -65,16 +76,16 @@ function Foundation() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold">Central belief</h2>
-            <p className="mt-3 text-muted-foreground">
+            <ModuleHead id="belief" title="Central belief" />
+            <p className="block-step text-muted-foreground">
               Subscriptions aren't programs. They're relationships. Growth comes from flexibility,
               not lock-in, and the best retention is giving customers control, not friction.
             </p>
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold">Who we serve</h2>
-            <p className="mt-3 text-muted-foreground">
+            <ModuleHead id="audience" title="Who we serve" />
+            <p className="block-step text-muted-foreground">
               Enterprise and mid-market B2C brands with repeat purchase patterns (CPG, beauty,
               wellness, pet, food, retail, omnichannel), typically $50M+ GMV. Buyers are VP/Director
               of eCommerce, VP/Head of Digital, and retention, loyalty, CRM, and subscription
@@ -83,11 +94,12 @@ function Foundation() {
           </div>
 
           <div>
-            <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold">Rights to Win</h2>
-              <span className="text-sm text-muted-foreground">locked order</span>
-            </div>
-            <div className="mt-5 space-y-4">
+            <ModuleHead
+              id="rights"
+              title="Rights to Win"
+              aside={<span className="text-sm text-muted-foreground">locked order</span>}
+            />
+            <div className="block-step space-y-4">
               {RIGHTS.map((r) => (
                 <div key={r.n} className="visual-container border border-border bg-card p-5">
                   <div className="flex gap-4">
@@ -103,11 +115,12 @@ function Foundation() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold">The message ladder</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Every asset starts at the top and steps down only as far as the format requires.
-            </p>
-            <ol className="mt-5 space-y-3">
+            <ModuleHead
+              id="ladder"
+              title="The message ladder"
+              note="Every asset starts at the top and steps down only as far as the format requires."
+            />
+            <ol className="block-step space-y-3">
               {LADDER.map((l, i) => (
                 <li key={l.rung} className="flex gap-4">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
@@ -122,18 +135,21 @@ function Foundation() {
             </ol>
           </div>
 
-          <div className="visual-container border border-border bg-card p-6">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold">Company boilerplate</h2>
-              <DraftBadge>Pending leadership approval</DraftBadge>
-            </div>
-            <p className="mt-3 text-sm text-muted-foreground">
+          <div>
+            <ModuleHead
+              id="boilerplate"
+              title="Company boilerplate"
+              aside={<DraftBadge>Pending leadership approval</DraftBadge>}
+            />
+            <p className="visual-container block-step border border-border bg-card p-6 text-sm text-muted-foreground">
               Ordergroove is the enterprise standard for subscriptions and recurring revenue,
               powering flexible subscriber experiences for 1,000+ leading brands across every
               channel.
             </p>
           </div>
         </div>
+
+        <OnThisPage sections={SECTIONS} />
       </section>
     </>
   );

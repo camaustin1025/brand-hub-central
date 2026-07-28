@@ -131,6 +131,43 @@
  * surface so a white module can nest inside a Midnight island (the hero omni
  * bar) and still resolve --primary to #009A50 rather than #00FF85.
  */
+/*
+ * --- Vertical rhythm -----------------------------------------------------
+ * Three steps, not one. The old page set every gap to `pt-20`, so a new
+ * top-level module and a sibling row inside one module were spaced the same
+ * and nothing read as a group. These are the only vertical intervals a page
+ * should reach for between blocks; anything smaller is a Tailwind 4px step
+ * inside a single block.
+ *
+ *   section — one top-level module to the next (the big breath)
+ *   module  — related sub-modules inside one section (the small breath)
+ *   block   — a head to the content it introduces, rows inside a sub-module
+ *
+ * They double: 24 / 48 / 96. Anything less than a doubling and the reader
+ * cannot tell a group boundary from an internal gap at a glance, which is
+ * exactly what the single `pt-20` was failing at.
+ *
+ * `--stick` is the sticky chrome height (76px bar + 36px status strip); it
+ * drives `scroll-margin-top` so an in-page anchor never lands underneath it.
+ */
+:root {
+  --step-section: 6rem; /* 96px */
+  --step-module: 3rem; /* 48px */
+  --step-block: 1.5rem; /* 24px */
+  --stick: 7rem; /* 112px */
+}
+/* Compressed on a phone, but the doubling is preserved — 20 / 40 / 72. Shrinking
+   only the section step (the first thing that fits) would flatten the ratio and
+   put the monotony straight back. */
+@media (width < 48rem) {
+  :root {
+    --step-section: 4.5rem; /* 72px */
+    --step-module: 2.5rem; /* 40px */
+    --step-block: 1.25rem; /* 20px */
+    --stick: 4.75rem; /* 76px — the status strip is hidden below md */
+  }
+}
+
 :root,
 .light {
   --radius: 0.625rem;
@@ -366,6 +403,27 @@
     border-radius: 8px;
     background-color: var(--color-border);
     overflow: hidden;
+  }
+
+  /*
+   * The three vertical intervals (see the --step-* block above). Sections use
+   * padding so a section that carries its own background colour still opens
+   * with the full break, and so `scroll-margin-top` can clear the sticky
+   * chrome when an in-page anchor is followed.
+   */
+  .section-step {
+    padding-top: var(--step-section);
+    scroll-margin-top: calc(var(--stick) + var(--step-block));
+  }
+  .module-step {
+    margin-top: var(--step-module);
+  }
+  .block-step {
+    margin-top: var(--step-block);
+  }
+  /* The closing interval before the footer — the section step, as padding. */
+  .section-end {
+    padding-bottom: var(--step-section);
   }
 
   /*

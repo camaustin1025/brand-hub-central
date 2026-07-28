@@ -1,10 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DraftBadge } from "@/components/brand/DraftBadge";
+import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
+import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/ai-skills")({
   component: AISkills,
 });
+
+const SECTIONS: PageSection[] = [
+  { id: "available", label: "Available now" },
+  { id: "assistant", label: "The brand assistant" },
+];
 
 const SKILLS = [
   {
@@ -36,11 +43,11 @@ function AISkills() {
 
       {/* Prose sits in the same 8-column measure PageHeader's title block uses,
           so the masthead and the body share one left edge. */}
-      <section className="site-container grid-12 pb-16 pt-12">
-        <div className="col-span-12 space-y-10 md:col-span-8">
+      <section className="site-container grid-12 section-step section-end">
+        <div className="col-span-12 space-y-[var(--step-module)] md:col-span-8">
           <div>
-            <h2 className="text-2xl font-bold">Available now</h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <ModuleHead id="available" title="Available now" />
+            <div className="block-step grid gap-4 sm:grid-cols-2">
               {SKILLS.map((s) => (
                 <div key={s.name} className="visual-container border border-border bg-card p-5">
                   <code className="text-sm font-semibold text-primary">{s.name}</code>
@@ -50,18 +57,21 @@ function AISkills() {
             </div>
           </div>
 
-          <div className="visual-container border border-border bg-card p-6">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold">The brand assistant</h2>
-              <DraftBadge>Pilot stretch goal</DraftBadge>
-            </div>
-            <p className="mt-3 text-sm text-muted-foreground">
+          <div>
+            <ModuleHead
+              id="assistant"
+              title="The brand assistant"
+              aside={<DraftBadge>Pilot stretch goal</DraftBadge>}
+            />
+            <p className="visual-container block-step border border-border bg-card p-6 text-sm text-muted-foreground">
               A hub assistant that answers brand questions from the full canon, lives on the
               homepage, and logs every question and answer so the guide keeps improving. Planned as
               an edge function once the core pages ship.
             </p>
           </div>
         </div>
+
+        <OnThisPage sections={SECTIONS} />
       </section>
     </>
   );

@@ -1,9 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { OnThisPage, type PageSection } from "@/components/layout/OnThisPage";
+import { ModuleHead } from "@/components/brand/SectionHead";
 
 export const Route = createFileRoute("/voice")({
   component: Voice,
 });
+
+const SECTIONS: PageSection[] = [
+  { id: "personality", label: "Personality" },
+  { id: "pass-fail", label: "The pass/fail rules" },
+  { id: "use-this", label: "Use this, not that" },
+];
 
 const RULES = [
   'Never lead with "AI" or "AI agents." No "AI-powered." The category and outcome lead; the technology supports.',
@@ -42,12 +50,13 @@ function Voice() {
       />
 
       {/* Prose sits in the same 8-column measure PageHeader's title block uses,
-          so the masthead and the body share one left edge. */}
-      <section className="site-container grid-12 pb-16 pt-12">
-        <div className="col-span-12 space-y-12 md:col-span-8">
+          so the masthead and the body share one left edge. Columns 9–12 carry
+          the contents rail rather than standing empty. */}
+      <section className="site-container grid-12 section-step section-end">
+        <div className="col-span-12 md:col-span-8">
           <div>
-            <h2 className="text-2xl font-bold">Personality</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <ModuleHead id="personality" title="Personality" />
+            <div className="block-step grid gap-4 sm:grid-cols-2">
               <div className="visual-container border border-border bg-card p-5">
                 <p className="eyebrow mb-2">We are</p>
                 <p className="text-sm">
@@ -63,15 +72,19 @@ function Voice() {
             </div>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold">The pass/fail rules</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              These are binary checks. If a draft violates any of them, it fails review. Each exists
-              because of a real cost we've already paid.
-            </p>
-            <ol className="mt-5 space-y-3">
+          <div className="module-step">
+            <ModuleHead
+              id="pass-fail"
+              title="The pass/fail rules"
+              aside={<span className="text-sm text-muted-foreground">{RULES.length} checks</span>}
+              note="These are binary checks. If a draft violates any of them, it fails review. Each exists because of a real cost we've already paid."
+            />
+            {/* Hairline-joined rows, not a loose stack: eleven equally spaced
+                lines had no grouping at all, so nothing marked where one rule
+                ended and the next began. */}
+            <ol className="block-step border-t border-border">
               {RULES.map((rule, i) => (
-                <li key={i} className="flex gap-3">
+                <li key={i} className="flex gap-3 border-b border-border py-3">
                   <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
                     {i + 1}
                   </span>
@@ -81,9 +94,9 @@ function Voice() {
             </ol>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold">Use this, not that</h2>
-            <div className="mt-5 overflow-hidden rounded-xl border border-border">
+          <div className="module-step">
+            <ModuleHead id="use-this" title="Use this, not that" />
+            <div className="block-step overflow-hidden rounded-xl border border-border">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-card">
@@ -103,6 +116,8 @@ function Voice() {
             </div>
           </div>
         </div>
+
+        <OnThisPage sections={SECTIONS} />
       </section>
     </>
   );
