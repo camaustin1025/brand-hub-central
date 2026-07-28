@@ -224,73 +224,83 @@ function Index() {
         </div>
       </section>
 
-      {/* FOUNDATIONS — color + type, then gradients / icons / logo.
-          The two rows are sub-modules of one section, so they sit a module step
+      {/* FOUNDATIONS — color, then type, then gradients / icons / logo.
+          Three stacked sub-modules of one section, so they sit a module step
           apart, not the full section step that separates Foundations from what
           comes before and after it. */}
       <section id="color" className="site-container section-step">
         <SectionHead kicker="Foundations" aside={<Aside>Click any swatch to copy</Aside>} />
 
-        <div className="block-step grid grid-cols-1 gap-5 md:grid-cols-2">
-          {/* Core color */}
-          <div className="flex flex-col gap-3.5">
-            <div className="flex items-center justify-between">
-              <Kicker as="h3">Core Color</Kicker>
-              <Aside>F.01</Aside>
-            </div>
-            {/* flex-1 + a floor rather than two fixed 110px rows: the swatch
-                block and the type specimen beside it are one band, so they
-                should end on the same line at every width. */}
-            <div className="grid min-h-[224px] flex-1 grid-cols-[1.4fr_1fr_1fr] grid-rows-2">
-              {CORE_SWATCHES.map((s) => (
-                <button
-                  key={s.hex}
-                  type="button"
-                  onClick={() => copy(s.hex)}
-                  aria-label={`Copy ${s.name} hex ${s.hex}`}
-                  className={cn(
-                    "flex cursor-pointer flex-col justify-end p-[18px] text-left transition-[filter] hover:brightness-[0.97]",
-                    s.tile,
-                    s.span,
-                  )}
-                >
-                  <span className={cn("text-[15px] font-bold", s.title)}>{s.name}</span>
-                  <span className={cn("text-[14px]", s.sub)}>{s.note}</span>
-                </button>
-              ))}
-            </div>
-            <Link to="/tokens" className="flex min-h-11 items-center self-start">
-              <CardLink>All {CORE_SWATCHES.length + 10} color tokens</CardLink>
-            </Link>
+        {/* Core color — full width.
+            Halved against the type specimen, the palette was 542px of a 1104px
+            field and the swatches read as a thumbnail of the palette rather
+            than the palette. Across the full field Midnight gets the mass it
+            has everywhere else in the system, and the two greens sit at a size
+            where the contrast note under each is legible at a glance, which is
+            the thing people come to this module to check. */}
+        <div className="block-step flex flex-col gap-3.5">
+          <div className="flex items-center justify-between">
+            <Kicker as="h3">Core Color</Kicker>
+            <Aside>F.01</Aside>
           </div>
+          {/* A floor, not fixed rows: the tiles keep their proportion as the
+              field grows. No flex-1 any more — there is no sibling column left
+              to end level with. */}
+          <div className="grid min-h-[288px] grid-cols-[1.4fr_1fr_1fr] grid-rows-2">
+            {CORE_SWATCHES.map((s) => (
+              <button
+                key={s.hex}
+                type="button"
+                onClick={() => copy(s.hex)}
+                aria-label={`Copy ${s.name} hex ${s.hex}`}
+                className={cn(
+                  "flex cursor-pointer flex-col justify-end p-[18px] text-left transition-[filter] hover:brightness-[0.97]",
+                  s.tile,
+                  s.span,
+                )}
+              >
+                <span className={cn("text-[15px] font-bold", s.title)}>{s.name}</span>
+                <span className={cn("text-[14px]", s.sub)}>{s.note}</span>
+              </button>
+            ))}
+          </div>
+          <Link to="/tokens" className="flex min-h-11 items-center self-start">
+            <CardLink>All {CORE_SWATCHES.length + 10} color tokens</CardLink>
+          </Link>
+        </div>
 
-          {/* Typography */}
-          <div id="type" className="flex flex-col gap-3.5">
-            <div className="flex items-center justify-between">
-              <Kicker as="h3">Typography</Kicker>
-              <Aside>F.02</Aside>
+        {/* Typography — full width, below the palette.
+            The specimen and the note read as two columns rather than one tall
+            stack: at 1104px a left-aligned 82px word over a 32ch paragraph
+            leaves most of the field empty, and a type specimen wants air around
+            the sample, not a hole beside it. They collapse back to a stack at
+            lg, which is where the two columns stop being wide enough to hold
+            the 82px sample and the measure side by side. */}
+        <div id="type" className="module-step flex flex-col gap-3.5">
+          <div className="flex items-center justify-between">
+            <Kicker as="h3">Typography</Kicker>
+            <Aside>F.02</Aside>
+          </div>
+          <div className="grid gap-6 border border-og-border bg-white p-[26px] lg:grid-cols-[1fr_minmax(0,34ch)] lg:items-end lg:gap-10">
+            <div>
+              <div className="text-[82px] font-extrabold leading-[0.9] tracking-[-0.04em] text-og-midnight">
+                Figtree
+              </div>
+              <p className="mt-4 text-[15px] text-og-midnight">
+                Aa Bb Cc 0123 — <span className="font-extrabold">ExtraBold</span>{" "}
+                <span className="font-bold">Bold</span>{" "}
+                <span className="font-semibold">SemiBold</span>{" "}
+                <span className="font-medium">Medium</span> <span>Regular</span>
+              </p>
             </div>
-            <div className="flex flex-1 flex-col justify-between border border-og-border bg-white p-[26px]">
-              <div>
-                <div className="text-[82px] font-extrabold leading-[0.9] tracking-[-0.04em] text-og-midnight">
-                  Figtree
-                </div>
-                <p className="mt-4 text-[15px] text-og-midnight">
-                  Aa Bb Cc 0123 — <span className="font-extrabold">ExtraBold</span>{" "}
-                  <span className="font-bold">Bold</span>{" "}
-                  <span className="font-semibold">SemiBold</span>{" "}
-                  <span className="font-medium">Medium</span> <span>Regular</span>
-                </p>
-              </div>
-              <div className="flex flex-col items-start justify-between gap-5 pt-6 sm:flex-row sm:items-end">
-                <p className="max-w-[32ch] text-[15px] leading-normal text-og-indigo text-pretty">
-                  The only brand font, for everything from decks to product. Soleil is sunsetted;
-                  never Helvetica or Arial.
-                </p>
-                <Link to="/downloads" className="flex min-h-11 shrink-0 items-center">
-                  <CardLink>Font kit</CardLink>
-                </Link>
-              </div>
+            <div className="flex flex-col items-start gap-4">
+              <p className="text-[15px] leading-normal text-og-indigo text-pretty">
+                The only brand font, for everything from decks to product. Soleil is sunsetted;
+                never Helvetica or Arial.
+              </p>
+              <Link to="/downloads" className="flex min-h-11 items-center">
+                <CardLink>Font kit</CardLink>
+              </Link>
             </div>
           </div>
         </div>
