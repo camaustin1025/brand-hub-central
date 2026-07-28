@@ -165,6 +165,14 @@
   --sidenav-full: 16rem; /* 256px */
   --sidenav-icon: 4rem; /* 64px */
   --sidenav: var(--sidenav-full);
+  /*
+   * How far the home omni bar rides up into the hero gradient. One value in two
+   * places: the bar's own negative margin, and the hero's bottom padding, which
+   * has to add it back so the visible gap between the standfirst and the bar
+   * still lands on --step-section. Split across two files it was a magic number
+   * that silently broke the hero's spacing whenever the bar moved.
+   */
+  --omni-overlap: 42px;
 }
 /*
  * `--sidenav` is the width of the *track* the rail reserves, not of the panel

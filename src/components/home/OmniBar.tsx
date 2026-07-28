@@ -101,7 +101,19 @@ export function OmniBar() {
     <>
       <div
         ref={wrap}
-        className="relative -mt-[42px]"
+        // The hero's bottom padding adds this same value back, so the visible
+        // gap above the bar stays a section step.
+        //
+        // An explicit calc, because the negative-margin shorthand cannot negate
+        // a custom property unambiguously. Note the underscores: they are
+        // Tailwind's escape for the spaces CSS calc requires around its
+        // operators, and without them the rule is invalid CSS.
+        //
+        // Do not write an example of the wrong form in a comment here. Tailwind
+        // scans this file as plain text, comments included, so a class-shaped
+        // string becomes a real rule — that is exactly how this line was first
+        // written, and the generated rule took the whole stylesheet down.
+        className="relative mt-[calc(var(--omni-overlap)_*_-1)]"
         onBlur={(e) => {
           if (!wrap.current?.contains(e.relatedTarget as Node | null)) setOpen(false);
         }}

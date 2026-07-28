@@ -199,10 +199,16 @@ function Index() {
     <div className="bg-white">
       {/* HERO — the full-bleed gradient marquee. */}
       <section className="relative overflow-hidden" style={{ backgroundImage: HERO_GRADIENT }}>
-        {/* The bar overlaps the gradient by 42px, so the hero's own bottom
-            padding is what sits empty above it. 128px of that on a phone is a
-            dead screenful between the standfirst and the search field. */}
-        <div className="site-container pb-24 pt-[72px] md:pb-32">
+        {/* The omni bar rides up into the gradient, so the hero's bottom padding
+            is what sits empty above it — add the overlap back and the *visible*
+            gap between the standfirst and the search field lands on
+            --step-section (96 desktop / 72 mobile) instead of on whatever the
+            literal happened to be. It was 128/96, giving 86 and 54.
+
+            The underscores are Tailwind's escape for the spaces CSS calc
+            requires around + and -. Without them the rule is invalid and takes
+            the whole stylesheet down with it. */}
+        <div className="site-container pb-[calc(var(--step-section)_+_var(--omni-overlap))] pt-[var(--step-section)]">
           <div className="flex items-center gap-4">
             <Kicker className="text-og-midnight">Ordergroove Brand Hub</Kicker>
             <span aria-hidden className="h-px flex-1 bg-og-midnight/25" />
