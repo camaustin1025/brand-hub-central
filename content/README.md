@@ -10,7 +10,7 @@ Nothing in here starts blank. Every file is pre-seeded from canon you already ha
 
 ## The rule that makes this work: slot IDs
 
-Every content block carries a **slot ID**. The slot ID is not decorative — it is the
+Every content block carries a **slot ID**. The slot ID is not decorative, it is the
 `id` passed to `<ModuleHead>` on the route, and it is what the side-nav contents rail
 anchors to. A block with no slot ID has nowhere to go.
 
@@ -27,8 +27,8 @@ highlights (nothing catches that at build time).
 | `/visual-identity` | `core` · `supporting-neutrals` · `secondary` · `gradients` · `green-legibility` · `logo` · `misuse` |
 | `/tokens` | `kits` · `core-color` · `type` · `gradients` |
 | `/ai-skills` | `available` · `assistant` |
-| `/downloads` | none — sections are Supabase categories, resolved at request time |
-| `/toolkit` | none — one flat grid |
+| `/downloads` | none, sections are Supabase categories, resolved at request time |
+| `/toolkit` | none, one flat grid |
 
 ---
 
@@ -49,16 +49,16 @@ Columns after `status` are the Supabase `assets` table, one for one. Two intake-
 columns get dropped at import: `ref` (the A-number from the Phase 0 audit) and
 `open_question` (what has to be answered before the row can go `[READY]`).
 
-- `type` — one of `logo` `font` `token` `background` `social` `template`
-- `formats` — pipe-separated, from `SVG` `PNG` `EPS` `TTF` `JSON` `CSS` `ZIP`
-- `tags` — semicolon-separated
-- `category_slug` — must match a row in `asset_categories`, or create it first at
+- `type`, one of `logo` `font` `token` `background` `social` `template`
+- `formats`, pipe-separated, from `SVG` `PNG` `EPS` `TTF` `JSON` `CSS` `ZIP`
+- `tags`, semicolon-separated
+- `category_slug`, must match a row in `asset_categories`, or create it first at
   `/admin/categories`
-- `storage_path` / `preview_path` — paths inside the `brand-assets` bucket. Blank means
+- `storage_path` / `preview_path`, paths inside the `brand-assets` bucket. Blank means
   the file is still being re-sourced, which is why it renders greyed out instead of as a
   broken link.
-- `preview_bg` — `midnight` or `light`
-- `is_published` — `FALSE` until the file actually exists
+- `preview_bg`, `midnight` or `light`
+- `is_published`, `FALSE` until the file actually exists
 
 ---
 
@@ -66,10 +66,10 @@ columns get dropped at import: `ref` (the A-number from the Phase 0 audit) and
 
 Carried over from `brand-style-guide.md` so one vocabulary covers the guide and the hub.
 
-- **`[READY]`** — approved. Convert it.
-- **`[DRAFT]`** — content exists, leadership hasn't ratified it. Ships behind `<DraftBadge>`.
-- **`[TO GATHER]`** — the source material does not exist yet. Blocks the block.
-- **`[OPEN: D#]`** — waiting on a decision in `decisions.md`. Ships behind `<DraftBadge>`.
+- **`[READY]`**, approved. Convert it.
+- **`[DRAFT]`**, content exists, leadership hasn't ratified it. Ships behind `<DraftBadge>`.
+- **`[TO GATHER]`**, the source material does not exist yet. Blocks the block.
+- **`[OPEN: D#]`**, waiting on a decision in `decisions.md`. Ships behind `<DraftBadge>`.
 
 Nothing ships as "Coming soon." The old hub had four of those pages and the Phase 0
 audit retired every one of them by name.
@@ -78,10 +78,31 @@ audit retired every one of them by name.
 
 ## Fill order
 
-1. **`decisions.md`** — ~30 minutes. Unblocks the largest share of everything else.
-2. **`tokens.md`** — ~10 minutes. Mostly pre-filled; you are confirming, not writing.
-3. **`pages/*.md`** — roughly one sitting per page. `foundation.md` is done as the worked example.
-4. **`assets.csv`** — the long pole. This is file-gathering, not writing, and it does not block the guideline pages.
+1. **`decisions.md`**, 12 of 17 answered. Five open, one of which is yours.
+2. **`tokens.md`**, confirmed. Only D3 is still open on this file.
+3. **`pages/*.md`**, **all six pre-filled from canon.** You are reviewing, not writing.
+   Read for what canon got wrong, not for what is missing; the gaps are already marked.
+4. **`assets.csv`**, the long pole. File-gathering, not writing, and it blocks no guideline page.
+
+### Where the real work is left
+
+The pre-fill covers everything canon can answer. What it cannot answer, per page:
+
+| Page | State | What it needs from a person |
+|---|---|---|
+| `foundation.md` | Ready except boilerplate | The boilerplate rewrite, all three lengths |
+| `voice.md` | Complete | Nothing. Canon covers it end to end |
+| `visual-identity.md` | Ready except gradients | D3, and two new slot IDs (see below) |
+| `tokens.md` | Ready | The generated kits, and the Figma logo export |
+| `toolkit.md` | Mostly empty | Seven link hunts. This is the thinnest page in the hub |
+| `ai-skills.md` | Ready except the assistant | An owner and a timeline for the unified skill |
+
+### Slot IDs that do not exist yet
+
+`visual-identity.md` carries two blocks the Phase 0 manifest requires and the slot registry
+does not have: **`circles`** and **`containers`**. Add them to the `/visual-identity` array in
+`src/data/sections.ts` in the same commit as the blocks. Nothing enforces this at build time,
+so a missing id shows up as a heading that never highlights, not as an error.
 
 ---
 
@@ -89,14 +110,14 @@ audit retired every one of them by name.
 
 Precedence order. Higher wins every conflict.
 
-1. **`canon/brand.md`** — canonical agent-facing context
-2. **`canon/brand-style-guide.md` v0.2**, August 4 2026 — the full guide, section-numbered
-3. **`Phase 0 - Old Hub Content Audit.md`** — 37 sections graded KEEP/UPDATE/RETIRE,
+1. **`canon/brand.md`**, canonical agent-facing context
+2. **`canon/brand-style-guide.md` v0.2**, August 4 2026, the full guide, section-numbered
+3. **`Phase 0 - Old Hub Content Audit.md`**, 37 sections graded KEEP/UPDATE/RETIRE,
    plus the carry-over manifest that scopes v1
    (`~/Desktop/Projects/brand-hub/docs/`)
-4. **`Brand vs Product Audit.md`** — where brand and product design have drifted
+4. **`Brand vs Product Audit.md`**, where brand and product design have drifted
    (`~/Desktop/Projects/brand-hub/content-sources/`)
-5. **Frontify export** — the old hub as 40 markdown pages plus an asset manifest
+5. **Frontify export**, the old hub as 40 markdown pages plus an asset manifest
    (`~/Desktop/Ordergroove-Brand-Hub-Export/markdown/`)
 
 ### `canon/` is the source, the other copies are mirrors
@@ -104,10 +125,10 @@ Precedence order. Higher wins every conflict.
 Style guide 8.3 now says the guide lives in the Brand Hub, so `canon/` is where it lives and
 where it gets edited. Two mirrors exist and both are downstream:
 
-- `~/Documents/claude-prompt-library/brand-style-guide.md` and `brand.md` — the pair that
+- `~/Documents/claude-prompt-library/brand-style-guide.md` and `brand.md`, the pair that
   agents load into project sessions. **This mirror matters most**, because a session reading
   a stale copy will confidently produce off-brand work.
-- `~/Desktop/Projects/brand-hub/content-sources/` — the reference checkout that also holds
+- `~/Desktop/Projects/brand-hub/content-sources/`, the reference checkout that also holds
   the Phase 0 audit and the old-hub PDF.
 
 **The sync rule:** edit `canon/`, then copy out to both. Never edit a mirror directly. If

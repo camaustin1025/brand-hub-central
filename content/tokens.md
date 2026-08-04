@@ -15,7 +15,7 @@ screenshot.
 
 ## Colors
 
-`onLight` / `onDark` record the brand's *intent* — where a value is approved to appear,
+`onLight` / `onDark` record the brand's *intent*, where a value is approved to appear,
 including as a fill or at large sizes. They do **not** drive the contrast badge on
 `<Swatch>`; that verdict is measured from the hex at runtime, because these flags disagreed
 with the measured ratio on six swatches. Editing a flag will not change what a badge says.
@@ -33,7 +33,7 @@ with the measured ratio on six swatches. Editing a flag will not change what a b
 
 ### Supporting neutrals
 
-Fully cleared in the audit — every value matches canon exactly.
+Fully cleared in the audit, every value matches canon exactly.
 
 | name | hex | rgb | usage | onLight | onDark |
 |---|---|---|---|---|---|
@@ -88,7 +88,7 @@ light backgrounds" note.
 **Guardrail:** the web brand gradient is deliberate, separate canon for web. It looks like a
 near-miss of the marketing stops. Do not "correct" either one toward the other.
 
-**Retired `[OPEN: D3]`:** old-hub Gradients 3–8. Four use off-palette colors — `#E90052`
+**Retired `[OPEN: D3]`:** old-hub Gradients 3–8. Four use off-palette colors, `#E90052`
 (a floating red, distinct from Radiant Radish `#D32E55`) and `#F669A7` (a pink in no
 palette). Gradient 7 (`#00FAFF` → `#8500FF`) is built from canon colors if you want to
 re-bless it.
@@ -115,7 +115,7 @@ Source: style guide 5.3. Figtree TTFs already sit in
 | Emoji | Never, in designed materials |
 
 Figtree is a free Google Font and works natively in Google Workspace, so no substitute font
-is needed. The old hub's Inter-for-Google-Suite page is retired — it is the documented root
+is needed. The old hub's Inter-for-Google-Suite page is retired, it is the documented root
 of the brand/product font split, and republishing it would re-seed the drift.
 
 ---

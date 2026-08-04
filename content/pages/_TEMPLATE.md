@@ -5,11 +5,11 @@
 **Owner:** Brand & Content
 **Last reviewed:** YYYY-MM-DD
 
-**Page header** — renders in `<PageHeader>`. Format limits from style guide 4.2 apply.
+**Page header**, renders in `<PageHeader>`. Format limits from style guide 4.2 apply.
 
 - **Eyebrow:** _(≤ 30 chars, ALL CAPS at render, no trailing period)_
 - **Title:** _(≤ 60 chars, no trailing period)_
-- **Subhead:** _(≤ 140 chars. If this is a hero, it must contain "subscriptions" — rule 3.1.2)_
+- **Subhead:** _(≤ 140 chars. If this is a hero, it must contain "subscriptions", rule 3.1.2)_
 
 ---
 
@@ -21,7 +21,7 @@
 - **Note:** _(optional one-liner under the heading; keep to ~68ch of running prose)_
 - **Aside:** _(optional right-side label, e.g. "locked order", or a `<DraftBadge>`)_
 - **Status:** `[READY]`
-- **Source:** _(e.g. "style guide 1.3" or "Phase 0 audit §23" — required)_
+- **Source:** _(e.g. "style guide 1.3" or "Phase 0 audit §23", required)_
 
 **Body:**
 
@@ -45,7 +45,7 @@ Run style guide Section 3 against every word above. These are pass/fail, not sug
 - [ ] "Subscriptions" appears in any hero subhead (3.1.2)
 - [ ] Does not lead with "AI" or "AI agents"; no "AI-powered" (3.1.1)
 - [ ] "Everychannel" is one word (3.1.4)
-- [ ] No competitor named — Recharge, Loop, Skio, Smartrr, Stay Ai, Bold (3.1.5)
+- [ ] No competitor named, Recharge, Loop, Skio, Smartrr, Stay Ai, Bold (3.1.5)
 - [ ] No "out of the box" (3.1.6) · no "heartland intelligence" (3.1.7) ·
       no "Relationship Commerce" (3.1.8)
 - [ ] "build" is not the verb for adopting Ordergroove (3.1.9)

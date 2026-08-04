@@ -122,7 +122,7 @@ have a defined job, which is what kills the drift.
 
 ---
 
-## Tier 3 — v1.1, do not block launch
+## Tier 3, v1.1, do not block launch
 
 - [ ] **D8. Illustration and animation policy.** Old hub says none is used, 5.4 expects a
       style eventually, and motion now exists (Retention Agent video).

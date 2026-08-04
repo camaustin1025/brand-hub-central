@@ -20,7 +20,7 @@ see exactly what "filled out" looks like before starting a blank one.
 ### Slot: `category`
 
 - **Heading:** The category we own
-- **Status:** `[READY]` (definition itself is `[OPEN]` per style guide 1.2 — leadership is still sharpening it; the working description below holds)
+- **Status:** `[READY]` (definition itself is `[OPEN]` per style guide 1.2, leadership is still sharpening it; the working description below holds)
 - **Source:** style guide 1.2, `brand.md` Positioning
 
 **Body:**
@@ -65,10 +65,10 @@ see exactly what "filled out" looks like before starting a blank one.
 
 - **Heading:** Rights to Win
 - **Aside:** locked order
-- **Status:** `[READY]` — but see `decisions.md`, the older four-pillar framework still circulates in legacy materials (1.5 `[OPEN]`)
+- **Status:** `[READY]`: but see `decisions.md`, the older four-pillar framework still circulates in legacy materials (1.5 `[OPEN]`)
 - **Source:** style guide 1.5, `brand.md`
 
-**Structured items** — renders as three cards, do not reorder
+**Structured items**, renders as three cards, do not reorder
 
 | # | Title | Body |
 |---|---|---|
@@ -85,7 +85,7 @@ see exactly what "filled out" looks like before starting a blank one.
 - **Status:** `[READY]`
 - **Source:** style guide 4.1
 
-**Structured items** — renders as a numbered list
+**Structured items**, renders as a numbered list
 
 | Rung | Body |
 |---|---|
@@ -105,7 +105,7 @@ see exactly what "filled out" looks like before starting a blank one.
   say rewrite, not pending approval, or readers will treat the text below as near-final.
 - **Source:** style guide 1.7, superseded
 
-**Body** — currently on the page, keep only until the rewrite lands:
+**Body**, currently on the page, keep only until the rewrite lands:
 
 > Ordergroove is the enterprise standard for subscriptions and recurring revenue, powering
 > flexible subscriber experiences for 1,000+ leading brands across every channel.
@@ -120,7 +120,7 @@ Legal-approved customer names usable in boilerplate (blocked on D11).
 
 ## Not on this page, and why
 
-The Phase 0 audit retired the old hub's entire Key Messaging chapter — the vision statement
+The Phase 0 audit retired the old hub's entire Key Messaging chapter, the vision statement
 was built on "Relationship Commerce" (3.1.8) and the market-map graphic named seven
 competitors (3.1.5). Nothing from it was salvaged. Personas are D5: condensed cards aligned
 to 1.4 with a retention/CRM leader added, if they ship in v1 at all.
