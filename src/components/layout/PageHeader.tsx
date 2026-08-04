@@ -1,3 +1,5 @@
+import { Kicker } from "@/components/brand/Kicker";
+
 /**
  * The masthead every inner route opens with. It sits on the same 12-column
  * field as Home — 8 columns of title — and closes on a hairline so the page
@@ -26,7 +28,9 @@ export function PageHeader({
     <div className="site-container">
       <div className="grid-12 border-b border-border py-12 md:py-16">
         <div className="col-span-12 md:col-span-9">
-          <p className="eyebrow mb-3">{eyebrow}</p>
+          <Kicker as="p" className="mb-3">
+            {eyebrow}
+          </Kicker>
           <h1 className="text-4xl font-bold md:text-5xl">{title}</h1>
           {subhead && (
             <p className="mt-4 max-w-[52ch] text-lg text-foreground md:text-xl">{subhead}</p>

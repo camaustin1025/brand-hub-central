@@ -13,7 +13,7 @@ export function CardLink({ children, className }: { children: ReactNode; classNa
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.16em] text-primary",
+        "inline-flex items-center gap-1.5 text-eyebrow font-bold uppercase text-primary",
         className,
       )}
     >

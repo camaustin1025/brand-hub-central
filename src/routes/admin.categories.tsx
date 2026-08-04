@@ -21,7 +21,11 @@ export const Route = createFileRoute("/admin/categories")({
 });
 
 function slugify(s: string) {
-  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return s
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 function CategoriesPage() {
@@ -34,8 +38,7 @@ function CategoriesPage() {
   };
 
   const upsert = useMutation({
-    mutationFn: (data: Parameters<typeof upsertCategory>[0]["data"]) =>
-      upsertCategory({ data }),
+    mutationFn: (data: Parameters<typeof upsertCategory>[0]["data"]) => upsertCategory({ data }),
     onSuccess: () => {
       toast.success("Saved");
       invalidate();
@@ -58,9 +61,7 @@ function CategoriesPage() {
   return (
     <div>
       <h1 className="text-2xl font-semibold text-foreground">Categories</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Group assets in the downloads page.
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground">Group assets in the downloads page.</p>
 
       <div className="mt-6 rounded-xl border border-border bg-white">
         <div className="border-b border-border px-5 py-4">
@@ -71,8 +72,13 @@ function CategoriesPage() {
               placeholder="Label (e.g. Logos)"
               value={newLabel}
               onChange={(e) => {
+                // Track the label until the slug is edited by hand. `!newSlug`
+                // alone only ever matched on the first keystroke, so "Logos"
+                // was saved with the slug "l".
+                if (!newSlug || newSlug === slugify(newLabel)) {
+                  setNewSlug(slugify(e.target.value));
+                }
                 setNewLabel(e.target.value);
-                if (!newSlug) setNewSlug(slugify(e.target.value));
               }}
             />
             <input

@@ -1,4 +1,4 @@
-# Foundation & Messaging
+# Positioning & Messaging
 
 **Route:** `/foundation`
 **Status:** `[READY]` except `boilerplate`, which is `[TO GATHER]` and needs a rewrite
@@ -11,7 +11,7 @@ see exactly what "filled out" looks like before starting a blank one.
 
 **Page header**
 
-- **Eyebrow:** Foundation & Messaging
+- **Eyebrow:** Positioning & Messaging
 - **Title:** Who we are and what we lead with
 - **Subhead:** Ordergroove is the enterprise standard for subscriptions and recurring revenue. Always ladder down from the category, never up from features.
 

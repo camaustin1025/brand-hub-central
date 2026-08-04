@@ -51,7 +51,12 @@ function hit(h: Omit<SearchHit, "icon" | "terms">, extraTerms: (string | null | 
 /** Pages, colors, and gradients — canon, always available, no network. */
 export const STATIC_HITS: SearchHit[] = [
   ...ALL_ROUTES.map((r) =>
-    hit({ id: `page:${r.path}`, kind: "Page", title: r.label, subtitle: r.blurb, path: r.path }),
+    hit(
+      { id: `page:${r.path}`, kind: "Page", title: r.label, subtitle: r.blurb, path: r.path },
+      // Retired labels ride along here, so renaming a route in the nav never
+      // costs it a search hit under the name people still type.
+      r.terms,
+    ),
   ),
   ...COLOR_GROUPS.flatMap((g) =>
     g.swatches.map((s) =>

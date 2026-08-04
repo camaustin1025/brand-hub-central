@@ -60,6 +60,17 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
+  /*
+   * The two signature radii (DESIGN.md rounded.card / rounded.hero). They are
+   * named steps, not points on the generated ramp above — that ramp runs
+   * 6/8/10/14/18/22/26 off `--radius`, and neither 20 nor 28 lands on it. They
+   * were literals inside `.visual-container` and `.hero-island`, plus a third
+   * hand-typed copy on the omni bar, so the brand's two most-used corners were
+   * the only ones no utility could reach.
+   */
+  --radius-card: 20px;
+  --radius-hero: 28px;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -120,9 +131,90 @@
   --color-og-soft: #666279; /* muted-ink, secondary text on light */
   --color-og-ink: #ebeaf0; /* ink-on-dark, body text on Midnight */
 
+  /*
+   * One typeface, one token. `--font-figtree` used to sit beside this holding
+   * a byte-identical value, so the stylesheet had two names for the same
+   * stack and no rule about which to reach for — and the `font-figtree`
+   * utility it generated was never used once.
+   */
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --font-figtree: "Figtree", ui-sans-serif, system-ui, sans-serif;
 
+  /*
+   * --- Type scale ---------------------------------------------------------
+   * DESIGN.md → Typography, as tokens. Each step binds its size to the
+   * line-height and tracking it was specified with, because those three were
+   * previously retyped by hand at every call site: `text-[15px]` appeared 14
+   * times and picked `leading-relaxed`, `leading-normal`, or nothing at all
+   * depending on who wrote it. A step is now one class, and a deviation is
+   * visible as an explicit override next to it.
+   *
+   * Weight deliberately stays at the call site. DESIGN.md gives Label a
+   * 500–600 range, and the same step legitimately runs bold in a button and
+   * regular in a paragraph — baking one weight in would mean overriding it
+   * more often than honouring it.
+   *
+   * Display tier — set only for the moment each one names.
+   */
+  --text-marquee: clamp(56px, 11cqi, 132px);
+  --text-marquee--line-height: 0.86;
+  --text-marquee--letter-spacing: -0.04em;
+
+  --text-specimen: 82px;
+  --text-specimen--line-height: 0.9;
+  --text-specimen--letter-spacing: -0.04em;
+
+  --text-band: 52px;
+  --text-band--line-height: 1;
+  --text-band--letter-spacing: -0.03em;
+
+  --text-display: clamp(2rem, 5vw, 3.25rem);
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.02em;
+
+  --text-headline: clamp(1.5rem, 3vw, 2rem);
+  --text-headline--line-height: 1.08;
+  --text-headline--letter-spacing: -0.02em;
+
+  --text-card-title: 26px;
+  --text-card-title--line-height: 1.05;
+  --text-card-title--letter-spacing: -0.025em;
+
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.2;
+  --text-title--letter-spacing: -0.01em;
+
+  /* Text tier — the four steps of The Four-Step Rule, plus the eyebrow. */
+  --text-lead: 17px;
+  --text-lead--line-height: 1.6;
+
+  --text-body: 15px;
+  --text-body--line-height: 1.5;
+
+  --text-label: 14px;
+  --text-label--line-height: 1.4;
+
+  --text-micro: 11px;
+  --text-micro--line-height: 1.2;
+  --text-micro--letter-spacing: 0.12em;
+
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.16em;
+
+  /*
+   * The Tight-Head Rule's line-height, as a token. The base layer applies it
+   * to bare h1–h3, but a heading that takes a `--text-*` step needs to opt
+   * back into it, since the step's own line-height would otherwise win.
+   */
+  --leading-head: 1.08;
+
+  /*
+   * Standalone tracking, for the two places a step's letter-spacing is wanted
+   * at a size that is not that step: the What's-new date is Label-sized but
+   * tracked like Micro. The values mirror `--text-micro--letter-spacing` and
+   * `--text-eyebrow--letter-spacing` above — change them together.
+   */
+  --tracking-micro: 0.12em;
   --tracking-eyebrow: 0.16em;
 }
 
@@ -278,7 +370,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-figtree);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -314,7 +406,7 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-figtree);
+    font-family: var(--font-sans);
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.08;
@@ -345,14 +437,13 @@
       "opsz" 24;
   }
 
-  /* Eyebrow label — ALL CAPS, tracked, in the correct-contrast green */
-  .eyebrow {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-eyebrow);
-    color: var(--color-primary);
-  }
+  /*
+   * The `.eyebrow` class used to live here, a second implementation of what
+   * `Kicker` already does — and the two disagreed on weight (600 here, 700 in
+   * the component). DESIGN.md's Eyebrow Rule says the treatment is always
+   * reached through `Kicker` / `CardLink` / `Aside`, so the class is gone and
+   * its three callers now use `Kicker`.
+   */
 
   /* Centered content wrapper (Tailwind v4's `container` no longer centers/pads).
      1280px / 40px gutter matches the Gradient Marquee home; steps down to 24px
@@ -372,16 +463,17 @@
   /* Card modules — uniform 20px, matching the live site and the Carta hub. */
   .visual-container,
   .visual-container-left {
-    border-radius: 20px;
+    border-radius: var(--radius-card);
   }
   /*
    * The hero island's signature radius (DESIGN.md rounded.hero). It lives here
-   * rather than as a `rounded-[28px]` utility so `.notch-br` below can still
+   * rather than as a `rounded-hero` utility so `.notch-br` below can still
    * square the corner — utilities beat components in the cascade, so pairing
-   * the notch with a radius utility silently loses the notch.
+   * the notch with a radius utility silently loses the notch. Anything that
+   * does *not* need the notch can reach the same corner as `rounded-hero`.
    */
   .hero-island {
-    border-radius: 28px;
+    border-radius: var(--radius-hero);
   }
 
   /* Opt-in signature shape: three rounded corners + one square corner. */
@@ -468,22 +560,29 @@
 }
 
 @layer utilities {
+  /*
+   * The signature gradient, as a utility for the two places that want it as a
+   * class rather than an inline style. Stops come from the palette tokens
+   * instead of retyped hex — `data/tokens.ts` owns the gradient CSS, and
+   * anything rendering the full list reads it from there.
+   *
+   * `.bg-og-web`, `.bg-og-purple`, and `.bg-og-warm` used to sit here as well.
+   * Nothing referenced any of them: they were a second copy of three
+   * `GRADIENTS` entries, and the only place in the stylesheet where the web
+   * gradient's off-palette stops appeared. Deleted rather than re-tokenized,
+   * since the gradient pages already render those three from the data.
+   */
   .bg-og-signature {
-    background-image: linear-gradient(112deg, #00ff85, #00faff);
-  }
-  .bg-og-web {
-    background-image: linear-gradient(112deg, #e0fe00, #0bfe5f, #00fefe);
-  }
-  .bg-og-purple {
-    background-image: linear-gradient(112deg, #7821f5, #71acff, #00ff85);
-  }
-  .bg-og-warm {
-    background-image: linear-gradient(112deg, #ff8500, #eaff00);
+    background-image: linear-gradient(112deg, var(--color-og-green), var(--color-og-cyan));
   }
   /* Placeholder tile for asset/template thumbnails not yet dropped in — a faint
      diagonal hatch on the light surface, both tones from the palette. */
   .thumb-hatch {
-    background-color: #f5f5f8;
-    background-image: repeating-linear-gradient(45deg, #d8d7df 0 1px, transparent 1px 10px);
+    background-color: var(--color-og-surface);
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--color-og-border) 0 1px,
+      transparent 1px 10px
+    );
   }
 }

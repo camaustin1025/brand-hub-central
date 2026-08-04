@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
  */
 export function DraftBadge({ children = "Draft" }: { children?: ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-og-lemon bg-og-lemon/20 px-2 py-0.5 text-[11px] font-semibold text-og-midnight dark:border-og-lemon/40 dark:bg-og-lemon/10 dark:text-og-lemon">
+    <span className="inline-flex items-center gap-1 rounded-full border border-og-lemon bg-og-lemon/20 px-2 py-0.5 text-micro font-semibold text-og-midnight dark:border-og-lemon/40 dark:bg-og-lemon/10 dark:text-og-lemon">
       {children}
     </span>
   );

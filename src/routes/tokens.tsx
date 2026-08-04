@@ -37,7 +37,7 @@ function Tokens() {
   return (
     <>
       <PageHeader
-        eyebrow="Design Tokens"
+        eyebrow="Tokens for Code"
         title="The canonical values, ready for code"
         subhead="Marketing canon: Figtree, Groovy Green #00FF85 on dark and #009A50 on light, Midnight #17132F. Product reconciliation is a later decision."
       />

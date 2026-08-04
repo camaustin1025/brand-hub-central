@@ -17,7 +17,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-[60] h-[var(--stick)] border-b border-border bg-white">
       <div className="site-container flex h-full items-center justify-between gap-6">
-        <div className="flex items-center gap-[18px]">
+        <div className="flex items-center gap-5">
           <NavDrawer />
           <Link
             to="/"
@@ -33,17 +33,17 @@ export function Header() {
             />
           </Link>
           <span aria-hidden className="hidden h-[22px] w-px bg-border sm:block" />
-          <span className="hidden text-xs font-bold uppercase tracking-[0.16em] text-primary sm:block">
+          <span className="hidden text-eyebrow font-bold uppercase text-primary sm:block">
             Brand Hub
           </span>
         </div>
 
-        <div className="flex items-center gap-[30px]">
+        <div className="flex items-center gap-8">
           <Link
             to="/"
             hash="updates"
             activeOptions={{ includeHash: true }}
-            className="hidden min-h-11 items-center text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary sm:flex"
+            className="hidden min-h-11 items-center text-eyebrow font-semibold uppercase text-og-midnight transition-colors hover:text-primary sm:flex"
           >
             What's New
           </Link>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ModuleHead } from "@/components/brand/SectionHead";
+import { Kicker } from "@/components/brand/Kicker";
 
 export const Route = createFileRoute("/voice")({
   component: Voice,
@@ -50,13 +51,17 @@ function Voice() {
             <ModuleHead id="personality" title="Personality" />
             <div className="block-step grid gap-4 sm:grid-cols-2">
               <div className="visual-container border border-border bg-card p-5">
-                <p className="eyebrow mb-2">We are</p>
+                <Kicker as="p" className="mb-2">
+                  We are
+                </Kicker>
                 <p className="text-sm">
                   Confident, precise, operator-minded, direct, evidence-led.
                 </p>
               </div>
               <div className="visual-container border border-border bg-card p-5">
-                <p className="eyebrow mb-2">We are not</p>
+                <Kicker as="p" className="mb-2">
+                  We are not
+                </Kicker>
                 <p className="text-sm">
                   Hype-driven, breathless, salesy, academic, cute for cuteness's sake.
                 </p>

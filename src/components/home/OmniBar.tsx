@@ -40,7 +40,7 @@ function ModeChip({
       className={cn(
         // flex-1 below sm so the two chips split the stacked row evenly instead
         // of huddling at its left edge; auto width once they sit inline.
-        "inline-flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full px-4 text-xs font-bold uppercase tracking-[0.14em] transition-colors sm:flex-none",
+        "inline-flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full px-4 text-eyebrow font-bold uppercase transition-colors sm:flex-none",
         active ? "bg-og-green text-og-midnight" : "text-white/70 hover:text-white",
       )}
     >
@@ -128,7 +128,7 @@ export function OmniBar() {
           characters. The chips move to their own row and the shell relaxes to
           a 28px radius, since a full pill can't hold two stacked rows.
         */}
-        <div className="flex flex-col gap-2 rounded-[28px] bg-og-midnight p-3 shadow-[0_21px_46px_rgba(23,19,47,0.22),0_85px_85px_rgba(23,19,47,0.10)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-og-green sm:flex-row sm:items-center sm:gap-4 sm:rounded-full sm:py-3 sm:pl-7 sm:pr-3">
+        <div className="flex flex-col gap-2 rounded-hero bg-og-midnight p-3 shadow-[0_21px_46px_rgba(23,19,47,0.22),0_85px_85px_rgba(23,19,47,0.10)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-og-green sm:flex-row sm:items-center sm:gap-4 sm:rounded-full sm:py-3 sm:pl-7 sm:pr-3">
           <div className="flex min-w-0 flex-1 items-center gap-3 pl-3 sm:pl-0">
             <MaterialSymbol
               name={mode === "search" ? "search" : "auto_awesome"}
@@ -165,9 +165,9 @@ export function OmniBar() {
         {showPanel && (
           <div className="absolute inset-x-0 top-full z-50 mt-2.5 overflow-hidden border border-border bg-white shadow-[0_21px_46px_rgba(23,19,47,0.14),0_85px_85px_rgba(23,19,47,0.08)]">
             {mode === "ask" ? (
-              <div className="flex items-start gap-3 p-[18px_22px]">
+              <div className="flex items-start gap-3 px-6 py-5">
                 <MaterialSymbol name="auto_awesome" size={18} className="mt-0.5 text-primary" />
-                <p className="text-[15px] leading-relaxed text-og-indigo">
+                <p className="text-body text-og-indigo">
                   The brand assistant isn't live yet. The canon it will answer from is written up on{" "}
                   <Link to="/ai-skills" className="font-semibold text-primary hover:underline">
                     AI &amp; Skills
@@ -176,7 +176,7 @@ export function OmniBar() {
                 </p>
               </div>
             ) : hits.length === 0 ? (
-              <p className="p-[18px_22px] text-[15px] text-og-indigo">
+              <p className="px-6 py-5 text-body text-og-indigo">
                 Nothing matches "{query.trim()}" yet. Try a color name, a hex, or a page title.
               </p>
             ) : (
@@ -186,18 +186,18 @@ export function OmniBar() {
                     <Link
                       to={h.path}
                       onClick={() => setOpen(false)}
-                      className="flex items-center gap-3.5 border-t border-og-hairline px-[22px] py-3.5 transition-colors first:border-t-0 hover:bg-og-surface"
+                      className="flex items-center gap-3.5 border-t border-og-hairline px-6 py-3.5 transition-colors first:border-t-0 hover:bg-og-surface"
                     >
                       <MaterialSymbol name={h.icon} size={19} className="text-primary" />
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[15px] font-semibold text-og-midnight">
+                        <span className="block truncate text-body font-semibold text-og-midnight">
                           {h.title}
                         </span>
-                        <span className="block truncate text-[14px] text-og-soft">
+                        <span className="block truncate text-label text-og-soft">
                           {h.subtitle}
                         </span>
                       </span>
-                      <span className="shrink-0 text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                      <span className="shrink-0 text-eyebrow font-bold uppercase text-primary">
                         {h.kind}
                       </span>
                     </Link>
@@ -219,7 +219,7 @@ export function OmniBar() {
         the links become a two-column grid and the ticks drop out entirely.
       */}
       <div className="mt-5 sm:flex sm:flex-wrap sm:items-center sm:gap-x-4">
-        <span className="block text-xs font-bold uppercase tracking-[0.16em] text-primary">
+        <span className="block text-eyebrow font-bold uppercase text-primary">
           Quick jump
         </span>
         <div className="grid grid-cols-2 gap-x-4 sm:contents">
@@ -228,7 +228,7 @@ export function OmniBar() {
               {i > 0 && <span aria-hidden className="hidden h-3 w-px bg-border sm:block" />}
               <Link
                 to={q.path}
-                className="flex min-h-11 items-center text-xs font-bold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
+                className="flex min-h-11 items-center text-eyebrow font-bold uppercase text-og-midnight transition-colors hover:text-primary"
               >
                 {q.label}
               </Link>

@@ -1,4 +1,4 @@
-# Visual Identity
+# Logo & Color
 
 **Route:** `/visual-identity`
 **Status:** `[READY]` except `gradients`, which is `[OPEN: D3]`, and the two blocks that need new slots
@@ -16,7 +16,7 @@ copy from screenshots.
 
 **Page header**
 
-- **Eyebrow:** Visual Identity
+- **Eyebrow:** Logo & Color
 - **Title:** Color, logo, and the shapes we own
 - **Subhead:** Click any hex to copy it. Copy from here, never from memory or a screenshot, because the near-misses are drift and not alternatives.
 

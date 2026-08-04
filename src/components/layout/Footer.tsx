@@ -1,39 +1,27 @@
 import { Link } from "@tanstack/react-router";
+import { NAV, type NavMode } from "@/data/nav";
 
 /**
- * The closing Midnight island. It runs on a 12-column field — 5 columns of
+ * The closing Midnight island. It runs on a 12-column field — 3 columns of
  * identity, then hairline-separated link stacks for the three brand-hub modes.
  * Green resolves to #00FF85 on this dark surface.
+ *
+ * The stacks come from `data/nav.ts`; they are not a second hand-written copy
+ * of it. The copy is exactly how this footer drifted. It had grown a
+ * "Templates" link filed under Assets that opened /toolkit, and a "Get help"
+ * link sitting directly beneath the "AI & Skills" link that went to the same
+ * page — one label promising an asset and delivering a tool, and two labels for
+ * one destination inside one stack. Derived, the footer can only ever disagree
+ * with the side nav about layout.
+ *
+ * Only the spans are the footer's own: 4 / 2 / 3, sized to the longest label in
+ * each stack so none of them wrap.
  */
-const COLUMNS = [
-  {
-    heading: "Guidelines",
-    span: "md:col-span-4",
-    links: [
-      { label: "Foundation & Messaging", to: "/foundation" as const },
-      { label: "Voice & Language Rules", to: "/voice" as const },
-      { label: "Visual Identity", to: "/visual-identity" as const },
-      { label: "Design Tokens", to: "/tokens" as const },
-    ],
-  },
-  {
-    heading: "Assets",
-    span: "md:col-span-2",
-    links: [
-      { label: "Downloads", to: "/downloads" as const },
-      { label: "Templates", to: "/toolkit" as const },
-    ],
-  },
-  {
-    heading: "Toolkit",
-    span: "md:col-span-3",
-    links: [
-      { label: "GTM & Employee Toolkit", to: "/toolkit" as const },
-      { label: "AI & Skills", to: "/ai-skills" as const },
-      { label: "Get help", to: "/ai-skills" as const },
-    ],
-  },
-];
+const SPAN: Record<NavMode["mode"], string> = {
+  Read: "md:col-span-4",
+  Grab: "md:col-span-2",
+  Build: "md:col-span-3",
+};
 
 export function Footer() {
   return (
@@ -50,30 +38,28 @@ export function Footer() {
             height={88}
             className="h-6 w-auto self-start"
           />
-          <p className="max-w-[34ch] text-[15px] leading-relaxed text-white/72">
+          <p className="max-w-[34ch] text-body text-white/72">
             The internal home for the Ordergroove brand. Guidelines, assets, and the tools to stay
             on brand.
           </p>
         </div>
-        {COLUMNS.map((col) => (
+        {NAV.map((group) => (
           <div
-            key={col.heading}
-            className={`flex flex-col gap-3.5 md:border-l md:border-white/12 md:pl-7 ${col.span}`}
+            key={group.mode}
+            className={`flex flex-col gap-3.5 md:border-l md:border-white/12 md:pl-7 ${SPAN[group.mode]}`}
           >
-            <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
-              {col.heading}
-            </h2>
+            <h2 className="text-eyebrow font-bold uppercase text-primary">{group.label}</h2>
             {/* No gap: `min-h-11` is already the 44px touch target, so adding
                 10px on top of it gave the footer 54px rows and made three
                 short link lists read as a much bigger block than they are. */}
             <div className="flex flex-col">
-              {col.links.map((l) => (
+              {group.items.map((item) => (
                 <Link
-                  key={l.label}
-                  to={l.to}
-                  className="flex min-h-11 items-center text-[15px] text-white transition-colors hover:text-primary"
+                  key={item.path}
+                  to={item.path}
+                  className="flex min-h-11 items-center text-body text-white transition-colors hover:text-primary"
                 >
-                  {l.label}
+                  {item.label}
                 </Link>
               ))}
             </div>
@@ -81,7 +67,7 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-white/12">
-        <div className="site-container flex flex-col items-center justify-between gap-2 py-[22px] text-xs font-semibold uppercase tracking-[0.16em] text-white/80 sm:flex-row">
+        <div className="site-container flex flex-col items-center justify-between gap-2 py-6 text-eyebrow font-semibold uppercase text-white/80 sm:flex-row">
           <span>Ordergroove · Internal use only</span>
           <span>Maintained by Brand &amp; Content</span>
         </div>

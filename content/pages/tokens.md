@@ -1,17 +1,17 @@
-# Design Tokens
+# Tokens for Code
 
 **Route:** `/tokens`
 **Status:** `[READY]` for values. `[TO GATHER]` for the downloadable kits themselves
 **Owner:** Brand & Content
 **Last reviewed:** 2026-08-04
 
-The developer-facing view of the same values Visual Identity shows designers. One source,
+The developer-facing view of the same values Logo & Color shows designers. One source,
 two presentations: if this page and that one ever disagree, one of them stopped reading
 `src/data/tokens.ts`.
 
 **Page header**
 
-- **Eyebrow:** Design Tokens
+- **Eyebrow:** Tokens for Code
 - **Title:** The canonical values, ready to pull into code
 - **Subhead:** Marketing canon. Product reconciliation is a separate decision and deliberately out of scope here.
 

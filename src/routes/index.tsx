@@ -8,14 +8,23 @@ import { Door, type DoorSpec } from "@/components/home/Door";
 import { OmniBar } from "@/components/home/OmniBar";
 import { ThumbCard } from "@/components/home/ThumbCard";
 import { useCopyToast } from "@/hooks/use-copy-toast";
+import { COLOR_GROUPS, gradient } from "@/data/tokens";
 import { cn } from "@/lib/utils";
+
+/** Every swatch the system ships, counted from the token data itself. */
+const TOTAL_COLOR_TOKENS = COLOR_GROUPS.reduce((n, g) => n + g.swatches.length, 0);
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-/** The signature gradient marquee — Green → Cyan → Lemon, locked to 112°. */
-const HERO_GRADIENT = "linear-gradient(112deg, #00FF85 0%, #00FAFF 52%, #EAFF00 100%)";
+/**
+ * The signature gradient marquee — Green → Cyan → Lemon, locked to 112°.
+ * Read from the token file rather than retyped: this string used to live only
+ * here, which made the first gradient a visitor sees the one gradient the hub
+ * did not document.
+ */
+const HERO_GRADIENT = gradient("marquee").css;
 
 /**
  * The three doors — one Midnight band of three.
@@ -115,12 +124,15 @@ const CORE_SWATCHES = [
   },
 ] as const;
 
-/** Signature and approved gradients — cyan-to-lemon, always. */
-const HOME_GRADIENTS = [
-  { name: "Signature gradient", css: "linear-gradient(112deg, #00FF85, #00FAFF)" },
-  { name: "Marquee gradient", css: "linear-gradient(112deg, #00FF85, #00FAFF, #EAFF00)" },
-  { name: "Orange to Yellow gradient", css: "linear-gradient(112deg, #FF8500, #EAFF00)" },
-] as const;
+/**
+ * The three gradients Home previews, picked by id from the token file.
+ *
+ * These were three retyped CSS strings, and the middle one had already drifted
+ * — its marquee ran even thirds where the hero it was meant to represent runs
+ * 0/52/100. Naming the ids here keeps Home's editorial choice of *which three*
+ * while leaving the stops to `data/tokens.ts`.
+ */
+const HOME_GRADIENTS = (["signature", "marquee", "warm"] as const).map(gradient);
 
 const SPECIMEN_ICONS = [
   "autorenew",
@@ -212,7 +224,7 @@ function Index() {
           <div className="flex items-center gap-4">
             <Kicker className="text-og-midnight">Ordergroove Brand Hub</Kicker>
             <span aria-hidden className="h-px flex-1 bg-og-midnight/25" />
-            <span className="hidden text-xs font-bold uppercase tracking-[0.16em] text-og-midnight md:block">
+            <span className="hidden text-eyebrow font-bold uppercase text-og-midnight md:block">
               Internal · v2.0
             </span>
           </div>
@@ -220,7 +232,7 @@ function Index() {
               stopped describing the box this type sits in. Measured against the
               main pane, 11cqi reproduces the old ramp almost exactly — 113px at
               1280 where 9vw gave 115, 130px at 1440 where it gave 130. */}
-          <h1 className="mt-10 max-w-[16ch] text-[clamp(56px,11cqi,132px)] font-extrabold leading-[0.86] tracking-[-0.04em] text-og-midnight text-balance">
+          <h1 className="mt-10 max-w-[16ch] text-marquee font-extrabold text-og-midnight text-balance">
             The brand, in one place.
           </h1>
           <p className="mt-9 max-w-[46ch] text-xl font-medium leading-normal text-og-midnight text-pretty">
@@ -289,18 +301,22 @@ function Index() {
                 onClick={() => copy(s.hex)}
                 aria-label={`Copy ${s.name} hex ${s.hex}`}
                 className={cn(
-                  "flex cursor-pointer flex-col justify-end p-[18px] text-left transition-[filter] hover:brightness-[0.97]",
+                  "flex cursor-pointer flex-col justify-end p-5 text-left transition-[filter] hover:brightness-[0.97]",
                   s.tile,
                   s.span,
                 )}
               >
-                <span className={cn("text-[15px] font-bold", s.title)}>{s.name}</span>
-                <span className={cn("text-[14px]", s.sub)}>{s.note}</span>
+                <span className={cn("text-body font-bold", s.title)}>{s.name}</span>
+                <span className={cn("text-label", s.sub)}>{s.note}</span>
               </button>
             ))}
           </div>
-          <Link to="/tokens" className="flex min-h-11 items-center self-start">
-            <CardLink>All {CORE_SWATCHES.length + 10} color tokens</CardLink>
+          {/* Counted off the token data, not off the four tiles above plus a
+              magic 10 — that read "All 14 color tokens" against a palette of
+              fifteen, and adding a swatch never moved it. /visual-identity is
+              the page that renders every group; /tokens only tables the core. */}
+          <Link to="/visual-identity" className="flex min-h-11 items-center self-start">
+            <CardLink>All {TOTAL_COLOR_TOKENS} color tokens</CardLink>
           </Link>
         </div>
 
@@ -316,12 +332,12 @@ function Index() {
             <Kicker as="h3">Typography</Kicker>
             <Aside>F.02</Aside>
           </div>
-          <div className="visual-container grid gap-6 border border-og-border bg-white p-[26px] lg:grid-cols-[1fr_minmax(0,34ch)] lg:items-end lg:gap-10">
+          <div className="visual-container grid gap-6 border border-og-border bg-white p-6 lg:grid-cols-[1fr_minmax(0,34ch)] lg:items-end lg:gap-10">
             <div>
-              <div className="text-[82px] font-extrabold leading-[0.9] tracking-[-0.04em] text-og-midnight">
+              <div className="text-specimen font-extrabold text-og-midnight">
                 Figtree
               </div>
-              <p className="mt-4 text-[15px] text-og-midnight">
+              <p className="mt-4 text-body text-og-midnight">
                 Aa Bb Cc 0123 — <span className="font-extrabold">ExtraBold</span>{" "}
                 <span className="font-bold">Bold</span>{" "}
                 <span className="font-semibold">SemiBold</span>{" "}
@@ -329,7 +345,7 @@ function Index() {
               </p>
             </div>
             <div className="flex flex-col items-start gap-4">
-              <p className="text-[15px] leading-normal text-og-indigo text-pretty">
+              <p className="text-body text-og-indigo text-pretty">
                 The only brand font, for everything from decks to product. Soleil is sunsetted;
                 never Helvetica or Arial.
               </p>
@@ -347,7 +363,7 @@ function Index() {
               <Kicker as="h3">Gradients</Kicker>
               <Aside>F.03</Aside>
             </div>
-            <div className="mt-[18px] flex flex-col gap-2">
+            <div className="mt-5 flex flex-col gap-2">
               {HOME_GRADIENTS.map((g) => (
                 <button
                   key={g.name}
@@ -365,7 +381,7 @@ function Index() {
                 </button>
               ))}
             </div>
-            <p className="mt-4 flex-1 text-[14px] leading-normal text-og-indigo text-pretty">
+            <p className="mt-4 flex-1 text-label text-og-indigo text-pretty">
               Cyan to lemon, always. Click a bar to copy its CSS.
             </p>
           </div>
@@ -376,12 +392,12 @@ function Index() {
               <Kicker as="h3">Icons</Kicker>
               <Aside>F.04</Aside>
             </div>
-            <div className="mt-5 flex flex-wrap gap-[18px] text-og-midnight">
+            <div className="mt-5 flex flex-wrap gap-5 text-og-midnight">
               {SPECIMEN_ICONS.map((name) => (
                 <MaterialSymbol key={name} name={name} size={32} />
               ))}
             </div>
-            <p className="mb-[18px] mt-5 flex-1 text-[14px] leading-normal text-og-indigo text-pretty">
+            <p className="mb-5 mt-5 flex-1 text-label text-og-indigo text-pretty">
               Material Symbols — weight 300, fill off, grade normal. Don't retune the axes.
             </p>
             <a
@@ -400,7 +416,7 @@ function Index() {
               <Kicker as="h3">Logo</Kicker>
               <Aside>F.05</Aside>
             </div>
-            <div className="mt-[18px] grid grid-cols-2 gap-2">
+            <div className="mt-5 grid grid-cols-2 gap-2">
               <div className="flex h-[82px] items-center justify-center border border-og-hairline bg-white p-4">
                 <img
                   src="/logo-white.png"
@@ -420,7 +436,7 @@ function Index() {
                 />
               </div>
             </div>
-            <p className="mb-[18px] mt-[18px] flex-1 text-[14px] leading-normal text-og-indigo text-pretty">
+            <p className="mb-5 mt-5 flex-1 text-label text-og-indigo text-pretty">
               Clear space equals the height of the mark. Never recolor, stretch, or add effects.
             </p>
             <Link to="/downloads" className="flex min-h-11 items-center self-start">
@@ -439,7 +455,7 @@ function Index() {
           aside={
             <Link
               to="/downloads"
-              className="flex min-h-11 items-center text-xs font-semibold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:text-primary"
+              className="flex min-h-11 items-center text-eyebrow font-semibold uppercase text-og-midnight transition-colors hover:text-primary"
             >
               All downloads →
             </Link>
@@ -501,14 +517,14 @@ function Index() {
           <div className="max-w-[56ch]">
             <div className="flex items-center gap-3.5">
               <Kicker>AI &amp; Skills</Kicker>
-              <span className="shrink-0 whitespace-nowrap border border-white/28 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white/70">
+              <span className="shrink-0 whitespace-nowrap border border-white/28 px-2.5 py-1 text-micro font-bold uppercase text-white/70">
                 Coming soon
               </span>
             </div>
-            <h2 className="mt-[22px] text-[52px] font-bold leading-none tracking-[-0.03em] text-white text-balance">
+            <h2 className="mt-6 text-band font-bold text-white text-balance">
               Ask the brand, get an answer.
             </h2>
-            <p className="mt-5 text-[17px] leading-relaxed text-white/72 text-pretty">
+            <p className="mt-5 text-lead text-white/72 text-pretty">
               The brand assistant will read from this hub and answer in plain language — which green
               on white, whether a headline sounds like us, what's wrong with a slide. The canon it
               draws from is being written now.
@@ -517,14 +533,14 @@ function Index() {
           <div className="flex w-full shrink-0 flex-col gap-3 sm:w-[320px]">
             <Link
               to="/ai-skills"
-              className="inline-flex items-center justify-center gap-2.5 bg-og-green px-7 py-4 text-xs font-bold uppercase tracking-[0.16em] text-og-midnight transition-colors hover:bg-white"
+              className="inline-flex items-center justify-center gap-2.5 bg-og-green px-7 py-4 text-eyebrow font-bold uppercase text-og-midnight transition-colors hover:bg-white"
             >
               <MaterialSymbol name="auto_awesome" size={17} />
               Read the AI guidance
             </Link>
             <Link
               to="/ai-skills"
-              className="inline-flex items-center justify-center gap-2.5 border border-white/28 px-7 py-4 text-xs font-bold uppercase tracking-[0.16em] text-white transition-colors hover:border-og-green hover:text-og-green"
+              className="inline-flex items-center justify-center gap-2.5 border border-white/28 px-7 py-4 text-eyebrow font-bold uppercase text-white transition-colors hover:border-og-green hover:text-og-green"
             >
               Join the pilot
             </Link>
@@ -545,18 +561,18 @@ function Index() {
               to={u.path}
               className="grid grid-cols-[80px_1fr] items-baseline gap-x-5 gap-y-1 border-b border-og-hairline py-6 transition-colors hover:bg-og-surface sm:grid-cols-[96px_1fr_130px] sm:gap-6"
             >
-              <span className="text-[14px] font-bold uppercase tracking-[0.12em] text-og-soft">
+              <span className="text-label font-bold uppercase tracking-micro text-og-soft">
                 {u.date}
               </span>
               <div className="col-start-2 sm:col-start-2">
-                <h3 className="text-[17px] font-semibold tracking-[-0.01em] text-og-midnight">
+                <h3 className="text-lead leading-head font-semibold tracking-[-0.01em] text-og-midnight">
                   {u.title}
                 </h3>
-                <span className="mt-1 block text-[14px] leading-normal text-og-indigo">
+                <span className="mt-1 block text-label text-og-indigo">
                   {u.blurb}
                 </span>
               </div>
-              <span className="col-start-2 text-xs font-bold uppercase tracking-[0.14em] text-primary sm:col-start-3 sm:justify-self-end">
+              <span className="col-start-2 text-eyebrow font-bold uppercase text-primary sm:col-start-3 sm:justify-self-end">
                 {u.kind}
               </span>
             </Link>
@@ -581,16 +597,16 @@ function Index() {
           <SectionHead kicker="Need a hand" aside={<Aside>Help</Aside>} />
           <div className="visual-container block-step flex flex-col overflow-hidden border border-og-border">
             <div className="flex flex-col bg-og-surface p-6">
-              <h3 className="text-[26px] font-bold leading-[1.05] tracking-[-0.025em] text-og-midnight">
+              <h3 className="text-card-title font-bold text-og-midnight">
                 Request a brand review
               </h3>
-              <span className="mt-3 text-[15px] leading-normal text-og-indigo text-pretty">
+              <span className="mt-3 text-body text-og-indigo text-pretty">
                 Send a deck, page, or campaign to Brand & Content and we'll mark it up within two
                 working days.
               </span>
               <Link
                 to="/ai-skills"
-                className="mt-5 inline-flex items-center justify-center gap-2.5 bg-og-midnight px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-og-green transition-colors hover:bg-og-indigo"
+                className="mt-5 inline-flex items-center justify-center gap-2.5 bg-og-midnight px-6 py-3.5 text-eyebrow font-bold uppercase text-og-green transition-colors hover:bg-og-indigo"
               >
                 Start a request
                 <MaterialSymbol name="arrow_forward" size={16} />
@@ -601,7 +617,7 @@ function Index() {
               <h3 className="mt-2.5 text-xl font-bold tracking-[-0.02em] text-og-midnight">
                 #brand-help
               </h3>
-              <span className="mt-2 text-[15px] leading-normal text-og-indigo">
+              <span className="mt-2 text-body text-og-indigo">
                 Quick questions, one-off asks, and "is this on brand?" gut checks.
               </span>
             </div>

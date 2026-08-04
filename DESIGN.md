@@ -211,7 +211,26 @@ Decorative pop only, never leading, never carrying meaning alone.
 - **Dark Indigo** (#2E2A47): Muted/card surface on dark; subtitle and muted text on light.
 - **Soft Ink** (#666279): Secondary text tone on light.
 - **Border** (#D8D7DF): Borders and dividers on light. On dark, borders are white at 12% opacity.
-- **Ink on Dark** (#EBEAF0): Body and subtitle text on Midnight surfaces.
+- **Hairline** (#EBEAF0): The faint rule between rows inside one module — lighter than Border, which separates modules from each other. Held by `--color-og-hairline`.
+- **Ink on Dark** (#EBEAF0): Body and subtitle text on Midnight surfaces. Held by `--color-og-ink`.
+
+Hairline and Ink on Dark carry the same value today and mean different things — one is a divider on light, the other is text on Midnight. They are separate tokens on purpose; changing one must not silently move the other.
+
+### Gradients
+
+Five, all at 112° (see The Gradient-Angle Rule). `data/tokens.ts` holds the CSS; every surface that paints one reads it from there.
+
+| Id | Name | Stops | Status |
+| --- | --- | --- | --- |
+| `signature` | Signature (Green → Cyan) | #00FF85 → #00FAFF | Signature |
+| `marquee` | Marquee (Green → Cyan → Lemon) | #00FF85 0% → #00FAFF 52% → #EAFF00 100% | Signature |
+| `purple` | Purple → Blue → Green | #7821F5 → #71ACFF → #00FF85 | Approved |
+| `warm` | Orange → Yellow | #FF8500 → #EAFF00 | Approved |
+| `web` | Web brand gradient | #E0FE00 → #0BFE5F → #00FEFE | Web |
+
+The `marquee` stops are load-bearing: it is the home hero, and at even thirds the cyan lands under the omni bar and the lemon runs off the right edge.
+
+`purple` and `web` contain the only colors in the system that are not in the palette above — #7821F5, #71ACFF, #E0FE00, #0BFE5F, #00FEFE. They are **gradient stops, not palette colors**: they exist to be interpolated through and must never be pulled out as a fill, a text color, or a border. #E0FE00 / #0BFE5F / #00FEFE in particular are the live ordergroove.com web gradient's own stops, which sit a few points off Laser Lemon, Groovy Green, and Intense Cyan — near enough to look like a typo and far enough that swapping in the palette values changes the gradient.
 
 ### Named Rules
 

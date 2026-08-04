@@ -16,6 +16,10 @@ import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
  * `text-base` (16px) was not on the ramp at all — the Four-Step Rule has no
  * 16px. The 20px radius comes from `.visual-container`, which is what the rest
  * of the site's cards already use and what DESIGN.md specifies.
+ *
+ * The padding settled at `p-5` (20px). Neither 18 nor 22 sat on the 4px step
+ * the rhythm rule asks for, and 20px is the card padding the guideline pages
+ * already use.
  */
 export function ThumbCard({
   to,
@@ -45,16 +49,16 @@ export function ThumbCard({
       <span className="thumb-hatch flex aspect-[16/9] max-h-[240px] items-center justify-center border-b border-og-border">
         <MaterialSymbol name={icon} size={32} className="text-og-soft" />
       </span>
-      <div className="flex flex-col gap-2 p-[18px]">
+      <div className="flex flex-col gap-2 p-5">
         <div className="flex items-center gap-2.5">
           <h3 className="text-xl font-bold tracking-[-0.015em] text-og-midnight">{title}</h3>
           {tag && (
-            <span className="shrink-0 whitespace-nowrap border border-og-border px-2 py-[3px] text-[11px] font-bold uppercase tracking-[0.12em] text-og-soft">
+            <span className="shrink-0 whitespace-nowrap border border-og-border px-2 py-0.5 text-micro font-bold uppercase text-og-soft">
               {tag}
             </span>
           )}
         </div>
-        <span className="text-[14px] leading-normal text-og-indigo">{meta}</span>
+        <span className="text-label text-og-indigo">{meta}</span>
       </div>
     </Link>
   );

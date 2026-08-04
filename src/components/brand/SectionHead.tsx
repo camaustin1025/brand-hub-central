@@ -73,7 +73,7 @@ export function ModuleHead({
  */
 export function Aside({ children }: { children: ReactNode }) {
   return (
-    <span className="hidden text-xs font-semibold uppercase tracking-[0.16em] text-og-soft md:block">
+    <span className="hidden text-eyebrow font-semibold uppercase text-og-soft md:block">
       {children}
     </span>
   );

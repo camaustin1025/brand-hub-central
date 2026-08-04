@@ -7,7 +7,7 @@ export type CopyResult = { text: string; ok: boolean };
  * Clipboard API is denied (older browsers, and any context where the write
  * permission isn't granted). Returns false only when both routes fail.
  */
-async function writeClipboard(value: string): Promise<boolean> {
+export async function writeClipboard(value: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(value);
     return true;

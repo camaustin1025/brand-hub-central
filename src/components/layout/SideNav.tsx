@@ -61,7 +61,7 @@ function SectionList({
             onClick={onNavigate}
             aria-current={active === s.id ? CURRENT_SECTION : undefined}
             className={cn(
-              "-ml-px flex min-h-9 flex-1 items-center border-l-2 py-1 pl-3.5 text-[14px] leading-snug transition-colors",
+              "-ml-px flex min-h-9 flex-1 items-center border-l-2 py-1 pl-3.5 text-label transition-colors",
               active === s.id
                 ? "border-primary font-semibold text-white"
                 : "border-transparent text-white/64 hover:border-white/40 hover:text-white",
@@ -94,7 +94,7 @@ function NavRow({
         onClick={onNavigate}
         aria-current={current ? CURRENT_PAGE : undefined}
         className={cn(
-          "flex min-h-11 items-center gap-3 px-3 text-[15px] leading-snug transition-colors",
+          "flex min-h-11 items-center gap-3 px-3 text-body transition-colors",
           current
             ? "bg-white/8 font-semibold text-og-green"
             : "text-white/80 hover:bg-white/6 hover:text-white",
@@ -149,9 +149,29 @@ function NavGroup({
 }) {
   const [open, setOpen] = useState(true);
 
+  // A one-item group gets no header. "Assets" over a lone "Downloads" is the
+  // same word twice — the header adds a level of hierarchy that carries no
+  // information, and its disclosure would exist to hide a single row. The
+  // `gap-3` between groups still reads the boundary; the label survives on the
+  // footer and on the collapsed rail's `aria-label`, where it does real work.
+  if (group.items.length === 1) {
+    return (
+      <ul className="flex flex-col">
+        {group.items.map((item) => (
+          <NavRow
+            key={item.path}
+            item={item}
+            current={pathname === item.path}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </ul>
+    );
+  }
+
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 px-3 text-xs font-bold uppercase tracking-[0.16em] text-primary transition-colors hover:text-white">
+      <CollapsibleTrigger className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 px-3 text-eyebrow font-bold uppercase text-primary transition-colors hover:text-white">
         {group.label}
         <MaterialSymbol
           name="expand_more"
@@ -225,11 +245,11 @@ function StatusFoot({ collapsed }: { collapsed?: boolean }) {
   }
   return (
     <div className="flex flex-col gap-1.5 px-3 py-4">
-      <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary">
+      <span className="flex items-center gap-2 text-eyebrow font-bold uppercase text-primary">
         <MaterialSymbol name="bolt" size={15} />
         Sys.status
       </span>
-      <span className="text-[14px] leading-snug text-white/72">
+      <span className="text-label text-white/72">
         Live and building. Some sections are still in draft.
       </span>
     </div>
@@ -333,7 +353,7 @@ export function SideRail() {
                 aria-expanded={!userCollapsed}
                 aria-label={userCollapsed ? "Pin navigation open" : "Collapse navigation to icons"}
                 className={cn(
-                  "flex min-h-11 w-full cursor-pointer items-center gap-3 border-t border-white/12 px-3 text-xs font-bold uppercase tracking-[0.16em] text-white/70 transition-colors hover:bg-white/6 hover:text-white",
+                  "flex min-h-11 w-full cursor-pointer items-center gap-3 border-t border-white/12 px-3 text-eyebrow font-bold uppercase text-white/70 transition-colors hover:bg-white/6 hover:text-white",
                   collapsed && "justify-center px-0",
                 )}
               >

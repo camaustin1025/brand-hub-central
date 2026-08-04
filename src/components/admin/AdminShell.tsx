@@ -1,5 +1,6 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, Package, FolderTree, ExternalLink, LogOut } from "lucide-react";
+import { lockAdmin } from "@/lib/gate.functions";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -47,8 +48,8 @@ export function AdminShell() {
             View site
           </Link>
           <button
-            onClick={() => {
-              sessionStorage.removeItem("og-admin-unlocked");
+            onClick={async () => {
+              await lockAdmin();
               window.location.reload();
             }}
             className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary hover:text-foreground"

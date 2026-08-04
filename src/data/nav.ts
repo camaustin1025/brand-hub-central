@@ -16,6 +16,14 @@ export type NavItem = {
    * route, so a route without one would collapse to a blank row.
    */
   icon: string;
+  /**
+   * Extra search terms, folded into the index alongside label and blurb.
+   *
+   * This is where retired labels live. Renaming a route in the nav should not
+   * make it unfindable by the name it had yesterday — half the hub's traffic
+   * arrives through the omni bar typing the old words.
+   */
+  terms?: string[];
 };
 
 export type NavMode = {
@@ -30,10 +38,15 @@ export const NAV: NavMode[] = [
     label: "Guidelines",
     items: [
       {
-        label: "Foundation & Messaging",
+        // Was "Foundation & Messaging". "Foundation" is how the company is
+        // organised, not what anyone looks for, and Home already spends the
+        // word on the *colour* matrix ("Foundations", Sec.02) — one site, two
+        // meanings. "Positioning" is the word this page's own content uses.
+        label: "Positioning & Messaging",
         path: "/foundation",
         blurb: "Who we are, the category we own, and the message ladder.",
         icon: "foundation",
+        terms: ["foundation"],
       },
       {
         label: "Voice & Language Rules",
@@ -42,20 +55,31 @@ export const NAV: NavMode[] = [
         icon: "record_voice_over",
       },
       {
-        label: "Visual Identity",
+        // These two used to be "Visual Identity" and "Design Tokens", and both
+        // claimed colour and gradients — `gradients` is a section id on *both*
+        // pages (data/sections.ts). "What's our green" had two right answers
+        // and no way to pick. The split is now the audience, said out loud:
+        // this one is what it looks like, the next is the values for code.
+        label: "Logo & Color",
         path: "/visual-identity",
         blurb: "Color, logo, gradients, and the signature shapes. Click to copy.",
         icon: "palette",
+        terms: ["visual identity"],
       },
       {
-        label: "Design Tokens",
+        label: "Tokens for Code",
         path: "/tokens",
         blurb: "The canonical values, ready to pull into code.",
         icon: "data_object",
+        terms: ["design tokens"],
       },
     ],
   },
   {
+    // One item, so the side nav renders this group without its header — see
+    // NavGroup. The label is still load-bearing for the footer's column head
+    // and the collapsed rail's `aria-label`; it just stops being a disclosure
+    // control whose only job would be hiding the single row beneath it.
     mode: "Grab",
     label: "Assets",
     items: [

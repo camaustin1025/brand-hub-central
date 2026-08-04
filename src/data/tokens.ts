@@ -3,10 +3,22 @@
  *
  * The green contrast rule (canon 5.2, the most-missed rule in the system):
  *   light background -> #009A50   |   dark background -> #00FF85
- * `onLight` / `onDark` flags drive the live contrast badge on <Swatch>.
  *
- * Open audit decisions touching these: D1 (logo-on-white ring green),
- * D2 (Green-300 ramp — using canon #009A50), D10 (#FF61D3 name).
+ * `onLight` / `onDark` record the brand's *intent* for each value (where it is
+ * approved to appear, including as a fill or at large sizes). They no longer
+ * drive the contrast badge on <Swatch> — that verdict is measured from the hex
+ * with contrast(), because these flags disagreed with the measured ratio on six
+ * swatches and the badge was reporting a pass over a failing number. Editing a
+ * flag here will not change what a badge says.
+ *
+ * Audit decisions settled Aug 4 2026, all three closed:
+ *   D1  logo rings on light backgrounds are #00CC6A, per the Figma master. This is a
+ *       logo-only exception, not a palette entry, which is why it appears nowhere below.
+ *       Every non-logo green on light is still #009A50. WCAG exempts logotypes from the
+ *       contrast bars, so 2.13:1 is not a failure for a mark, only for anything else.
+ *   D2  Green-300 ramp corrects to canon #009A50.
+ *   D10 #FF61D3 is Flamingo Pink. The style guide's "Flamboyant Flamingo" is the
+ *       name that loses.
  */
 
 export type Swatch = {
@@ -149,7 +161,7 @@ export const SECONDARY: SwatchGroup = {
       name: "Flamingo Pink",
       hex: "#FF61D3",
       rgb: "255, 97, 211",
-      usage: "Decorative accent. (Name pending audit D10.)",
+      usage: "Decorative accent.",
       onLight: true,
       onDark: true,
     },
@@ -164,7 +176,19 @@ export const SECONDARY: SwatchGroup = {
   ],
 };
 
+/**
+ * The gradients, and the only place their CSS is written.
+ *
+ * This list used to be one of three copies: the same angles and stops were
+ * retyped as `.bg-og-*` utilities in styles.css and again as `HOME_GRADIENTS`
+ * plus `HERO_GRADIENT` inside the Home route — where the marquee had drifted
+ * into a fourth gradient that no token file knew about. Home now derives both
+ * from here by `id`, so a stop can only be changed in one place.
+ */
+export type GradientId = "signature" | "marquee" | "purple" | "warm" | "web";
+
 export type Gradient = {
+  id: GradientId;
   name: string;
   css: string;
   stops: string[];
@@ -173,29 +197,53 @@ export type Gradient = {
 
 export const GRADIENTS: Gradient[] = [
   {
+    id: "signature",
     name: "Signature (Green → Cyan)",
     css: "linear-gradient(112deg, #00FF85, #00FAFF)",
     stops: ["#00FF85", "#00FAFF"],
     status: "signature",
   },
   {
+    /*
+     * The home hero. It was only ever written inline in the route, so the one
+     * gradient a visitor sees first was the one the hub never documented. The
+     * explicit 0/52/100 stops are load-bearing: at even thirds the cyan sits
+     * under the omni bar and the lemon runs off the right edge.
+     */
+    id: "marquee",
+    name: "Marquee (Green → Cyan → Lemon)",
+    css: "linear-gradient(112deg, #00FF85 0%, #00FAFF 52%, #EAFF00 100%)",
+    stops: ["#00FF85", "#00FAFF", "#EAFF00"],
+    status: "signature",
+  },
+  {
+    id: "purple",
     name: "Purple → Blue → Green",
     css: "linear-gradient(112deg, #7821F5, #71ACFF, #00FF85)",
     stops: ["#7821F5", "#71ACFF", "#00FF85"],
     status: "approved",
   },
   {
+    id: "warm",
     name: "Orange → Yellow",
     css: "linear-gradient(112deg, #FF8500, #EAFF00)",
     stops: ["#FF8500", "#EAFF00"],
     status: "approved",
   },
   {
+    id: "web",
     name: "Web brand gradient",
     css: "linear-gradient(112deg, #E0FE00, #0BFE5F, #00FEFE)",
     stops: ["#E0FE00", "#0BFE5F", "#00FEFE"],
     status: "web",
   },
 ];
+
+/** Look a gradient up by id. Throws rather than silently rendering nothing. */
+export function gradient(id: GradientId): Gradient {
+  const found = GRADIENTS.find((g) => g.id === id);
+  if (!found) throw new Error(`Unknown gradient id: ${id}`);
+  return found;
+}
 
 export const COLOR_GROUPS = [CORE, SUPPORTING, SECONDARY];

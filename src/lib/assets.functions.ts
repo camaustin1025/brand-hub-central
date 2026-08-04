@@ -40,12 +40,19 @@ function isDirectUrl(path: string | null): boolean {
 async function resolveUrl(
   supabase: ReturnType<typeof createServerSupabase>,
   path: string | null,
+  /**
+   * Signed URLs are cross-origin, and the `download` attribute on an anchor is
+   * ignored cross-origin — the browser navigates instead, rendering PNGs and
+   * SVGs in a tab. `download: true` puts the disposition on the URL itself,
+   * which is the only thing that survives the origin hop.
+   */
+  forDownload = false,
 ): Promise<string | null> {
   if (!path) return null;
   if (isDirectUrl(path)) return path;
   const { data, error } = await supabase.storage
     .from(BUCKET)
-    .createSignedUrl(path, SIGNED_URL_TTL);
+    .createSignedUrl(path, SIGNED_URL_TTL, forDownload ? { download: true } : undefined);
   if (error || !data) return null;
   return data.signedUrl;
 }
@@ -61,11 +68,7 @@ export const listAssets = createServerFn({ method: "GET" }).handler(async () => 
   const [{ data: categories, error: catErr }, { data: assets, error: assetErr }] =
     await Promise.all([
       supabase.from("asset_categories").select("*").order("sort_order"),
-      supabase
-        .from("assets")
-        .select("*")
-        .eq("is_published", true)
-        .order("sort_order"),
+      supabase.from("assets").select("*").eq("is_published", true).order("sort_order"),
     ]);
 
   if (catErr) throw new Error(catErr.message);
@@ -77,7 +80,7 @@ export const listAssets = createServerFn({ method: "GET" }).handler(async () => 
     (assets ?? []).map(async (row) => {
       const cat = row.category_id ? catBySlug.get(row.category_id) : undefined;
       const [href, preview] = await Promise.all([
-        resolveUrl(supabase, row.storage_path),
+        resolveUrl(supabase, row.storage_path, true),
         resolveUrl(supabase, row.preview_path),
       ]);
       return {

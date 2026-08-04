@@ -58,7 +58,7 @@ export function Door({ door }: { door: DoorSpec }) {
         door.lead && "notch-br",
       )}
     >
-      <span className="border-b border-white/20 pb-4 text-xs font-bold tracking-[0.16em] text-primary">
+      <span className="border-b border-white/20 pb-4 text-eyebrow font-bold text-primary">
         {door.n}
       </span>
 
@@ -69,7 +69,7 @@ export function Door({ door }: { door: DoorSpec }) {
       <h3 className="mt-7 text-4xl font-bold leading-none tracking-[-0.03em] text-white">
         {door.title}
       </h3>
-      <span className="mt-3 text-[15px] leading-normal text-white/66">{door.blurb}</span>
+      <span className="mt-3 text-body text-white/66">{door.blurb}</span>
       <CardLink className="mt-5">{door.cta}</CardLink>
     </Link>
   );

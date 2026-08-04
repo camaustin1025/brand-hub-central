@@ -42,7 +42,7 @@ function Foundation() {
   return (
     <>
       <PageHeader
-        eyebrow="Foundation & Messaging"
+        eyebrow="Positioning & Messaging"
         title="Who we are and what we lead with"
         subhead="Ordergroove is the enterprise standard for subscriptions and recurring revenue. Always ladder down from the category, never up from features."
       />

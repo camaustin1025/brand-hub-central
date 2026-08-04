@@ -190,7 +190,7 @@ function RootComponent() {
           */}
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-og-midnight focus:px-5 focus:py-3 focus:text-xs focus:font-bold focus:uppercase focus:tracking-[0.16em] focus:text-og-green"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-og-midnight focus:px-5 focus:py-3 focus:text-eyebrow focus:font-bold focus:uppercase focus:text-og-green"
           >
             Skip to content
           </a>

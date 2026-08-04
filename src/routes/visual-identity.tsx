@@ -116,7 +116,7 @@ function VisualIdentity() {
   return (
     <>
       <PageHeader
-        eyebrow="Visual Identity"
+        eyebrow="Logo & Color"
         title="Color, logo, and the signature shapes"
         subhead="Every value is click-to-copy. Watch the contrast badges: they enforce the green rule so you never ship green text on white."
       />
@@ -183,7 +183,7 @@ function VisualIdentity() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold">{g.name}</span>
                   {g.status === "signature" && (
-                    <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-medium text-primary-foreground">
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-micro font-medium text-primary-foreground">
                       signature
                     </span>
                   )}
@@ -245,7 +245,7 @@ function VisualIdentity() {
                         <td key={s.hex} className="p-3">
                           {/* Live specimen: the actual pair, at actual body size. */}
                           <span
-                            className="mb-2 flex items-center justify-center rounded-md border border-border px-3 py-2.5 text-[15px] font-bold"
+                            className="mb-2 flex items-center justify-center rounded-md border border-border px-3 py-2.5 text-body font-bold"
                             style={{ backgroundColor: s.hex, color: g.hex }}
                           >
                             Subscriptions
@@ -253,7 +253,7 @@ function VisualIdentity() {
                           <span className="flex flex-wrap items-center gap-1.5">
                             <span
                               className={cn(
-                                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium",
+                                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-micro font-medium",
                                 ok
                                   ? "bg-primary text-primary-foreground"
                                   : "bg-destructive text-destructive-foreground",
