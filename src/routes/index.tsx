@@ -154,13 +154,13 @@ const POPULAR = [
 const TEMPLATES = [
   {
     title: "Presentation deck",
-    tag: "Ready",
+    tag: "In progress",
     blurb: "80 layouts: covers, agendas, stats, customer logos, quote slides.",
     icon: "slideshow",
   },
   {
     title: "Email signature",
-    tag: "Ready",
+    tag: "In progress",
     blurb: "Copy-paste HTML with the right wordmark and spacing.",
     icon: "mail",
   },
