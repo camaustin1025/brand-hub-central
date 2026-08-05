@@ -1,9 +1,13 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { unlockSite } from "@/lib/gate.functions";
+import { checkUnlocked, unlockSite } from "@/lib/gate.functions";
 
 export const Route = createFileRoute("/unlock")({
+  beforeLoad: async () => {
+    const { unlocked } = await checkUnlocked();
+    if (unlocked) throw redirect({ to: "/" });
+  },
   head: () => ({
     meta: [
       { title: "Enter password — Ordergroove Brand Hub" },
