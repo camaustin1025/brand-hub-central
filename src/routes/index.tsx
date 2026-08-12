@@ -497,56 +497,6 @@ function Index() {
         </div>
       </section>
 
-      {/* ASSISTANT BAND — full-bleed Midnight. `dark` resolves green to #00FF85. */}
-      <section
-        id="assistant"
-        className="dark relative mt-[var(--step-section)] overflow-hidden bg-og-midnight scroll-mt-[var(--stick)]"
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-64 -top-72 h-[820px] w-[820px] rounded-full opacity-25 mix-blend-screen"
-          style={{
-            background:
-              "radial-gradient(circle, #00FAFF 0%, rgba(234,255,0,0.85) 45%, rgba(23,19,47,0) 72%)",
-          }}
-        />
-        {/* Two defined masses, not a paragraph and two floating pills: the
-            action column gets a fixed width so the gap between them reads as
-            composition rather than leftover space. */}
-        <div className="site-container relative flex flex-col items-start justify-between gap-12 py-[var(--step-section)] lg:flex-row lg:items-center">
-          <div className="max-w-[56ch]">
-            <div className="flex items-center gap-3.5">
-              <Kicker>AI &amp; Skills</Kicker>
-              <span className="shrink-0 whitespace-nowrap border border-white/28 px-2.5 py-1 text-micro font-bold uppercase text-white/70">
-                Coming soon
-              </span>
-            </div>
-            <h2 className="mt-6 text-band font-bold text-white text-balance">
-              Ask the brand, get an answer.
-            </h2>
-            <p className="mt-5 text-lead text-white/72 text-pretty">
-              The brand assistant will read from this hub and answer in plain language — which green
-              on white, whether a headline sounds like us, what's wrong with a slide. The canon it
-              draws from is being written now.
-            </p>
-          </div>
-          <div className="flex w-full shrink-0 flex-col gap-3 sm:w-[320px]">
-            <Link
-              to="/ai-skills"
-              className="inline-flex items-center justify-center gap-2.5 bg-og-green px-7 py-4 text-eyebrow font-bold uppercase text-og-midnight transition-colors hover:bg-white"
-            >
-              <MaterialSymbol name="auto_awesome" size={17} />
-              Read the AI guidance
-            </Link>
-            <Link
-              to="/ai-skills"
-              className="inline-flex items-center justify-center gap-2.5 border border-white/28 px-7 py-4 text-eyebrow font-bold uppercase text-white transition-colors hover:border-og-green hover:text-og-green"
-            >
-              Join the pilot
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* WHAT'S NEW + HELP */}
       <section
