@@ -259,7 +259,7 @@ function Index() {
           field now holds the card's diagram, and the title / blurb / link group
           tightly at the foot as one unit. */}
       <section id="guidelines" className="site-container section-step">
-        <SectionHead kicker="The three doors" aside={<Aside>Sec.01</Aside>} />
+        <SectionHead kicker="The three doors" />
         {/* lg, not md: at 768 three tracks give each door 227px, and a 36px
             title plus a 240-wide diagram does not fit in it. No 2-column stage
             either — the third door would strand at half width. */}
