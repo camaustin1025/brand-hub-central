@@ -423,7 +423,7 @@ function Index() {
                   alt="Ordergroove wordmark, dark"
                   width={512}
                   height={88}
-                  className="h-[18px] w-auto"
+                  className="h-[40px] w-auto"
                 />
               </div>
               <div className="flex h-[82px] items-center justify-center bg-og-midnight p-4">
@@ -432,7 +432,7 @@ function Index() {
                   alt="Ordergroove wordmark, white"
                   width={512}
                   height={88}
-                  className="h-[18px] w-auto"
+                  className="h-[40px] w-auto"
                 />
               </div>
             </div>
