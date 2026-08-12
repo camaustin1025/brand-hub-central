@@ -16,7 +16,7 @@ const QUICK_LINKS = [
 ] as const;
 
 const PLACEHOLDER: Record<Mode, string> = {
-  search: 'Search assets, colors, rules — "logo svg", "midnight hex"…',
+  search: "Start typing to search assets, colors, rules and more.",
   ask: 'Ask anything — "Which green goes on a white background?"',
 };
 
