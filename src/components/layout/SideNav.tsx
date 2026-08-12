@@ -388,9 +388,6 @@ export function NavDrawer() {
           <div className="min-h-0 flex-1 overflow-y-auto pt-6">
             <NavTree onNavigate={() => setOpen(false)} />
           </div>
-          <div className="shrink-0 border-t border-white/12">
-            <StatusFoot />
-          </div>
         </div>
       </SheetContent>
     </Sheet>
