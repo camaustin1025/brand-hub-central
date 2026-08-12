@@ -67,7 +67,7 @@ const DOORS: DoorSpec[] = [
   },
   {
     n: "03",
-    title: "Toolkit",
+    title: "Campaigns & GTM Toolkits",
     blurb: "Deck templates, signatures, and the AI skills that check the work.",
     cta: "Open the toolkit",
     path: "/toolkit",
