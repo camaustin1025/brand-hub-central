@@ -225,7 +225,7 @@ function Index() {
             <Kicker className="text-og-midnight">Ordergroove Brand Hub</Kicker>
             <span aria-hidden className="h-px flex-1 bg-og-midnight/25" />
             <span className="hidden text-eyebrow font-bold uppercase text-og-midnight md:block">
-              Internal · v2.0
+              INTERNAL
             </span>
           </div>
           {/* 11cqi, not 9vw: the side rail owns 256px of the viewport, so vw
