@@ -479,7 +479,7 @@ function Index() {
         id="templates"
         className="site-container module-step scroll-mt-[calc(var(--stick)+var(--step-block))]"
       >
-        <SectionHead kicker="Templates & toolkit" aside={<Aside>Sec.02</Aside>} />
+        <SectionHead kicker="Templates & toolkit" />
         {/* 1 → 3 at lg, with no 2-column stage: three items in two tracks strand
             the third at half width beside an equal-sized hole. Four-item grids
             (Most downloaded, above) divide evenly at both stages and do step. */}
