@@ -30,3 +30,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated copy-review pages (rebuild: node scripts/copy-review.mjs)
+review/
