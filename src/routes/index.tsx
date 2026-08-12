@@ -287,7 +287,6 @@ function Index() {
         <div className="block-step flex flex-col gap-3.5">
           <div className="flex items-center justify-between">
             <Kicker as="h3">Core Color</Kicker>
-            <Aside>F.01</Aside>
           </div>
           {/* A floor, not fixed rows: the tiles keep their proportion as the
               field grows. No flex-1 any more — there is no sibling column left
@@ -330,7 +329,6 @@ function Index() {
         <div id="type" className="module-step flex flex-col gap-3.5">
           <div className="flex items-center justify-between">
             <Kicker as="h3">Typography</Kicker>
-            <Aside>F.02</Aside>
           </div>
           <div className="visual-container grid gap-6 border border-og-border bg-white p-6 lg:grid-cols-[1fr_minmax(0,34ch)] lg:items-end lg:gap-10">
             <div>
@@ -361,7 +359,6 @@ function Index() {
           <div className="visual-container flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
               <Kicker as="h3">Gradients</Kicker>
-              <Aside>F.03</Aside>
             </div>
             <div className="mt-5 flex flex-col gap-2">
               {HOME_GRADIENTS.map((g) => (
@@ -390,7 +387,6 @@ function Index() {
           <div className="visual-container flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
               <Kicker as="h3">Icons</Kicker>
-              <Aside>F.04</Aside>
             </div>
             <div className="mt-5 flex flex-wrap gap-5 text-og-midnight">
               {SPECIMEN_ICONS.map((name) => (
@@ -414,7 +410,6 @@ function Index() {
           <div className="visual-container flex flex-col border border-og-border p-6">
             <div className="flex items-center justify-between gap-3">
               <Kicker as="h3">Logo</Kicker>
-              <Aside>F.05</Aside>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-2">
               <div className="flex h-[82px] items-center justify-center border border-og-hairline bg-white p-4">
