@@ -229,34 +229,6 @@ function NavTree({ collapsed, onNavigate }: { collapsed?: boolean; onNavigate?: 
   );
 }
 
-/**
- * The status line the sticky strip under the header used to carry. It cost
- * 36px of sticky chrome on every scroll of every page to say one static
- * sentence; down here it says the same thing for free.
- */
-function StatusFoot({ collapsed }: { collapsed?: boolean }) {
-  if (collapsed) {
-    return (
-      <div className="flex justify-center py-3" title="Live and building">
-        <span aria-hidden className="size-2 rounded-full bg-og-green" />
-        <span className="sr-only">Live and building. Some sections are still in draft.</span>
-      </div>
-    );
-  }
-  return (
-    <div className="flex flex-col gap-1.5 px-3 py-4">
-      <span className="flex items-center gap-2 text-eyebrow font-bold uppercase text-primary">
-        <MaterialSymbol name="bolt" size={15} />
-        Sys.status
-      </span>
-      <span className="text-label text-white/72">
-        Live and building. Some sections are still in draft.
-      </span>
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
 
 /**
  * The persistent rail, md and up.
@@ -343,7 +315,6 @@ export function SideRail() {
             <NavTree collapsed={collapsed} />
           </div>
           <div className="shrink-0 border-t border-white/12">
-            <StatusFoot collapsed={collapsed} />
             {/* Hidden below xl: there the icon form is forced by width, so a
                 control claiming to toggle it would be lying. */}
             {!narrow && (
@@ -416,9 +387,6 @@ export function NavDrawer() {
               at top-4/right-4 and otherwise lands on the first group's chevron. */}
           <div className="min-h-0 flex-1 overflow-y-auto pt-6">
             <NavTree onNavigate={() => setOpen(false)} />
-          </div>
-          <div className="shrink-0 border-t border-white/12">
-            <StatusFoot />
           </div>
         </div>
       </SheetContent>
