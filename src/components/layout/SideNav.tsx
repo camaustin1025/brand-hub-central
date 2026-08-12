@@ -315,7 +315,6 @@ export function SideRail() {
             <NavTree collapsed={collapsed} />
           </div>
           <div className="shrink-0 border-t border-white/12">
-            <StatusFoot collapsed={collapsed} />
             {/* Hidden below xl: there the icon form is forced by width, so a
                 control claiming to toggle it would be lying. */}
             {!narrow && (
