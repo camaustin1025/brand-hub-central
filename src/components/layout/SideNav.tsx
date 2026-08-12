@@ -363,7 +363,7 @@ export function NavDrawer() {
           widths that genuinely have no room for one. */}
       <SheetTrigger
         aria-label="Open navigation"
-        className="flex size-11 cursor-pointer items-center justify-center border border-border text-og-midnight transition-colors hover:border-og-midnight md:hidden"
+        className="flex size-11 cursor-pointer items-center justify-center border border-white/24 text-white transition-colors hover:border-primary md:hidden"
       >
         <MaterialSymbol name="menu" size={22} />
       </SheetTrigger>

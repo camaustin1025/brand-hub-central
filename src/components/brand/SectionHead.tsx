@@ -1,20 +1,22 @@
 import type { ReactNode } from "react";
-import { Kicker } from "@/components/brand/Kicker";
 
 /**
- * Section opener: a green kicker and an optional right-aligned aside, sitting
- * on a Midnight rule. This is the band that separates one module of the page
- * from the next — use it instead of a bare `h2` so every section keeps the
- * same rhythm.
+ * Section opener: the section's name and an optional right-aligned aside,
+ * sitting on a Midnight rule. This is the band that separates one module of
+ * the page from the next — use it instead of a bare `h2` so every section
+ * keeps the same rhythm.
  *
- * The kicker renders as a real `h2` (override with `as` for a nested module),
- * because it names the section: without it the page is a wall of styled spans
- * and screen-reader heading navigation has nothing to land on.
+ * The name renders as a real `h2` (override with `as` for a nested module) at
+ * the same headline step ModuleHead uses. It used to be a 12px green kicker —
+ * Home's sections read as modules you scan past — but the hierarchy pass sized
+ * every section head to the headline step, so Home and the guideline pages now
+ * mark a section with the same weight. The prop keeps the `kicker` name so the
+ * call sites didn't churn.
  */
 export function SectionHead({
   kicker,
   aside,
-  as = "h2",
+  as: Tag = "h2",
 }: {
   kicker: string;
   aside?: ReactNode;
@@ -22,7 +24,7 @@ export function SectionHead({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-6 border-b border-og-midnight pb-3.5">
-      <Kicker as={as}>{kicker}</Kicker>
+      <Tag className="text-headline font-extrabold tracking-[-0.03em]">{kicker}</Tag>
       {aside}
     </div>
   );
@@ -56,7 +58,10 @@ export function ModuleHead({
   return (
     <>
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-og-midnight pb-3.5">
-        <h2 id={id} className="scroll-mt-[calc(var(--stick)+var(--step-block))] text-2xl font-bold">
+        <h2
+          id={id}
+          className="scroll-mt-[calc(var(--stick)+var(--step-block))] text-headline font-extrabold tracking-[-0.03em]"
+        >
           {title}
         </h2>
         {aside}
