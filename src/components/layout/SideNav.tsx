@@ -229,34 +229,6 @@ function NavTree({ collapsed, onNavigate }: { collapsed?: boolean; onNavigate?: 
   );
 }
 
-/**
- * The status line the sticky strip under the header used to carry. It cost
- * 36px of sticky chrome on every scroll of every page to say one static
- * sentence; down here it says the same thing for free.
- */
-function StatusFoot({ collapsed }: { collapsed?: boolean }) {
-  if (collapsed) {
-    return (
-      <div className="flex justify-center py-3" title="Live and building">
-        <span aria-hidden className="size-2 rounded-full bg-og-green" />
-        <span className="sr-only">Live and building. Some sections are still in draft.</span>
-      </div>
-    );
-  }
-  return (
-    <div className="flex flex-col gap-1.5 px-3 py-4">
-      <span className="flex items-center gap-2 text-eyebrow font-bold uppercase text-primary">
-        <MaterialSymbol name="bolt" size={15} />
-        Sys.status
-      </span>
-      <span className="text-label text-white/72">
-        Live and building. Some sections are still in draft.
-      </span>
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
 
 /**
  * The persistent rail, md and up.
