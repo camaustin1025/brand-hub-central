@@ -16,13 +16,17 @@ import { cn } from "@/lib/utils";
  * routes active, while a group tab is active whenever any of its member routes
  * is — every route lights exactly one tab. Page- and section-level navigation
  * stays the side nav's job.
+ *
+ * The bar spans the viewport, not `site-container`: chrome aligns to chrome.
+ * The wordmark starts on the rail's text column (`pl-3`, the same 12px inset
+ * NavRow uses), so the identity sits flush over the nav that carries it.
  */
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <header className="dark sticky top-0 z-[60] h-[var(--stick)] border-b border-white/12 bg-og-midnight">
-      <div className="site-container flex h-full items-center justify-between gap-6">
+      <div className="flex h-full w-full items-center justify-between gap-6 pl-3 pr-6 md:pr-10">
         <div className="flex items-center gap-5">
           <NavDrawer />
           <Link
@@ -30,12 +34,18 @@ export function Header() {
             className="flex min-h-11 items-center"
             aria-label="Ordergroove Brand Hub, home"
           >
+            {/* The trim cut of the wordmark: logo-dark.png carries ~33% ink /
+                67% transparent padding, so sized by its box it renders a third
+                the height it claims and its left edge floats ~14% in. The trim
+                (scripts has no pipeline for this; it was cut once with sips)
+                is the ink box plus a hair, so the box height IS the mark's
+                height and pl-3 puts real pixels on the rail's text column. */}
             <img
-              src="/logo-dark.png"
+              src="/logo-dark-trim.png"
               alt="Ordergroove"
-              width={512}
-              height={88}
-              className="h-[26px] w-auto"
+              width={866}
+              height={162}
+              className="h-4 w-auto"
             />
           </Link>
           <span aria-hidden className="hidden h-[22px] w-px bg-white/16 sm:block" />
@@ -57,7 +67,7 @@ export function Header() {
                     "flex items-center border-b-2 pt-[2px] text-label transition-colors",
                     active
                       ? "border-primary font-bold text-white"
-                      : "border-transparent font-semibold text-white/64 hover:text-white",
+                      : "border-transparent font-semibold text-white/64 hover:border-primary hover:text-white",
                   )}
                 >
                   {g.label}
@@ -68,7 +78,7 @@ export function Header() {
               to="/"
               hash="updates"
               activeOptions={{ includeHash: true }}
-              className="flex items-center gap-2 border-b-2 border-transparent pt-[2px] text-label font-semibold text-white/64 transition-colors hover:text-white"
+              className="flex items-center gap-2 border-b-2 border-transparent pt-[2px] text-label font-semibold text-white/64 transition-colors hover:border-primary hover:text-white"
             >
               What's New
               <span aria-hidden className="size-1.5 rounded-full bg-primary" />
