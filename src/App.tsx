@@ -1,34 +1,27 @@
-import { Routes, Route } from "react-router-dom";
-import { Layout } from "@/components/layout/Layout";
-import { ScrollToTop } from "@/components/layout/ScrollToTop";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
-import Home from "@/pages/Home";
-import Foundation from "@/pages/Foundation";
-import Voice from "@/pages/Voice";
-import VisualIdentity from "@/pages/VisualIdentity";
-import Downloads from "@/pages/Downloads";
-import Tokens from "@/pages/Tokens";
-import Toolkit from "@/pages/Toolkit";
-import AISkills from "@/pages/AISkills";
-import NotFound from "@/pages/NotFound";
+import BrandHub from "@/pages/BrandHub";
+
+const LEGACY_ROUTES: [string, string][] = [
+  ["/foundation", "messaging"],
+  ["/voice", "voice"],
+  ["/visual-identity", "color"],
+  ["/downloads", "downloads"],
+  ["/tokens", "tokens"],
+  ["/toolkit", "toolkit"],
+  ["/ai-skills", "ai-skills"],
+];
 
 export default function App() {
   return (
-    <Layout>
-      <ScrollToTop />
-      <ErrorBoundary>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/foundation" element={<Foundation />} />
-          <Route path="/voice" element={<Voice />} />
-          <Route path="/visual-identity" element={<VisualIdentity />} />
-          <Route path="/downloads" element={<Downloads />} />
-          <Route path="/tokens" element={<Tokens />} />
-          <Route path="/toolkit" element={<Toolkit />} />
-          <Route path="/ai-skills" element={<AISkills />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </ErrorBoundary>
-    </Layout>
+    <ErrorBoundary>
+      <Routes>
+        <Route path="/" element={<BrandHub />} />
+        {LEGACY_ROUTES.map(([path, anchor]) => (
+          <Route key={path} path={path} element={<Navigate to={`/#${anchor}`} replace />} />
+        ))}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </ErrorBoundary>
   );
 }

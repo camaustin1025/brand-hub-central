@@ -103,6 +103,12 @@
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: "ss01", "cv01";
   }
+  html {
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background: rgba(0, 154, 80, 0.18);
+  }
   /* Statements, not sentences: no trailing periods on display type (canon 5.3) */
   /* Figtree headings on the live site run tight: negative tracking, close leading. */
   h1, h2, h3 {
