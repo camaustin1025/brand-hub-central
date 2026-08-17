@@ -16,6 +16,7 @@ import { checkUnlocked } from "@/lib/gate.functions";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/layout/Header";
 import { SideRail } from "@/components/layout/SideNav";
+import { HubRail } from "@/components/hub/HubNav";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -205,7 +206,7 @@ function RootComponent() {
             "full bleed" means once a rail owns the left edge.
           */}
           <div className="flex flex-1 items-start">
-            <SideRail />
+            {pathname === "/" ? <HubRail /> : <SideRail />}
             <main id="main" tabIndex={-1} className="min-w-0 flex-1 [container-type:inline-size]">
               <Outlet />
             </main>

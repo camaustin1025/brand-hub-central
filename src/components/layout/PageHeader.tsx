@@ -1,4 +1,5 @@
 import { Kicker } from "@/components/brand/Kicker";
+import { useSinglePageContext } from "@/components/hub/single-page-context";
 
 /**
  * The masthead every inner route opens with. It sits on the same 12-column
@@ -24,6 +25,28 @@ export function PageHeader({
   title: string;
   subhead?: string;
 }) {
+  const { embedded, idPrefix } = useSinglePageContext();
+
+  if (embedded) {
+    return (
+      <div
+        id={idPrefix}
+        data-hub-section
+        className="site-container scroll-mt-[calc(var(--stick)+var(--step-block))] pt-[var(--step-block)]"
+      >
+        <div className="grid-12 border-t border-og-midnight pt-[var(--step-block)]">
+          <div className="col-span-12 md:col-span-9">
+            <Kicker as="p" className="mb-3">
+              {eyebrow}
+            </Kicker>
+            <h2 className="text-display font-bold">{title}</h2>
+            {subhead && <p className="mt-4 max-w-[56ch] text-lead text-foreground">{subhead}</p>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="site-container">
       <div className="grid-12 border-b border-border py-12 md:py-16">

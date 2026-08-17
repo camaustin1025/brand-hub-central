@@ -9,60 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VoiceRouteImport } from './routes/voice'
-import { Route as VisualIdentityRouteImport } from './routes/visual-identity'
-import { Route as UnlockRouteImport } from './routes/unlock'
-import { Route as ToolkitRouteImport } from './routes/toolkit'
-import { Route as TokensRouteImport } from './routes/tokens'
-import { Route as FoundationRouteImport } from './routes/foundation'
-import { Route as DownloadsRouteImport } from './routes/downloads'
-import { Route as AiSkillsRouteImport } from './routes/ai-skills'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AiSkillsRouteImport } from './routes/ai-skills'
+import { Route as DownloadsRouteImport } from './routes/downloads'
+import { Route as FoundationRouteImport } from './routes/foundation'
+import { Route as TokensRouteImport } from './routes/tokens'
+import { Route as ToolkitRouteImport } from './routes/toolkit'
+import { Route as UnlockRouteImport } from './routes/unlock'
+import { Route as VisualIdentityRouteImport } from './routes/visual-identity'
+import { Route as VoiceRouteImport } from './routes/voice'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminAssetsRouteImport } from './routes/admin.assets'
-import { Route as AdminAssetsNewRouteImport } from './routes/admin.assets.new'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminAssetsIdRouteImport } from './routes/admin.assets.$id'
+import { Route as AdminAssetsNewRouteImport } from './routes/admin.assets.new'
 
-const VoiceRoute = VoiceRouteImport.update({
-  id: '/voice',
-  path: '/voice',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VisualIdentityRoute = VisualIdentityRouteImport.update({
-  id: '/visual-identity',
-  path: '/visual-identity',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UnlockRoute = UnlockRouteImport.update({
-  id: '/unlock',
-  path: '/unlock',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolkitRoute = ToolkitRouteImport.update({
-  id: '/toolkit',
-  path: '/toolkit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TokensRoute = TokensRouteImport.update({
-  id: '/tokens',
-  path: '/tokens',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FoundationRoute = FoundationRouteImport.update({
-  id: '/foundation',
-  path: '/foundation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DownloadsRoute = DownloadsRouteImport.update({
-  id: '/downloads',
-  path: '/downloads',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AiSkillsRoute = AiSkillsRouteImport.update({
-  id: '/ai-skills',
-  path: '/ai-skills',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -70,9 +35,44 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AiSkillsRoute = AiSkillsRouteImport.update({
+  id: '/ai-skills',
+  path: '/ai-skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadsRoute = DownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundationRoute = FoundationRouteImport.update({
+  id: '/foundation',
+  path: '/foundation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TokensRoute = TokensRouteImport.update({
+  id: '/tokens',
+  path: '/tokens',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolkitRoute = ToolkitRouteImport.update({
+  id: '/toolkit',
+  path: '/toolkit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnlockRoute = UnlockRouteImport.update({
+  id: '/unlock',
+  path: '/unlock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VisualIdentityRoute = VisualIdentityRouteImport.update({
+  id: '/visual-identity',
+  path: '/visual-identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VoiceRoute = VoiceRouteImport.update({
+  id: '/voice',
+  path: '/voice',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -80,24 +80,24 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
-  id: '/categories',
-  path: '/categories',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminAssetsRoute = AdminAssetsRouteImport.update({
   id: '/assets',
   path: '/assets',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminAssetsNewRoute = AdminAssetsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => AdminAssetsRoute,
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAssetsIdRoute = AdminAssetsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
+  getParentRoute: () => AdminAssetsRoute,
+} as any)
+const AdminAssetsNewRoute = AdminAssetsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
   getParentRoute: () => AdminAssetsRoute,
 } as any)
 
@@ -220,60 +220,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/voice': {
-      id: '/voice'
-      path: '/voice'
-      fullPath: '/voice'
-      preLoaderRoute: typeof VoiceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/visual-identity': {
-      id: '/visual-identity'
-      path: '/visual-identity'
-      fullPath: '/visual-identity'
-      preLoaderRoute: typeof VisualIdentityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/unlock': {
-      id: '/unlock'
-      path: '/unlock'
-      fullPath: '/unlock'
-      preLoaderRoute: typeof UnlockRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/toolkit': {
-      id: '/toolkit'
-      path: '/toolkit'
-      fullPath: '/toolkit'
-      preLoaderRoute: typeof ToolkitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tokens': {
-      id: '/tokens'
-      path: '/tokens'
-      fullPath: '/tokens'
-      preLoaderRoute: typeof TokensRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/foundation': {
-      id: '/foundation'
-      path: '/foundation'
-      fullPath: '/foundation'
-      preLoaderRoute: typeof FoundationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/downloads': {
-      id: '/downloads'
-      path: '/downloads'
-      fullPath: '/downloads'
-      preLoaderRoute: typeof DownloadsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ai-skills': {
-      id: '/ai-skills'
-      path: '/ai-skills'
-      fullPath: '/ai-skills'
-      preLoaderRoute: typeof AiSkillsRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -283,11 +234,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/ai-skills': {
+      id: '/ai-skills'
+      path: '/ai-skills'
+      fullPath: '/ai-skills'
+      preLoaderRoute: typeof AiSkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/downloads': {
+      id: '/downloads'
+      path: '/downloads'
+      fullPath: '/downloads'
+      preLoaderRoute: typeof DownloadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/foundation': {
+      id: '/foundation'
+      path: '/foundation'
+      fullPath: '/foundation'
+      preLoaderRoute: typeof FoundationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tokens': {
+      id: '/tokens'
+      path: '/tokens'
+      fullPath: '/tokens'
+      preLoaderRoute: typeof TokensRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/toolkit': {
+      id: '/toolkit'
+      path: '/toolkit'
+      fullPath: '/toolkit'
+      preLoaderRoute: typeof ToolkitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unlock': {
+      id: '/unlock'
+      path: '/unlock'
+      fullPath: '/unlock'
+      preLoaderRoute: typeof UnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/visual-identity': {
+      id: '/visual-identity'
+      path: '/visual-identity'
+      fullPath: '/visual-identity'
+      preLoaderRoute: typeof VisualIdentityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/voice': {
+      id: '/voice'
+      path: '/voice'
+      fullPath: '/voice'
+      preLoaderRoute: typeof VoiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -297,13 +297,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/categories': {
-      id: '/admin/categories'
-      path: '/categories'
-      fullPath: '/admin/categories'
-      preLoaderRoute: typeof AdminCategoriesRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/assets': {
       id: '/admin/assets'
       path: '/assets'
@@ -311,18 +304,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAssetsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/assets/new': {
-      id: '/admin/assets/new'
-      path: '/new'
-      fullPath: '/admin/assets/new'
-      preLoaderRoute: typeof AdminAssetsNewRouteImport
-      parentRoute: typeof AdminAssetsRoute
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/assets/$id': {
       id: '/admin/assets/$id'
       path: '/$id'
       fullPath: '/admin/assets/$id'
       preLoaderRoute: typeof AdminAssetsIdRouteImport
+      parentRoute: typeof AdminAssetsRoute
+    }
+    '/admin/assets/new': {
+      id: '/admin/assets/new'
+      path: '/new'
+      fullPath: '/admin/assets/new'
+      preLoaderRoute: typeof AdminAssetsNewRouteImport
       parentRoute: typeof AdminAssetsRoute
     }
   }

@@ -110,7 +110,7 @@ const slug = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-function VisualIdentity() {
+export function VisualIdentity() {
   const { copy, toast } = useCopyToast();
 
   return (

@@ -52,7 +52,7 @@ const TOOLS: Tool[] = [
   },
 ];
 
-function Toolkit() {
+export function Toolkit() {
   return (
     <>
       <PageHeader

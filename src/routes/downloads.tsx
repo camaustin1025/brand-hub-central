@@ -25,7 +25,7 @@ export const Route = createFileRoute("/downloads")({
   component: Downloads,
 });
 
-function Downloads() {
+export function Downloads() {
   const { data } = useSuspenseQuery(assetsQueryOptions);
   const { categories, assets } = data;
 

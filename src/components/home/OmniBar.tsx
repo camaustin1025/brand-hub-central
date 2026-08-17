@@ -9,10 +9,10 @@ import { cn } from "@/lib/utils";
 type Mode = "search" | "ask";
 
 const QUICK_LINKS = [
-  { label: "Logo kit", path: "/downloads" },
-  { label: "Font kit", path: "/downloads" },
-  { label: "Color tokens", path: "/tokens" },
-  { label: "Deck template", path: "/toolkit" },
+  { label: "Logo kit", hash: "downloads" },
+  { label: "Font kit", hash: "downloads" },
+  { label: "Color tokens", hash: "tokens" },
+  { label: "Deck template", hash: "toolkit" },
 ] as const;
 
 const PLACEHOLDER: Record<Mode, string> = {
@@ -93,7 +93,7 @@ export function OmniBar() {
     }
     if (e.key === "Enter" && mode === "search" && hits[0]) {
       setOpen(false);
-      navigate({ to: hits[0].path });
+      navigate({ to: hits[0].path, hash: hits[0].hash });
     }
   }
 
@@ -169,7 +169,11 @@ export function OmniBar() {
                 <MaterialSymbol name="auto_awesome" size={18} className="mt-0.5 text-primary" />
                 <p className="text-body text-og-indigo">
                   The brand assistant isn't live yet. The canon it will answer from is written up on{" "}
-                  <Link to="/ai-skills" className="font-semibold text-primary hover:underline">
+                  <Link
+                    to="/"
+                    hash="ai-skills"
+                    className="font-semibold text-primary hover:underline"
+                  >
                     AI &amp; Skills
                   </Link>
                   .
@@ -185,6 +189,7 @@ export function OmniBar() {
                   <li key={h.id}>
                     <Link
                       to={h.path}
+                      hash={h.hash}
                       onClick={() => setOpen(false)}
                       className="flex items-center gap-3.5 border-t border-og-hairline px-6 py-3.5 transition-colors first:border-t-0 hover:bg-og-surface"
                     >
@@ -193,9 +198,7 @@ export function OmniBar() {
                         <span className="block truncate text-body font-semibold text-og-midnight">
                           {h.title}
                         </span>
-                        <span className="block truncate text-label text-og-soft">
-                          {h.subtitle}
-                        </span>
+                        <span className="block truncate text-label text-og-soft">{h.subtitle}</span>
                       </span>
                       <span className="shrink-0 text-eyebrow font-bold uppercase text-primary">
                         {h.kind}
@@ -219,15 +222,14 @@ export function OmniBar() {
         the links become a two-column grid and the ticks drop out entirely.
       */}
       <div className="mt-5 sm:flex sm:flex-wrap sm:items-center sm:gap-x-4">
-        <span className="block text-eyebrow font-bold uppercase text-primary">
-          Quick jump
-        </span>
+        <span className="block text-eyebrow font-bold uppercase text-primary">Quick jump</span>
         <div className="grid grid-cols-2 gap-x-4 sm:contents">
           {QUICK_LINKS.map((q, i) => (
             <span key={q.label} className="flex items-center gap-x-4">
               {i > 0 && <span aria-hidden className="hidden h-3 w-px bg-border sm:block" />}
               <Link
-                to={q.path}
+                to="/"
+                hash={q.hash}
                 className="flex min-h-11 items-center text-eyebrow font-bold uppercase text-og-midnight transition-colors hover:text-primary"
               >
                 {q.label}

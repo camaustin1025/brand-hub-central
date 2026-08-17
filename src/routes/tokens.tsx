@@ -31,7 +31,7 @@ function CopyCell({ value, onCopy }: { value: string; onCopy: (value: string) =>
   );
 }
 
-function Tokens() {
+export function Tokens() {
   const { copy, toast } = useCopyToast();
 
   return (

@@ -14,6 +14,7 @@
 import type { Asset } from "@/data/assets";
 import { ALL_ROUTES } from "@/data/nav";
 import { COLOR_GROUPS, GRADIENTS } from "@/data/tokens";
+import { ROUTE_TO_HUB_ANCHOR } from "@/data/hub";
 
 export type SearchHit = {
   id: string;
@@ -22,6 +23,7 @@ export type SearchHit = {
   title: string;
   subtitle: string;
   path: string;
+  hash?: string;
   /** Material Symbols glyph for the result row. */
   icon: string;
   /** Lowercased haystack; never rendered. */
@@ -52,7 +54,14 @@ function hit(h: Omit<SearchHit, "icon" | "terms">, extraTerms: (string | null | 
 export const STATIC_HITS: SearchHit[] = [
   ...ALL_ROUTES.map((r) =>
     hit(
-      { id: `page:${r.path}`, kind: "Page", title: r.label, subtitle: r.blurb, path: r.path },
+      {
+        id: `page:${r.path}`,
+        kind: "Page",
+        title: r.label,
+        subtitle: r.blurb,
+        path: "/",
+        hash: ROUTE_TO_HUB_ANCHOR[r.path],
+      },
       // Retired labels ride along here, so renaming a route in the nav never
       // costs it a search hit under the name people still type.
       r.terms,
@@ -66,7 +75,8 @@ export const STATIC_HITS: SearchHit[] = [
           kind: "Color",
           title: s.name,
           subtitle: `${s.hex} — ${s.usage}`,
-          path: "/visual-identity",
+          path: "/",
+          hash: "logo-color",
         },
         [s.hex, s.rgb, "hex", "swatch"],
       ),
@@ -79,7 +89,8 @@ export const STATIC_HITS: SearchHit[] = [
         kind: "Gradient",
         title: g.name,
         subtitle: g.css,
-        path: "/visual-identity",
+        path: "/",
+        hash: "logo-color",
       },
       g.stops,
     ),
@@ -98,7 +109,8 @@ export function assetHits(assets: IndexableAsset[]): SearchHit[] {
         kind: "Download",
         title: a.title,
         subtitle: a.categoryLabel ? `${a.categoryLabel} — ${a.description}` : a.description,
-        path: "/downloads",
+        path: "/",
+        hash: "downloads",
       },
       [...a.tags, ...a.formats, a.categoryLabel],
     ),

@@ -38,7 +38,7 @@ const LADDER = [
   { rung: "Proof points", body: "Capabilities, stats, customer results. Deep-dive content only." },
 ];
 
-function Foundation() {
+export function Foundation() {
   return (
     <>
       <PageHeader
