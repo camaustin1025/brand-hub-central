@@ -3,6 +3,8 @@ export type HubNavItem = {
   label: string;
   description: string;
   keywords: string;
+  /** Set when the section lives on its own route instead of inline on the hub. */
+  path?: string;
 };
 
 export type HubNavGroup = {
@@ -33,12 +35,14 @@ export const HUB_NAV: HubNavGroup[] = [
     items: [
       {
         id: "messaging",
+        path: "/foundation",
         label: "Foundation & messaging",
         description: "Positioning, audience, Rights to Win, and message ladder.",
         keywords: "autonomous subscriptions everychannel groove network testing velocity category",
       },
       {
         id: "voice",
+        path: "/voice",
         label: "Voice & language",
         description: "Personality, pass/fail rules, and preferred terms.",
         keywords: "tone words copy writing language rules use avoid ai em dash",
