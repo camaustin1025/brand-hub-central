@@ -25,11 +25,6 @@ import { cn } from "@/lib/utils";
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const onHome = pathname === "/";
-  const groupAnchor = {
-    Read: "positioning",
-    Grab: "downloads",
-    Build: "toolkit",
-  } as const;
 
   return (
     <header className="dark sticky top-0 z-[60] h-[var(--stick)] border-b border-white/12 bg-og-midnight">
@@ -71,14 +66,6 @@ export function Header() {
                   ? "border-primary font-bold text-white"
                   : "border-transparent font-semibold text-white/64 hover:border-primary hover:text-white",
               );
-
-              if (onHome) {
-                return (
-                  <Link key={g.mode} to="/" hash={groupAnchor[g.mode]} className={linkClass}>
-                    {g.label}
-                  </Link>
-                );
-              }
 
               return (
                 <Link

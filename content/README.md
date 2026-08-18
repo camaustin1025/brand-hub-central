@@ -18,11 +18,9 @@ The live registry is [`src/data/sections.ts`](../src/data/sections.ts). Adding a
 means adding a slot there in the same commit, or the heading renders but never
 highlights (nothing catches that at build time).
 
-The public home now renders these same route components as one continuous guide. It
-does not keep a second copy of the prose. On the home page, slot IDs are automatically
-prefixed with their chapter ID, for example `category` becomes
-`positioning-category`. The standalone routes remain available as fallbacks and keep
-their original slot IDs.
+The public home is a curated index, not a second copy of the guide. It surfaces
+short, high-use snapshots and sends deeper questions to the route files below,
+which remain the source of truth for approved guidance.
 
 **Current slots:**
 

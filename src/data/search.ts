@@ -14,7 +14,6 @@
 import type { Asset } from "@/data/assets";
 import { ALL_ROUTES } from "@/data/nav";
 import { COLOR_GROUPS, GRADIENTS } from "@/data/tokens";
-import { ROUTE_TO_HUB_ANCHOR } from "@/data/hub";
 
 export type SearchHit = {
   id: string;
@@ -59,8 +58,7 @@ export const STATIC_HITS: SearchHit[] = [
         kind: "Page",
         title: r.label,
         subtitle: r.blurb,
-        path: "/",
-        hash: ROUTE_TO_HUB_ANCHOR[r.path],
+        path: r.path,
       },
       // Retired labels ride along here, so renaming a route in the nav never
       // costs it a search hit under the name people still type.
@@ -75,8 +73,7 @@ export const STATIC_HITS: SearchHit[] = [
           kind: "Color",
           title: s.name,
           subtitle: `${s.hex} — ${s.usage}`,
-          path: "/",
-          hash: "logo-color",
+          path: "/visual-identity",
         },
         [s.hex, s.rgb, "hex", "swatch"],
       ),
@@ -89,8 +86,7 @@ export const STATIC_HITS: SearchHit[] = [
         kind: "Gradient",
         title: g.name,
         subtitle: g.css,
-        path: "/",
-        hash: "logo-color",
+        path: "/visual-identity",
       },
       g.stops,
     ),
@@ -109,8 +105,7 @@ export function assetHits(assets: IndexableAsset[]): SearchHit[] {
         kind: "Download",
         title: a.title,
         subtitle: a.categoryLabel ? `${a.categoryLabel} — ${a.description}` : a.description,
-        path: "/",
-        hash: "downloads",
+        path: "/downloads",
       },
       [...a.tags, ...a.formats, a.categoryLabel],
     ),

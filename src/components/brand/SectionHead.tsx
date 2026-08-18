@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { chapterAnchor, useSinglePageContext } from "@/components/hub/single-page-context";
 
 /**
  * Section opener: the section's name and an optional right-aligned aside,
@@ -56,14 +55,11 @@ export function ModuleHead({
   note?: ReactNode;
   aside?: ReactNode;
 }) {
-  const { idPrefix } = useSinglePageContext();
-  const anchor = chapterAnchor(idPrefix, id);
-
   return (
     <>
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-og-midnight pb-3.5">
         <h2
-          id={anchor}
+          id={id}
           className="scroll-mt-[calc(var(--stick)+var(--step-block))] text-headline font-extrabold tracking-[-0.03em]"
         >
           {title}

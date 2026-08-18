@@ -26,7 +26,7 @@ const SKILLS = [
   },
 ];
 
-export function AISkills() {
+function AISkills() {
   return (
     <>
       <PageHeader

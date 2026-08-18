@@ -1,6 +1,5 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { NAV, type NavMode } from "@/data/nav";
-import { ROUTE_TO_HUB_ANCHOR } from "@/data/hub";
 
 /**
  * The closing Midnight island. It runs on a 12-column field — 3 columns of
@@ -25,8 +24,6 @@ const SPAN: Record<NavMode["mode"], string> = {
 };
 
 export function Footer() {
-  const onHome = useRouterState({ select: (state) => state.location.pathname === "/" });
-
   return (
     <footer className="dark bg-og-midnight text-og-ink">
       {/* 3 / 4 / 2 / 3. The identity block used to take 5 of 12 columns for a
@@ -59,8 +56,7 @@ export function Footer() {
               {group.items.map((item) => (
                 <Link
                   key={item.path}
-                  to={onHome ? "/" : item.path}
-                  hash={onHome ? ROUTE_TO_HUB_ANCHOR[item.path] : undefined}
+                  to={item.path}
                   className="flex min-h-11 items-center text-body text-white transition-colors hover:text-primary"
                 >
                   {item.label}

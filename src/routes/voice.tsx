@@ -34,7 +34,7 @@ const TERMS: [string, string][] = [
   ["Ready on day one", "Out of the box"],
 ];
 
-export function Voice() {
+function Voice() {
   return (
     <>
       <PageHeader

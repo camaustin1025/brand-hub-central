@@ -27,8 +27,8 @@ function HubLink({
 }) {
   const link = (
     <Link
-      to="/"
-      hash={item.id}
+      to={item.path}
+      hash={item.hash}
       onClick={onNavigate}
       aria-current={active ? "location" : undefined}
       className={cn(
@@ -76,7 +76,7 @@ function HubNavTree({ collapsed, onNavigate }: { collapsed?: boolean; onNavigate
               <li key={item.id}>
                 <HubLink
                   item={item}
-                  active={active === item.id}
+                  active={item.path === "/" && active === item.hash}
                   collapsed={collapsed}
                   onNavigate={onNavigate}
                 />
@@ -185,8 +185,8 @@ export function HubDrawer() {
         className="dark top-[var(--stick)] h-[calc(100dvh-var(--stick))] w-[18rem] border-white/12 bg-og-midnight p-0 text-white"
       >
         <SheetHeader className="sr-only">
-          <SheetTitle>Brand hub sections</SheetTitle>
-          <SheetDescription>Jump to any section of the brand hub.</SheetDescription>
+          <SheetTitle>Brand hub navigation</SheetTitle>
+          <SheetDescription>Find an overview, guideline, asset, or tool.</SheetDescription>
         </SheetHeader>
         <div className="h-full overflow-y-auto pt-6">
           <HubNavTree onNavigate={() => setOpen(false)} />

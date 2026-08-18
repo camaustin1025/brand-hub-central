@@ -1,18 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { AssetCard } from "@/components/brand/AssetCard";
+import { CardLink } from "@/components/brand/CardLink";
+import { CopyToast } from "@/components/brand/CopyToast";
 import { Kicker } from "@/components/brand/Kicker";
 import { MaterialSymbol } from "@/components/brand/MaterialSymbol";
 import { SectionHead } from "@/components/brand/SectionHead";
-import { SinglePageChapter } from "@/components/hub/SinglePageContext";
+import { Door, type DoorSpec } from "@/components/home/Door";
 import { OmniBar } from "@/components/home/OmniBar";
 import { CORE, gradient } from "@/data/tokens";
+import { useCopyToast } from "@/hooks/use-copy-toast";
 import { assetsQueryOptions } from "@/lib/assets-query";
-import { Foundation } from "@/routes/foundation";
-import { Voice } from "@/routes/voice";
-import { VisualIdentity } from "@/routes/visual-identity";
-import { Tokens } from "@/routes/tokens";
-import { Downloads } from "@/routes/downloads";
-import { Toolkit } from "@/routes/toolkit";
-import { AISkills } from "@/routes/ai-skills";
 
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(assetsQueryOptions),
@@ -21,16 +19,41 @@ export const Route = createFileRoute("/")({
 
 const HERO_GRADIENT = gradient("marquee").css;
 
-const QUICK_REFERENCE = [
-  { label: "Source of truth", value: "brand.md + brand-style-guide.md", hash: "positioning" },
-  { label: "Category", value: "Autonomous Subscriptions", hash: "positioning" },
-  { label: "Primary background", value: "Midnight #17132F", hash: "logo-color" },
-  { label: "Accent on dark", value: "Groovy Green #00FF85", hash: "logo-color" },
-  { label: "Accent on light", value: "Green #009A50", hash: "logo-color" },
-  { label: "Typeface", value: "Figtree, weights 400 to 800", hash: "tokens" },
-  { label: "Voice", value: "Confident, precise, operator-minded", hash: "voice" },
-  { label: "Logo default", value: "White wordmark + green rings on Midnight", hash: "logo-color" },
-] as const;
+const DOORS: DoorSpec[] = [
+  {
+    n: "01",
+    title: "Guidelines",
+    blurb: "Positioning, voice, logo, color, and the rules behind the brand.",
+    cta: "Read the rules",
+    path: "/foundation",
+    lead: true,
+    diagram: "measure",
+  },
+  {
+    n: "02",
+    title: "Downloads",
+    blurb: "Logo kit, font kit, token exports, backgrounds, and social graphics.",
+    cta: "Grab assets",
+    path: "/downloads",
+    diagram: "retrieve",
+  },
+  {
+    n: "03",
+    title: "Tools",
+    blurb: "Decks, employee resources, and brand skills for creating new work.",
+    cta: "Open the toolkit",
+    path: "/toolkit",
+    diagram: "assemble",
+  },
+];
+
+const RIGHTS_TO_WIN = ["Everychannel Infrastructure", "The Groove Network", "Testing Velocity"];
+
+const VOICE_RULES = [
+  "Lead with the category and outcome",
+  "Use subscriptions in every hero subhead",
+  "Write with calm, direct authority",
+];
 
 const UPDATES = [
   {
@@ -38,32 +61,36 @@ const UPDATES = [
     title: "Gradient rules rewritten",
     blurb: "Cyan-to-lemon only. Direction locked to 112 degrees.",
     kind: "Guideline",
-    hash: "logo-color",
+    path: "/visual-identity",
   },
   {
     date: "Jul 15",
     title: "Deck template v2.0",
     blurb: "All 80 layouts moved onto Figtree and the new footer bar.",
     kind: "Template",
-    hash: "toolkit",
+    path: "/toolkit",
   },
   {
     date: "Jul 09",
     title: "Design tokens published",
     blurb: "88 custom properties, exported as CSS and JSON.",
     kind: "Tokens",
-    hash: "tokens",
+    path: "/tokens",
   },
   {
     date: "Jun 28",
     title: "Soleil formally sunsetted",
     blurb: "Figtree replaces it everywhere. Legacy files flagged for rebuild.",
     kind: "Typography",
-    hash: "downloads",
+    path: "/downloads",
   },
 ] as const;
 
 function Index() {
+  const { data } = useSuspenseQuery(assetsQueryOptions);
+  const featuredAssets = data.assets.filter((asset) => asset.href !== null).slice(0, 3);
+  const { copy, toast } = useCopyToast();
+
   return (
     <div className="bg-background">
       <section
@@ -84,97 +111,235 @@ function Index() {
             The brand, in one place.
           </h1>
           <p className="mt-9 max-w-[46ch] text-xl font-medium leading-normal text-og-midnight text-pretty">
-            Guidelines, assets, and tools for everyone at Ordergroove who ships something with the
-            brand on it.
+            Find the answer fast, grab what you need, or go deeper into the full guidelines.
           </p>
         </div>
       </section>
 
       <div
         id="search"
+        data-hub-section
         className="site-container relative z-40 scroll-mt-[calc(var(--stick)+var(--step-block))]"
       >
         <OmniBar />
       </div>
 
       <section
-        id="quick-reference"
+        id="start-here"
         data-hub-section
-        className="site-container section-step section-end"
+        className="site-container section-step scroll-mt-[calc(var(--stick)+var(--step-block))]"
       >
         <SectionHead
-          kicker="Quick reference"
-          aside={<span className="text-label text-og-soft">The essentials at a glance</span>}
+          kicker="Start here"
+          aside={<span className="text-label text-og-soft">Choose what you need</span>}
         />
-        <div className="module-set block-step grid-cols-1 sm:grid-cols-2">
-          {QUICK_REFERENCE.map((item) => (
-            <Link
-              key={item.label}
-              to="/"
-              hash={item.hash}
-              className="group flex min-h-20 items-center justify-between gap-5 bg-card px-5 py-4 transition-colors hover:bg-og-surface"
-            >
-              <span>
-                <span className="block text-label font-semibold text-og-midnight">
-                  {item.label}
-                </span>
-                <span className="mt-1 block text-body text-og-soft">{item.value}</span>
-              </span>
-              <MaterialSymbol
-                name="arrow_forward"
-                size={18}
-                className="shrink-0 text-primary transition-transform group-hover:translate-x-1"
-              />
-            </Link>
-          ))}
-        </div>
-        <div className="mt-5 flex flex-wrap items-center gap-3 text-label text-og-soft">
-          <span className="font-semibold text-og-midnight">Core palette</span>
-          {CORE.swatches.map((swatch) => (
-            <Link
-              key={swatch.hex}
-              to="/"
-              hash="logo-color"
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-card px-3 transition-colors hover:border-primary"
-            >
-              <span
-                aria-hidden
-                className="size-4 rounded-full border border-og-midnight/10"
-                style={{ backgroundColor: swatch.hex }}
-              />
-              {swatch.hex}
-            </Link>
+        <div className="block-step grid grid-cols-1 gap-5 lg:grid-cols-3">
+          {DOORS.map((door) => (
+            <Door key={door.n} door={door} />
           ))}
         </div>
       </section>
 
-      <SinglePageChapter id="positioning">
-        <Foundation />
-      </SinglePageChapter>
+      <section
+        id="brand-essentials"
+        data-hub-section
+        className="site-container section-step scroll-mt-[calc(var(--stick)+var(--step-block))]"
+      >
+        <SectionHead
+          kicker="Brand essentials"
+          aside={<span className="text-label text-og-soft">The rules people reach for most</span>}
+        />
+        <div className="block-step grid gap-5 lg:grid-cols-12">
+          <Link
+            to="/foundation"
+            className="group visual-container flex min-h-[360px] flex-col border border-border bg-card p-7 transition hover:-translate-y-1 lg:col-span-7"
+          >
+            <div className="flex items-start justify-between gap-6 border-b border-og-hairline pb-5">
+              <Kicker as="p">Positioning</Kicker>
+              <MaterialSymbol name="arrow_outward" size={20} className="text-primary" />
+            </div>
+            <div className="my-auto py-9">
+              <p className="max-w-[14ch] text-4xl font-extrabold leading-[0.98] tracking-[-0.035em] text-og-midnight sm:text-5xl">
+                Lead with Autonomous Subscriptions.
+              </p>
+              <p className="mt-5 max-w-[54ch] text-body text-og-soft">
+                Ordergroove is the enterprise standard for subscriptions and recurring revenue. The
+                category leads, then our three Rights to Win support it.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 border-t border-og-hairline pt-5">
+              {RIGHTS_TO_WIN.map((right, index) => (
+                <span
+                  key={right}
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-label font-semibold text-og-midnight"
+                >
+                  <span className="text-primary">0{index + 1}</span>
+                  {right}
+                </span>
+              ))}
+            </div>
+          </Link>
 
-      <SinglePageChapter id="voice">
-        <Voice />
-      </SinglePageChapter>
+          <Link
+            to="/voice"
+            className="dark group visual-container flex min-h-[360px] flex-col bg-og-midnight p-7 transition hover:-translate-y-1 lg:col-span-5"
+          >
+            <div className="flex items-start justify-between gap-6 border-b border-white/15 pb-5">
+              <Kicker as="p">Voice</Kicker>
+              <MaterialSymbol name="arrow_outward" size={20} className="text-primary" />
+            </div>
+            <div className="my-auto py-8">
+              <p className="max-w-[13ch] text-4xl font-extrabold leading-[0.98] tracking-[-0.035em] text-white">
+                Calm authority, earned.
+              </p>
+              <p className="mt-4 max-w-[38ch] text-body text-white/68">
+                Confident, precise, operator-minded, direct, and evidence-led.
+              </p>
+            </div>
+            <ul className="border-t border-white/15 pt-3">
+              {VOICE_RULES.map((rule) => (
+                <li
+                  key={rule}
+                  className="flex min-h-10 items-center gap-2 text-label text-white/78"
+                >
+                  <MaterialSymbol name="check" size={16} className="text-primary" />
+                  {rule}
+                </li>
+              ))}
+            </ul>
+          </Link>
+        </div>
+      </section>
 
-      <SinglePageChapter id="logo-color">
-        <VisualIdentity />
-      </SinglePageChapter>
+      <section
+        id="visual-foundations"
+        data-hub-section
+        className="site-container section-step scroll-mt-[calc(var(--stick)+var(--step-block))]"
+      >
+        <SectionHead
+          kicker="Visual foundations"
+          aside={<span className="text-label text-og-soft">Click a color to copy</span>}
+        />
+        <div className="block-step grid gap-5 lg:grid-cols-12">
+          <div className="visual-container overflow-hidden border border-border bg-card lg:col-span-7">
+            <div className="flex items-center justify-between gap-5 border-b border-og-hairline px-6 py-5">
+              <div>
+                <Kicker as="h3">Core color</Kicker>
+                <p className="mt-2 text-label text-og-soft">
+                  The green changes with the background. Midnight replaces black.
+                </p>
+              </div>
+              <Link to="/visual-identity" className="min-h-11 shrink-0 items-center sm:flex">
+                <CardLink>Full guide</CardLink>
+              </Link>
+            </div>
+            <div className="grid min-h-[260px] grid-cols-2 sm:grid-cols-4">
+              {CORE.swatches.map((swatch) => {
+                const darkText = swatch.hex !== "#17132F";
+                return (
+                  <button
+                    key={swatch.hex}
+                    type="button"
+                    onClick={() => copy(swatch.hex, swatch.name)}
+                    aria-label={`Copy ${swatch.name} ${swatch.hex}`}
+                    className="group flex min-h-32 flex-col justify-end p-5 text-left transition-[filter] hover:brightness-[0.96]"
+                    style={{ backgroundColor: swatch.hex }}
+                  >
+                    <span
+                      className={`text-body font-bold ${darkText ? "text-og-midnight" : "text-white"}`}
+                    >
+                      {swatch.name}
+                    </span>
+                    <span
+                      className={`mt-1 font-mono text-label ${darkText ? "text-og-midnight/70" : "text-white/70"}`}
+                    >
+                      {swatch.hex}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-      <SinglePageChapter id="tokens">
-        <Tokens />
-      </SinglePageChapter>
+          <Link
+            to="/tokens"
+            className="group visual-container flex min-h-[360px] flex-col border border-border bg-white p-7 transition hover:-translate-y-1 lg:col-span-5"
+          >
+            <div className="flex items-start justify-between gap-6 border-b border-og-hairline pb-5">
+              <Kicker as="p">Typography &amp; tokens</Kicker>
+              <MaterialSymbol name="arrow_outward" size={20} className="text-primary" />
+            </div>
+            <div className="my-auto py-8">
+              <p className="text-[clamp(4.25rem,8cqi,6.75rem)] font-extrabold leading-[0.8] tracking-[-0.055em] text-og-midnight">
+                Aa
+              </p>
+              <p className="mt-7 text-3xl font-extrabold tracking-[-0.03em] text-og-midnight">
+                Figtree only.
+              </p>
+              <p className="mt-3 max-w-[36ch] text-body text-og-soft">
+                Five approved weights, plus canonical CSS and JSON values ready for code.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-og-hairline pt-5 text-label text-og-midnight">
+              <span className="font-normal">Regular</span>
+              <span className="font-medium">Medium</span>
+              <span className="font-semibold">SemiBold</span>
+              <span className="font-bold">Bold</span>
+              <span className="font-extrabold">ExtraBold</span>
+            </div>
+          </Link>
+        </div>
+        <CopyToast value={toast} />
+      </section>
 
-      <SinglePageChapter id="downloads">
-        <Downloads />
-      </SinglePageChapter>
-
-      <SinglePageChapter id="toolkit">
-        <Toolkit />
-      </SinglePageChapter>
-
-      <SinglePageChapter id="ai-skills">
-        <AISkills />
-      </SinglePageChapter>
+      <section
+        id="ready-to-use"
+        data-hub-section
+        className="site-container section-step scroll-mt-[calc(var(--stick)+var(--step-block))]"
+      >
+        <SectionHead
+          kicker="Ready to use"
+          aside={
+            <Link to="/downloads" className="flex min-h-11 items-center">
+              <CardLink>Browse all downloads</CardLink>
+            </Link>
+          }
+        />
+        {featuredAssets.length > 0 ? (
+          <div className="block-step grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredAssets.map((asset) => (
+              <AssetCard key={asset.id} asset={asset} />
+            ))}
+          </div>
+        ) : (
+          <div className="block-step grid gap-5 sm:grid-cols-2">
+            <Link
+              to="/downloads"
+              className="visual-container flex min-h-44 flex-col justify-between border border-border bg-card p-6 transition hover:-translate-y-1"
+            >
+              <MaterialSymbol name="download" size={28} className="text-primary" />
+              <div>
+                <h3 className="text-xl font-bold text-og-midnight">Brand downloads</h3>
+                <p className="mt-2 text-body text-og-soft">
+                  Logo, font, token, background, and social asset libraries.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/toolkit"
+              className="visual-container flex min-h-44 flex-col justify-between border border-border bg-card p-6 transition hover:-translate-y-1"
+            >
+              <MaterialSymbol name="handyman" size={28} className="text-primary" />
+              <div>
+                <h3 className="text-xl font-bold text-og-midnight">GTM &amp; employee toolkit</h3>
+                <p className="mt-2 text-body text-og-soft">
+                  Decks, documents, signatures, and employee resources.
+                </p>
+              </div>
+            </Link>
+          </div>
+        )}
+      </section>
 
       <section
         id="updates"
@@ -182,15 +347,14 @@ function Index() {
         className="site-container section-step section-end scroll-mt-[calc(var(--stick)+var(--step-block))]"
       >
         <SectionHead
-          kicker="What's New"
+          kicker="What's new"
           aside={<span className="text-label text-og-soft">Latest changes</span>}
         />
         <div className="block-step border-t border-og-hairline">
           {UPDATES.map((update) => (
             <Link
               key={`${update.date}-${update.title}`}
-              to="/"
-              hash={update.hash}
+              to={update.path}
               className="group grid gap-3 border-b border-og-hairline py-5 transition-colors hover:bg-white/45 sm:grid-cols-[72px_1fr_auto] sm:items-center sm:px-3"
             >
               <span className="text-label font-semibold text-og-soft">{update.date}</span>

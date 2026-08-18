@@ -9,10 +9,10 @@ import { cn } from "@/lib/utils";
 type Mode = "search" | "ask";
 
 const QUICK_LINKS = [
-  { label: "Logo kit", hash: "downloads" },
-  { label: "Font kit", hash: "downloads" },
-  { label: "Color tokens", hash: "tokens" },
-  { label: "Deck template", hash: "toolkit" },
+  { label: "Logo kit", path: "/downloads" },
+  { label: "Font kit", path: "/downloads" },
+  { label: "Color tokens", path: "/tokens" },
+  { label: "Deck template", path: "/toolkit" },
 ] as const;
 
 const PLACEHOLDER: Record<Mode, string> = {
@@ -169,11 +169,7 @@ export function OmniBar() {
                 <MaterialSymbol name="auto_awesome" size={18} className="mt-0.5 text-primary" />
                 <p className="text-body text-og-indigo">
                   The brand assistant isn't live yet. The canon it will answer from is written up on{" "}
-                  <Link
-                    to="/"
-                    hash="ai-skills"
-                    className="font-semibold text-primary hover:underline"
-                  >
+                  <Link to="/ai-skills" className="font-semibold text-primary hover:underline">
                     AI &amp; Skills
                   </Link>
                   .
@@ -228,8 +224,7 @@ export function OmniBar() {
             <span key={q.label} className="flex items-center gap-x-4">
               {i > 0 && <span aria-hidden className="hidden h-3 w-px bg-border sm:block" />}
               <Link
-                to="/"
-                hash={q.hash}
+                to={q.path}
                 className="flex min-h-11 items-center text-eyebrow font-bold uppercase text-og-midnight transition-colors hover:text-primary"
               >
                 {q.label}
