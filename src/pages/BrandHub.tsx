@@ -86,11 +86,11 @@ function MiniSwatch({ name, hex, usage }: { name: string; hex: string; usage?: s
 
 function Hero() {
   return (
-    <section id="overview" data-hub-section className="scroll-mt-20 px-6 py-8 md:px-10 md:py-12">
-      <div className="dark relative mx-auto min-h-[560px] max-w-[1060px] overflow-hidden rounded-lg bg-og-midnight text-foreground shadow-[0_24px_80px_rgba(23,19,47,0.16)]">
+    <section id="overview" data-hub-section className="scroll-mt-20">
+      <div className="dark relative mx-auto min-h-[420px] overflow-hidden rounded-lg bg-og-midnight text-foreground shadow-[0_24px_80px_rgba(23,19,47,0.16)] md:min-h-[560px]">
         <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:52px_52px]" />
 
-        <div className="relative grid min-h-[560px] items-center gap-12 p-8 md:grid-cols-[1fr_1fr] md:p-14 lg:p-16">
+        <div className="relative grid min-h-[420px] items-center gap-12 p-6 md:min-h-[560px] md:grid-cols-[1fr_1fr] md:p-14 lg:p-16">
           <div className="relative z-10 max-w-xl">
             <p className="eyebrow mb-5">Ordergroove brand hub</p>
             <h1 className="text-5xl font-extrabold md:text-6xl lg:text-[68px]">
