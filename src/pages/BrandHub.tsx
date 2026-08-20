@@ -236,7 +236,7 @@ export default function BrandHub() {
           id="color"
           eyebrow="Visual identity"
           title="Color palette"
-          intro="Every value is click-to-copy. The contrast badges encode the green rule so the right value is easier to choose."
+          intro="Select any color to copy its hex value."
         >
           <h3 className="mb-5 text-2xl font-bold">Core colors</h3>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
