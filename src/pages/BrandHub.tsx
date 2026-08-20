@@ -306,10 +306,10 @@ export default function BrandHub() {
         >
           <div className="grid gap-4 md:grid-cols-2">
             <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-10">
-              <img src="/logo-dark.png" alt="Ordergroove logo for dark backgrounds" className="max-h-24 max-w-[75%]" />
+              <img src="/logo-dark.png" alt="Ordergroove logo for dark backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
             </div>
             <div className="flex min-h-52 items-center justify-center rounded-lg border border-border bg-white p-10">
-              <img src="/logo-white.png" alt="Ordergroove logo for light backgrounds" className="max-h-24 max-w-[75%]" />
+              <img src="/logo-white.png" alt="Ordergroove logo for light backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
             </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">White wordmark with Groovy Green rings on Midnight. On white, use the Midnight lockup. The ring color on white remains under audit.</p>
@@ -453,7 +453,7 @@ export default function BrandHub() {
         <footer className="border-t border-border px-6 py-10 md:px-10">
           <div className="mx-auto flex max-w-[1060px] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <img src="/logo-white.png" alt="Ordergroove" className="h-4 w-auto" />
+              <img src="/logo-white.png" alt="Ordergroove" className="h-4 w-auto md:h-5" />
               <p className="mt-2 text-xs text-muted-foreground">Internal use only · Maintained by Brand & Content</p>
             </div>
             <button onClick={() => jumpTo("overview")} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">

@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="dark mt-24 bg-og-midnight text-foreground">
       <div className="container grid gap-10 py-12 md:grid-cols-[1.5fr_repeat(3,1fr)]">
         <div className="space-y-3">
-          <img src="/logo-dark.png" alt="Ordergroove" className="h-6 w-auto" />
+          <img src="/logo-dark.png" alt="Ordergroove" className="h-6 w-auto md:h-8" />
           <p className="max-w-xs text-sm text-muted-foreground">
             The internal home for the Ordergroove brand. Guidelines, assets,
             and the tools to stay on brand.

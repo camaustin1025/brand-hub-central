@@ -73,10 +73,10 @@ export default function VisualIdentity() {
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="visual-container flex items-center justify-center border border-border bg-og-midnight p-12">
-            <img src="/logo-dark.png" alt="Ordergroove logo on dark" className="max-h-16" />
+            <img src="/logo-dark.png" alt="Ordergroove logo on dark" className="max-h-16 md:max-h-20 lg:max-h-24" />
           </div>
           <div className="visual-container flex items-center justify-center border border-border bg-white p-12">
-            <img src="/logo-white.png" alt="Ordergroove logo on light" className="max-h-16" />
+            <img src="/logo-white.png" alt="Ordergroove logo on light" className="max-h-16 md:max-h-20 lg:max-h-24" />
           </div>
         </div>
       </section>
