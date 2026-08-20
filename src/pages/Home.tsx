@@ -15,7 +15,7 @@ export default function Home() {
     <>
       {/* Hero — a dark, rounded module sitting on the light canvas */}
       <section className="container pt-8 md:pt-12">
-        <div className="dark relative overflow-hidden rounded-[28px] bg-og-midnight px-8 py-20 text-foreground md:px-16 md:py-28">
+        <div className="dark relative overflow-hidden rounded-lg bg-og-midnight px-8 py-20 text-foreground md:px-16 md:py-28">
           {/* Paired-circle motif */}
           <div aria-hidden className="pointer-events-none absolute inset-0">
             <div className="absolute -right-16 top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 rounded-full bg-og-indigo/50" />

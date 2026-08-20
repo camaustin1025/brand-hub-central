@@ -161,18 +161,18 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
         className={cn(
           "w-full outline-none transition",
           hero
-            ? "h-14 rounded-xl border border-white bg-white pl-11 pr-4 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-gray-400 focus:border-og-green focus:ring-4 focus:ring-og-green/15"
+            ? "h-14 rounded-lg border border-white bg-white pl-11 pr-4 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-gray-400 focus:border-og-green focus:ring-4 focus:ring-og-green/15"
             : "h-9 rounded-lg border border-white/15 bg-white/10 pl-9 pr-12 text-sm text-white placeholder:text-white/45 focus:border-og-green/60 focus:bg-white/15 focus:ring-2 focus:ring-og-green/10"
         )}
       />
       {!compact && !hero && (
-        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded border border-white/15 px-1.5 py-0.5 text-[10px] text-white/45">
+        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded-[4px] border border-white/15 px-1.5 py-0.5 text-[10px] text-white/45">
           ⌘K
         </span>
       )}
       {focused && query && (
         <div className={cn(
-          "absolute right-0 top-[calc(100%+10px)] z-50 w-full min-w-[310px] overflow-hidden rounded-xl border border-border bg-white p-1.5 text-og-midnight shadow-2xl shadow-og-midnight/20",
+          "absolute right-0 top-[calc(100%+10px)] z-50 w-full min-w-[310px] overflow-hidden rounded-lg border border-border bg-white p-1.5 text-og-midnight shadow-2xl shadow-og-midnight/20",
           hero && "left-0 right-auto"
         )}>
           {results.length > 0 ? (

@@ -14,12 +14,12 @@ function NavGroup({ label, items }: { label: string; items: NavItem[] }) {
       </button>
       {/* pt-3 is the hover bridge to the panel */}
       <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-        <div className="w-72 rounded-2xl border border-border bg-white p-2 shadow-xl shadow-og-midnight/5">
+        <div className="w-72 rounded-lg border border-border bg-white p-2 shadow-xl shadow-og-midnight/5">
           {items.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
-              className="block rounded-xl px-3 py-2.5 transition-colors hover:bg-secondary"
+              className="block rounded-lg px-3 py-2.5 transition-colors hover:bg-secondary"
             >
               <span className="block text-sm font-semibold">{item.label}</span>
               <span className="block text-xs text-muted-foreground">{item.blurb}</span>

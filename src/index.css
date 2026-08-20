@@ -69,7 +69,7 @@
     --border: 247 11% 86%;
     --input: 247 11% 86%;
     --ring: 151 100% 30%;
-    --radius: 0.75rem;
+    --radius: 0.5rem; /* 8px — one radius across the site */
   }
 
   .dark {
@@ -124,14 +124,14 @@
   }
 
   /* ----------------------------------------------------------------- */
-  /* Card modules — uniform 20px radius, matching the live OG site and  */
-  /* the Carta brand hub. The asymmetric "Visual Container" shape from  */
-  /* the 2022 guide is kept as an opt-in accent (.notch-br) for         */
-  /* signature brand moments rather than every card.                    */
+  /* Card modules — one radius, 8px, on every surface. The asymmetric    */
+  /* "Visual Container" shape from the 2022 guide is kept as an opt-in   */
+  /* accent (.notch-br) for signature brand moments rather than every    */
+  /* card; the hero panels are the only place it is used today.          */
   /* ----------------------------------------------------------------- */
   .visual-container,
   .visual-container-left {
-    border-radius: 20px;
+    border-radius: 8px;
   }
   /* Opt-in signature shape: three rounded corners + one square corner. */
   .notch-br {

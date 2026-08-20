@@ -31,7 +31,7 @@ export function FoundationContent() {
             </p>
           </div>
         </div>
-        <div className="rounded-2xl bg-og-midnight p-7 text-white">
+        <div className="rounded-lg bg-og-midnight p-7 text-white">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-og-green">Message ladder</p>
           <ol className="mt-6 space-y-0">
             {LADDER.map((item, index) => (
@@ -64,7 +64,7 @@ export function FoundationContent() {
         </div>
       </div>
 
-      <div className="mt-10 rounded-2xl border border-border bg-white p-6">
+      <div className="mt-10 rounded-lg border border-border bg-white p-6">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="text-lg font-bold">Company boilerplate</h3>
           <DraftBadge>Pending leadership approval</DraftBadge>

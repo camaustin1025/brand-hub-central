@@ -87,12 +87,10 @@ function MiniSwatch({ name, hex, usage }: { name: string; hex: string; usage?: s
 function Hero() {
   return (
     <section id="overview" data-hub-section className="scroll-mt-20 px-6 py-8 md:px-10 md:py-12">
-      <div className="dark relative mx-auto min-h-[560px] max-w-[1060px] overflow-hidden rounded-[28px] bg-og-midnight text-foreground shadow-[0_24px_80px_rgba(23,19,47,0.16)]">
-        <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:52px_52px]" />
-        <div className="absolute -bottom-36 -left-28 h-[390px] w-[390px] rounded-full bg-og-green/55 blur-[1px]" />
-        <div className="absolute -bottom-28 left-24 h-[330px] w-[330px] rounded-full bg-og-cyan/45 blur-3xl" />
+      <div className="dark relative mx-auto min-h-[560px] max-w-[1060px] overflow-hidden rounded-lg bg-og-midnight text-foreground shadow-[0_24px_80px_rgba(23,19,47,0.16)]">
+        <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:52px_52px]" />
 
-        <div className="relative grid min-h-[560px] items-center gap-12 p-8 md:grid-cols-[1.05fr_.95fr] md:p-14 lg:p-16">
+        <div className="relative grid min-h-[560px] items-center gap-12 p-8 md:grid-cols-[1fr_1fr] md:p-14 lg:p-16">
           <div className="relative z-10 max-w-xl">
             <p className="eyebrow mb-5">Ordergroove brand hub</p>
             <h1 className="text-5xl font-extrabold md:text-6xl lg:text-[68px]">
@@ -128,38 +126,31 @@ function Hero() {
             </div>
           </div>
 
-          <div aria-hidden className="relative hidden h-[390px] md:block">
-            <div className="absolute right-0 top-0 w-[86%] rounded-2xl border border-white/10 bg-white p-4 shadow-2xl shadow-black/30">
-              <div className="flex items-center justify-between border-b border-og-gray-800 pb-3">
-                <img src="/logo-white.png" alt="" className="h-4 w-auto" />
-                <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-og-gray-400">Brand reference</span>
-              </div>
-              <div className="grid grid-cols-[1fr_auto] gap-4 pt-4 text-og-midnight">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-og-green-light">Category</p>
-                  <p className="mt-2 text-2xl font-extrabold leading-tight">Autonomous Subscriptions</p>
-                </div>
-                <div className="grid grid-cols-2 gap-1.5 self-start">
-                  {CORE.swatches.map((swatch) => (
-                    <span key={swatch.hex} className="h-9 w-9 rounded-md" style={{ backgroundColor: swatch.hex }} />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute bottom-14 left-0 w-[74%] rounded-xl border border-white/15 bg-og-indigo p-5 shadow-2xl shadow-black/30">
+          {/* The ownable Visual Container carries the hero: three rounded corners,
+              one square corner, every panel facing the same way (Phase 0, s24). */}
+          <div aria-hidden className="relative hidden h-[420px] md:block">
+            <div
+              className="absolute right-0 top-0 h-[146px] w-[54%] rounded-lg rounded-br-none"
+              style={{ background: "linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)" }}
+            />
+            <div className="absolute left-0 top-[92px] w-[66%] rounded-lg rounded-br-none border border-white/12 bg-og-indigo p-5 shadow-2xl shadow-black/40">
               <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-og-green">Voice</p>
-              <p className="mt-3 text-xl font-bold leading-snug text-white">Calm authority, earned from doing the work</p>
+              <p className="mt-2.5 text-lg font-bold leading-snug text-white">Calm authority, earned from doing the work</p>
             </div>
-
-            <div className="absolute bottom-0 right-0 w-[68%] rounded-xl border border-white/10 bg-[#201A40] p-4 shadow-2xl shadow-black/30">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-white/45">Core token</span>
-                <span className="text-[9px] font-bold uppercase tracking-widest text-og-green">Copy</span>
+            <div className="absolute bottom-0 right-0 w-[64%] rounded-lg rounded-br-none bg-white p-5 text-og-midnight shadow-2xl shadow-black/40">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-og-green-light">Category</p>
+              <p className="mt-2 text-[23px] font-extrabold leading-[1.06]">Autonomous Subscriptions</p>
+              <div className="mt-3.5 flex gap-1.5">
+                {CORE.swatches.map((swatch) => (
+                  <span
+                    key={swatch.hex}
+                    /* White needs the ring or it disappears into the card. All four
+                       carry it so the outline reads as a treatment, not a patch. */
+                    className="h-7 w-7 rounded-md ring-1 ring-inset ring-og-midnight/15"
+                    style={{ backgroundColor: swatch.hex }}
+                  />
+                ))}
               </div>
-              <code className="mt-3 block text-xs text-white/75">
-                <span className="text-og-green">--color-midnight</span>: #17132F;
-              </code>
             </div>
           </div>
         </div>
@@ -230,7 +221,7 @@ export default function BrandHub() {
               );
             })}
           </div>
-          <div className="overflow-hidden rounded-2xl border border-border bg-white">
+          <div className="overflow-hidden rounded-lg border border-border bg-white">
             {QUICK_REFERENCE.map(([label, value]) => (
               <div key={label} className="grid gap-1 border-b border-border px-5 py-4 last:border-0 sm:grid-cols-[210px_1fr] sm:gap-6">
                 <span className="text-sm font-semibold">{label}</span>
@@ -253,7 +244,7 @@ export default function BrandHub() {
           </div>
           <div className="mt-10">
             {COLOR_GROUPS.filter((group) => group.title === "Secondary").map((group) => (
-              <div key={group.title} className="rounded-2xl border border-border bg-white p-6">
+              <div key={group.title} className="rounded-lg border border-border bg-white p-6">
                 <h3 className="text-lg font-bold">{group.title}</h3>
                 {group.note && <p className="mt-1 text-sm leading-6 text-muted-foreground">{group.note}</p>}
                 <div className="mt-3 grid gap-x-10 sm:grid-cols-2">
@@ -270,7 +261,7 @@ export default function BrandHub() {
           title="One typeface, a clear hierarchy"
           intro="Figtree is the only brand typeface. Tight display type creates confidence, while open body copy keeps guidance easy to scan."
         >
-          <div className="mb-6 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-3">
+          <div className="mb-6 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-3">
             {[
               ["Family", "Figtree everywhere"],
               ["Weights", "400 to 800"],
@@ -282,7 +273,7 @@ export default function BrandHub() {
               </div>
             ))}
           </div>
-          <div className="overflow-hidden rounded-2xl border border-border bg-white">
+          <div className="overflow-hidden rounded-lg border border-border bg-white">
             <div className="grid gap-8 border-b border-border p-7 md:grid-cols-[180px_1fr]">
               <div>
                 <p className="eyebrow">Display</p>
@@ -314,10 +305,10 @@ export default function BrandHub() {
           intro="Use the primary lockup whenever space allows. Gradients are payoff moments, not background decoration for every section."
         >
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="dark flex min-h-52 items-center justify-center rounded-2xl bg-og-midnight p-10">
+            <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-10">
               <img src="/logo-dark.png" alt="Ordergroove logo for dark backgrounds" className="max-h-12 max-w-[75%]" />
             </div>
-            <div className="flex min-h-52 items-center justify-center rounded-2xl border border-border bg-white p-10">
+            <div className="flex min-h-52 items-center justify-center rounded-lg border border-border bg-white p-10">
               <img src="/logo-white.png" alt="Ordergroove logo for light backgrounds" className="max-h-12 max-w-[75%]" />
             </div>
           </div>
@@ -327,7 +318,7 @@ export default function BrandHub() {
             <h3 className="mb-5 text-2xl font-bold">Approved gradients</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               {GRADIENTS.map((gradient) => (
-                <div key={gradient.name} className="overflow-hidden rounded-2xl border border-border bg-white">
+                <div key={gradient.name} className="overflow-hidden rounded-lg border border-border bg-white">
                   <div className="h-28" style={{ backgroundImage: gradient.css }} />
                   <div className="flex items-center justify-between gap-4 p-4">
                     <div>
@@ -370,7 +361,7 @@ export default function BrandHub() {
           title="The everyday, on-brand"
           intro="Decks, docs, signatures, and social graphics, plus the skills that generate them. Links are being re-homed after the old hub went dark."
         >
-          <div className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 xl:grid-cols-3">
             {TOOLKIT_ITEMS.map((item) => (
               <div key={item.title} className="flex min-h-56 flex-col bg-white p-6">
                 <div className="flex-1">
@@ -401,19 +392,19 @@ export default function BrandHub() {
           intro="Marketing canon: Figtree, Groovy Green #00FF85 on dark and #009A50 on light, Midnight #17132F. Product reconciliation is a separate decision."
         >
           <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr]">
-            <div className="overflow-hidden rounded-2xl border border-border bg-white">
+            <div className="overflow-hidden rounded-lg border border-border bg-white">
               <div className="grid grid-cols-[1fr_100px] bg-og-midnight px-5 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white md:grid-cols-[1fr_120px_1fr]">
                 <span>Token</span><span>Hex</span><span className="hidden md:block">RGB</span>
               </div>
               {CORE.swatches.map((swatch) => (
                 <div key={swatch.hex} className="grid grid-cols-[1fr_100px] items-center border-t border-border px-5 py-4 text-sm md:grid-cols-[1fr_120px_1fr]">
-                  <span className="flex items-center gap-2 font-semibold"><span className="h-4 w-4 rounded" style={{ backgroundColor: swatch.hex }} />{swatch.name}</span>
+                  <span className="flex items-center gap-2 font-semibold"><span className="h-4 w-4 rounded-[3px]" style={{ backgroundColor: swatch.hex }} />{swatch.name}</span>
                   <code className="text-xs text-muted-foreground">{swatch.hex}</code>
                   <code className="hidden text-xs text-muted-foreground md:block">{swatch.rgb}</code>
                 </div>
               ))}
             </div>
-            <div className="rounded-2xl border border-border bg-white p-6">
+            <div className="rounded-lg border border-border bg-white p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-lg font-bold">Token kits</h3>
                 <DraftBadge>Generating after audit D1/D2</DraftBadge>
@@ -437,7 +428,7 @@ export default function BrandHub() {
           title="On-brand by default, not by review"
           intro="These tools load the rules automatically so the first draft starts closer to the standard."
         >
-          <div className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
+          <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2">
             {BRAND_SKILLS.map((skill) => (
               <div key={skill.name} className="bg-white p-6">
                 <code className="text-sm font-bold text-primary">{skill.name}</code>
@@ -445,7 +436,7 @@ export default function BrandHub() {
               </div>
             ))}
           </div>
-          <div className="mt-6 flex flex-col gap-5 rounded-2xl bg-og-midnight p-7 text-white sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-6 flex flex-col gap-5 rounded-lg bg-og-midnight p-7 text-white sm:flex-row sm:items-center sm:justify-between">
             <div className="max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-xl font-bold">Agent-readable brand guide</h3>

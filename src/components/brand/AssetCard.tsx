@@ -41,7 +41,7 @@ export function AssetCard({ asset }: { asset: Asset }) {
           {asset.formats.map((f) => (
             <span
               key={f}
-              className="rounded border border-border px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground"
+              className="rounded-[4px] border border-border px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground"
             >
               {f}
             </span>

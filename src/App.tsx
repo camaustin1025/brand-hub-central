@@ -3,6 +3,7 @@ import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 import BrandHub from "@/pages/BrandHub";
 import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
+import HeroLab from "@/pages/HeroLab";
 
 /** Sections that still live inline on the single-page hub. */
 const LEGACY_ROUTES: [string, string][] = [
@@ -20,6 +21,8 @@ export default function App() {
         <Route path="/" element={<BrandHub />} />
         <Route path="/foundation" element={<Foundation />} />
         <Route path="/voice" element={<Voice />} />
+        {/* Design exploration only — not linked from nav. */}
+        <Route path="/hero-lab" element={<HeroLab />} />
         {LEGACY_ROUTES.map(([path, anchor]) => (
           <Route key={path} path={path} element={<Navigate to={`/#${anchor}`} replace />} />
         ))}

@@ -94,10 +94,13 @@ export default {
       letterSpacing: {
         eyebrow: "0.16em",
       },
+      // One radius, 8px, on every surface. The shadcn lg/md/sm steps all
+      // resolve to the same token so nothing drifts back to a softer corner.
       borderRadius: {
+        DEFAULT: "var(--radius)",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "var(--radius)",
+        sm: "var(--radius)",
       },
       backgroundImage: {
         // Signature gradient (Green -> Cyan, on dark)

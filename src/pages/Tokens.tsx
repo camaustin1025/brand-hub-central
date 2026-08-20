@@ -27,7 +27,7 @@ export default function Tokens() {
 
         <div>
           <h2 className="text-2xl font-bold">Core color</h2>
-          <div className="mt-4 overflow-hidden rounded-xl border border-border">
+          <div className="mt-4 overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-card">
                 <tr>
@@ -51,7 +51,7 @@ export default function Tokens() {
 
         <div>
           <h2 className="text-2xl font-bold">Type</h2>
-          <div className="mt-4 space-y-2 rounded-xl border border-border bg-card p-5 text-sm">
+          <div className="mt-4 space-y-2 rounded-lg border border-border bg-card p-5 text-sm">
             <p><span className="font-semibold">Family:</span> Figtree everywhere, weights 400 to 800.</p>
             <p><span className="font-semibold">Hierarchy:</span> eyebrow 12px ALL CAPS 0.16em, H1 40 to 44px, subhead 21px, body 15px.</p>
             <p><span className="font-semibold">Rule:</span> no trailing periods on titles or labels. Statements, not sentences.</p>

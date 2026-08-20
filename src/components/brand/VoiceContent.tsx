@@ -5,7 +5,7 @@ import { TERMS, VOICE_RULES } from "@/data/hub";
 export function VoiceContent() {
   return (
     <>
-      <div className="grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2">
+      <div className="grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-2">
         <div className="bg-white p-6">
           <p className="eyebrow mb-2">We are</p>
           <p className="text-lg font-semibold">Confident, precise, operator-minded, direct, evidence-led</p>
@@ -31,7 +31,7 @@ export function VoiceContent() {
 
       <div className="mt-14">
         <h3 className="text-2xl font-bold">Use this, not that</h3>
-        <div className="mt-5 overflow-hidden rounded-2xl border border-border bg-white">
+        <div className="mt-5 overflow-hidden rounded-lg border border-border bg-white">
           <div className="grid grid-cols-2 bg-og-midnight px-5 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white">
             <span className="text-og-green">Use</span>
             <span className="text-white/55">Avoid</span>
