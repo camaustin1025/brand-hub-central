@@ -358,7 +358,7 @@ export default function BrandHub() {
         <HubSection
           id="toolkit"
           eyebrow="Resources"
-          title="The everyday, on-brand"
+          title="Everyday brand tools"
           intro="Decks, docs, signatures, and social graphics, plus the skills that generate them. Links are being re-homed after the old hub went dark."
         >
           <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 xl:grid-cols-3">
