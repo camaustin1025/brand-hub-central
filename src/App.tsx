@@ -18,6 +18,7 @@ const LEGACY_ROUTES: [string, string][] = [
 export default function App() {
   return (
     <ErrorBoundary>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<BrandHub />} />
         <Route path="/foundation" element={<Foundation />} />
