@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import BrandHub from "@/pages/BrandHub";
 import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
@@ -17,6 +18,7 @@ const LEGACY_ROUTES: [string, string][] = [
 export default function App() {
   return (
     <ErrorBoundary>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<BrandHub />} />
         <Route path="/foundation" element={<Foundation />} />
