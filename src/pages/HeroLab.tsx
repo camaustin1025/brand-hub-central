@@ -109,7 +109,7 @@ function VariantA() {
         <div aria-hidden className="relative hidden h-[360px] md:block">
           <div className="absolute right-0 top-4 w-[88%] rounded-lg border border-white/10 bg-white p-5 shadow-2xl shadow-black/40">
             <div className="flex items-center justify-between border-b border-og-gray-800 pb-3">
-              <img src="/logo-white.png" alt="" className="h-4 w-auto" />
+              <img src="/logo-white.png" alt="" className="h-4 w-auto md:h-5" />
               <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-og-gray-400">Brand reference</span>
             </div>
             <div className="grid grid-cols-[1fr_auto] gap-4 pt-4 text-og-midnight">

@@ -218,7 +218,7 @@ export function HubShell({ activeId, children }: { activeId: string; children: R
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>
           <Link to="/" className="flex shrink-0 items-center" aria-label="Ordergroove brand hub home">
-            <img src="/logo-dark.png" alt="Ordergroove" className="h-5 w-auto" />
+            <img src="/logo-dark.png" alt="Ordergroove" className="h-5 w-auto md:h-6" />
           </Link>
           <span className="hidden h-6 w-px bg-white/20 sm:block" />
           <span className="hidden truncate text-sm text-white/62 sm:block">Brand Hub · Internal reference</span>
