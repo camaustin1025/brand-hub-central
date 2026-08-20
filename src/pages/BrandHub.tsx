@@ -305,10 +305,10 @@ export default function BrandHub() {
           intro="Use the primary lockup whenever space allows. Gradients are payoff moments, not background decoration for every section."
         >
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-10">
+            <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-6">
               <img src="/logo-dark.png" alt="Ordergroove logo for dark backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
             </div>
-            <div className="flex min-h-52 items-center justify-center rounded-lg border border-border bg-white p-10">
+            <div className="flex min-h-52 items-center justify-center rounded-lg border border-border bg-white p-6">
               <img src="/logo-white.png" alt="Ordergroove logo for light backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
             </div>
           </div>
