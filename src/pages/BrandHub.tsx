@@ -259,7 +259,7 @@ export default function BrandHub() {
           id="typography"
           eyebrow="Visual identity"
           title="One typeface, a clear hierarchy"
-          intro="Figtree is the only brand typeface. Tight display type creates confidence, while open body copy keeps guidance easy to scan."
+          intro="Figtree is the only brand typeface. Use tight spacing for display text and open spacing for body copy."
         >
           <div className="mb-6 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-3">
             {[
