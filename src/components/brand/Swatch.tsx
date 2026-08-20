@@ -9,7 +9,7 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
   const [copied, setCopied] = useState(false);
 
   async function copy() {
-    await navigator.clipboard.writeText(swatch.hex);
+    await navigator.clipboard.writeText(swatch.hex.replace("#", ""));
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
     // GA4 hook point: track('copy_hex', { hex: swatch.hex })
