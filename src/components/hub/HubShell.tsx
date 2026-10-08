@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 
 const ALL_NAV_ITEMS = HUB_NAV.flatMap((group) => group.items);
 
-const NAV_ITEM_CLASS = "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors";
+const NAV_ITEM_CLASS = "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
 const NAV_ITEM_ACTIVE =
-  "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:-left-4 before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
+  "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:-left-[11px] before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
 const NAV_ITEM_IDLE = "text-og-gray-400 hover:bg-white/70 hover:text-og-midnight";
 
 export function jumpTo(id: string, closeMenu?: () => void) {
@@ -49,17 +49,18 @@ export function Sidebar({
       >
         <nav className="px-4 py-5" aria-label="Brand hub sections">
           {HUB_NAV.map((group) => (
-            <div key={group.label} className="mb-5">
-              <p className="px-3 pb-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-og-gray-400">
+            <section key={group.label} aria-labelledby={`nav-${group.items[0].id}`} className="mb-6 last:mb-0">
+              <h2 id={`nav-${group.items[0].id}`} className="rounded-lg bg-og-indigo/[0.06] px-3 py-2 text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-indigo">
                 {group.label}
-              </p>
-              <ul className="space-y-0.5">
+              </h2>
+              <ul className="ml-3 mt-1.5 space-y-0.5 border-l border-og-midnight/10 pl-2">
                 {group.items.map((item) => (
                   <li key={item.id}>
                     {item.path ? (
                       <Link
                         to={item.path}
                         onClick={onClose}
+                        aria-current={activeId === item.id ? "page" : undefined}
                         className={cn(NAV_ITEM_CLASS, "block", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
                       >
                         {item.label}
@@ -67,6 +68,7 @@ export function Sidebar({
                     ) : (
                       <button
                         onClick={() => jumpTo(item.id, onClose)}
+                        aria-current={activeId === item.id ? "location" : undefined}
                         className={cn(NAV_ITEM_CLASS, "w-full text-left", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
                       >
                         {item.label}
@@ -75,7 +77,7 @@ export function Sidebar({
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
           ))}
         </nav>
       </aside>

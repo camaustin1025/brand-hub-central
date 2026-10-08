@@ -39,7 +39,7 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
             {copied ? "Copied" : swatch.hex}
           </button>
         </div>
-        <p className="text-sm text-muted-foreground">{swatch.usage}</p>
+        <p className="measure text-sm text-muted-foreground">{swatch.usage}</p>
       </div>
     </div>
   );

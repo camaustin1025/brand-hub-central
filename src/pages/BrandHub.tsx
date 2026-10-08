@@ -43,10 +43,10 @@ function HubSection({
       className={cn("scroll-mt-20 border-t border-border px-6 py-16 md:px-10 md:py-20", className)}
     >
       <div className="mx-auto max-w-[1060px]">
-        <div className="mb-10 max-w-3xl">
+        <div className="mb-10 max-w-[var(--measure-header)]">
           <p className="eyebrow mb-3">{eyebrow}</p>
           <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
-          {intro && <p className="mt-4 text-lg leading-8 text-muted-foreground">{intro}</p>}
+          {intro && <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
         </div>
         {children}
       </div>
@@ -246,7 +246,7 @@ export default function BrandHub() {
             {COLOR_GROUPS.filter((group) => group.title === "Secondary").map((group) => (
               <div key={group.title} className="rounded-lg border border-border bg-white p-6">
                 <h3 className="text-lg font-bold">{group.title}</h3>
-                {group.note && <p className="mt-1 text-sm leading-6 text-muted-foreground">{group.note}</p>}
+                {group.note && <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{group.note}</p>}
                 <div className="mt-3 grid gap-x-10 sm:grid-cols-2">
                   {group.swatches.map((swatch) => <MiniSwatch key={swatch.hex} name={swatch.name} hex={swatch.hex} />)}
                 </div>
@@ -293,7 +293,7 @@ export default function BrandHub() {
                 <p className="eyebrow">Body</p>
                 <p className="mt-2 text-sm text-muted-foreground">Regular 400</p>
               </div>
-              <p className="max-w-2xl text-base leading-7 text-muted-foreground">Use clear, direct sentences. Keep the structure easy to follow and let evidence carry the message.</p>
+              <p className="measure text-base leading-7 text-muted-foreground">Use clear, direct sentences. Keep the structure easy to follow and let evidence carry the message.</p>
             </div>
           </div>
         </HubSection>
@@ -312,7 +312,7 @@ export default function BrandHub() {
               <img src="/logo-white.png" alt="Ordergroove logo for light backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
             </div>
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">White wordmark with Groovy Green rings on Midnight. On white, use the Midnight lockup. The ring color on white remains under audit.</p>
+          <p className="measure mt-4 text-sm leading-6 text-muted-foreground">White wordmark with Groovy Green rings on Midnight. On white, use the Midnight lockup. The ring color on white remains under audit.</p>
 
           <div className="mt-12">
             <h3 className="mb-5 text-2xl font-bold">Approved gradients</h3>
@@ -369,7 +369,7 @@ export default function BrandHub() {
                     <h3 className="text-lg font-bold">{item.title}</h3>
                     {item.status && <DraftBadge>{item.status}</DraftBadge>}
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.body}</p>
+                  <p className="measure mt-3 text-sm leading-6 text-muted-foreground">{item.body}</p>
                 </div>
                 {item.href ? (
                   <a href={item.href} download className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline">
@@ -409,7 +409,7 @@ export default function BrandHub() {
                 <h3 className="text-lg font-bold">Token kits</h3>
                 <DraftBadge>Generating after audit D1/D2</DraftBadge>
               </div>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">tokens.json and tokens.css will publish after the two open green decisions land. This avoids baking an unresolved value into code.</p>
+              <p className="measure mt-3 text-sm leading-6 text-muted-foreground">tokens.json and tokens.css will publish after the two open green decisions land. This avoids baking an unresolved value into code.</p>
               <div className="mt-5 space-y-2">
                 {["tokens.json", "tokens.css"].map((file) => (
                   <div key={file} className="flex items-center justify-between rounded-lg bg-og-gray-950 px-3 py-2.5">
@@ -432,7 +432,7 @@ export default function BrandHub() {
             {BRAND_SKILLS.map((skill) => (
               <div key={skill.name} className="bg-white p-6">
                 <code className="text-sm font-bold text-primary">{skill.name}</code>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">{skill.body}</p>
+                <p className="measure mt-3 text-sm leading-6 text-muted-foreground">{skill.body}</p>
               </div>
             ))}
           </div>
@@ -442,7 +442,7 @@ export default function BrandHub() {
                 <h3 className="text-xl font-bold">Agent-readable brand guide</h3>
                 <span className="rounded-full bg-og-green/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-og-green">Available</span>
               </div>
-              <p className="mt-2 text-sm leading-6 text-white/60">A plain-text map of the hub helps assistants and coding tools find the canonical brand resources.</p>
+              <p className="measure mt-2 text-sm leading-6 text-white/60">A plain-text map of the hub helps assistants and coding tools find the canonical brand resources.</p>
             </div>
             <a href="/llms.txt" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold hover:border-og-green hover:text-og-green">
               Open llms.txt <ArrowUpRight size={15} />

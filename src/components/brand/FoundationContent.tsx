@@ -11,22 +11,22 @@ export function FoundationContent() {
         <div className="space-y-9">
           <div>
             <h3 className="text-2xl font-bold">The category we own</h3>
-            <p className="mt-3 leading-7 text-muted-foreground">
+            <p className="measure mt-3 leading-7 text-muted-foreground">
               Our lead message is a category move, not a product pitch. <strong className="text-foreground">Autonomous Subscriptions</strong> is the category we are defining: a team of agents that help enterprise brands recover revenue, reduce churn, and act on subscriber data faster.
             </p>
-            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            <p className="measure mt-3 text-sm leading-6 text-muted-foreground">
               Cleared for external use since June 17, 2026. “Autonomous Commerce” stays internal for now. “Relationship Commerce” is retired, never use it.
             </p>
           </div>
           <div>
             <h3 className="text-2xl font-bold">Central belief</h3>
-            <p className="mt-3 leading-7 text-muted-foreground">
+            <p className="measure mt-3 leading-7 text-muted-foreground">
               Subscriptions aren't programs. They're relationships. Growth comes from flexibility, not lock-in, and the best retention is giving customers control, not friction.
             </p>
           </div>
           <div>
             <h3 className="text-2xl font-bold">Who we serve</h3>
-            <p className="mt-3 leading-7 text-muted-foreground">
+            <p className="measure mt-3 leading-7 text-muted-foreground">
               Enterprise and mid-market B2C brands with repeat purchase patterns, typically $50M+ GMV. Buyers are VP or Director of eCommerce, VP or Head of Digital, and retention, loyalty, CRM, and subscription leaders.
             </p>
           </div>
@@ -40,7 +40,7 @@ export function FoundationContent() {
                 <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-og-green text-sm font-extrabold text-og-midnight">{index + 1}</span>
                 <div>
                   <h4 className="font-bold">{item.rung}</h4>
-                  <p className="mt-1 text-sm leading-6 text-white/60">{item.body}</p>
+                  <p className="measure mt-1 text-sm leading-6 text-white/60">{item.body}</p>
                 </div>
               </li>
             ))}
@@ -58,7 +58,7 @@ export function FoundationContent() {
             <div key={item.n} className={cn("py-6 md:px-6", index > 0 && "border-t border-border md:border-l md:border-t-0", index === 0 && "md:pl-0", index === RIGHTS.length - 1 && "md:pr-0")}>
               <span className="text-sm font-extrabold text-primary">{item.n}</span>
               <h4 className="mt-3 text-lg font-bold">{item.title}</h4>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.body}</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">{item.body}</p>
             </div>
           ))}
         </div>
@@ -69,7 +69,7 @@ export function FoundationContent() {
           <h3 className="text-lg font-bold">Company boilerplate</h3>
           <DraftBadge>Pending leadership approval</DraftBadge>
         </div>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+        <p className="measure mt-3 text-sm leading-6 text-muted-foreground">
           Ordergroove is the enterprise standard for subscriptions and recurring revenue, powering flexible subscriber experiences for 1,000+ leading brands across every channel.
         </p>
       </div>

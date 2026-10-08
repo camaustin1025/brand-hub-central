@@ -34,7 +34,7 @@ export function AssetCard({ asset }: { asset: Asset }) {
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex-1 space-y-1">
           <h3 className="font-semibold leading-tight">{asset.title}</h3>
-          <p className="text-sm text-muted-foreground">{asset.description}</p>
+          <p className="measure text-sm leading-6 text-muted-foreground">{asset.description}</p>
         </div>
 
         <div className="flex flex-wrap gap-1.5">
