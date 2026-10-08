@@ -5,6 +5,7 @@ import BrandHub from "@/pages/BrandHub";
 import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
 import HeroLab from "@/pages/HeroLab";
+import { AuthGate } from "@/components/auth/AuthGate";
 
 /** Sections that still live inline on the single-page hub. */
 const LEGACY_ROUTES: [string, string][] = [
@@ -18,6 +19,7 @@ const LEGACY_ROUTES: [string, string][] = [
 export default function App() {
   return (
     <ErrorBoundary>
+      <AuthGate>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<BrandHub />} />
@@ -30,6 +32,7 @@ export default function App() {
         ))}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </AuthGate>
     </ErrorBoundary>
   );
 }
