@@ -24,9 +24,6 @@ dist-ssr
 *.sw?
 
 # Env
-.env
-.env.*
-!.env.example
 
 # Claude Code personal settings (keep launch.json shared)
 .claude/settings.local.json
