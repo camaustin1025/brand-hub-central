@@ -1,0 +1,1 @@
+- Site access is gated by Google sign-in in AuthGate, with the allowed email domain enforced by a backend trigger on new accounts; why: the client check is UX only, the trigger is the real guard.
