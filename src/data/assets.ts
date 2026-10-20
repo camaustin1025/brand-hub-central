@@ -29,7 +29,7 @@ export type Asset = {
   preview: string | null;
   /** Preview backdrop. Light-background assets need a white tile to be visible. */
   previewBg?: "midnight" | "light";
-  /** Download target. null = not yet re-sourced (renders as "Re-sourcing"). */
+  /** Download target. null renders as "Not available yet". */
   href: string | null;
 };
 
@@ -44,20 +44,20 @@ export const ASSET_CATEGORIES: { type: AssetType; label: string }[] = [
 export const ASSETS: Asset[] = [
   {
     id: "logo-dark",
-    title: "Logo — on dark",
+    title: "Logo for dark backgrounds",
     description: "Primary lockup: white wordmark, Groovy Green rings, on Midnight.",
     type: "logo",
-    formats: ["PNG", "SVG"],
+    formats: ["PNG"],
     tags: ["logo", "dark", "primary"],
     preview: "/logo-dark.png",
     href: "/logo-dark.png",
   },
   {
     id: "logo-light",
-    title: "Logo — on light",
+    title: "Logo for light backgrounds",
     description: "Primary lockup: Midnight wordmark and rings, on white. Ring green pending audit D1.",
     type: "logo",
-    formats: ["PNG", "SVG"],
+    formats: ["PNG"],
     tags: ["logo", "light", "primary"],
     preview: "/logo-white.png",
     previewBg: "light",
@@ -68,7 +68,7 @@ export const ASSETS: Asset[] = [
     title: "Isolated logomark",
     description: "The interlocking rings alone. Default: Groovy Green on Midnight.",
     type: "logo",
-    formats: ["PNG", "SVG"],
+    formats: ["PNG"],
     tags: ["logo", "logomark", "mark"],
     preview: "/logomark.png",
     href: "/logomark.png",
@@ -105,7 +105,7 @@ export const ASSETS: Asset[] = [
   },
   {
     id: "zoom-bg",
-    title: "Zoom background — Groovy Green",
+    title: "Groovy Green Zoom background",
     description: "Midnight canvas with the paired-circle gradient.",
     type: "background",
     formats: ["PNG"],

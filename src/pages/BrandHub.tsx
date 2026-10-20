@@ -11,7 +11,7 @@ import { COLOR_GROUPS, CORE, GRADIENTS } from "@/data/tokens";
 import { cn } from "@/lib/utils";
 
 const QUICK_REFERENCE = [
-  ["Source of truth", "brand.md + brand-style-guide.md"],
+  ["Source of truth", "brand.md"],
   ["Category", "Autonomous Subscriptions"],
   ["Primary color", "Midnight #17132F"],
   ["Accent on dark", "Groovy Green #00FF85"],
@@ -99,14 +99,14 @@ function Hero() {
               all in one place
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-8 text-white/68">
-              The rules, language, assets, and tools you need to create confident, consistent subscriptions work.
+              Guidelines, assets, and tools to help you create work that looks and sounds like Ordergroove.
             </p>
             <div className="relative z-20 mt-7 max-w-lg">
               <SearchBox hero />
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/38">Try</span>
                 <button onClick={() => jumpTo("color")} className="text-xs text-white/58 transition hover:text-og-green">Which green goes on white?</button>
-                <button onClick={() => jumpTo("voice")} className="text-xs text-white/58 transition hover:text-og-green">What words should I avoid?</button>
+                <Link to="/voice" className="text-xs text-white/58 transition hover:text-og-green">What words should I avoid?</Link>
                 <button onClick={() => jumpTo("downloads")} className="text-xs text-white/58 transition hover:text-og-green">Find the logo kit</button>
               </div>
             </div>
@@ -115,13 +115,13 @@ function Hero() {
                 onClick={() => jumpTo("quick-reference")}
                 className="inline-flex items-center gap-2 rounded-full bg-og-green px-5 py-3 text-sm font-bold text-og-midnight transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(0,255,133,.2)]"
               >
-                Start with the essentials <ArrowDown size={16} />
+                View quick reference <ArrowDown size={16} />
               </button>
               <button
                 onClick={() => jumpTo("downloads")}
                 className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/50 hover:bg-white/5"
               >
-                Get the assets <Download size={16} />
+                Browse assets <ArrowDown size={16} />
               </button>
             </div>
           </div>
@@ -279,14 +279,14 @@ export default function BrandHub() {
                 <p className="eyebrow">Display</p>
                 <p className="mt-2 text-sm text-muted-foreground">ExtraBold 800</p>
               </div>
-              <p className="text-4xl font-extrabold tracking-tight md:text-5xl">Subscriptions, set in motion</p>
+              <p className="text-4xl font-extrabold tracking-tight md:text-5xl">Make it look like Ordergroove</p>
             </div>
             <div className="grid gap-8 border-b border-border p-7 md:grid-cols-[180px_1fr]">
               <div>
                 <p className="eyebrow">Heading</p>
                 <p className="mt-2 text-sm text-muted-foreground">Bold 700</p>
               </div>
-              <p className="text-3xl font-bold tracking-tight">Built for the way brands grow</p>
+              <p className="text-3xl font-bold tracking-tight">Clear words. Consistent design.</p>
             </div>
             <div className="grid gap-8 p-7 md:grid-cols-[180px_1fr]">
               <div>
@@ -302,7 +302,7 @@ export default function BrandHub() {
           id="logo-gradients"
           eyebrow="Visual identity"
           title="Logo and gradients"
-          intro="Use the primary lockup whenever space allows. Gradients are payoff moments, not background decoration for every section."
+          intro="Use the primary logo whenever space allows. Reserve gradients for key moments."
         >
           <div className="grid gap-4 md:grid-cols-2">
             <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-6">
@@ -337,7 +337,7 @@ export default function BrandHub() {
           id="downloads"
           eyebrow="Resources"
           title="Grab-and-go assets"
-          intro="Logos, fonts, token kits, backgrounds, and social graphics. Available files download directly from this page."
+          intro="Download available logos, backgrounds, and other brand files. Unavailable files are marked below."
         >
           <div className="space-y-12">
             {ASSET_CATEGORIES.map((category) => {
@@ -359,7 +359,7 @@ export default function BrandHub() {
           id="toolkit"
           eyebrow="Resources"
           title="Everyday brand tools"
-          intro="Find templates, signatures, social graphics, and skills for day-to-day work."
+          intro="Find templates, signatures, social graphics, and skills for day-to-day work. Some links are still being restored."
         >
           <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 xl:grid-cols-3">
             {TOOLKIT_ITEMS.map((item) => (
@@ -375,11 +375,7 @@ export default function BrandHub() {
                   <a href={item.href} download className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline">
                     {item.cta} <Download size={15} />
                   </a>
-                ) : (
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground">
-                    {item.cta} <ArrowUpRight size={15} />
-                  </span>
-                )}
+                ) : null}
               </div>
             ))}
           </div>
@@ -389,7 +385,7 @@ export default function BrandHub() {
           id="tokens"
           eyebrow="Brand systems"
           title="Canonical values, ready for code"
-          intro="Marketing canon: Figtree, Groovy Green #00FF85 on dark and #009A50 on light, Midnight #17132F. Product reconciliation is a separate decision."
+          intro="Use these approved marketing tokens. Product tokens are managed separately."
         >
           <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr]">
             <div className="overflow-hidden rounded-lg border border-border bg-white">
@@ -407,14 +403,14 @@ export default function BrandHub() {
             <div className="rounded-lg border border-border bg-white p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-lg font-bold">Token kits</h3>
-                <DraftBadge>Generating after audit D1/D2</DraftBadge>
+                <DraftBadge>Pending green approval</DraftBadge>
               </div>
-              <p className="measure mt-3 text-sm leading-6 text-muted-foreground">tokens.json and tokens.css will publish after the two open green decisions land. This avoids baking an unresolved value into code.</p>
+              <p className="measure mt-3 text-sm leading-6 text-muted-foreground">We’ll publish both token kits after the remaining green values are approved.</p>
               <div className="mt-5 space-y-2">
                 {["tokens.json", "tokens.css"].map((file) => (
                   <div key={file} className="flex items-center justify-between rounded-lg bg-og-gray-950 px-3 py-2.5">
                     <code className="text-sm font-semibold">{file}</code>
-                    <span className="text-xs font-semibold text-muted-foreground">Held for audit</span>
+                    <span className="text-xs font-semibold text-muted-foreground">Pending green approval</span>
                   </div>
                 ))}
               </div>
@@ -439,7 +435,7 @@ export default function BrandHub() {
           <div className="mt-6 flex flex-col gap-5 rounded-lg bg-og-midnight p-7 text-white sm:flex-row sm:items-center sm:justify-between">
             <div className="max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-xl font-bold">Agent-readable brand guide</h3>
+                <h3 className="text-xl font-bold">Brand guide for AI tools</h3>
                 <span className="rounded-full bg-og-green/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-og-green">Available</span>
               </div>
               <p className="measure mt-2 text-sm leading-6 text-white/60">A plain-text map of the hub helps assistants and coding tools find the canonical brand resources.</p>

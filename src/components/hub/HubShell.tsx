@@ -158,8 +158,8 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
         onChange={(event) => setQuery(event.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => window.setTimeout(() => setFocused(false), 120)}
-        placeholder={hero ? "Ask a brand question or find an asset" : "Search the brand hub"}
-        aria-label={hero ? "Smart search the brand hub" : "Search the brand hub"}
+        placeholder={hero ? "Search brand rules and assets" : "Search the brand hub"}
+        aria-label={hero ? "Search brand rules and assets" : "Search the brand hub"}
         className={cn(
           "w-full outline-none transition",
           hero

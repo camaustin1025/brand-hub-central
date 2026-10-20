@@ -95,7 +95,7 @@ export const HUB_NAV: HubNavGroup[] = [
       {
         id: "tokens",
         label: "Design tokens",
-        description: "Marketing canon translated into code-ready values.",
+        description: "Approved marketing values, ready for code.",
         keywords: "developer css json code variables design system",
       },
       {
@@ -166,33 +166,33 @@ export const TOOLKIT_ITEMS = [
     body: "On-brand Google Slides with correct colors, fonts, and layouts. The ordergroove-slides skill builds decks for you.",
     cta: "Open template",
     href: null,
-    status: "Re-sourcing link",
+    status: "Not available yet",
   },
   {
     title: "Word docs",
     body: "On-brand documents via the ordergroove-doc skill. Midnight and white, Figtree, no forbidden fonts.",
     cta: "How it works",
     href: null,
-    status: "Re-sourcing link",
+    status: "Not available yet",
   },
   {
     title: "Email signatures",
     body: "Fancy and simple variants, copy-paste ready. LinkedIn-only icons, correct-contrast green links.",
     cta: "Get your signature",
     href: null,
-    status: "Re-sourcing link",
+    status: "Not available yet",
   },
   {
     title: "New-hire graphics",
     body: "Welcome and I've-joined LinkedIn graphics. Copy the Canva design and drop in your headshot.",
     cta: "Open in Canva",
     href: null,
-    status: "Confirming Canva link",
+    status: "Not available yet",
   },
   {
     title: "Zoom backgrounds",
     body: "Midnight canvas with the paired-circle gradient, sized for video calls.",
-    cta: "Download",
+    cta: "Download PNG",
     href: "/midnight_bg.png",
     status: null,
   },
@@ -213,6 +213,6 @@ export const BRAND_SKILLS = [
   },
   {
     name: "brand.md",
-    body: "The canonical, agent-facing brand context. Imported into project instruction files so on-brand is the default output.",
+    body: "The canonical brand instructions that AI and coding tools load automatically.",
   },
 ];
