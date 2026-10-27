@@ -1,7 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Copy, Download } from "lucide-react";
-import { HubShell, SearchBox, jumpTo } from "@/components/hub/HubShell";
+import { ArrowRight, ArrowUpRight, Check, Copy, Download } from "lucide-react";
+import { HubShell, jumpTo } from "@/components/hub/HubShell";
+import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
 import { AssetCard } from "@/components/brand/AssetCard";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { Swatch } from "@/components/brand/Swatch";
@@ -86,81 +87,6 @@ function MiniSwatch({ name, hex, usage }: { name: string; hex: string; usage?: s
   );
 }
 
-function Hero() {
-  return (
-    <section id="overview" data-hub-section className="scroll-mt-20">
-      <div className="dark relative mx-auto min-h-[420px] overflow-hidden rounded-lg bg-og-midnight text-foreground shadow-[0_24px_80px_rgba(23,19,47,0.16)] md:min-h-[560px]">
-        <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:52px_52px]" />
-
-        <div className="relative grid min-h-[420px] items-center gap-12 p-6 md:min-h-[560px] md:grid-cols-[1fr_1fr] md:p-14 lg:p-16">
-          <div className="relative z-10 max-w-xl pl-4 md:pl-8 lg:pl-12">
-            <p className="eyebrow mb-5">Ordergroove brand hub</p>
-            <h1 className="text-5xl font-extrabold md:text-6xl lg:text-[68px]">
-              The brand,
-              <br />
-              all in one place
-            </h1>
-            <p className="mt-6 max-w-lg text-lg leading-8 text-white/68">
-              Guidelines, assets, and tools to help you create work that looks and sounds like Ordergroove.
-            </p>
-            <div className="relative z-20 mt-7 max-w-lg">
-              <SearchBox hero />
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-                <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/38">Try</span>
-                <button onClick={() => jumpTo("color")} className="action-focus text-xs text-white/70 transition hover:text-og-green">Which green goes on white?</button>
-                <Link to="/voice" className="action-focus text-xs text-white/70 transition hover:text-og-green">What words should I avoid?</Link>
-                <button onClick={() => jumpTo("downloads")} className="action-focus text-xs text-white/70 transition hover:text-og-green">Find the logo kit</button>
-              </div>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <button
-                onClick={() => jumpTo("quick-reference")}
-                className={buttonVariants({ size: "lg" })}
-              >
-                View quick reference <ArrowDown size={16} />
-              </button>
-              <button
-                onClick={() => jumpTo("downloads")}
-                className={buttonVariants({ size: "lg" })}
-              >
-                Browse assets <ArrowDown size={16} />
-              </button>
-            </div>
-          </div>
-
-          {/* The ownable Visual Container carries the hero: three rounded corners,
-              one square corner, every panel facing the same way (Phase 0, s24). */}
-          <div aria-hidden className="relative hidden h-[420px] md:block">
-            <div
-              className="absolute right-0 top-0 h-[146px] w-[54%] rounded-lg rounded-br-none"
-              style={{ background: "linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)" }}
-            />
-            <div className="absolute left-0 top-[92px] w-[66%] rounded-lg rounded-br-none border border-white/12 bg-og-indigo p-5 shadow-2xl shadow-black/40">
-              <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-og-green">Voice</p>
-              <p className="mt-2.5 text-lg font-bold leading-snug text-white">Calm authority, earned from doing the work</p>
-            </div>
-            <div className="absolute bottom-0 right-0 w-[64%] rounded-lg rounded-br-none bg-white p-5 text-og-midnight shadow-2xl shadow-black/40">
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-og-green-light">Category</p>
-              <p className="mt-2 text-[23px] font-extrabold leading-[1.06]">Autonomous Subscriptions</p>
-              <div className="mt-3.5 flex gap-1.5">
-                {CORE.swatches.map((swatch) => (
-                  <span
-                    key={swatch.hex}
-                    /* White needs the ring or it disappears into the card. All four
-                       carry it so the outline reads as a treatment, not a patch. */
-                    className="h-7 w-7 rounded-md ring-1 ring-inset ring-og-midnight/15"
-                    style={{ backgroundColor: swatch.hex }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function BrandHub() {
   const [activeId, setActiveId] = useState(() => employeeSectionId(window.location.hash.slice(1) || "overview"));
 
@@ -199,7 +125,7 @@ export default function BrandHub() {
 
   return (
     <HubShell activeId={activeId}>
-        <Hero />
+        <WorkingCanvasHero />
 
         <HubSection
           id="quick-reference"
