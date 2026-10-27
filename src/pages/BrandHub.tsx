@@ -1,16 +1,16 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, Check, Copy, Download } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Download } from "lucide-react";
 import { HubShell, jumpTo } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
-import { AssetCard } from "@/components/brand/AssetCard";
+import { ColorBand } from "@/components/brand/ColorBand";
+import { AssetTiles } from "@/components/brand/AssetTiles";
 import { DraftBadge } from "@/components/brand/DraftBadge";
-import { Swatch } from "@/components/brand/Swatch";
 import { buttonVariants } from "@/components/ui/button";
 import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
 import { BRAND_SKILLS, HUB_NAV, TOOLKIT_ITEMS } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
-import { COLOR_GROUPS, CORE, GRADIENTS } from "@/data/tokens";
+import { CORE, GRADIENTS, SECONDARY } from "@/data/tokens";
 import { cn } from "@/lib/utils";
 
 
@@ -46,36 +46,6 @@ function HubSection({
         {children}
       </div>
     </section>
-  );
-}
-
-function MiniSwatch({ name, hex, usage }: { name: string; hex: string; usage?: string }) {
-  const [copied, setCopied] = useState(false);
-
-  async function copy() {
-    await navigator.clipboard.writeText(hex);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1200);
-  }
-
-  return (
-    <button
-      onClick={copy}
-      className="action-focus group flex items-center gap-3 border-b border-border py-3 text-left"
-      aria-label={`Copy ${name} ${hex}`}
-    >
-      <span className="h-10 w-10 shrink-0 rounded-lg ring-1 ring-inset ring-og-midnight/10" style={{ backgroundColor: hex }} />
-      <span className="min-w-0">
-        <span className="flex items-center gap-4">
-          <span className="w-[122px] text-sm font-semibold">{name}</span>
-          <span className="inline-flex shrink-0 items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-foreground">
-            {copied ? <Check size={12} /> : <Copy size={12} />}
-            {copied ? "Copied" : hex}
-          </span>
-        </span>
-        {usage && <span className="mt-0.5 block truncate text-xs text-muted-foreground">{usage}</span>}
-      </span>
-    </button>
   );
 }
 
@@ -151,9 +121,7 @@ export default function BrandHub() {
               return (
                 <div key={category.type}>
                   <h3 className="mb-5 text-xl font-bold">{category.label}</h3>
-                  <div className={cn("grid gap-5 sm:grid-cols-2", category.type !== "logo" && "xl:grid-cols-3")}>
-                    {assets.map((asset) => <AssetCard key={asset.id} asset={asset} showDescription={asset.type !== "logo"} />)}
-                  </div>
+                  <AssetTiles assets={assets} />
                 </div>
               );
             })}
@@ -169,21 +137,7 @@ export default function BrandHub() {
           title="Color palette"
           intro="Select any color to copy its hex value."
         >
-          <h3 className="mb-5 text-2xl font-bold">Core colors</h3>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {CORE.swatches.map((swatch) => <Swatch key={swatch.hex} swatch={swatch} />)}
-          </div>
-          <div className="mt-10">
-            {COLOR_GROUPS.filter((group) => group.title === "Secondary").map((group) => (
-              <div key={group.title} className="rounded-lg border border-border bg-white p-6">
-                <h3 className="text-lg font-bold">{group.title}</h3>
-                {group.note && <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{group.note}</p>}
-                <div className="mt-3 grid gap-x-8 sm:grid-cols-2 lg:max-w-[680px]">
-                  {group.swatches.map((swatch) => <MiniSwatch key={swatch.hex} name={swatch.name} hex={swatch.hex} />)}
-                </div>
-              </div>
-            ))}
-          </div>
+          <ColorBand core={CORE} secondary={SECONDARY} />
         </HubSection>
 
         <HubSection
