@@ -9,7 +9,7 @@ const ALL_NAV_ITEMS = HUB_NAV.flatMap((group) => group.items);
 const NAV_ITEM_CLASS = "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
 const NAV_ITEM_ACTIVE =
   "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:-left-[11px] before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
-const NAV_ITEM_IDLE = "text-og-gray-400 hover:bg-white/70 hover:text-og-midnight";
+const NAV_ITEM_IDLE = "text-og-midnight hover:bg-white/70 hover:text-og-midnight";
 
 export function jumpTo(id: string, closeMenu?: () => void) {
   const target = document.getElementById(id);
@@ -163,7 +163,7 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
         className={cn(
           "w-full outline-none transition",
           hero
-            ? "h-14 rounded-lg border border-white bg-white pl-11 pr-4 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-gray-400 focus:border-og-green focus:ring-4 focus:ring-og-green/15"
+            ? "h-14 rounded-lg border border-white bg-white pl-11 pr-4 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-midnight focus:border-og-green focus:ring-4 focus:ring-og-green/15"
             : "h-9 rounded-lg border border-white/15 bg-white/10 pl-9 pr-12 text-sm text-white placeholder:text-white/45 focus:border-og-green/60 focus:bg-white/15 focus:ring-2 focus:ring-og-green/10"
         )}
       />
@@ -188,12 +188,12 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
                 <Search className="mt-0.5 shrink-0 text-og-gray-600 group-hover:text-og-green-light" size={15} />
                 <span>
                   <span className="block text-sm font-semibold">{item.label}</span>
-                  <span className="mt-0.5 block text-xs text-og-gray-400">{item.description}</span>
+                  <span className="mt-0.5 block text-xs text-og-midnight">{item.description}</span>
                 </span>
               </button>
             ))
           ) : (
-            <p className="px-3 py-5 text-center text-sm text-og-gray-400">
+            <p className="px-3 py-5 text-center text-sm text-og-midnight">
               No matching section. Try “logo,” “voice,” or “downloads.”
             </p>
           )}
@@ -220,7 +220,7 @@ export function HubShell({ activeId, children }: { activeId: string; children: R
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>
           <Link to="/" className="flex shrink-0 items-center" aria-label="Ordergroove brand hub home">
-            <img src="/logo-dark.png" alt="Ordergroove" className="h-5 w-auto md:h-6" />
+            <img src="/logo-dark.png" alt="Ordergroove" className="h-12 w-auto md:h-14" />
           </Link>
           <span className="hidden h-6 w-px bg-white/20 sm:block" />
           <span className="hidden truncate text-sm text-white/62 sm:block">Brand Hub · Internal reference</span>

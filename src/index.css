@@ -51,7 +51,7 @@
 @layer base {
   :root {
     --background: 240 20% 97%; /* soft off-white page canvas (#F5F5F8) */
-    --foreground: 249 42% 13%;
+    --foreground: 248.571 42.424% 12.941%;
     --card: 0 0% 100%; /* white cards lift off the canvas */
     --card-foreground: 249 42% 13%;
     --popover: 0 0% 100%;
@@ -61,7 +61,7 @@
     --secondary: 240 20% 97%;
     --secondary-foreground: 249 42% 13%;
     --muted: 240 20% 97%;
-    --muted-foreground: 250 11% 43%;
+    --muted-foreground: 248.571 42.424% 12.941%;
     --accent: 240 20% 97%;
     --accent-foreground: 249 42% 13%;
     --destructive: 346 65% 50%;

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
  * Asset tile for the v1 Downloads grid. The same component powers the v1.5
  * DAM-lite grid (it already reads tags/type/formats), so the DAM is additive.
  */
-export function AssetCard({ asset }: { asset: Asset }) {
+export function AssetCard({ asset, showDescription = true }: { asset: Asset; showDescription?: boolean }) {
   const available = asset.href !== null;
 
   return (
@@ -23,7 +23,7 @@ export function AssetCard({ asset }: { asset: Asset }) {
           <img
             src={asset.preview}
             alt={asset.title}
-            className="max-h-full max-w-full object-contain p-6"
+            className={cn("max-h-full max-w-full object-contain", !asset.tags.includes("logomark") && "p-6")}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-og-signature opacity-90" />
@@ -34,7 +34,7 @@ export function AssetCard({ asset }: { asset: Asset }) {
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex-1 space-y-1">
           <h3 className="font-semibold leading-tight">{asset.title}</h3>
-          <p className="measure text-sm leading-6 text-muted-foreground">{asset.description}</p>
+          {showDescription && <p className="measure text-sm leading-6 text-muted-foreground">{asset.description}</p>}
         </div>
 
         <div className="flex flex-wrap gap-1.5">

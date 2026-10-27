@@ -13,22 +13,13 @@ import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-lau
 import { COLOR_GROUPS, CORE, GRADIENTS } from "@/data/tokens";
 import { cn } from "@/lib/utils";
 
-const QUICK_REFERENCE = [
-  ["Source of truth", "brand.md"],
-  ["Category", "Autonomous Subscriptions"],
-  ["Primary color", "Midnight #17132F"],
-  ["Accent on dark", "Groovy Green #00FF85"],
-  ["Accent on light", "Green #009A50"],
-  ["Typeface", "Figtree, weights 400 to 800"],
-  ["Voice", "Confident, precise, operator-minded"],
-  ["Logo default", "White wordmark + green rings on Midnight"],
-];
 
 function HubSection({
   id,
   eyebrow,
   title,
   intro,
+  wideIntro = false,
   children,
   className,
 }: {
@@ -36,6 +27,7 @@ function HubSection({
   eyebrow: string;
   title: string;
   intro?: string;
+  wideIntro?: boolean;
   children: ReactNode;
   className?: string;
 }) {
@@ -46,10 +38,10 @@ function HubSection({
       className={cn("scroll-mt-20 border-t border-border px-6 py-16 md:px-10 md:py-20", className)}
     >
       <div className="mx-auto max-w-[1060px]">
-        <div className="mb-10 max-w-[var(--measure-header)]">
+        <div className={cn("mb-10", !wideIntro && "max-w-[var(--measure-header)]")}>
           <p className="eyebrow mb-3">{eyebrow}</p>
           <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
-          {intro && <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
+          {intro && <p className={cn("mt-4 text-lg leading-[1.6] text-muted-foreground", !wideIntro && "measure")}>{intro}</p>}
         </div>
         {children}
       </div>
@@ -69,14 +61,14 @@ function MiniSwatch({ name, hex, usage }: { name: string; hex: string; usage?: s
   return (
     <button
       onClick={copy}
-      className="action-focus group flex items-center gap-3 border-b border-border py-3 text-left last:border-0"
+      className="action-focus group flex items-center gap-3 border-b border-border py-3 text-left"
       aria-label={`Copy ${name} ${hex}`}
     >
       <span className="h-10 w-10 shrink-0 rounded-lg ring-1 ring-inset ring-og-midnight/10" style={{ backgroundColor: hex }} />
-      <span className="min-w-0 flex-1">
-        <span className="flex items-center justify-between gap-2">
-          <span className="text-sm font-semibold">{name}</span>
-          <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-foreground">
+      <span className="min-w-0">
+        <span className="flex items-center gap-4">
+          <span className="w-[122px] text-sm font-semibold">{name}</span>
+          <span className="inline-flex shrink-0 items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-foreground">
             {copied ? <Check size={12} /> : <Copy size={12} />}
             {copied ? "Copied" : hex}
           </span>
@@ -127,11 +119,13 @@ export default function BrandHub() {
     <HubShell activeId={activeId}>
         <WorkingCanvasHero />
 
+        <div id="quick-reference" className="scroll-mt-20">
         <HubSection
-          id="quick-reference"
-          eyebrow="Start here"
-          title="Quick reference"
-          intro="The essentials at a glance. Use the sections below when you need the reasoning, examples, or downloadable files."
+          id="downloads"
+          eyebrow="Resources"
+          title="Grab-and-go assets"
+          intro="Download logos and backgrounds for your work."
+          wideIntro
         >
           <div className="mb-6 flex flex-wrap gap-2">
             {["messaging", "voice", "color", "downloads"].map((id) => {
@@ -150,15 +144,23 @@ export default function BrandHub() {
               );
             })}
           </div>
-          <div className="overflow-hidden rounded-lg border border-border bg-white">
-            {QUICK_REFERENCE.map(([label, value]) => (
-              <div key={label} className="grid gap-1 border-b border-border px-5 py-4 last:border-0 sm:grid-cols-[210px_1fr] sm:gap-6">
-                <span className="text-sm font-semibold">{label}</span>
-                <span className="text-sm text-muted-foreground">{value}</span>
-              </div>
-            ))}
+          <div className="space-y-12">
+            {ASSET_CATEGORIES.map((category) => {
+              const assets = ASSETS.filter((asset) => asset.type === category.type && asset.href && !asset.employeeHold);
+              if (!assets.length) return null;
+              return (
+                <div key={category.type}>
+                  <h3 className="mb-5 text-xl font-bold">{category.label}</h3>
+                  <div className={cn("grid gap-5 sm:grid-cols-2", category.type !== "logo" && "xl:grid-cols-3")}>
+                    {assets.map((asset) => <AssetCard key={asset.id} asset={asset} showDescription={asset.type !== "logo"} />)}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </HubSection>
+
+        </div>
 
 
         <HubSection
@@ -176,7 +178,7 @@ export default function BrandHub() {
               <div key={group.title} className="rounded-lg border border-border bg-white p-6">
                 <h3 className="text-lg font-bold">{group.title}</h3>
                 {group.note && <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{group.note}</p>}
-                <div className="mt-3 grid gap-x-10 sm:grid-cols-2">
+                <div className="mt-3 grid gap-x-8 sm:grid-cols-2 lg:max-w-[680px]">
                   {group.swatches.map((swatch) => <MiniSwatch key={swatch.hex} name={swatch.name} hex={swatch.hex} />)}
                 </div>
               </div>
@@ -187,14 +189,14 @@ export default function BrandHub() {
         <HubSection
           id="typography"
           eyebrow="Visual identity"
-          title="One typeface, a clear hierarchy"
+          title="Typography"
           intro="Figtree is the only brand typeface. Use tight spacing for display text and open spacing for body copy."
+          wideIntro
         >
-          <div className="mb-6 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-3">
+          <div className="mb-6 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-2">
             {[
               ["Family", "Figtree everywhere"],
               ["Weights", "400 to 800"],
-              ["Title rule", "No trailing periods"],
             ].map(([label, value]) => (
               <div key={label} className="bg-white p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
@@ -232,6 +234,7 @@ export default function BrandHub() {
           eyebrow="Visual identity"
           title="Logo and gradients"
           intro="Use the primary logo whenever space allows. Reserve gradients for key moments."
+          wideIntro
         >
           <div className="grid gap-6 sm:grid-cols-2">
             <figure>
@@ -247,9 +250,16 @@ export default function BrandHub() {
               <figcaption className="mt-3 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">On white:</strong> Midnight wordmark with #00CC6A rings. Keep the supplied artwork unchanged.</figcaption>
             </figure>
           </div>
-          <div className="mt-6 border-l-2 border-og-green-light pl-5">
-            <h3 className="text-base font-semibold">A logo-only color exception</h3>
-            <p className="measure mt-2 text-sm leading-6 text-muted-foreground">#00CC6A belongs only to the supplied light-background logo. Use #009A50 for other green accents on light surfaces. Do not recolor the logo to match buttons or text.</p>
+          <h3 className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {ASSETS.filter((asset) => asset.tags.includes("logomark") && asset.href && !asset.employeeHold).map((asset) => (
+              <figure key={asset.id}>
+                <div className={cn("flex h-64 items-center justify-center rounded-lg", asset.previewBg === "light" ? "border border-border bg-white" : "bg-og-midnight")}>
+                  <img src={asset.preview!} alt={asset.title} className="h-full max-w-full object-contain" />
+                </div>
+                <figcaption className="mt-3 text-sm leading-6 text-muted-foreground">{asset.description}</figcaption>
+              </figure>
+            ))}
           </div>
           <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
@@ -262,52 +272,30 @@ export default function BrandHub() {
             </div>
             <div>
               <h3 className="text-base font-semibold">Use the original file</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork below instead of taking a screenshot.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork from Grab-and-go assets instead of taking a screenshot.</p>
             </div>
             <div>
               <h3 className="text-base font-semibold">Need another version?</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Ask Marketing for a master file for large-format work, a standalone mark, or an approved single-color logo for print or other backgrounds.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Ask Marketing for a master file for large-format work or an approved single-color logo for print or other backgrounds.</p>
             </div>
           </div>
 
           <div className="mt-12">
             <h3 className="mb-5 text-2xl font-bold">Approved gradients</h3>
             <div className="grid gap-4 sm:grid-cols-2">
-              {GRADIENTS.map((gradient) => (
+              {GRADIENTS.filter((gradient) => gradient.status === "web").map((gradient) => (
                 <div key={gradient.name} className="overflow-hidden rounded-lg border border-border bg-white">
-                  <div className="h-28" style={{ backgroundImage: gradient.css }} />
+                  <img className="h-28 w-full object-cover" src="/working-canvas/bg-gradient-1.png" alt="" />
                   <div className="flex items-center justify-between gap-4 p-4">
                     <div>
                       <p className="text-sm font-semibold">{gradient.name}</p>
-                      <code className="mt-1 block max-w-[250px] truncate text-[11px] text-muted-foreground">{gradient.css}</code>
+                      <a href="/working-canvas/bg-gradient-1.png" download className="action-focus mt-2 inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4"><Download size={14} /> Download PNG</a>
                     </div>
                     {gradient.status === "signature" && <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-foreground">Signature</span>}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </HubSection>
-
-        <HubSection
-          id="downloads"
-          eyebrow="Resources"
-          title="Grab-and-go assets"
-          intro="Download logos and backgrounds for your work."
-        >
-          <div className="space-y-12">
-            {ASSET_CATEGORIES.map((category) => {
-              const assets = ASSETS.filter((asset) => asset.type === category.type && asset.href && !asset.employeeHold);
-              if (!assets.length) return null;
-              return (
-                <div key={category.type}>
-                  <h3 className="mb-5 text-xl font-bold">{category.label}</h3>
-                  <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                    {assets.map((asset) => <AssetCard key={asset.id} asset={asset} />)}
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </HubSection>
 
