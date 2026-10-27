@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Download } from "lucide-react";
 import { HubShell, jumpTo } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
-import { ColorBand } from "@/components/brand/ColorBand";
+import { ColorTiers } from "@/components/brand/ColorTiers";
 import { AssetTiles } from "@/components/brand/AssetTiles";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { buttonVariants } from "@/components/ui/button";
 import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
 import { BRAND_SKILLS, HUB_NAV, TOOLKIT_ITEMS } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
-import { CORE, GRADIENTS, SECONDARY } from "@/data/tokens";
+import { CORE, GRADIENTS } from "@/data/tokens";
 import { cn } from "@/lib/utils";
 
 
@@ -137,7 +137,7 @@ export default function BrandHub() {
           title="Color palette"
           intro="Select any color to copy its hex value."
         >
-          <ColorBand core={CORE} secondary={SECONDARY} />
+          <ColorTiers />
         </HubSection>
 
         <HubSection
