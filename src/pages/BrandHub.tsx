@@ -5,6 +5,7 @@ import { HubShell, SearchBox, jumpTo } from "@/components/hub/HubShell";
 import { AssetCard } from "@/components/brand/AssetCard";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { Swatch } from "@/components/brand/Swatch";
+import { buttonVariants } from "@/components/ui/button";
 import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
 import { BRAND_SKILLS, HUB_NAV, TOOLKIT_ITEMS } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
@@ -114,13 +115,13 @@ function Hero() {
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={() => jumpTo("quick-reference")}
-                className="action-focus inline-flex items-center gap-2 rounded-full bg-og-green px-5 py-3 text-sm font-bold text-og-midnight transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(0,255,133,.2)]"
+                className={buttonVariants({ size: "lg" })}
               >
                 View quick reference <ArrowDown size={16} />
               </button>
               <button
                 onClick={() => jumpTo("downloads")}
-                className="action-focus inline-flex items-center gap-2 rounded-full border border-white/60 px-5 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/5"
+                className={buttonVariants({ size: "lg" })}
               >
                 Browse assets <ArrowDown size={16} />
               </button>
@@ -211,8 +212,7 @@ export default function BrandHub() {
               const item = HUB_NAV.flatMap((group) => group.items).find(
                 (navItem) => navItem.id === id
               )!;
-              const chipClass =
-                "action-focus inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3.5 py-2 text-sm font-semibold transition hover:border-primary hover:bg-secondary hover:text-foreground";
+              const chipClass = buttonVariants({ size: "sm" });
               return item.path ? (
                 <Link key={id} to={item.path} className={chipClass}>
                   {item.label} <ArrowRight size={14} />
@@ -402,7 +402,7 @@ export default function BrandHub() {
                   <p className="measure mt-3 text-sm leading-6 text-muted-foreground">{item.body}</p>
                 </div>
                 {item.href ? (
-                  <a href={item.href} download className="action-focus mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-foreground underline underline-offset-4 hover:decoration-2">
+                  <a href={item.href} download className={cn(buttonVariants({ size: "sm" }), "mt-5 self-start")}>
                     {item.cta} <Download size={15} />
                   </a>
                 ) : null}
@@ -470,7 +470,7 @@ export default function BrandHub() {
               </div>
               <p className="measure mt-2 text-sm leading-6 text-white/60">A plain-text map of the hub helps assistants and coding tools find the canonical brand resources.</p>
             </div>
-            <a href="/llms.txt" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-bold hover:border-og-green hover:text-og-green">
+            <a href="/llms.txt" className={cn(buttonVariants(), "shrink-0")}>
               Open llms.txt <ArrowUpRight size={15} />
             </a>
           </div>
@@ -482,7 +482,7 @@ export default function BrandHub() {
               <img src="/logo-white.png" alt="Ordergroove" className="h-4 w-auto md:h-5" />
               <p className="mt-2 text-xs text-muted-foreground">Internal use only · Maintained by Brand & Content</p>
             </div>
-            <button onClick={() => jumpTo("overview")} className="action-focus inline-flex items-center gap-2 text-sm font-semibold text-foreground underline underline-offset-4 hover:decoration-2">
+            <button onClick={() => jumpTo("overview")} className={buttonVariants({ size: "sm" })}>
               Back to the top <ArrowRight className="-rotate-90" size={14} />
             </button>
           </div>

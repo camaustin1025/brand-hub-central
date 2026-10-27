@@ -29,7 +29,7 @@ export type SwatchGroup = {
 
 export const CORE: SwatchGroup = {
   title: "Core",
-  note: "Use #009A50 accents on light surfaces and #00FF85 on dark. Use Midnight for small text on light surfaces and for labels on green buttons. White text on #009A50 does not have enough contrast.",
+  note: "Use #009A50 accents on light surfaces and #00FF85 on dark. Use Midnight for small text on light surfaces. Hub buttons use Midnight with white text and invert on hover.",
   swatches: [
     {
       name: "Midnight",
@@ -59,7 +59,7 @@ export const CORE: SwatchGroup = {
       name: "Green (light-bg)",
       hex: "#009A50",
       rgb: "0, 154, 80",
-      usage: "Accent on LIGHT backgrounds. Pair green buttons with Midnight labels; use Midnight for small text on white.",
+      usage: "Accent on LIGHT backgrounds. Use Midnight for small text and button fills; button labels are white.",
       onLight: true,
       onDark: false,
     },

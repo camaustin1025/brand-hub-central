@@ -10,6 +10,7 @@ Apply everything below to all Ordergroove copy and visual work without being ask
 - Cross-check hexes against this file, not from memory — near-miss variants (`#0b0820`, `#0B0E22`, `#14102a`) are drift, not alternatives.
 - Logo-only exception (Cameron approved, 2026-10-26): preserve the supplied light-background logo with Midnight lettering and `#00CC6A` rings. Do not recolor it to `#009A50` or add `#00CC6A` to the general palette.
 - On light surfaces, use Midnight for small text and links. Green `#009A50` buttons need Midnight labels; white labels do not meet normal-text contrast requirements.
+- Hub CTA buttons (Cameron approved, 2026-10-26): Midnight `#17132F` fill with white text; invert to white fill with Midnight text on hover. Keep a visible border and keyboard-focus ring. Use the shared button component for hero actions, shortcuts, downloads, sign-in, and other CTAs.
 
 ## Positioning
 

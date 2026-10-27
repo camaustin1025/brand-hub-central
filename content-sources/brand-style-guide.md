@@ -210,6 +210,8 @@ Still to source: numeric minimum-size specs and a clean standalone-mark master. 
 
 **The green contrast rule (most-missed rule in the system):** light background → `#009A50` accents; dark background → `#00FF85`. Use Midnight for small text and links on light surfaces, and for labels on green buttons. White text on `#009A50` fails normal-text contrast. The supplied logo's `#00CC6A` rings are a logo-only exception, not a UI color.
 
+**Hub CTA buttons (approved 2026-10-26):** Midnight fill with white text, inverting to white fill with Midnight text on hover. Preserve the pill shape, a visible border, and a distinct keyboard-focus ring. Hero buttons, quick-reference shortcuts, downloads, toolkit actions, and sign-in share this treatment.
+
 **Secondary palette** (sparingly, decorative "pop" only, never leading/primary): Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Neon Carrot `#FF8500` · Radiant Radish `#D32E55` · Flamboyant Flamingo `#FF61D3` · Electric Eggplant `#8500FF`. Laser Lemon is never text on white.
 
 **Gradients:** signature is Green → Cyan (`#00FF85` → `#00FAFF`, on dark). Also approved: Orange → Yellow (`#FF8500` → `#EAFF00`) and Purple → Blue → Green. Brand gradient for web: `linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)`.
