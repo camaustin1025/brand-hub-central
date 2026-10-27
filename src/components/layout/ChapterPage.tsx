@@ -10,7 +10,7 @@ export function ChapterPage({
   intro,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   intro?: string;
   children: ReactNode;
@@ -25,7 +25,7 @@ export function ChapterPage({
           <ArrowLeft size={15} /> Brand hub
         </Link>
         <div className="mb-10 max-w-[var(--measure-header)]">
-          <p className="eyebrow mb-3">{eyebrow}</p>
+          {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <h1 className="text-3xl font-extrabold md:text-[42px]">{title}</h1>
           {intro && <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
         </div>

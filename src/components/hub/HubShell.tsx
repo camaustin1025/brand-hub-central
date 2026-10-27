@@ -32,6 +32,17 @@ export function Sidebar({
   open: boolean;
   onClose: () => void;
 }) {
+  const navigate = useNavigate();
+
+  function chooseSection(id: string) {
+    if (document.getElementById(id)) {
+      jumpTo(id, onClose);
+    } else {
+      navigate(`/#${id}`);
+      onClose();
+    }
+  }
+
   return (
     <>
       {open && (
@@ -67,7 +78,7 @@ export function Sidebar({
                       </Link>
                     ) : (
                       <button
-                        onClick={() => jumpTo(item.id, onClose)}
+                        onClick={() => chooseSection(item.id)}
                         aria-current={activeId === item.id ? "location" : undefined}
                         className={cn(NAV_ITEM_CLASS, "w-full text-left", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
                       >
@@ -140,7 +151,8 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
       navigate(item.path);
       return;
     }
-    jumpTo(item.id);
+    if (document.getElementById(item.id)) jumpTo(item.id);
+    else navigate(`/#${item.id}`);
   }
 
   return (

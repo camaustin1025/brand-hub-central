@@ -14,6 +14,12 @@ export type HubNavGroup = {
   items: HubNavItem[];
 };
 
+/** Standalone resources, also used to redirect the former homepage anchors. */
+export const RESOURCE_PAGE_PATHS = {
+  toolkit: "/toolkit",
+  "ai-skills": "/ai-resources",
+} as const;
+
 const DRAFT_HUB_NAV: HubNavGroup[] = [
   {
     label: "Start here",
@@ -25,10 +31,10 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         keywords: "home intro start brand hub",
       },
       {
-        id: "quick-reference",
-        label: "Quick reference",
-        description: "The essentials at a glance.",
-        keywords: "summary basics source of truth primary color font",
+        id: "downloads",
+        label: "Downloads",
+        description: "Available logos and backgrounds.",
+        keywords: "assets files png logo logomark background download",
       },
     ],
   },
@@ -72,22 +78,30 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         description: "Primary lockups and approved gradient treatments.",
         keywords: "wordmark logomark dark light signature green cyan",
       },
+      {
+        id: "icons",
+        label: "Icons",
+        description: "Material Symbols Rounded, icon colors, and tile treatments.",
+        keywords: "icons iconography material symbols rounded plain tinted solid figma teal",
+      },
     ],
   },
   {
     label: "Resources",
     items: [
       {
-        id: "downloads",
-        label: "Downloads",
-        description: "Available logos and backgrounds.",
-        keywords: "assets files png logo logomark background download",
-      },
-      {
         id: "toolkit",
+        path: RESOURCE_PAGE_PATHS.toolkit,
         label: "GTM & employee toolkit",
         description: "Available resources for day-to-day work.",
         keywords: "zoom background employee resources",
+      },
+      {
+        id: "ai-skills",
+        path: RESOURCE_PAGE_PATHS["ai-skills"],
+        label: "AI Resources & Guidance",
+        description: "Shared Claude skills, starting with Ordergroove Slides 2.0.",
+        keywords: "ai claude skills slides 2.0 presentations prompt guidance resources",
       },
     ],
   },
@@ -99,12 +113,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         label: "Design tokens",
         description: "Approved marketing values, ready for code.",
         keywords: "developer css json code variables design system",
-      },
-      {
-        id: "ai-skills",
-        label: "AI & skills",
-        description: "Tools that make on-brand output the default.",
-        keywords: "assistant claude skills agents brand md llms",
       },
     ],
   },

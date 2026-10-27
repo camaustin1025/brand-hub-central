@@ -1,16 +1,18 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight, Download } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 import { HubShell, jumpTo } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
 import { ColorTiers } from "@/components/brand/ColorTiers";
 import { AssetTiles } from "@/components/brand/AssetTiles";
 import { DraftBadge } from "@/components/brand/DraftBadge";
+import { GradientDetails } from "@/components/brand/GradientDetails";
+import { IconGuidance } from "@/components/brand/IconGuidance";
 import { buttonVariants } from "@/components/ui/button";
 import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
-import { BRAND_SKILLS, HUB_NAV, TOOLKIT_ITEMS } from "@/data/hub";
+import { HUB_NAV } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
-import { CORE, GRADIENTS } from "@/data/tokens";
+import { CORE } from "@/data/tokens";
 import { cn } from "@/lib/utils";
 
 
@@ -24,7 +26,7 @@ function HubSection({
   className,
 }: {
   id: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   intro?: string;
   wideIntro?: boolean;
@@ -39,7 +41,7 @@ function HubSection({
     >
       <div className="mx-auto max-w-[1060px]">
         <div className={cn("mb-10", !wideIntro && "max-w-[var(--measure-header)]")}>
-          <p className="eyebrow mb-3">{eyebrow}</p>
+          {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
           {intro && <p className={cn("mt-4 text-lg leading-[1.6] text-muted-foreground", !wideIntro && "measure")}>{intro}</p>}
         </div>
@@ -147,6 +149,11 @@ export default function BrandHub() {
           intro="Figtree is the only brand typeface. Use tight spacing for display text and open spacing for body copy."
           wideIntro
         >
+          <div className="mb-6">
+            <a href="/fonts/Figtree-font-kit.zip" download className={buttonVariants({ size: "lg" })}>
+              <Download size={16} aria-hidden="true" /> Download fonts
+            </a>
+          </div>
           <div className="mb-6 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-2">
             {[
               ["Family", "Figtree everywhere"],
@@ -235,48 +242,18 @@ export default function BrandHub() {
           </div>
 
           <div className="mt-12">
-            <h3 className="mb-5 text-2xl font-bold">Approved gradients</h3>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {GRADIENTS.filter((gradient) => gradient.status === "web").map((gradient) => (
-                <div key={gradient.name} className="overflow-hidden rounded-lg border border-border bg-white">
-                  <img className="h-28 w-full object-cover" src="/working-canvas/bg-gradient-1.png" alt="" />
-                  <div className="flex items-center justify-between gap-4 p-4">
-                    <div>
-                      <p className="text-sm font-semibold">{gradient.name}</p>
-                      <a href="/working-canvas/bg-gradient-1.png" download className="action-focus mt-2 inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4"><Download size={14} /> Download PNG</a>
-                    </div>
-                    {gradient.status === "signature" && <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-foreground">Signature</span>}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h3 className="mb-5 text-2xl font-bold">Brand gradient</h3>
+            <GradientDetails />
           </div>
         </HubSection>
 
         <HubSection
-          id="toolkit"
-          eyebrow="Resources"
-          title="Everyday brand tools"
-          intro="Resources for day-to-day work."
+          id="icons"
+          title="Icons"
+          intro="Use Material Symbols Rounded for Ordergroove visuals. Match the treatment and color to the background."
+          wideIntro
         >
-          <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 xl:grid-cols-3">
-            {TOOLKIT_ITEMS.filter((item) => item.href && !item.status).map((item) => (
-              <div key={item.title} className="flex min-h-56 flex-col bg-white p-6">
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-lg font-bold">{item.title}</h3>
-                    {item.status && <DraftBadge>{item.status}</DraftBadge>}
-                  </div>
-                  <p className="measure mt-3 text-sm leading-6 text-muted-foreground">{item.body}</p>
-                </div>
-                {item.href ? (
-                  <a href={item.href} download className={cn(buttonVariants({ size: "sm" }), "mt-5 self-start")}>
-                    {item.cta} <Download size={15} />
-                  </a>
-                ) : null}
-              </div>
-            ))}
-          </div>
+          <IconGuidance />
         </HubSection>
 
         {isEmployeeSectionVisible("tokens") && <HubSection
@@ -313,34 +290,6 @@ export default function BrandHub() {
                 ))}
               </div>
             </div>
-          </div>
-        </HubSection>}
-
-        {isEmployeeSectionVisible("ai-skills") && <HubSection
-          id="ai-skills"
-          eyebrow="Brand systems"
-          title="On-brand by default, not by review"
-          intro="These tools load the rules automatically so the first draft starts closer to the standard."
-        >
-          <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2">
-            {BRAND_SKILLS.map((skill) => (
-              <div key={skill.name} className="bg-white p-6">
-                <code className="text-sm font-bold text-primary">{skill.name}</code>
-                <p className="measure mt-3 text-sm leading-6 text-muted-foreground">{skill.body}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 flex flex-col gap-5 rounded-lg bg-og-midnight p-7 text-white sm:flex-row sm:items-center sm:justify-between">
-            <div className="max-w-2xl">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-xl font-bold">Brand guide for AI tools</h3>
-                <span className="rounded-full bg-og-green/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-og-green">Available</span>
-              </div>
-              <p className="measure mt-2 text-sm leading-6 text-white/60">A plain-text map of the hub helps assistants and coding tools find the canonical brand resources.</p>
-            </div>
-            <a href="/llms.txt" className={cn(buttonVariants(), "shrink-0")}>
-              Open llms.txt <ArrowUpRight size={15} />
-            </a>
           </div>
         </HubSection>}
 

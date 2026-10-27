@@ -14,5 +14,7 @@
 - [Foundation & Messaging](/foundation): who we are, the category, the message ladder
 - [Voice & Language Rules](/voice): how we sound, plus the pass/fail language rules
 - [Visual Identity](/visual-identity): color, logo, gradients, signature shapes
+- [Icons](/#icons): Material Symbols Rounded, icon colors, and Plain, Tinted, and Solid treatments
 - [Downloads](/#downloads): available logos and backgrounds
-- [GTM & Employee Toolkit](/#toolkit): available day-to-day resources, including Zoom backgrounds
+- [GTM & Employee Toolkit](/toolkit): available day-to-day resources, including Zoom backgrounds
+- [AI Resources & Guidance](/ai-resources): shared Claude skills, starting with Ordergroove Slides 2.0 beta

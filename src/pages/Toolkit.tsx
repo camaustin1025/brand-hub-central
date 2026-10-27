@@ -1,89 +1,28 @@
-import { PageHeader } from "@/components/layout/PageHeader";
-import { DraftBadge } from "@/components/brand/DraftBadge";
-import { ArrowUpRight } from "lucide-react";
-
-type Tool = {
-  title: string;
-  body: string;
-  cta: string;
-  href: string | null;
-  draft?: string;
-};
-
-const TOOLS: Tool[] = [
-  {
-    title: "Slide template",
-    body: "On-brand Google Slides with correct colors, fonts, and layouts. The ordergroove-slides skill builds decks for you.",
-    cta: "Open template",
-    href: null,
-    draft: "Re-sourcing link",
-  },
-  {
-    title: "Word docs",
-    body: "On-brand documents via the ordergroove-doc skill. Midnight and white, Figtree, no forbidden fonts.",
-    cta: "How it works",
-    href: null,
-    draft: "Re-sourcing link",
-  },
-  {
-    title: "Email signatures",
-    body: "Fancy and simple variants, copy-paste ready. LinkedIn-only icons, correct-contrast green links.",
-    cta: "Get your signature",
-    href: null,
-    draft: "Re-sourcing link",
-  },
-  {
-    title: "New-hire graphics",
-    body: "Welcome and I've-joined LinkedIn graphics. Copy the Canva design and drop in your headshot.",
-    cta: "Open in Canva",
-    href: null,
-    draft: "Confirming Canva link",
-  },
-  {
-    title: "Zoom backgrounds",
-    body: "Midnight canvas with the paired-circle gradient, sized for video calls.",
-    cta: "Download",
-    href: "/midnight_bg.png",
-  },
-];
+import { Download } from "lucide-react";
+import { HubShell } from "@/components/hub/HubShell";
+import { ChapterPage } from "@/components/layout/ChapterPage";
+import { buttonVariants } from "@/components/ui/button";
+import { TOOLKIT_ITEMS } from "@/data/hub";
+import { cn } from "@/lib/utils";
 
 export default function Toolkit() {
   return (
-    <>
-      <PageHeader
-        eyebrow="GTM & Employee Toolkit"
-        title="The everyday, on-brand"
-        subhead="Decks, docs, signatures, and social graphics, plus the skills that generate them. Most links are being re-homed after the old hub went dark."
-      />
-
-      <section className="container grid gap-5 pb-16 sm:grid-cols-2 lg:grid-cols-3">
-        {TOOLS.map((t) => (
-          <div
-            key={t.title}
-            className="visual-container flex flex-col border border-border bg-card p-6"
-          >
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold">{t.title}</h2>
-                {t.draft && <DraftBadge>{t.draft}</DraftBadge>}
+    <HubShell activeId="toolkit">
+      <ChapterPage title="GTM & employee toolkit" intro="Resources for day-to-day work.">
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {TOOLKIT_ITEMS.filter((item) => item.href && !item.status).map((item) => (
+            <div key={item.title} className="flex min-h-56 flex-col rounded-lg border border-border bg-white p-6">
+              <div className="flex-1">
+                <h2 className="text-lg font-bold">{item.title}</h2>
+                <p className="measure mt-3 text-sm leading-6 text-muted-foreground">{item.body}</p>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">{t.body}</p>
-            </div>
-            {t.href ? (
-              <a
-                href={t.href}
-                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
-              >
-                {t.cta} <ArrowUpRight size={15} />
+              <a href={item.href!} download className={cn(buttonVariants({ size: "sm" }), "mt-5 min-h-11 self-start")}>
+                {item.cta} <Download size={15} aria-hidden="true" />
               </a>
-            ) : (
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground">
-                {t.cta} <ArrowUpRight size={15} />
-              </span>
-            )}
-          </div>
-        ))}
-      </section>
-    </>
+            </div>
+          ))}
+        </div>
+      </ChapterPage>
+    </HubShell>
   );
 }

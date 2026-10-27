@@ -1,0 +1,8 @@
+Google Material Symbols Rounded, used under the Apache License 2.0.
+https://github.com/google/material-design-icons
+
+These SVG examples are unchanged exports from Ordergroove's Slide Skill 2.0 Figma file:
+https://www.figma.com/design/1LAizYM7R7QVubcHuix1KF/Slide-Skill-2.0?node-id=289-2635
+Light specification: 27:782. Dark specification: 32:803.
+
+These are examples for the icon guidance section. The downloadable icon library is planned for v2.

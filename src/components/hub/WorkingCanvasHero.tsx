@@ -11,7 +11,7 @@ const ARTWORK = {
   logo: { title: "Ordergroove logo", detail: "The original wordmark for light backgrounds.", href: "/working-canvas/logo-light.svg", format: "SVG", label: "Download SVG", section: "logo-gradients" },
   gradient: { title: "Brand gradient", detail: "The Cyan to Lemon background gradient, ready to use.", href: BACKGROUND_GRADIENT.image, format: "PNG", label: "Download PNG", section: "logo-gradients" },
   type: { title: "Figtree", detail: "Our brand typeface. Regular weight shown in the download.", href: "/fonts/Figtree-Regular.ttf", format: "TTF", label: "Download font", section: "typography" },
-  icons: { title: "Brand icons", detail: "Payment, heart, and chart icons in the original SVG export.", href: "/working-canvas/icon-examples.svg", format: "SVG", label: "Download SVG", section: "downloads" },
+  icons: { title: "Brand icons", detail: "Payment, heart, and chart icons in the original SVG export.", href: "/working-canvas/icon-examples.svg", format: "SVG", label: "Download SVG", section: "icons" },
 };
 type ArtworkId = keyof typeof ARTWORK;
 type ArtworkAnchor = "logo" | "gradient" | "type" | "payment" | "heart" | "chart";

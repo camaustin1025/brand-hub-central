@@ -1,45 +1,45 @@
-import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import type { Swatch as SwatchData } from "@/data/tokens";
+import { useCopyText } from "@/hooks/use-copy-text";
 
 /**
  * Click-to-copy color swatch.
  */
 export function Swatch({ swatch }: { swatch: SwatchData }) {
-  const [copied, setCopied] = useState(false);
-
-  async function copy() {
-    await navigator.clipboard.writeText(swatch.hex.replace("#", ""));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-    // GA4 hook point: track('copy_hex', { hex: swatch.hex })
-  }
+  const { copy, copied, error } = useCopyText(swatch.hex.replace("#", ""));
 
   return (
     <div className="visual-container overflow-hidden border border-border bg-card">
       <button
+        type="button"
         onClick={copy}
         aria-label={`Copy ${swatch.name} hex ${swatch.hex}`}
         className="group block h-28 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-og-midnight"
         style={{ backgroundColor: swatch.hex }}
       >
-        <span className="flex h-full w-full items-start justify-end p-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-          <span className="rounded-md bg-og-midnight p-1.5 text-white">
-            {copied ? <Check size={16} /> : <Copy size={16} />}
+        <span className="flex h-full w-full items-end justify-end p-3">
+          <span className="inline-flex min-h-9 items-center gap-2 rounded-md bg-og-midnight px-3 py-2 text-xs font-semibold text-white transition-colors group-hover:bg-og-indigo">
+            {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
+            {copied ? "Copied" : "Copy hex"}
           </span>
         </span>
       </button>
       <div className="space-y-2 p-4">
-        <div className="flex items-center justify-between">
-          <span className="font-semibold">{swatch.name}</span>
+        <div>
+          <span className="block font-semibold">{swatch.name}</span>
           <button
+            type="button"
             onClick={copy}
-            className="action-focus font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
+            aria-label={`Copy ${swatch.name} hex ${swatch.hex}`}
+            className="action-focus inline-flex min-h-11 items-center font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            {copied ? "Copied" : swatch.hex}
+            {swatch.hex}
           </button>
         </div>
         <p className="measure text-sm text-muted-foreground">{swatch.usage}</p>
+        <p role="status" className={error ? "text-xs text-muted-foreground" : "sr-only"}>
+          {error ? `Copy unavailable. Select ${swatch.hex} to copy manually.` : copied ? `${swatch.name} hex copied` : ""}
+        </p>
       </div>
     </div>
   );

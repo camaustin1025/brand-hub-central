@@ -1,0 +1,67 @@
+import { ArrowUpRight, Check, Copy, Download } from "lucide-react";
+import { BACKGROUND_GRADIENT, BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
+import { useCopyText } from "@/hooks/use-copy-text";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+export function GradientDetails() {
+  const { copy, copied, error } = useCopyText(BACKGROUND_GRADIENT_CSS);
+
+  return (
+    <div className="overflow-hidden rounded-lg border border-border bg-white">
+      <div className="grid lg:grid-cols-2">
+        <img
+          className="aspect-video w-full self-center"
+          src={BACKGROUND_GRADIENT.image}
+          width={BACKGROUND_GRADIENT.width}
+          height={BACKGROUND_GRADIENT.height}
+          alt="Cyan to Lemon gradient, with cyan at the upper right and lemon at the lower left"
+        />
+        <div className="p-6">
+          <h4 className="text-xl font-bold">{BACKGROUND_GRADIENT.name}</h4>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            The gradient behind the homepage search. Use the original PNG for backgrounds, or copy the CSS for web layouts.
+          </p>
+          <dl className="mt-5 space-y-4">
+            {BACKGROUND_GRADIENT.stops.map((stop) => (
+              <div key={stop.hex} className="flex items-center gap-3">
+                <span aria-hidden="true" className="h-9 w-9 shrink-0 rounded-md ring-1 ring-inset ring-og-midnight/10" style={{ backgroundColor: stop.hex }} />
+                <div>
+                  <dt className="text-sm font-semibold">{stop.name}</dt>
+                  <dd className="text-sm text-muted-foreground"><code>{stop.hex}</code> at {stop.position}%</dd>
+                </div>
+              </div>
+            ))}
+            <div className="flex flex-wrap gap-x-8 gap-y-3 border-t border-border pt-4 text-sm">
+              <div><dt className="font-semibold">Angle</dt><dd className="mt-1 text-muted-foreground">{BACKGROUND_GRADIENT.angle.toFixed(2)}° (CSS)</dd></div>
+              <div><dt className="font-semibold">Original file</dt><dd className="mt-1 text-muted-foreground">PNG · {BACKGROUND_GRADIENT.width} × {BACKGROUND_GRADIENT.height} · 16:9</dd></div>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <div className="space-y-4 border-t border-border p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h4 className="text-sm font-semibold">Gradient CSS</h4>
+          <button type="button" onClick={copy} className={cn(buttonVariants({ size: "sm" }), "min-h-11")}>
+            {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
+            {copied ? "Copied" : "Copy CSS"}
+          </button>
+        </div>
+        <code className="block rounded-md bg-og-gray-950 p-4 text-sm leading-6 [overflow-wrap:anywhere]">
+          {BACKGROUND_GRADIENT_CSS}
+        </code>
+        <p role="status" className={error ? "text-sm text-muted-foreground" : "sr-only"}>
+          {error ? "Copy unavailable. Select the CSS above to copy manually." : copied ? "Gradient CSS copied" : ""}
+        </p>
+        <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <a href={BACKGROUND_GRADIENT.image} download className="action-focus inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4">
+            <Download size={15} aria-hidden="true" /> Download PNG
+          </a>
+          <a href={BACKGROUND_GRADIENT.source} target="_blank" rel="noopener noreferrer" className="action-focus inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4">
+            Open in Figma <ArrowUpRight size={15} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}

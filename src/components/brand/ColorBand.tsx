@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import type { Swatch, SwatchGroup } from "@/data/tokens";
 import { cn } from "@/lib/utils";
+import { useCopyText } from "@/hooks/use-copy-text";
 
 /** Midnight or white, whichever has the higher WCAG contrast on `hex`. */
 function inkOn(hex: string) {
@@ -17,35 +17,29 @@ function inkOn(hex: string) {
 
 /** One click-to-copy block in the band, labelled in its own legible ink. */
 function BandBlock({ swatch, small = false }: { swatch: Swatch; small?: boolean }) {
-  const [copied, setCopied] = useState(false);
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(swatch.hex);
-    } catch {
-      return; // Clipboard blocked (permissions or insecure context); the hex stays visible to select.
-    }
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1200);
-    // GA4 hook point: track('copy_hex', { hex: swatch.hex })
-  }
+  const { copy, copied, error } = useCopyText(swatch.hex);
 
   return (
     <button
+      type="button"
       onClick={copy}
       aria-label={`Copy ${swatch.name} ${swatch.hex}`}
       className={cn(
         "group relative flex flex-col justify-end text-left focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-current",
-        small ? "h-20 p-3" : "h-36 p-4",
+        small ? "h-28 p-3" : "h-36 p-4",
         swatch.hex === "#FFFFFF" && "shadow-[inset_0_0_0_1px_rgb(23_19_47/0.1)]"
       )}
       style={{ backgroundColor: swatch.hex, color: inkOn(swatch.hex) }}
     >
-      <span className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-        {copied ? <Check size={14} /> : <Copy size={14} />}
+      <span className="absolute right-3 top-3 inline-flex items-center gap-1 text-[10px] font-semibold">
+        {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
+        {copied ? "Copied" : error ? "Try again" : "Copy hex"}
       </span>
       <span className={cn("font-semibold leading-tight", small ? "text-xs" : "text-sm")}>{swatch.name}</span>
-      <span className={cn("mt-0.5 font-mono", small ? "text-[11px]" : "text-xs")}>{copied ? "Copied" : swatch.hex}</span>
+      <span className={cn("mt-0.5 font-mono", small ? "text-[11px]" : "text-xs")}>{swatch.hex}</span>
+      <span role="status" className="sr-only">
+        {error ? `Copy unavailable. Select ${swatch.hex} to copy manually.` : copied ? `${swatch.name} hex copied` : ""}
+      </span>
     </button>
   );
 }
