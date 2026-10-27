@@ -56,8 +56,8 @@
     --card-foreground: 249 42% 13%;
     --popover: 0 0% 100%;
     --popover-foreground: 249 42% 13%;
-    --primary: 151 100% 30%; /* #009A50 — green for light bg */
-    --primary-foreground: 0 0% 100%;
+    --primary: 151.169 100% 30.196%; /* #009A50: accent on light surfaces */
+    --primary-foreground: 248.571 42.424% 12.941%; /* Midnight #17132F; white fails on this green */
     --secondary: 240 20% 97%;
     --secondary-foreground: 249 42% 13%;
     --muted: 240 20% 97%;
@@ -68,7 +68,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 247 11% 86%;
     --input: 247 11% 86%;
-    --ring: 151 100% 30%;
+    --ring: 151.169 100% 30.196%;
     /* Reading measure. The CSS `ch` unit measures Figtree's zero glyph at
        0.571em, but its average character runs 0.43-0.44em, so `ch` overstates
        the real measure by ~30%. 50ch renders 68-75 characters across the copy
@@ -132,7 +132,15 @@
 @layer components {
   /* Eyebrow label — ALL CAPS, tracked (canon type hierarchy) */
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-eyebrow text-primary;
+    @apply text-xs font-semibold uppercase tracking-eyebrow text-foreground;
+  }
+
+  .dark .eyebrow {
+    @apply text-primary;
+  }
+
+  .action-focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
   /* ----------------------------------------------------------------- */

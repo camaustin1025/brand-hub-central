@@ -10,8 +10,8 @@ import animate from "tailwindcss-animate";
  * `og.green.light` (#009A50) for light backgrounds. Never use the dark-bg
  * green as text on white.
  *
- * NOTE: D1 (logo-on-white ring green) and D2 (Green-300 ramp value) are still
- * open in the audit. The ramp below uses the canon value #009A50 for green-300.
+ * D1 resolved 2026-10-26: supplied logo-on-white keeps #00CC6A as a logo-only
+ * exception, not a UI token. D2 remains open; the ramp uses canon #009A50.
  */
 export default {
   darkMode: ["class"],

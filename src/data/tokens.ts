@@ -5,8 +5,9 @@
  *   light background -> #009A50   |   dark background -> #00FF85
  * `onLight` / `onDark` flags below drive the live contrast badge on <Swatch>.
  *
- * Open audit decisions that touch these values: D1 (logo-on-white ring green),
- * D2 (Green-300 ramp — using canon #009A50), D10 (#FF61D3 name).
+ * The supplied light-background logo retains #00CC6A as a logo-only exception
+ * (approved by Cameron on 2026-10-26). Do not add it to the UI palette.
+ * Open audit decisions: D2 (Green-300 ramp), D10 (#FF61D3 name).
  */
 
 export type Swatch = {
@@ -14,9 +15,9 @@ export type Swatch = {
   hex: string;
   rgb: string;
   usage: string;
-  /** Safe as text/fill on a light (white) background? */
+  /** Intended as an accent/fill on light surfaces; not a text contrast guarantee. */
   onLight: boolean;
-  /** Safe as text/fill on a dark (Midnight) background? */
+  /** Intended as an accent/fill on dark surfaces; verify text contrast separately. */
   onDark: boolean;
 };
 
@@ -28,7 +29,7 @@ export type SwatchGroup = {
 
 export const CORE: SwatchGroup = {
   title: "Core",
-  note: "Midnight, White, and Groovy Green. Lead with the correct-contrast green: #009A50 on light, #00FF85 on dark.",
+  note: "Use #009A50 accents on light surfaces and #00FF85 on dark. Use Midnight for small text on light surfaces and for labels on green buttons. White text on #009A50 does not have enough contrast.",
   swatches: [
     {
       name: "Midnight",
@@ -58,7 +59,7 @@ export const CORE: SwatchGroup = {
       name: "Green (light-bg)",
       hex: "#009A50",
       rgb: "0, 154, 80",
-      usage: "The green to use on LIGHT backgrounds",
+      usage: "Accent on LIGHT backgrounds. Pair green buttons with Midnight labels; use Midnight for small text on white.",
       onLight: true,
       onDark: false,
     },

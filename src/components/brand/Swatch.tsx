@@ -20,11 +20,11 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
       <button
         onClick={copy}
         aria-label={`Copy ${swatch.name} hex ${swatch.hex}`}
-        className="group block h-28 w-full"
+        className="group block h-28 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-og-midnight"
         style={{ backgroundColor: swatch.hex }}
       >
-        <span className="flex h-full w-full items-start justify-end p-2 opacity-0 transition-opacity group-hover:opacity-100">
-          <span className="rounded-md bg-black/40 p-1.5 text-white backdrop-blur">
+        <span className="flex h-full w-full items-start justify-end p-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+          <span className="rounded-md bg-og-midnight p-1.5 text-white">
             {copied ? <Check size={16} /> : <Copy size={16} />}
           </span>
         </span>
@@ -34,7 +34,7 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
           <span className="font-semibold">{swatch.name}</span>
           <button
             onClick={copy}
-            className="font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="action-focus font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {copied ? "Copied" : swatch.hex}
           </button>

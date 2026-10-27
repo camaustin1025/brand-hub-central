@@ -183,9 +183,15 @@ A hero section lives at rungs 1 and 2. A product page lives at 2 and 3. Only dee
 
 ## 5. Visual Identity
 
-### 5.1 Logo `[TO GATHER]`
+### 5.1 Logo
 
-The interlocking-rings mark (2022 rebrand). This section needs: primary and secondary lockups, clearspace and minimum-size specs, approved color variants per background, and a misuse gallery. Source from the Figma design system.
+- On Midnight: supplied white wordmark with Groovy Green `#00FF85` rings.
+- On white: supplied Midnight wordmark with `#00CC6A` rings. Cameron approved this logo-only exception on 2026-10-26. Keep the artwork unchanged; this does not add a general palette color.
+- Clear space on all sides equals at least the width of the interlocking-rings mark within the logo (Phase 0 audit, section 16).
+- Keep the full wordmark crisp and legible. Scale proportionally; do not stretch, crop, rotate, recolor, outline, or add effects.
+- Ask Marketing for a master file for large-format work, a standalone mark, or an approved single-color variant. The current isolated-mark PNG is held because it contains stray white fragments.
+
+Still to source: numeric minimum-size specs and a clean standalone-mark master. Do not invent dimensions.
 
 ### 5.2 Color
 
@@ -202,7 +208,7 @@ The interlocking-rings mark (2022 rebrand). This section needs: primary and seco
 | Gray-800 | `#D8D7DF` | Borders |
 | Muted / Soft | `#4F4A6A` / `#666279` | Text tones on light |
 
-**The green contrast rule (most-missed rule in the system):** light background → `#009A50`; dark background → `#00FF85`. Never green text on white.
+**The green contrast rule (most-missed rule in the system):** light background → `#009A50` accents; dark background → `#00FF85`. Use Midnight for small text and links on light surfaces, and for labels on green buttons. White text on `#009A50` fails normal-text contrast. The supplied logo's `#00CC6A` rings are a logo-only exception, not a UI color.
 
 **Secondary palette** (sparingly, decorative "pop" only, never leading/primary): Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Neon Carrot `#FF8500` · Radiant Radish `#D32E55` · Flamboyant Flamingo `#FF61D3` · Electric Eggplant `#8500FF`. Laser Lemon is never text on white.
 

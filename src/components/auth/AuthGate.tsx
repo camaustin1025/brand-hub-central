@@ -53,9 +53,9 @@ export function AuthGate({ children }: { children: ReactNode }) {
   if (session) return <>{children}</>;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-og-midnight px-6">
+    <main className="dark flex min-h-screen items-center justify-center bg-og-midnight px-6">
       <div className="w-full max-w-sm space-y-6 text-center">
-        <img src="/logo-white.png" alt="Ordergroove" className="mx-auto h-8" />
+        <img src="/logo-dark.png" alt="Ordergroove" className="mx-auto w-full max-w-xs" />
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold text-white">Brand Hub</h1>
           <p className="text-sm text-white">Sign in with your Ordergroove Google account.</p>

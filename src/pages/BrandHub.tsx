@@ -67,14 +67,14 @@ function MiniSwatch({ name, hex, usage }: { name: string; hex: string; usage?: s
   return (
     <button
       onClick={copy}
-      className="group flex items-center gap-3 border-b border-border py-3 text-left last:border-0"
+      className="action-focus group flex items-center gap-3 border-b border-border py-3 text-left last:border-0"
       aria-label={`Copy ${name} ${hex}`}
     >
       <span className="h-10 w-10 shrink-0 rounded-lg ring-1 ring-inset ring-og-midnight/10" style={{ backgroundColor: hex }} />
       <span className="min-w-0 flex-1">
         <span className="flex items-center justify-between gap-2">
           <span className="text-sm font-semibold">{name}</span>
-          <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-primary">
+          <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-foreground">
             {copied ? <Check size={12} /> : <Copy size={12} />}
             {copied ? "Copied" : hex}
           </span>
@@ -106,21 +106,21 @@ function Hero() {
               <SearchBox hero />
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/38">Try</span>
-                <button onClick={() => jumpTo("color")} className="text-xs text-white/58 transition hover:text-og-green">Which green goes on white?</button>
-                <Link to="/voice" className="text-xs text-white/58 transition hover:text-og-green">What words should I avoid?</Link>
-                <button onClick={() => jumpTo("downloads")} className="text-xs text-white/58 transition hover:text-og-green">Find the logo kit</button>
+                <button onClick={() => jumpTo("color")} className="action-focus text-xs text-white/70 transition hover:text-og-green">Which green goes on white?</button>
+                <Link to="/voice" className="action-focus text-xs text-white/70 transition hover:text-og-green">What words should I avoid?</Link>
+                <button onClick={() => jumpTo("downloads")} className="action-focus text-xs text-white/70 transition hover:text-og-green">Find the logo kit</button>
               </div>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={() => jumpTo("quick-reference")}
-                className="inline-flex items-center gap-2 rounded-full bg-og-green px-5 py-3 text-sm font-bold text-og-midnight transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(0,255,133,.2)]"
+                className="action-focus inline-flex items-center gap-2 rounded-full bg-og-green px-5 py-3 text-sm font-bold text-og-midnight transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(0,255,133,.2)]"
               >
                 View quick reference <ArrowDown size={16} />
               </button>
               <button
                 onClick={() => jumpTo("downloads")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/50 hover:bg-white/5"
+                className="action-focus inline-flex items-center gap-2 rounded-full border border-white/60 px-5 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/5"
               >
                 Browse assets <ArrowDown size={16} />
               </button>
@@ -212,7 +212,7 @@ export default function BrandHub() {
                 (navItem) => navItem.id === id
               )!;
               const chipClass =
-                "inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3.5 py-2 text-sm font-semibold transition hover:border-primary/40 hover:text-primary";
+                "action-focus inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3.5 py-2 text-sm font-semibold transition hover:border-primary hover:bg-secondary hover:text-foreground";
               return item.path ? (
                 <Link key={id} to={item.path} className={chipClass}>
                   {item.label} <ArrowRight size={14} />
@@ -307,12 +307,42 @@ export default function BrandHub() {
           title="Logo and gradients"
           intro="Use the primary logo whenever space allows. Reserve gradients for key moments."
         >
-          <div className="grid gap-4">
-            <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-6">
-              <img src="/logo-dark.png" alt="Ordergroove logo for dark backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
+          <div className="grid gap-6 sm:grid-cols-2">
+            <figure>
+              <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-6">
+                <img src="/logo-dark.png" alt="Ordergroove logo with white lettering and Groovy Green rings" className="w-full max-w-md" />
+              </div>
+              <figcaption className="mt-3 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">On Midnight:</strong> white wordmark with Groovy Green (#00FF85) rings.</figcaption>
+            </figure>
+            <figure>
+              <div className="flex min-h-52 items-center justify-center rounded-lg border border-border bg-white p-6">
+                <img src="/logo-white.png" alt="Ordergroove logo with Midnight lettering and #00CC6A green rings" className="w-full max-w-md" />
+              </div>
+              <figcaption className="mt-3 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">On white:</strong> Midnight wordmark with #00CC6A rings. Keep the supplied artwork unchanged.</figcaption>
+            </figure>
+          </div>
+          <div className="mt-6 border-l-2 border-og-green-light pl-5">
+            <h3 className="text-base font-semibold">A logo-only color exception</h3>
+            <p className="measure mt-2 text-sm leading-6 text-muted-foreground">#00CC6A belongs only to the supplied light-background logo. Use #009A50 for other green accents on light surfaces. Do not recolor the logo to match buttons or text.</p>
+          </div>
+          <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div>
+              <h3 className="text-base font-semibold">Give it room</h3>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Leave clear space on every side at least equal to the width of the interlocking-rings mark within the logo. Keep text, other graphics, and page edges outside that space.</p>
+            </div>
+            <div>
+              <h3 className="text-base font-semibold">Keep it readable</h3>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use the full wordmark whenever space allows. Place it on a plain Midnight or white background and check that it stays crisp and legible at the size people will see.</p>
+            </div>
+            <div>
+              <h3 className="text-base font-semibold">Use the original file</h3>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork below instead of taking a screenshot.</p>
+            </div>
+            <div>
+              <h3 className="text-base font-semibold">Need another version?</h3>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Ask Marketing for a master file for large-format work, a standalone mark, or an approved single-color logo for print or other backgrounds.</p>
             </div>
           </div>
-          <p className="measure mt-4 text-sm leading-6 text-muted-foreground">White wordmark with Groovy Green rings on Midnight.</p>
 
           <div className="mt-12">
             <h3 className="mb-5 text-2xl font-bold">Approved gradients</h3>
@@ -325,7 +355,7 @@ export default function BrandHub() {
                       <p className="text-sm font-semibold">{gradient.name}</p>
                       <code className="mt-1 block max-w-[250px] truncate text-[11px] text-muted-foreground">{gradient.css}</code>
                     </div>
-                    {gradient.status === "signature" && <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">Signature</span>}
+                    {gradient.status === "signature" && <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-foreground">Signature</span>}
                   </div>
                 </div>
               ))}
@@ -372,7 +402,7 @@ export default function BrandHub() {
                   <p className="measure mt-3 text-sm leading-6 text-muted-foreground">{item.body}</p>
                 </div>
                 {item.href ? (
-                  <a href={item.href} download className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline">
+                  <a href={item.href} download className="action-focus mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-foreground underline underline-offset-4 hover:decoration-2">
                     {item.cta} <Download size={15} />
                   </a>
                 ) : null}
@@ -452,7 +482,7 @@ export default function BrandHub() {
               <img src="/logo-white.png" alt="Ordergroove" className="h-4 w-auto md:h-5" />
               <p className="mt-2 text-xs text-muted-foreground">Internal use only · Maintained by Brand & Content</p>
             </div>
-            <button onClick={() => jumpTo("overview")} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+            <button onClick={() => jumpTo("overview")} className="action-focus inline-flex items-center gap-2 text-sm font-semibold text-foreground underline underline-offset-4 hover:decoration-2">
               Back to the top <ArrowRight className="-rotate-90" size={14} />
             </button>
           </div>

@@ -56,9 +56,8 @@ export const ASSETS: Asset[] = [
   },
   {
     id: "logo-light",
-    employeeHold: "Resolve the light-background ring color and usage guidance before release.",
     title: "Logo for light backgrounds",
-    description: "Primary lockup: Midnight wordmark and rings, on white. Ring green pending audit D1.",
+    description: "Midnight wordmark with #00CC6A rings on white. This green is a logo-only exception; use the supplied file unchanged.",
     type: "logo",
     formats: ["PNG"],
     tags: ["logo", "light", "primary"],
@@ -68,6 +67,7 @@ export const ASSETS: Asset[] = [
   },
   {
     id: "logomark",
+    employeeHold: "Replace the cropped PNG with a clean master; the current file contains stray white fragments at its edges.",
     title: "Isolated logomark",
     description: "The interlocking rings alone. Default: Groovy Green on Midnight.",
     type: "logo",
