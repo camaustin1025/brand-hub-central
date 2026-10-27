@@ -1,3 +1,5 @@
+import { isEmployeeSectionVisible } from "./employee-launch";
+
 export type HubNavItem = {
   id: string;
   label: string;
@@ -12,7 +14,7 @@ export type HubNavGroup = {
   items: HubNavItem[];
 };
 
-export const HUB_NAV: HubNavGroup[] = [
+const DRAFT_HUB_NAV: HubNavGroup[] = [
   {
     label: "Start here",
     items: [
@@ -78,14 +80,14 @@ export const HUB_NAV: HubNavGroup[] = [
       {
         id: "downloads",
         label: "Downloads",
-        description: "Logos, fonts, tokens, backgrounds, and social assets.",
-        keywords: "assets files png svg ttf zip json css download",
+        description: "Available logos and backgrounds.",
+        keywords: "assets files png logo logomark background download",
       },
       {
         id: "toolkit",
         label: "GTM & employee toolkit",
-        description: "Decks, docs, signatures, social, and Zoom resources.",
-        keywords: "slides word docs canva template zoom email signature new hire",
+        description: "Available resources for day-to-day work.",
+        keywords: "zoom background employee resources",
       },
     ],
   },
@@ -107,6 +109,11 @@ export const HUB_NAV: HubNavGroup[] = [
     ],
   },
 ];
+
+// Navigation and section search share the same employee-facing inventory.
+export const HUB_NAV = DRAFT_HUB_NAV
+  .map((group) => ({ ...group, items: group.items.filter((item) => isEmployeeSectionVisible(item.id)) }))
+  .filter((group) => group.items.length > 0);
 
 export const RIGHTS = [
   {

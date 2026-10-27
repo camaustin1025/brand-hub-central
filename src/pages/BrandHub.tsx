@@ -7,6 +7,7 @@ import { DraftBadge } from "@/components/brand/DraftBadge";
 import { Swatch } from "@/components/brand/Swatch";
 import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
 import { BRAND_SKILLS, HUB_NAV, TOOLKIT_ITEMS } from "@/data/hub";
+import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
 import { COLOR_GROUPS, CORE, GRADIENTS } from "@/data/tokens";
 import { cn } from "@/lib/utils";
 
@@ -160,7 +161,7 @@ function Hero() {
 }
 
 export default function BrandHub() {
-  const [activeId, setActiveId] = useState(() => window.location.hash.slice(1) || "overview");
+  const [activeId, setActiveId] = useState(() => employeeSectionId(window.location.hash.slice(1) || "overview"));
 
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-hub-section]"));
@@ -178,8 +179,10 @@ export default function BrandHub() {
   }, []);
 
   useEffect(() => {
-    const id = window.location.hash.slice(1);
+    const requestedId = window.location.hash.slice(1);
+    const id = employeeSectionId(requestedId);
     if (!id) return;
+    if (id !== requestedId) window.history.replaceState(null, "", `#${id}`);
     window.setTimeout(() => {
       const target = document.getElementById(id);
       if (!target) return;
@@ -304,15 +307,12 @@ export default function BrandHub() {
           title="Logo and gradients"
           intro="Use the primary logo whenever space allows. Reserve gradients for key moments."
         >
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4">
             <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-6">
               <img src="/logo-dark.png" alt="Ordergroove logo for dark backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
             </div>
-            <div className="flex min-h-52 items-center justify-center rounded-lg border border-border bg-white p-6">
-              <img src="/logo-white.png" alt="Ordergroove logo for light backgrounds" className="max-h-24 max-w-[75%] md:max-h-32 lg:max-h-40" />
-            </div>
           </div>
-          <p className="measure mt-4 text-sm leading-6 text-muted-foreground">White wordmark with Groovy Green rings on Midnight. On white, use the Midnight lockup. The ring color on white remains under audit.</p>
+          <p className="measure mt-4 text-sm leading-6 text-muted-foreground">White wordmark with Groovy Green rings on Midnight.</p>
 
           <div className="mt-12">
             <h3 className="mb-5 text-2xl font-bold">Approved gradients</h3>
@@ -337,11 +337,11 @@ export default function BrandHub() {
           id="downloads"
           eyebrow="Resources"
           title="Grab-and-go assets"
-          intro="Download available logos, backgrounds, and other brand files. Unavailable files are marked below."
+          intro="Download logos and backgrounds for your work."
         >
           <div className="space-y-12">
             {ASSET_CATEGORIES.map((category) => {
-              const assets = ASSETS.filter((asset) => asset.type === category.type);
+              const assets = ASSETS.filter((asset) => asset.type === category.type && asset.href && !asset.employeeHold);
               if (!assets.length) return null;
               return (
                 <div key={category.type}>
@@ -359,10 +359,10 @@ export default function BrandHub() {
           id="toolkit"
           eyebrow="Resources"
           title="Everyday brand tools"
-          intro="Find templates, signatures, social graphics, and skills for day-to-day work. Some links are still being restored."
+          intro="Resources for day-to-day work."
         >
           <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 xl:grid-cols-3">
-            {TOOLKIT_ITEMS.map((item) => (
+            {TOOLKIT_ITEMS.filter((item) => item.href && !item.status).map((item) => (
               <div key={item.title} className="flex min-h-56 flex-col bg-white p-6">
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2">
@@ -381,7 +381,7 @@ export default function BrandHub() {
           </div>
         </HubSection>
 
-        <HubSection
+        {isEmployeeSectionVisible("tokens") && <HubSection
           id="tokens"
           eyebrow="Brand systems"
           title="Canonical values, ready for code"
@@ -416,9 +416,9 @@ export default function BrandHub() {
               </div>
             </div>
           </div>
-        </HubSection>
+        </HubSection>}
 
-        <HubSection
+        {isEmployeeSectionVisible("ai-skills") && <HubSection
           id="ai-skills"
           eyebrow="Brand systems"
           title="On-brand by default, not by review"
@@ -444,7 +444,7 @@ export default function BrandHub() {
               Open llms.txt <ArrowUpRight size={15} />
             </a>
           </div>
-        </HubSection>
+        </HubSection>}
 
         <footer className="border-t border-border px-6 py-10 md:px-10">
           <div className="mx-auto flex max-w-[1060px] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

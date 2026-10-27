@@ -1,7 +1,7 @@
 # Ordergroove Brand Hub
 
 > The internal home for the Ordergroove brand: guidelines, downloadable assets,
-> design tokens, and the tools to stay on brand. Ordergroove is the enterprise
+> and resources for employees. Ordergroove is the enterprise
 > standard for subscriptions and recurring revenue.
 
 ## Canon
@@ -14,7 +14,5 @@
 - [Foundation & Messaging](/foundation): who we are, the category, the message ladder
 - [Voice & Language Rules](/voice): how we sound, plus the pass/fail language rules
 - [Visual Identity](/visual-identity): color, logo, gradients, signature shapes
-- [Design Tokens](/tokens): the canonical values for code
-- [Downloads](/downloads): logo kit, font kit, token kits, social graphics
-- [GTM & Employee Toolkit](/toolkit): decks, docs, signatures, new-hire graphics
-- [AI & Skills](/ai-skills): the brand skills and the assistant
+- [Downloads](/#downloads): available logos and backgrounds
+- [GTM & Employee Toolkit](/#toolkit): available day-to-day resources, including Zoom backgrounds

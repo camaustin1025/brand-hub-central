@@ -6,6 +6,7 @@ import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
 import HeroLab from "@/pages/HeroLab";
 import { AuthGate } from "@/components/auth/AuthGate";
+import { employeeSectionId } from "@/data/employee-launch";
 
 /** Sections that still live inline on the single-page hub. */
 const LEGACY_ROUTES: [string, string][] = [
@@ -28,7 +29,7 @@ export default function App() {
         {/* Design exploration only — not linked from nav. */}
         <Route path="/hero-lab" element={<HeroLab />} />
         {LEGACY_ROUTES.map(([path, anchor]) => (
-          <Route key={path} path={path} element={<Navigate to={`/#${anchor}`} replace />} />
+          <Route key={path} path={path} element={<Navigate to={`/#${employeeSectionId(anchor)}`} replace />} />
         ))}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

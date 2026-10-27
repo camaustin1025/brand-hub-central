@@ -31,6 +31,8 @@ export type Asset = {
   previewBg?: "midnight" | "light";
   /** Download target. null renders as "Not available yet". */
   href: string | null;
+  /** Explicit review hold; a download URL alone does not clear this hold. */
+  employeeHold?: string;
 };
 
 export const ASSET_CATEGORIES: { type: AssetType; label: string }[] = [
@@ -54,6 +56,7 @@ export const ASSETS: Asset[] = [
   },
   {
     id: "logo-light",
+    employeeHold: "Resolve the light-background ring color and usage guidance before release.",
     title: "Logo for light backgrounds",
     description: "Primary lockup: Midnight wordmark and rings, on white. Ring green pending audit D1.",
     type: "logo",

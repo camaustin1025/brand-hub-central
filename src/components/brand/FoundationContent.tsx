@@ -1,5 +1,6 @@
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { LADDER, RIGHTS } from "@/data/hub";
+import { SHOW_DRAFT_BOILERPLATE } from "@/data/employee-launch";
 import { cn } from "@/lib/utils";
 
 /** Positioning, audience, Rights to Win, and the message ladder.
@@ -64,7 +65,7 @@ export function FoundationContent() {
         </div>
       </div>
 
-      <div className="mt-10 rounded-lg border border-border bg-white p-6">
+      {SHOW_DRAFT_BOILERPLATE && <div className="mt-10 rounded-lg border border-border bg-white p-6">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="text-lg font-bold">Company boilerplate</h3>
           <DraftBadge>Pending leadership approval</DraftBadge>
@@ -72,7 +73,7 @@ export function FoundationContent() {
         <p className="measure mt-3 text-sm leading-6 text-muted-foreground">
           Ordergroove is the enterprise standard for subscriptions and recurring revenue, powering flexible subscriber experiences for 1,000+ leading brands across every channel.
         </p>
-      </div>
+      </div>}
     </>
   );
 }
