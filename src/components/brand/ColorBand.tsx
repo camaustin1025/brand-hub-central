@@ -45,7 +45,7 @@ function BandBlock({ swatch, small = false }: { swatch: Swatch; small?: boolean 
         {copied ? <Check size={14} /> : <Copy size={14} />}
       </span>
       <span className={cn("font-semibold leading-tight", small ? "text-xs" : "text-sm")}>{swatch.name}</span>
-      <span className={cn("mt-0.5 font-mono opacity-80", small ? "text-[11px]" : "text-xs")}>{copied ? "Copied" : swatch.hex}</span>
+      <span className={cn("mt-0.5 font-mono", small ? "text-[11px]" : "text-xs")}>{copied ? "Copied" : swatch.hex}</span>
     </button>
   );
 }
