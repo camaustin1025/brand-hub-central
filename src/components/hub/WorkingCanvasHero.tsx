@@ -1,20 +1,24 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, Download, X } from "lucide-react";
 import { SearchBox, jumpTo } from "@/components/hub/HubShell";
 import { Button } from "@/components/ui/button";
+import { BACKGROUND_GRADIENT, BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
 import styles from "./WorkingCanvasHero.module.css";
 
 const ARTWORK = {
   logo: { title: "Ordergroove logo", detail: "The original wordmark for light backgrounds.", href: "/working-canvas/logo-light.svg", format: "SVG", label: "Download SVG", section: "logo-gradients" },
-  gradient: { title: "Brand gradient", detail: "The original gradient artwork, ready to use.", href: "/working-canvas/gradient-accent-3.png", format: "PNG", label: "Download PNG", section: "logo-gradients" },
+  gradient: { title: "Brand gradient", detail: "The Cyan to Lemon background gradient, ready to use.", href: BACKGROUND_GRADIENT.image, format: "PNG", label: "Download PNG", section: "logo-gradients" },
   type: { title: "Figtree", detail: "Our brand typeface. Regular weight shown in the download.", href: "/fonts/Figtree-Regular.ttf", format: "TTF", label: "Download font", section: "typography" },
   icons: { title: "Brand icons", detail: "Payment, heart, and chart icons in the original SVG export.", href: "/working-canvas/icon-examples.svg", format: "SVG", label: "Download SVG", section: "downloads" },
 };
 type ArtworkId = keyof typeof ARTWORK;
-/** The lit specimen's box, relative to the artwork container. */
-type Spotlight = { id: ArtworkId; left: number; top: number; width: number; height: number };
+type ArtworkAnchor = "logo" | "gradient" | "type" | "payment" | "heart" | "chart";
+type Spotlight = { id: ArtworkId; anchor: ArtworkAnchor; element: HTMLElement };
+const POPUP_SIDE: Record<ArtworkAnchor, "above" | "below"> = {
+  logo: "above", gradient: "below", type: "below", payment: "below", heart: "below", chart: "above",
+};
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), Math.max(min, max));
 
@@ -26,40 +30,91 @@ export function WorkingCanvasHero() {
   const artworkTrigger = useRef<HTMLButtonElement | null>(null);
   const artworkRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLDivElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  function light(id: ArtworkId, element: HTMLElement) {
-    const artwork = artworkRef.current!.getBoundingClientRect();
-    const rect = element.getBoundingClientRect();
-    setSpotlight({ id, left: rect.left - artwork.left, top: rect.top - artwork.top, width: rect.width, height: rect.height });
+  function keepSpotlight() {
+    if (closeTimer.current !== null) clearTimeout(closeTimer.current);
+    closeTimer.current = null;
   }
 
-  // Sit the pill beside the lit specimen, toward the open side of the desk, inside the band.
+  function clearSpotlight() {
+    keepSpotlight();
+    setSpotlight(null);
+  }
+
+  function light(id: ArtworkId, anchor: ArtworkAnchor, element: HTMLElement) {
+    keepSpotlight();
+    setSpotlight({ id, anchor, element });
+  }
+
+  function leaveArtwork() {
+    keepSpotlight();
+    if (artworkRef.current?.contains(document.activeElement)) return;
+    closeTimer.current = setTimeout(() => setSpotlight(null), 180);
+  }
+
+  useEffect(() => () => {
+    if (closeTimer.current !== null) clearTimeout(closeTimer.current);
+  }, []);
+
+  // Anchor each popup to its own specimen, following the approved above/below map.
+  // Let lower popups extend beyond the artwork band; clamp only to the visible page.
   useLayoutEffect(() => {
     const artwork = artworkRef.current;
     const pill = pillRef.current;
     if (!spotlight || !artwork || !pill) return setPillPosition(null);
-    const deskHeight = (artwork.firstElementChild as HTMLElement).offsetHeight;
-    const toRight = spotlight.left + spotlight.width / 2 < artwork.offsetWidth * 0.6;
-    const left = toRight
-      ? Math.min(spotlight.left + spotlight.width + 12, artwork.offsetWidth - pill.offsetWidth - 8)
-      : Math.max(spotlight.left - pill.offsetWidth - 12, 8);
-    const top = clamp(spotlight.top + spotlight.height / 2 - pill.offsetHeight / 2, 8, deskHeight - pill.offsetHeight - 8);
-    setPillPosition({ left, top });
+    const position = () => {
+      const canvas = artwork.getBoundingClientRect();
+      const target = spotlight.element.getBoundingClientRect();
+      const contentLeft = artwork.closest("main")?.getBoundingClientRect().left ?? 0;
+      const desiredLeft = spotlight.anchor === "logo"
+        ? target.right - canvas.left - pill.offsetWidth - 12
+        : spotlight.anchor === "payment"
+          ? target.left - canvas.left
+          : spotlight.anchor === "chart"
+            ? target.left - canvas.left - 16
+            : target.left - canvas.left + (target.width - pill.offsetWidth) / 2;
+      const left = clamp(desiredLeft, contentLeft + 12 - canvas.left, document.documentElement.clientWidth - canvas.left - pill.offsetWidth - 12);
+      let top = POPUP_SIDE[spotlight.anchor] === "above"
+        ? target.top - canvas.top - pill.offsetHeight - 12
+        : target.bottom - canvas.top + 12;
+      if (POPUP_SIDE[spotlight.anchor] === "above") {
+        // In a narrow content column the popup cannot extend sideways. Lift it
+        // clear of neighboring controls instead of covering their hover targets.
+        const neighbors = artwork.querySelectorAll<HTMLElement>("[data-artwork]");
+        for (const neighbor of neighbors) {
+          if (neighbor === spotlight.element) continue;
+          const rect = neighbor.getBoundingClientRect();
+          if (canvas.left + left < rect.right && canvas.left + left + pill.offsetWidth > rect.left
+            && canvas.top + top < rect.bottom && canvas.top + top + pill.offsetHeight > rect.top) {
+            top = Math.min(top, rect.top - canvas.top - pill.offsetHeight - 12);
+          }
+        }
+      }
+      setPillPosition((previous) => previous?.left === left && previous.top === top ? previous : { left, top });
+    };
+    position();
+    const observer = new ResizeObserver(position);
+    observer.observe(artwork);
+    observer.observe(pill);
+    window.addEventListener("resize", position);
+    return () => { observer.disconnect(); window.removeEventListener("resize", position); };
   }, [spotlight]);
 
-  function artworkControl(id: ArtworkId) {
+  function artworkControl(id: ArtworkId, anchor: ArtworkAnchor = id as ArtworkAnchor) {
     return {
       type: "button" as const,
       "aria-label": `View ${ARTWORK[id].title} details`,
       "aria-haspopup": "dialog" as const,
-      "data-lit": spotlight?.id === id ? "" : undefined,
+      "data-lit": spotlight?.anchor === anchor ? "" : undefined,
+      "data-artwork": anchor,
       onPointerEnter: (event: React.PointerEvent<HTMLButtonElement>) => {
-        if (event.pointerType === "mouse") light(id, event.currentTarget);
+        if (event.pointerType === "mouse") light(id, anchor, event.currentTarget);
       },
-      onFocus: (event: React.FocusEvent<HTMLButtonElement>) => light(id, event.currentTarget),
+      onFocus: (event: React.FocusEvent<HTMLButtonElement>) => light(id, anchor, event.currentTarget),
       onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
         artworkTrigger.current = event.currentTarget;
-        setSpotlight(null);
+        clearSpotlight();
         setSelected(id);
       },
     };
@@ -67,7 +122,7 @@ export function WorkingCanvasHero() {
 
   function guidance(id: ArtworkId) {
     setSelected(null);
-    setSpotlight(null);
+    clearSpotlight();
     jumpTo(ARTWORK[id].section);
   }
 
@@ -87,17 +142,17 @@ export function WorkingCanvasHero() {
         </div>
       </div>
 
-      <div ref={artworkRef} className={styles.artwork} data-spotlight={spotlight ? "" : undefined} onPointerLeave={() => setSpotlight(null)} onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setSpotlight(null);
-      }} onKeyDown={(event) => { if (event.key === "Escape") setSpotlight(null); }}>
+      <div ref={artworkRef} className={styles.artwork} data-spotlight={spotlight ? "" : undefined} onPointerEnter={keepSpotlight} onPointerLeave={leaveArtwork} onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) clearSpotlight();
+      }} onKeyDown={(event) => { if (event.key === "Escape") clearSpotlight(); }}>
       <div className={styles.worktable}>
-        <img className={styles.photograph} src="/working-canvas/desk-photo.png" alt="" />
+        <a className={styles.palette} href="#color" aria-label="Jump to color palette" onPointerEnter={clearSpotlight} onFocus={clearSpotlight} onClick={(event) => { event.preventDefault(); jumpTo("color"); }}>
+          <i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" />
+        </a>
         <button {...artworkControl("logo")} className={styles.logoCard}>
           <img src="/working-canvas/logo-light.svg" alt="" width="436" height="75" />
         </button>
-        <button {...artworkControl("gradient")} className={styles.gradient}>
-          <img src="/working-canvas/gradient-accent-3.png" alt="" width="1920" height="1458" />
-        </button>
+        <button {...artworkControl("gradient")} className={styles.gradient} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} />
         <button {...artworkControl("type")} className={styles.typePaper}>
           <span className={styles.specimenLabel}>Our typeface</span>
           <span className={styles.typeName}>Figtree</span>
@@ -106,20 +161,20 @@ export function WorkingCanvasHero() {
           <span className={styles.typeWeights}>Regular / Semibold / Bold</span>
         </button>
         {/* Reveal each tile from the unchanged 320 × 80 export in its own crop. */}
-        {[styles.paymentIcon, styles.heartIcon, styles.chartIcon].map((position) => (
-          <button {...artworkControl("icons")} key={position} className={`${styles.iconCutout} ${position}`}>
+        {(["payment", "heart", "chart"] as const).map((anchor) => (
+          <button {...artworkControl("icons", anchor)} key={anchor} className={`${styles.iconCutout} ${styles[`${anchor}Icon`]}`}>
             <img src="/working-canvas/icon-examples.svg" alt="" width="320" height="80" />
           </button>
         ))}
       </div>
-      {spotlight && lit && <div ref={pillRef} className={styles.assetPill} style={pillPosition ?? { visibility: "hidden" }}>
+      {spotlight && lit && <div ref={pillRef} className={styles.assetPill} data-side={POPUP_SIDE[spotlight.anchor]} data-anchor={spotlight.anchor} onPointerEnter={keepSpotlight} style={pillPosition ?? { visibility: "hidden" }}>
         <strong>{lit.title}</strong>
         <a href={lit.href} download aria-label={`${lit.label}: ${lit.title}`}><Download size={14} /> {lit.format}</a>
         <button type="button" onClick={() => guidance(spotlight.id)}>Guidance <ArrowRight size={14} /></button>
       </div>}
       </div>
 
-      <section className={`dark ${styles.searchDock}`} aria-label="Search resources">
+      <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
         <h2 className={styles.searchTitle}>Find what you need</h2>
         <div className={styles.searchBox}><SearchBox hero /></div>
         <div className={styles.samples}>

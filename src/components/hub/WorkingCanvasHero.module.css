@@ -2,6 +2,7 @@
   background: #fff;
   color: #17132f;
   scroll-margin-top: 80px;
+  container-type: inline-size;
 }
 
 .intro { padding: 58px 40px 0; text-align: center; }
@@ -13,22 +14,20 @@
 .actions .action { height: auto; min-height: 58px; padding: 0 37px; border-width: 1.5px; border-radius: 32px; font-size: 16px; font-weight: 700; }
 .action:last-child { min-width: 226px; }
 
-.artwork { position: relative; margin-top: 21px; }
-.worktable { height: 224px; position: relative; overflow: hidden; user-select: none; background: #fff; }
+.artwork { position: relative; width: 100%; max-width: 1100px; margin: 21px auto 0; }
+.worktable { height: 280px; position: relative; overflow: clip; user-select: none; background: #fff; }
 .worktable img { pointer-events: none; }
-.worktable button { cursor: pointer; transition: scale .25s cubic-bezier(.16, 1, .3, 1); }
-/* Spotlight: a white veil sits between the photo and the lit specimen. */
+.worktable button { cursor: pointer; }
+/* A white veil recedes the surrounding specimens, leaving the selected one crisp. */
 .worktable::after { content: ""; position: absolute; inset: 0; z-index: 1; background: #fff; opacity: 0; pointer-events: none; transition: opacity .2s cubic-bezier(.16, 1, .3, 1); }
 .artwork[data-spotlight] .worktable::after { opacity: .62; }
-.worktable button[data-lit] { z-index: 2; scale: 1.05; }
+.worktable button[data-lit] { z-index: 2; }
 .worktable button:focus-visible { outline: 2px solid #17132f; outline-offset: 4px; }
-.photograph { position: absolute; width: 100%; height: auto; left: 0; top: -100px; }
-.logoCard { position: absolute; left: 3.5%; top: 126px; display: flex; align-items: center; justify-content: center; width: 190px; height: 92px; padding: 20px; background: #fff; transform: rotate(-14deg); box-shadow: 1px 4px 6px #17132f30, 0 0 1px #17132f15; }
+.logoCard { position: absolute; left: 5%; top: 64px; display: flex; align-items: center; justify-content: center; width: 240px; height: 116px; padding: 20px; background: #fff; transform: rotate(-9deg); border: 1px solid #d8d7df; }
 .logoCard img { display: block; width: 100%; height: auto; }
-.gradient { position: absolute; left: 47%; top: 34px; width: 220px; transform: rotate(8deg); filter: drop-shadow(1px 3px 3px #17132f29); }
-.gradient img { display: block; width: 100%; height: auto; }
-.typePaper { position: absolute; display: flex; align-items: center; justify-content: center; background: #fff; box-shadow: 1px 3px 5px #17132f26, 0 0 1px #17132f15; }
-.typePaper { left: 67%; top: 54px; width: 178px; height: 194px; padding: 18px 16px 24px; flex-direction: column; align-items: flex-start; transform: rotate(-12deg); }
+.gradient { position: absolute; left: 37%; top: 41px; width: 234px; aspect-ratio: 1.317; transform: rotate(7deg); border-radius: 9px 0 9px 9px; box-shadow: 0 4px 8px #17132f12; }
+.typePaper { position: absolute; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #d8d7df; }
+.typePaper { left: 68%; top: 28px; width: 210px; height: 218px; padding: 18px 16px 24px; flex-direction: column; align-items: flex-start; transform: rotate(-6deg); }
 .specimenLabel { font-size: 8px; font-weight: 600; line-height: 1.2; letter-spacing: 1px; text-transform: uppercase; }
 .typeName { margin: 6px 0 12px; font-size: 38px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
 .typeRegular { font-size: 17px; font-weight: 400; line-height: 1.35; }
@@ -37,14 +36,21 @@
 /* Crop the three 80px tiles at x=0/120/240; preserve the exact exported artwork. */
 .iconCutout { position: absolute; display: block; width: 58px; height: 58px; overflow: hidden; border-radius: 50%; background: #fff; box-shadow: 1px 3px 4px #17132f15; }
 .iconCutout img { position: absolute; top: 0; width: 400%; max-width: none; height: auto; }
-.paymentIcon { left: 27%; top: 20px; transform: rotate(-14deg); }
+.paymentIcon { left: 27%; top: 5px; transform: rotate(-14deg); }
 .paymentIcon img { left: 0; }
-.heartIcon { left: 64%; top: 5px; transform: rotate(11deg); }
+.heartIcon { left: 61%; top: 205px; transform: rotate(11deg); }
 .heartIcon img { left: -150%; }
-.chartIcon { right: 3%; top: 142px; transform: rotate(14deg); }
+.chartIcon { right: 0; top: 151px; transform: rotate(14deg); }
 .chartIcon img { left: -300%; }
+.palette { position: absolute; display: flex; left: 11%; top: 212px; gap: 5px; width: 225px; height: 44px; padding-block: 11px; transform: rotate(-4deg); cursor: pointer; }
+.palette i { flex: 1; background: #17132f; }
+.palette i:nth-child(2) { background: #009a50; }
+.palette i:nth-child(3) { background: #00ff85; }
+.palette i:nth-child(4) { background: #eaff00; }
+.palette i:nth-child(5) { background: #ff61d3; }
+.palette:hover, .palette:focus-visible { z-index: 2; outline: 2px solid #17132f; outline-offset: 4px; }
 
-.searchDock { position: relative; background: #b5ff65 url("/working-canvas/bg-gradient-1.png") center / cover no-repeat; color: #17132f; border-block: 2px solid #17132f; padding: 30px 8% 27px; }
+.searchDock { position: relative; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)) 27px; }
 .searchTitle { margin-bottom: 16px; font-size: 22px; font-weight: 700; }
 /* Style only this use of the existing SearchBox; masthead/mobile search stay intact. */
 .searchBox > div > svg { left: 25px; width: 28px; height: 28px; color: #17132f; stroke-width: 1.8; }
@@ -59,8 +65,11 @@
 .samples a:hover, .samples button:hover { background: #fff; }
 .samples :focus-visible { outline: 2px solid #17132f; outline-offset: 4px; }
 
-/* One line, download first. Placed beside the lit specimen by WorkingCanvasHero. */
+/* Popups sit above/below the selected specimen, with a transparent hover bridge. */
 .assetPill { position: absolute; z-index: 3; display: flex; align-items: center; height: 42px; padding: 0 4px 0 16px; border-radius: 999px; background: #17132f; color: #fff; white-space: nowrap; box-shadow: 0 8px 24px #17132f40; }
+.assetPill::before { content: ""; position: absolute; left: 0; right: 0; height: 14px; }
+.assetPill[data-side="above"]::before { top: 100%; }
+.assetPill[data-side="below"]::before { bottom: 100%; }
 .assetPill strong { font-size: 14px; font-weight: 700; }
 .assetPill a, .assetPill button { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; }
 .assetPill a { margin-left: 12px; background: #00ff85; color: #17132f; }
@@ -78,24 +87,22 @@
 .dialogContent { position: fixed; z-index: 61; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(380px, calc(100% - 32px)); }
 .dialogClose { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 8px; }
 
-/* Keep the photograph flush with the dock as the desktop content column narrows. */
 @media (min-width: 768px) {
-  .photograph { min-height: 324px; object-fit: cover; }
+  @container (max-width: 1240px) {
+    .artwork { margin-top: 64px; }
+  }
 }
 
 /* Preserve the specimens' proportions in the narrower content column beside the sidebar. */
 @media (min-width: 768px) and (max-width: 1279px) {
-  .logoCard { left: 3%; top: 100px; width: 160px; height: 76px; padding: 16px; }
-  .gradient { left: 43%; width: 190px; }
-  .typePaper { left: 66%; top: 33px; width: 140px; height: 166px; padding: 14px 12px; }
+  .logoCard { left: 4%; width: 200px; height: 96px; padding: 16px; }
+  .gradient { left: 38%; width: 190px; }
+  .typePaper { left: 69%; width: 174px; height: 205px; padding: 14px 12px; }
   .typeName { font-size: 32px; margin-bottom: 9px; }
   .typeRegular { font-size: 14px; }
   .typeSemibold { font-size: 14px; }
   .typeWeights { font-size: 6px; margin-top: 9px; }
   .iconCutout { width: 46px; height: 46px; }
-  .paymentIcon { left: 26%; top: 18px; }
-  .heartIcon { left: 62%; top: 8px; }
-  .chartIcon { right: 3%; top: 158px; }
   .samples { gap: 12px; }
   .samples a, .samples button { font-size: 14px; }
 }
@@ -110,16 +117,30 @@
   .actions .action { min-height: 54px; width: 100%; font-size: 17px; padding: 0 16px; }
   .action:last-child { min-width: 0; }
   .artwork { margin-top: 22px; }
-  .worktable { height: 156px; }
-  .photograph { width: 760px; max-width: none; top: -48px; left: -32px; clip-path: inset(0 72% 0 0); }
-  .gradient { width: 157px; left: auto; right: 20px; top: 24px; }
-  .logoCard, .typePaper, .iconCutout { display: none; }
+  .worktable { height: 350px; }
+  .logoCard { left: 24px; top: 34px; width: 190px; height: 90px; padding: 18px; }
+  .gradient { left: auto; right: 26px; top: 151px; width: 140px; }
+  .typePaper { left: 27px; top: 162px; width: 160px; height: 171px; padding: 15px 12px; }
+  .typeName { font-size: 30px; }
+  .typeRegular, .typeSemibold { font-size: 15px; }
+  .typeWeights { display: none; }
+  .iconCutout { width: 42px; height: 42px; }
+  .paymentIcon { left: auto; right: 22px; top: 20px; }
+  .heartIcon { left: auto; right: 102px; top: 90px; }
+  .chartIcon { right: 45px; top: 293px; }
+  .palette { left: 31px; top: 122px; width: 160px; height: 44px; padding-block: 15px; transform: rotate(-9deg); }
   .searchDock { padding: 22px 16px 23px; }
   .searchBox > div > svg { left: 15px; width: 22px; height: 22px; }
   .searchBox input { height: 56px; padding: 0 15px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
   .samples { grid-template-columns: 1fr; gap: 8px; margin-top: 14px; }
   .samples a, .samples button { width: 100%; min-height: 48px; font-size: 16px; }
   .assetPill { display: none; }
+}
+
+@media (max-width: 359px) {
+  .logoCard { width: 170px; height: 82px; }
+  .gradient { right: 18px; width: 112px; }
+  .typePaper { left: 22px; width: 150px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

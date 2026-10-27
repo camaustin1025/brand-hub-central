@@ -160,3 +160,20 @@ export const GRADIENTS: Gradient[] = [
 ];
 
 export const COLOR_GROUPS = [CORE, SUPPORTING, SECONDARY];
+
+// Original background artwork, separate from the legacy web CSS recipe above.
+// Verified from Figma Background Gradient 1 (10:708), October 27, 2026.
+export const BACKGROUND_GRADIENT = {
+  name: "Cyan to Lemon",
+  image: "/working-canvas/bg-gradient-1.png",
+  width: 3840,
+  height: 2160,
+  angle: 228.4292872718873,
+  stops: [
+    { name: "Intense Cyan", hex: "#00FAFF", position: 8.8768 },
+    { name: "Laser Lemon", hex: "#EAFF00", position: 87.644 },
+  ],
+  source: "https://www.figma.com/design/1LAizYM7R7QVubcHuix1KF/Slide-Skill-2.0?node-id=10-708",
+};
+
+export const BACKGROUND_GRADIENT_CSS = `linear-gradient(${BACKGROUND_GRADIENT.angle}deg, ${BACKGROUND_GRADIENT.stops.map((stop) => `${stop.hex} ${stop.position}%`).join(", ")})`;
