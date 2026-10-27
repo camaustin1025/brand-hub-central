@@ -1,0 +1,123 @@
+/* Layout lab: popup treatments for the Working Canvas desk band. The desk
+ * itself (photo, specimens, positions) comes from WorkingCanvasHero.module.css
+ * so every option is judged against the exact shipping composition. */
+
+.desk { position: relative; }
+
+/* The original corner popover, copied here after the hero moved to the spotlight pill. */
+.legacyPopover { position: absolute; z-index: 20; top: 4px; left: 20px; width: 320px; padding: 20px; border: 1px solid #d8d7df; border-radius: 12px; background: #fff; color: #17132f; box-shadow: 0 8px 32px #17132f26; }
+.legacyPopover[data-artwork="logo"] { left: auto; right: 20px; }
+
+/* Spotlight: a white veil sits between the photo and the active specimen. */
+.desk[data-veil] > div:first-child::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.desk[data-veil="on"] > div:first-child::after { opacity: 0.62; }
+.desk[data-veil="soft"] > div:first-child::after { opacity: 0.4; }
+.desk button[data-lit] {
+  z-index: 2;
+  scale: 1.05;
+}
+.desk button { transition: scale 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* 1. Anchored card: sits beside the specimen with a pointer back to it. */
+.card {
+  position: absolute;
+  z-index: 3;
+  width: 248px;
+  padding: 14px 16px 12px;
+  border: 1px solid #d8d7df;
+  border-radius: 8px;
+  background: #fff;
+  color: #17132f;
+  box-shadow: 0 10px 28px #17132f24;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: var(--arrow-y, 50%);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 1px solid #d8d7df;
+  translate: 0 -50%;
+  rotate: 45deg;
+}
+.card[data-side="right"]::before { left: -7px; border-top: 0; border-right: 0; }
+.card[data-side="left"]::before { right: -7px; border-bottom: 0; border-left: 0; }
+.cardTitle { font-size: 15px; font-weight: 700; line-height: 1.25; }
+.cardDetail { margin-top: 4px; font-size: 13px; line-height: 1.4; color: #17132fcc; }
+.cardActions { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+.cardActions a:first-child {
+  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px;
+  border: 1px solid #17132f; border-radius: 999px; background: #17132f; color: #fff;
+  font-size: 13px; font-weight: 600;
+}
+.cardActions a:first-child:hover { background: #fff; color: #17132f; }
+.cardActions button { display: inline-flex; align-items: center; gap: 4px; min-height: 34px; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* 2. Spotlight pill: one line, action first. */
+.pill {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 4px 0 16px;
+  border-radius: 999px;
+  background: #17132f;
+  color: #fff;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px #17132f40;
+}
+.pill strong { font-size: 14px; font-weight: 700; }
+.pill a, .pill button {
+  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px;
+  border-radius: 999px; font-size: 13px; font-weight: 600;
+}
+.pill a { margin-left: 12px; background: #00ff85; color: #17132f; }
+.pill a:hover { background: #fff; }
+.pill button { color: #ffffffd0; }
+.pill button:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+/* 3. Caption rail: a fixed strip under the desk, never on top of it. */
+.rail {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 80px;
+  padding: 12px 8%;
+  border-top: 1px solid #17132f14;
+  background: #f5f5f8;
+  color: #17132f;
+}
+.railThumb {
+  display: grid; place-items: center; width: 56px; height: 56px; overflow: hidden;
+  border-radius: 8px; background: #fff; box-shadow: inset 0 0 0 1px #17132f14;
+}
+.railThumb img { max-width: 44px; max-height: 44px; object-fit: contain; }
+.railTitle { font-size: 15px; font-weight: 700; }
+.railDetail { font-size: 14px; line-height: 1.4; color: #17132fcc; }
+.railActions { display: flex; align-items: center; gap: 16px; }
+.railActions button { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.railEmpty { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #17132fb3; }
+
+.desk :focus-visible, .rail :focus-visible { outline: 2px solid #17132f; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .desk button, .desk[data-veil] > div:first-child::after { transition: none; }
+}
+
+@media (max-width: 767px) {
+  .card, .pill { display: none; }
+  .rail { grid-template-columns: 48px minmax(0, 1fr); padding: 12px 16px; }
+  .railActions { grid-column: 1 / -1; }
+}

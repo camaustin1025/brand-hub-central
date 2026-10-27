@@ -5,6 +5,7 @@ import BrandHub from "@/pages/BrandHub";
 import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
 import HeroLab from "@/pages/HeroLab";
+import LayoutLab from "@/pages/LayoutLab";
 import { AuthGate } from "@/components/auth/AuthGate";
 import { employeeSectionId } from "@/data/employee-launch";
 
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/voice" element={<Voice />} />
         {/* Design exploration only — not linked from nav. */}
         <Route path="/hero-lab" element={<HeroLab />} />
+        <Route path="/layout-lab" element={<LayoutLab />} />
         {LEGACY_ROUTES.map(([path, anchor]) => (
           <Route key={path} path={path} element={<Navigate to={`/#${employeeSectionId(anchor)}`} replace />} />
         ))}
