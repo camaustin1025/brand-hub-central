@@ -1,3 +1,4 @@
+import { publishedSocialTemplates } from "./social-templates";
 import { isEmployeeSectionVisible } from "./employee-launch";
 
 export type HubNavItem = {
@@ -175,7 +176,17 @@ export const TERMS: [string, string][] = [
   ["Ready on day one", "Out of the box"],
 ];
 
-export const TOOLKIT_ITEMS = [
+export type ToolkitItem = {
+  title: string;
+  body: string;
+  cta: string;
+  href: string | null;
+  status: string | null;
+  action?: "download" | "internal";
+  templateId?: string;
+};
+
+export const TOOLKIT_ITEMS: ToolkitItem[] = [
   {
     title: "Slide template",
     body: "On-brand Google Slides with correct colors, fonts, and layouts. The ordergroove-slides skill builds decks for you.",
@@ -197,13 +208,15 @@ export const TOOLKIT_ITEMS = [
     href: null,
     status: "Not available yet",
   },
-  {
-    title: "New-hire graphics",
-    body: "Welcome and I've-joined LinkedIn graphics. Copy the Canva design and drop in your headshot.",
-    cta: "Open in Canva",
-    href: null,
-    status: "Not available yet",
-  },
+  ...publishedSocialTemplates().map((template): ToolkitItem => ({
+    title: template.title,
+    body: template.description,
+    cta: "Customize graphic",
+    href: `/toolkit/social/${template.id}`,
+    action: "internal",
+    templateId: template.id,
+    status: null,
+  })),
   {
     title: "Zoom backgrounds",
     body: "Midnight canvas with the paired-circle gradient, sized for video calls.",

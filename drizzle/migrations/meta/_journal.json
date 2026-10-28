@@ -15,6 +15,13 @@
       "when": 1791480601439,
       "tag": "0001_restrict_ordergroove_domain",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793116800000,
+      "tag": "0002_social_usage_events",
+      "breakpoints": true
     }
   ]
 }

@@ -2,9 +2,16 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, X } from "lucide-react";
 import { HUB_NAV, type HubNavItem } from "@/data/hub";
+import { publishedSocialTemplates } from "@/data/social-templates";
 import { cn } from "@/lib/utils";
 
-const ALL_NAV_ITEMS = HUB_NAV.flatMap((group) => group.items);
+const ALL_NAV_ITEMS: HubNavItem[] = [
+  ...HUB_NAV.flatMap((group) => group.items),
+  ...publishedSocialTemplates().map((template) => ({
+    id: `social-${template.id}`, label: template.title, description: template.description,
+    keywords: template.keywords, path: `/toolkit/social/${template.id}`,
+  })),
+];
 
 const NAV_ITEM_CLASS = "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
 const NAV_ITEM_ACTIVE =
