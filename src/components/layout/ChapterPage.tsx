@@ -24,10 +24,11 @@ export function ChapterPage({
         >
           <ArrowLeft size={15} /> Brand hub
         </Link>
-        <div className="mb-10 max-w-[var(--measure-header)]">
+        {/* Same uncapped head as HubSection: Home sets the line lengths. */}
+        <div className="mb-10">
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <h1 className="text-3xl font-extrabold md:text-[42px]">{title}</h1>
-          {intro && <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
+          {intro && <p className="mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
         </div>
         {children}
       </div>

@@ -75,11 +75,6 @@
        on this site; a naive 65ch would render 98 and miss the range entirely.
        Verify with rendered line boxes, not the unit name, before changing it. */
     --measure: 50ch;
-    /* Section-header column. Heading and intro share one right edge, so the
-       block reads as a column instead of two independently ragged shapes.
-       36rem == the 18px intro's 50ch measure; re-derive it if --measure moves.
-       Caps display type at ~30 characters, which is its own correct measure. */
-    --measure-header: 36rem;
     --radius: 0.5rem; /* 8px — one radius across the site */
   }
 

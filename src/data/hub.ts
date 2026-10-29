@@ -13,9 +13,12 @@ export type HubNavItem = {
 export type HubNavGroup = {
   label: string;
   items: HubNavItem[];
+  /** The group title is itself the link to its single item, with no list under it. */
+  linkTitle?: boolean;
 };
 
 export const DESIGN_CANVAS_PATH = "/design-canvas";
+export const DESIGN_CANVAS_NAV_ID = "design-canvas";
 
 export function designCanvasTemplatePath(templateId: string) {
   return `${DESIGN_CANVAS_PATH}/${encodeURIComponent(templateId)}`;
@@ -25,7 +28,7 @@ export function designCanvasCategoryId(category: string) {
   return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-/** Published templates grouped by category, in first-appearance order. Drives the nav group and the Design canvas page. */
+/** Published templates grouped by category, in first-appearance order. Drives the Design canvas page. */
 export const DESIGN_CANVAS_CATEGORIES = [...publishedSocialTemplates().reduce((groups, template) => {
   groups.set(template.category, [...(groups.get(template.category) ?? []), template]);
   return groups;
@@ -56,14 +59,18 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
     ],
   },
   {
+    // One link, not a list: the page itself sorts the graphics by category.
     label: "Design canvas",
-    items: DESIGN_CANVAS_CATEGORIES.map(({ id, category, templates }) => ({
-      id,
-      path: `${DESIGN_CANVAS_PATH}#${id}`,
-      label: category,
-      description: `LinkedIn graphics: ${templates.map((template) => template.title).join(", ")}.`,
-      keywords: "design canvas social linkedin graphic customize photo toolkit",
-    })),
+    linkTitle: true,
+    items: [
+      {
+        id: DESIGN_CANVAS_NAV_ID,
+        path: DESIGN_CANVAS_PATH,
+        label: "Design canvas",
+        description: `LinkedIn graphics: ${DESIGN_CANVAS_CATEGORIES.flatMap(({ templates }) => templates.map((template) => template.title)).join(", ")}.`,
+        keywords: `design canvas social linkedin graphic customize photo toolkit ${DESIGN_CANVAS_CATEGORIES.map(({ category }) => category.toLowerCase()).join(" ")}`,
+      },
+    ],
   },
   {
     label: "Brand foundation",

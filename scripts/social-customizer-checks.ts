@@ -14,13 +14,14 @@ for (const value of [undefined, null, "", "https://evil.example", "https://hub.e
 console.log("PASS: internal return paths and adversarial redirect inputs");
 
 const canvasGroup = HUB_NAV.find((group) => group.label === "Design canvas");
-assert.deepEqual(canvasGroup?.items.map((item) => [item.label, item.path]), [["New Employee", "/design-canvas#new-employee"], ["Event Attendance", "/design-canvas#event-attendance"]]);
+assert.deepEqual(canvasGroup?.items.map((item) => [item.label, item.path]), [["Design canvas", "/design-canvas"]]);
+assert.equal(canvasGroup?.linkTitle, true);
 assert.equal(HUB_NAV.flatMap((group) => group.items).filter((item) => item.path?.startsWith("/toolkit")).length, 0);
 assert.equal(new Set(HUB_NAV.flatMap((group) => group.items).map((item) => item.id)).size, HUB_NAV.flatMap((group) => group.items).length);
 assert.equal(RESOURCE_PAGE_PATHS.toolkit, DESIGN_CANVAS_PATH);
 assert.equal(designCanvasTemplatePath("event-lets-meet"), "/design-canvas/event-lets-meet");
 assert.equal(designCanvasCategoryId(" Event  Attendance! "), "event-attendance");
-console.log("PASS: Design canvas nav lists each category once, and toolkit anchors point to it");
+console.log("PASS: Design canvas nav is one link to the page, and toolkit anchors point to it");
 
 const fixture = () => structuredClone(SOCIAL_TEMPLATE_FIXTURE);
 assert.deepEqual(validateSocialTemplates([fixture()], SOCIAL_ASSETS, true), []);

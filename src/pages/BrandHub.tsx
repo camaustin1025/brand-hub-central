@@ -21,7 +21,6 @@ function HubSection({
   eyebrow,
   title,
   intro,
-  wideIntro = false,
   children,
   className,
 }: {
@@ -29,7 +28,6 @@ function HubSection({
   eyebrow?: string;
   title: string;
   intro?: string;
-  wideIntro?: boolean;
   children: ReactNode;
   className?: string;
 }) {
@@ -40,10 +38,12 @@ function HubSection({
       className={cn("scroll-mt-20 border-t border-border px-6 py-16 md:px-10 md:py-20", className)}
     >
       <div className="mx-auto max-w-[1060px]">
-        <div className={cn("mb-10", !wideIntro && "max-w-[var(--measure-header)]")}>
+        {/* Section heads run the full column; ChapterPage matches this so a
+            heading wraps the same way on Home and on every chapter page. */}
+        <div className="mb-10">
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
-          {intro && <p className={cn("mt-4 text-lg leading-[1.6] text-muted-foreground", !wideIntro && "measure")}>{intro}</p>}
+          {intro && <p className="mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
         </div>
         {children}
       </div>
@@ -97,7 +97,6 @@ export default function BrandHub() {
           eyebrow="Resources"
           title="Grab-and-go assets"
           intro="Download logos and backgrounds for your work."
-          wideIntro
         >
           <div className="mb-6 flex flex-wrap gap-2">
             {["messaging", "voice", "color", "downloads"].map((id) => {
@@ -147,7 +146,6 @@ export default function BrandHub() {
           eyebrow="Visual identity"
           title="Typography"
           intro="Figtree is the only brand typeface. Use tight spacing for display text and open spacing for body copy."
-          wideIntro
         >
           <div className="mb-6">
             <a href="/fonts/Figtree-font-kit.zip" download className={buttonVariants({ size: "lg" })}>
@@ -195,7 +193,6 @@ export default function BrandHub() {
           eyebrow="Visual identity"
           title="Logo and gradients"
           intro="Use the primary logo whenever space allows. Reserve gradients for key moments."
-          wideIntro
         >
           <div className="grid gap-6 sm:grid-cols-2">
             <figure>
@@ -251,7 +248,6 @@ export default function BrandHub() {
           id="icons"
           title="Icons"
           intro="Use Material Symbols Rounded for Ordergroove visuals. Match the treatment and color to the background."
-          wideIntro
         >
           <IconGuidance />
         </HubSection>

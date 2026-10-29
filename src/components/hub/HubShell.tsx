@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, Search, X } from "lucide-react";
+import { ArrowRight, Menu, Search, X } from "lucide-react";
 import { designCanvasTemplatePath, HUB_NAV, type HubNavItem } from "@/data/hub";
 import { publishedSocialTemplates } from "@/data/social-templates";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,15 @@ const NAV_ITEM_CLASS = "relative rounded-lg px-3 py-2 text-sm font-medium transi
 const NAV_ITEM_ACTIVE =
   "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:-left-[11px] before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
 const NAV_ITEM_IDLE = "text-og-midnight hover:bg-white/70 hover:text-og-midnight";
+
+const NAV_TITLE_CLASS = "rounded-lg bg-og-indigo/[0.06] px-3 py-2 text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-indigo";
+// A group title that is itself the link (Design canvas). Every other title is a
+// static label, so the arrow marks this one as clickable before any hover, and
+// hover flips it to the masthead's Midnight with Groovy Green, the dark-bg green.
+const NAV_TITLE_LINK = "group relative flex items-center justify-between transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
+const NAV_TITLE_LINK_ACTIVE =
+  "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
+const NAV_TITLE_LINK_IDLE = "hover:bg-og-midnight hover:text-white";
 
 export function jumpTo(id: string, closeMenu?: () => void) {
   const target = document.getElementById(id);
@@ -66,9 +75,28 @@ export function Sidebar({
         )}
       >
         <nav className="px-4 py-5" aria-label="Brand hub sections">
-          {HUB_NAV.map((group) => (
+          {HUB_NAV.map((group) => group.linkTitle ? (
+            <div key={group.label} className="mb-6 last:mb-0">
+              <Link
+                to={group.items[0].path!}
+                onClick={onClose}
+                aria-current={activeId === group.items[0].id ? "page" : undefined}
+                className={cn(NAV_TITLE_CLASS, NAV_TITLE_LINK, activeId === group.items[0].id ? NAV_TITLE_LINK_ACTIVE : NAV_TITLE_LINK_IDLE)}
+              >
+                {group.label}
+                <ArrowRight
+                  size={14}
+                  aria-hidden="true"
+                  className={cn(
+                    "shrink-0 transition-[transform,opacity,color] duration-200 group-hover:translate-x-0.5",
+                    activeId === group.items[0].id ? "text-og-green-light" : "opacity-60 group-hover:text-og-green group-hover:opacity-100"
+                  )}
+                />
+              </Link>
+            </div>
+          ) : (
             <section key={group.label} aria-labelledby={`nav-${group.items[0].id}`} className="mb-6 last:mb-0">
-              <h2 id={`nav-${group.items[0].id}`} className="rounded-lg bg-og-indigo/[0.06] px-3 py-2 text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-indigo">
+              <h2 id={`nav-${group.items[0].id}`} className={NAV_TITLE_CLASS}>
                 {group.label}
               </h2>
               <ul className="ml-3 mt-1.5 space-y-0.5 border-l border-og-midnight/10 pl-2">

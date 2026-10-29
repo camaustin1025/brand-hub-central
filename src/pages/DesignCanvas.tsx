@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { HubShell } from "@/components/hub/HubShell";
 import { ChapterPage } from "@/components/layout/ChapterPage";
 import { buttonVariants } from "@/components/ui/button";
-import { DESIGN_CANVAS_CATEGORIES, designCanvasTemplatePath } from "@/data/hub";
+import { DESIGN_CANVAS_CATEGORIES, DESIGN_CANVAS_NAV_ID, designCanvasTemplatePath } from "@/data/hub";
 import { SOCIAL_ASSETS } from "@/data/social-templates";
 import { MarketingContact } from "@/components/social/MarketingContact";
 import { useAuthUser } from "@/hooks/use-auth-user";
@@ -17,7 +17,6 @@ const categoryIds = DESIGN_CANVAS_CATEGORIES.map((group) => group.id);
 export default function DesignCanvas() {
   const user = useAuthUser();
   const requestedId = useLocation().hash.slice(1);
-  const [activeId, setActiveId] = useState(categoryIds.includes(requestedId) ? requestedId : categoryIds[0] ?? "");
   const [draftTemplates, setDraftTemplates] = useState<Set<string>>(new Set());
   useEffect(() => {
     let active = true;
@@ -30,26 +29,12 @@ export default function DesignCanvas() {
     }
     return () => { active = false; };
   }, [user]);
-  // Nav links carry a category hash: land on that category and highlight it.
+  // The editor breadcrumb links to a category hash: land on that category.
   useEffect(() => {
-    if (!categoryIds.includes(requestedId)) return;
-    document.getElementById(requestedId)?.scrollIntoView({ block: "start" });
-    setActiveId(requestedId);
+    if (categoryIds.includes(requestedId)) document.getElementById(requestedId)?.scrollIntoView({ block: "start" });
   }, [requestedId]);
-  // Highlight the category in view. At the bottom of the page the last one wins, since it may never reach the top.
-  useEffect(() => {
-    function update() {
-      const sections = categoryIds.map((id) => document.getElementById(id)).filter((section): section is HTMLElement => !!section);
-      const atBottom = window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-      const passed = sections.filter((section) => section.getBoundingClientRect().top <= window.innerHeight * 0.35);
-      const current = atBottom ? sections[sections.length - 1] : passed[passed.length - 1] ?? sections[0];
-      if (current) setActiveId(current.id);
-    }
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
   return (
-    <HubShell activeId={activeId}>
+    <HubShell activeId={DESIGN_CANVAS_NAV_ID}>
       <ChapterPage title="Design canvas" intro="Pick a design, add your photo and details, then download a PNG for LinkedIn.">
         <div className="space-y-12">
           {DESIGN_CANVAS_CATEGORIES.map(({ id, category, templates: entries }) => (
