@@ -33,7 +33,7 @@ assets/          starter kit (Figtree TTFs, logos, gradients)
 
 ## Social customizer
 
-The Toolkit includes three New Employee pilot templates: Proud to join, I've joined and Excited to share. Each uses Figtree and exports a 1200 × 627 PNG. Artwork and thumbnails ship from `public/social/`; Figma comparison renders stay in `docs/social-references/new-employee/`.
+The Toolkit includes three New Employee pilot templates (Proud to join, I've joined and Excited to share) and two Event Attendance pilot templates (Shoptalk 2027 and Any event). Each uses Figtree and exports a 1200 × 627 PNG. Artwork and thumbnails ship from `public/social/`; Figma comparison renders stay in `docs/social-references/`. The event reference replaces the sample headshot with a grey circle.
 
 Templates require a nonempty `category` and may reference a registered `previewAssetId`. Text rules accept an approved-token `color` and an `opacity` from 0.1 to 1; omitted values retain the variant foreground at full opacity. Toolkit cards are grouped by category, search labels include the category, and editors with one variant hide the Design picker. Schema details, validation coverage and browser checks are documented in [the social template README](src/data/social-templates.README.md).
 

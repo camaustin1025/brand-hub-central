@@ -271,13 +271,19 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
     if (target.id === definition.id || switching || storageFailed.current) return;
     setSwitching(true);
     const saved = snapshot();
-    const carried: SocialSnapshot = {
-      ...currentSocialInputs(saved, target),
-      ownerUserId, templateId: target.id, templateVersion: target.version,
-      fieldTypes: Object.fromEntries(target.fields.map((field) => [field.key, field.type])),
-      photoId: currentSocialPhotoId(saved, target),
-    };
     try {
+      const carried: SocialSnapshot = {
+        ...currentSocialInputs(saved, target),
+        ownerUserId, templateId: target.id, templateVersion: target.version,
+        fieldTypes: Object.fromEntries(target.fields.map((field) => [field.key, field.type])),
+        photoId: currentSocialPhotoId(saved, target),
+      };
+      // Fields this design lacks keep what the target's own draft already had, e.g. an event name.
+      const existing = (await loadSocialState(ownerUserId, target.id)).draft;
+      for (const field of target.fields) {
+        const kept = existing?.fields[field.key];
+        if (!Object.prototype.hasOwnProperty.call(saved.fields, field.key) && typeof kept === "string" && kept.trim()) carried.fields[field.key] = kept;
+      }
       pendingSave.current?.();
       await saveQueue.current;
       await enqueue(() => saveSocialDraft(carried, target.photo ? photo?.blob ?? null : null));
@@ -421,11 +427,13 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
           <fieldset disabled={!canAct || unavailable} className="min-w-0 space-y-5">
             <legend className="sr-only">Customize graphic</legend>
             {definition.fields.map((field) => {
-              const error = attempted && (touched[field.key] === true || attempted) && Object.prototype.hasOwnProperty.call(fieldErrors, field.key) ? fieldErrors[field.key] : undefined;
+              // Too-long and invalid values show while typing; a missing required value waits for a download attempt.
+              const typed = touched[field.key] === true && !!inputs.fields[field.key]?.trim();
+              const error = (attempted || typed) && Object.prototype.hasOwnProperty.call(fieldErrors, field.key) ? fieldErrors[field.key] : undefined;
               const qualifier = field.type === "time" ? field.timeZoneLabel : null;
               const inputProps = {
                 id: `social-${field.key}`, required: field.required, value: inputs.fields[field.key] ?? "",
-                placeholder: !field.required ? "Optional" : undefined,
+                placeholder: field.type === "text" && field.placeholder ? field.placeholder : !field.required ? "Optional" : undefined,
                 "aria-invalid": !!error, "aria-describedby": error ? `error-${field.key}` : undefined,
                 className: "action-focus min-h-11 w-full rounded-md border border-input bg-white px-3 py-2 text-base placeholder:text-og-midnight/40",
                 onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

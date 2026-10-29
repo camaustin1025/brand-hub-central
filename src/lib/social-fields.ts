@@ -35,11 +35,12 @@ export function formatSocialField(field: SocialField, value: string): string | n
     return `${hours % 12 || 12}:${String(minutes).padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}${field.timeZoneLabel ? ` ${field.timeZoneLabel}` : ""}`;
   }
   if (field.type === "choice" && !field.options.includes(value)) return null;
+  if (field.type === "text" && (field.prefix || field.suffix)) return `${field.prefix ?? ""}${value.trim()}${field.suffix ?? ""}`;
   return value;
 }
 
 export function emptySocialFields(template: SocialTemplate, googleName = ""): Record<string, string> {
-  return Object.fromEntries(template.fields.map((field) => [field.key, field.type === "text" && field.prefill === "googleName" ? googleName : ""]));
+  return Object.fromEntries(template.fields.map((field) => [field.key, field.type !== "text" ? "" : field.prefill === "googleName" ? googleName : field.defaultValue ?? ""]));
 }
 
 export function socialPrimaryValue(template: SocialTemplate, fields: Record<string, string>): string {

@@ -49,7 +49,7 @@ Every box uses `x`, `y`, `width`, `height` in output pixels. Text fields and loc
 | `fontWeight` | 400, 500, 600, 700 or 800, from the bundled font files. |
 | `minFontSize`, `maxFontSize` | Positive pixels, minimum no greater than maximum, maximum at most 500. |
 | `lineHeight` | Multiplier from 1 to 2. The minimum-size line must fit the box height. |
-| `maxLines` | Positive integer. Values shrink/wrap within these limits; overflow shows a field error and blocks export. |
+| `maxLines` | Positive integer. Values shrink/wrap within these limits; overflow shows a field error and blocks export. Spacing typed between words is kept on a line (so `March 22–24  \|  Las Vegas` keeps its double spaces) and dropped where a line breaks. |
 | `align` | Optional `left`, `center` or `right`, default `left`. Horizontal alignment only; text stays top-aligned. |
 | `color` | Optional exact approved hex token from `src/data/tokens.ts`. Defaults to the selected variant's `foreground`. Applies to editable and locked text. |
 | `opacity` | Optional finite number from 0.1 to 1 inclusive. Defaults to 1. Applies only while drawing that text, so later text and artwork keep their own opacity. |
@@ -66,6 +66,11 @@ Every editable field also has:
 | `dateFormat` | Required for date: `short` (`Nov 12, 2026`), `long` (`November 12, 2026`) or `weekday` (`Thursday, November 12`). Storage is `YYYY-MM-DD`; parsed from calendar parts without UTC string parsing. |
 | `timeZoneLabel` | Optional nonempty fixed label for time, e.g. `ET`. Storage is `HH:mm`; `14:00` draws as `2:00 PM ET`. No time zone conversion. |
 | `options` | Required for choice: at least 2 unique nonempty strings. Stores the chosen string. The empty selection is allowed only for optional fields. |
+| `defaultValue` | Optional for text, at most 120 characters, never with `prefill`. Fills a new draft and is restored by Delete draft. Like the Google name, a cleared default comes back on reload. Use it for facts Marketing controls but people may edit, such as an event's dates. |
+| `placeholder` | Optional for text, at most 80 characters. Shows an example in the empty input. Without it, optional fields show "Optional". |
+| `prefix`, `suffix` | Optional for text, at most 40 characters each. Drawn around a nonempty, trimmed value, and wrapped and sized with it as one block: `prefix: "Let's meet at ", suffix: "!"` turns `Shoptalk` into `Let's meet at Shoptalk!`. An empty value draws nothing. The input shows only the value. |
+
+Errors for values that are too long or invalid appear while typing. A missing required value or photo waits for a download attempt.
 
 Locked layers each have a unique `id` plus bounds:
 

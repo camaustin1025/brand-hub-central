@@ -279,9 +279,9 @@ console.log("PASS: one-time forward/rollback draft migration, current field type
 
 // Session 4: new schema rules apply to editable fields and locked text alike.
 assert.deepEqual(validateSocialTemplates(PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS), []);
-assert.deepEqual(PUBLISHED_SOCIAL_TEMPLATES.map(template => template.id), ["new-employee-badge", "new-employee-split-light", "new-employee-split-dark"]);
+assert.deepEqual(PUBLISHED_SOCIAL_TEMPLATES.map(template => template.id), ["new-employee-badge", "new-employee-split-light", "new-employee-split-dark", "event-shoptalk-2027", "event-lets-meet"]);
 for (const template of PUBLISHED_SOCIAL_TEMPLATES) {
-  assert.equal(template.category, "New Employee");
+  assert.equal(template.category, template.id.startsWith("event-") ? "Event Attendance" : "New Employee");
   assert.equal(template.width, 1200);
   assert.equal(template.height, 627);
   assert.ok(SOCIAL_ASSETS[template.previewAssetId!]);
@@ -351,3 +351,51 @@ try {
   else Reflect.deleteProperty(globalThis, "document");
 }
 console.log("PASS: editable and locked text overrides render without leaking color/opacity; omitted rules retain full-opacity variant foreground");
+
+// Session 6: Event Attendance templates use text defaults, placeholders and affixes.
+{
+  const shoptalk = getPublishedSocialTemplate("event-shoptalk-2027")!;
+  const anyEvent = getPublishedSocialTemplate("event-lets-meet")!;
+  const [eventField, detailsField] = anyEvent.fields;
+  assert.equal(formatSocialField(eventField, "Shoptalk"), "Let's meet at Shoptalk!");
+  assert.equal(formatSocialField(eventField, "  NRF  "), "Let's meet at NRF!", "affixed values are trimmed");
+  assert.equal(formatSocialField(eventField, "   "), "", "an empty value draws nothing, not a bare prefix");
+  assert.equal(formatSocialField(detailsField, " March 22–24  |  Las Vegas"), " March 22–24  |  Las Vegas", "fields without affixes keep their value");
+  assert.deepEqual(emptySocialFields(shoptalk, "Local Preview"), { shoptalkDetails: "March 22–24  |  Las Vegas" }, "event facts use an event-specific key, so another event's details never carry over");
+  assert.deepEqual(emptySocialFields(anyEvent, "Local Preview"), { event: "", details: "" });
+  assert.deepEqual(emptySocialFields(fixture(), "Local Preview"), { name: "Local Preview", jobTitle: "" }, "prefill is unchanged");
+  assert.equal(requiredSocialFieldError(eventField, ""), "Enter event name.");
+  assert.equal(requiredSocialFieldError(detailsField, ""), "Enter event details.");
+  assert.equal(socialDownloadFilename(anyEvent, { event: "Shoptalk", details: "March 22–24" }), "ordergroove-event-lets-meet-Shoptalk.png");
+}
+const invalidSession6Cases: [string, (template: SocialTemplate) => void][] = [
+  ["defaultValue", t => { Object.assign(t.fields[1], { defaultValue: " " }); }],
+  ["defaultValue", t => { Object.assign(t.fields[1], { defaultValue: "x".repeat(121) }); }],
+  ["placeholder", t => { Object.assign(t.fields[1], { placeholder: 7 }); }],
+  ["prefix", t => { Object.assign(t.fields[1], { prefix: "x".repeat(41) }); }],
+  ["suffix", t => { Object.assign(t.fields[1], { suffix: "" }); }],
+  ["only allowed on text", t => { t.fields.push({ ...structuredClone(EVENT_TEMPLATE_FIXTURE.fields.find(field => field.type === "date")!), key: "when", prefix: "On " } as SocialTemplate["fields"][number]); }],
+  ["not both", t => { Object.assign(t.fields[0], { defaultValue: "Sam" }); }],
+];
+for (const [message, mutate] of invalidSession6Cases) {
+  const template = fixture(); mutate(template);
+  assert.ok(validateSocialTemplates([template], SOCIAL_ASSETS, true).some(error => error.includes(message)), message);
+  template.developmentOnly = false; template.sourceUrl = "https://figma.com/design/example";
+  PUBLISHED_SOCIAL_TEMPLATES.push(template);
+  assert.ok(runBuildGuard().some(error => error.includes(message)), `build guard: ${message}`);
+  PUBLISHED_SOCIAL_TEMPLATES.pop();
+}
+{
+  const template = fixture();
+  Object.assign(template.fields[1], { defaultValue: "Engineer", placeholder: "Your title", prefix: "Role: ", suffix: "." });
+  assert.deepEqual(validateSocialTemplates([template], SOCIAL_ASSETS, true), []);
+}
+console.log("PASS: Event Attendance templates, text defaults, placeholders and affixes, including build guard");
+{
+  const rules = { ...getPublishedSocialTemplate("event-lets-meet")!.fields[1], minFontSize: 10, maxFontSize: 10, lineHeight: 1, height: 1000, maxLines: 3 };
+  const measure = paintContext as unknown as CanvasRenderingContext2D;
+  assert.deepEqual(layoutSocialText(measure, " March   |   Vegas ", { ...rules, width: 1000 })?.lines, ["March   |   Vegas"], "typed spacing survives on one line");
+  assert.deepEqual(layoutSocialText(measure, "a\t|  b", { ...rules, width: 1000 })?.lines, ["a |  b"], "other whitespace draws as spaces");
+  assert.deepEqual(layoutSocialText(measure, "a   |   b", { ...rules, width: 3 })?.lines, ["a", "|", "b"], "a line break drops the spacing");
+}
+console.log("PASS: text layout keeps typed spacing between words and drops it at line breaks");

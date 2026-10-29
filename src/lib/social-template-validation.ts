@@ -80,6 +80,14 @@ export function validateSocialTemplates(templates: SocialTemplate[], assets: Rec
       if (field.type === "date" && !["short", "long", "weekday"].includes(field.dateFormat)) fail("unknown date format");
       if (field.type === "choice" && (!Array.isArray(field.options) || field.options.length < 2 || field.options.some((option) => typeof option !== "string" || !option.trim()) || new Set(field.options.map((option) => option.trim())).size !== field.options.length)) fail("choice needs at least 2 unique nonempty options");
       if ("prefill" in field && (field.type !== "text" || field.prefill !== "googleName")) fail("prefill must be googleName on a text field");
+      const textOptions = { defaultValue: 120, placeholder: 80, prefix: 40, suffix: 40 } as const;
+      for (const [name, max] of Object.entries(textOptions) as [keyof typeof textOptions, number][]) {
+        if (!(name in field)) continue;
+        const value = (field as Record<string, unknown>)[name];
+        if (field.type !== "text") fail(`${name} is only allowed on text fields`);
+        else if (typeof value !== "string" || !value.trim() || value.length > max) fail(`${name} must be nonempty text of at most ${max} characters`);
+      }
+      if ("prefill" in field && "defaultValue" in field) fail("use prefill or defaultValue, not both");
       if (field.type === "time" && field.timeZoneLabel !== undefined && (typeof field.timeZoneLabel !== "string" || !field.timeZoneLabel.trim())) fail("invalid time zone label");
     }
     unique(template.lockedLayers.map((layer) => layer.id), "Layers");

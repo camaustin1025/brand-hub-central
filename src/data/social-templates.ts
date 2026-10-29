@@ -16,7 +16,7 @@ export type SocialField = TextRules & {
   label: string;
   required: boolean;
 } & (
-  | { type: "text"; prefill?: "googleName" }
+  | { type: "text"; prefill?: "googleName"; defaultValue?: string; placeholder?: string; prefix?: string; suffix?: string }
   | { type: "date"; dateFormat: "short" | "long" | "weekday" }
   | { type: "time"; timeZoneLabel?: string }
   | { type: "choice"; options: string[] }
@@ -57,6 +57,10 @@ export const SOCIAL_ASSETS: Record<string, string> = {
   "new-employee-split-light-preview": "/social/new-employee-split-light-preview.png",
   "new-employee-split-dark": "/social/new-employee-split-dark.png",
   "new-employee-split-dark-preview": "/social/new-employee-split-dark-preview.png",
+  "event-shoptalk-2027": "/social/event-shoptalk-2027.png",
+  "event-shoptalk-2027-preview": "/social/event-shoptalk-2027-preview.png",
+  "event-lets-meet": "/social/event-lets-meet.png",
+  "event-lets-meet-preview": "/social/event-lets-meet-preview.png",
 };
 export const SOCIAL_FONT_FILES = {
   400: "/fonts/Figtree-Regular.ttf",
@@ -138,6 +142,53 @@ export const PUBLISHED_SOCIAL_TEMPLATES: SocialTemplate[] = [
     fields: [
       { key: "name", type: "text", prefill: "googleName", label: "Name", required: true, x: 72, y: 410, width: 580, height: 33, fontFamily: "Figtree", fontWeight: 700, minFontSize: 22, maxFontSize: 30, lineHeight: 1.1, maxLines: 1, align: "left" },
       { key: "jobTitle", type: "text", label: "Job title", required: false, x: 72, y: 449, width: 580, height: 50, fontFamily: "Figtree", fontWeight: 500, minFontSize: 16, maxFontSize: 22, lineHeight: 1.1, maxLines: 2, align: "left", color: "#D8D7DF" },
+    ],
+  },
+  {
+    id: "event-shoptalk-2027",
+    version: 1,
+    status: "pilot",
+    category: "Event Attendance",
+    title: "Shoptalk 2027",
+    description: "Let people know you'll be at Shoptalk, March 22–24 in Las Vegas.",
+    keywords: "event, events, conference, trade show, attending, Shoptalk, Las Vegas, booth, LinkedIn, headshot",
+    sourceUrl: "https://www.figma.com/design/uoOF8jsKhT64QvQV253uI5/Social-Skill?node-id=1-272",
+    owner: "Cameron Austin",
+    reviewedAt: "2026-10-28",
+    reviewDueAt: "2027-01-28",
+    width: 1200,
+    height: 627,
+    assetIds: ["event-shoptalk-2027"],
+    previewAssetId: "event-shoptalk-2027-preview",
+    variants: [{ id: "gradient", label: "Gradient", background: "#FFFFFF", foreground: "#17132F" }],
+    lockedLayers: [{ id: "artwork", type: "asset", assetId: "event-shoptalk-2027", x: 0, y: 0, width: 1200, height: 627 }],
+    photo: { x: 690.5, y: 106.5, width: 414, height: 414, shape: "ellipse", required: true, maxZoom: 3 },
+    fields: [
+      { key: "shoptalkDetails", type: "text", label: "Event details", required: true, defaultValue: "March 22–24  |  Las Vegas", placeholder: "March 22–24  |  Las Vegas  |  Booth #1165", x: 78.5, y: 418, width: 590, height: 24, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 23.5, lineHeight: 1.012, maxLines: 1, align: "left" },
+    ],
+  },
+  {
+    id: "event-lets-meet",
+    version: 1,
+    status: "pilot",
+    category: "Event Attendance",
+    title: "Any event",
+    description: "A Let's meet graphic for any event, with your photo and the event details.",
+    keywords: "event, events, conference, trade show, attending, meet, booth, LinkedIn, headshot",
+    sourceUrl: "https://www.figma.com/design/uoOF8jsKhT64QvQV253uI5/Social-Skill?node-id=1-272",
+    owner: "Cameron Austin",
+    reviewedAt: "2026-10-28",
+    reviewDueAt: "2027-01-28",
+    width: 1200,
+    height: 627,
+    assetIds: ["event-lets-meet"],
+    previewAssetId: "event-lets-meet-preview",
+    variants: [{ id: "gradient", label: "Gradient", background: "#FFFFFF", foreground: "#17132F" }],
+    lockedLayers: [{ id: "artwork", type: "asset", assetId: "event-lets-meet", x: 0, y: 0, width: 1200, height: 627 }],
+    photo: { x: 690.5, y: 106.5, width: 414, height: 414, shape: "ellipse", required: true, maxZoom: 3 },
+    fields: [
+      { key: "event", type: "text", label: "Event name", required: true, placeholder: "Shoptalk", prefix: "Let's meet at ", suffix: "!", x: 75, y: 203.5, width: 530, height: 190, fontFamily: "Figtree", fontWeight: 700, minFontSize: 48, maxFontSize: 90, lineHeight: 1.05, maxLines: 3, align: "left" },
+      { key: "details", type: "text", label: "Event details", required: true, placeholder: "March 22–24  |  Las Vegas  |  Booth #1165", x: 78.5, y: 418, width: 590, height: 24, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 23.5, lineHeight: 1.012, maxLines: 1, align: "left" },
     ],
   },
 ];

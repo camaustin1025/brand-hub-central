@@ -31,16 +31,19 @@ export async function loadSocialResources(template: SocialTemplate, assets = SOC
 }
 
 export function layoutSocialText(ctx: CanvasRenderingContext2D, value: string, rules: TextRules): TextLayout | null {
-  const words = value.trim().split(/\s+/u).filter(Boolean);
+  // Keep the spacing typed between words, so separators like "  |  " survive. A line break drops it.
+  const parts = value.trim().split(/(\s+)/u).filter(Boolean);
+  const words = parts.filter((_, index) => index % 2 === 0);
+  const gaps = parts.filter((_, index) => index % 2 === 1).map((gap) => gap.replace(/\s/gu, " "));
   if (!words.length) return { lines: [], fontSize: rules.maxFontSize };
   for (let size = rules.maxFontSize; ; size = Math.max(rules.minFontSize, size - 1)) {
     ctx.font = `${rules.fontWeight} ${size}px Figtree`;
     const lines: string[] = [];
     let line = "";
     let fits = true;
-    for (const word of words) {
+    for (const [index, word] of words.entries()) {
       if (ctx.measureText(word).width > rules.width) { fits = false; break; }
-      const candidate = line ? `${line} ${word}` : word;
+      const candidate = line ? `${line}${gaps[index - 1]}${word}` : word;
       if (ctx.measureText(candidate).width > rules.width) { lines.push(line); line = word; }
       else line = candidate;
       if (lines.length >= rules.maxLines) { fits = false; break; }
@@ -144,7 +147,7 @@ function paintSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate,
     const formatted = formatSocialField(field, value);
     if (formatted === null) { errors[field.key] = `Choose a valid ${field.label.toLowerCase()}.`; continue; }
     const layout = layoutSocialText(ctx, formatted, field);
-    if (!layout) { errors[field.key] = `${field.label} doesn't fit this design. Try a shorter ${field.label.toLowerCase()}.`; continue; }
+    if (!layout) { errors[field.key] = `Too long for this design. Shorten the ${field.label.toLowerCase()}.`; continue; }
     ctx.fillStyle = variant.foreground;
     paintText(ctx, layout, field);
   }
