@@ -1,14 +1,14 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import BrandHub from "@/pages/BrandHub";
 import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
 import AiResources from "@/pages/AiResources";
-import Toolkit from "@/pages/Toolkit";
+import DesignCanvas from "@/pages/DesignCanvas";
 import HeroLab from "@/pages/HeroLab";
 import LayoutLab from "@/pages/LayoutLab";
 import { employeeSectionId } from "@/data/employee-launch";
-import { RESOURCE_PAGE_PATHS } from "@/data/hub";
+import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, RESOURCE_PAGE_PATHS } from "@/data/hub";
 
 const SocialCustomizer = lazy(() => import("@/pages/SocialCustomizer"));
 
@@ -25,6 +25,12 @@ function HomeRoute() {
   return movedPage ? <Navigate to={{ pathname: movedPage, search }} replace /> : <BrandHub />;
 }
 
+/** Editor links from before the toolkit became Design canvas. */
+function ToolkitGraphicRoute() {
+  const { templateId = "" } = useParams<{ templateId: string }>();
+  return <Navigate to={designCanvasTemplatePath(templateId)} replace />;
+}
+
 /** Shared route inventory. App keeps this entire tree inside AuthGate. */
 export function HubRoutes() {
   return (
@@ -32,12 +38,14 @@ export function HubRoutes() {
       <Route path="/" element={<HomeRoute />} />
       <Route path="/foundation" element={<Foundation />} />
       <Route path="/voice" element={<Voice />} />
-      <Route path={RESOURCE_PAGE_PATHS.toolkit} element={<Toolkit />} />
-      <Route path="/toolkit/social/:templateId" element={
+      <Route path={DESIGN_CANVAS_PATH} element={<DesignCanvas />} />
+      <Route path={`${DESIGN_CANVAS_PATH}/:templateId`} element={
         <Suspense fallback={<p role="status" className="p-6">Loading graphic...</p>}>
           <SocialCustomizer />
         </Suspense>
       } />
+      <Route path="/toolkit" element={<Navigate to={DESIGN_CANVAS_PATH} replace />} />
+      <Route path="/toolkit/social/:templateId" element={<ToolkitGraphicRoute />} />
       <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />
       <Route path="/ai-skills" element={<Navigate to={RESOURCE_PAGE_PATHS["ai-skills"]} replace />} />
       {/* Design exploration only, not linked from navigation. */}

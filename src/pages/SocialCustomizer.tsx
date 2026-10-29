@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PhotoPosition } from "@/components/social/PhotoPosition";
 import { MarketingContact } from "@/components/social/MarketingContact";
 import { getPublishedSocialTemplate, publishedSocialTemplates, PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS, type SocialTemplate } from "@/data/social-templates";
+import { DESIGN_CANVAS_PATH, designCanvasCategoryId, designCanvasTemplatePath } from "@/data/hub";
 import { cn } from "@/lib/utils";
 import { canvasBlob, processSocialPhoto, restoreSocialPhoto, type ProcessedPhoto } from "@/lib/social-photo";
 import {
@@ -287,7 +288,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
       pendingSave.current?.();
       await saveQueue.current;
       await enqueue(() => saveSocialDraft(carried, target.photo ? photo?.blob ?? null : null));
-      if (mounted.current) navigate(`/toolkit/social/${target.id}`);
+      if (mounted.current) navigate(designCanvasTemplatePath(target.id));
     } catch { failStorage(); }
     finally { if (mounted.current) setSwitching(false); }
   };
@@ -357,12 +358,12 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
   const canAct = localReady && !exporting && !photoBusy && !switching;
   const designs = publishedSocialTemplates().filter((template) => template.category === definition.category);
   return (
-    <HubShell activeId="toolkit" focused>
+    <HubShell activeId={designCanvasCategoryId(definition.category)} focused>
       <div className="sticky top-16 z-30 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-border bg-white px-4 py-3 lg:px-6">
         <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-          <Link to="/toolkit" className="action-focus text-muted-foreground hover:underline">Toolkit</Link>
+          <Link to={DESIGN_CANVAS_PATH} className="action-focus text-muted-foreground hover:underline">Design canvas</Link>
           <span aria-hidden="true" className="text-og-midnight/30">/</span>
-          <Link to={`/toolkit#social-${definition.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} className="action-focus text-muted-foreground hover:underline">{definition.category}</Link>
+          <Link to={`${DESIGN_CANVAS_PATH}#${designCanvasCategoryId(definition.category)}`} className="action-focus text-muted-foreground hover:underline">{definition.category}</Link>
           <span aria-hidden="true" className="text-og-midnight/30">/</span>
           <h1 className="text-base font-semibold leading-6">{definition.title}</h1>
         </nav>
@@ -502,7 +503,7 @@ export default function SocialCustomizer() {
   const template = getPublishedSocialTemplate(templateId ?? "") ??
     PUBLISHED_SOCIAL_TEMPLATES.find((item) => item.id === templateId && item.status === "retired" && !item.developmentOnly) ??
     (import.meta.env.DEV ? fixtures?.SOCIAL_TEMPLATE_FIXTURES.find((item) => item.id === templateId) : undefined);
-  if (!template) return <Navigate to="/toolkit" replace />;
+  if (!template) return <Navigate to={DESIGN_CANVAS_PATH} replace />;
   if (!user) return null;
   const metadataName: unknown = user.user_metadata.full_name ?? user.user_metadata.name;
   return <SocialEditor key={`${user.id}:${template.id}:${template.version}`} ownerUserId={user.id} definition={template} assets={import.meta.env.DEV && template.developmentOnly ? fixtures?.SOCIAL_FIXTURE_ASSETS : undefined} initialName={typeof metadataName === "string" ? metadataName : ""} />;

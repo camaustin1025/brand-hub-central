@@ -5,12 +5,22 @@ import { PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS, getPublishedSocialTemplate, 
 import { validateSocialTemplates } from "../src/lib/social-template-validation";
 import { dragSocialCrop, drawSocialGraphic, layoutSocialText, photoSourceRect, socialDownloadFilename } from "../src/lib/social-renderer";
 import { socialTemplateBuildErrors } from "./validate-social-templates";
+import { DESIGN_CANVAS_PATH, HUB_NAV, RESOURCE_PAGE_PATHS, designCanvasCategoryId, designCanvasTemplatePath } from "../src/data/hub";
 import path from "node:path";
 
 const origin = "https://hub.example";
-for (const value of ["/", "/toolkit/social/new-hire", "/voice?find=two%20words#rules"]) assert.equal(safeReturnPath(value, origin), value);
+for (const value of ["/", "/design-canvas/new-hire", "/voice?find=two%20words#rules"]) assert.equal(safeReturnPath(value, origin), value);
 for (const value of [undefined, null, "", "https://evil.example", "https://hub.example/voice", "//evil.example", "///evil.example", "\\evil.example", "/\\evil.example", "/%5cevil.example", "/%2f%2fevil.example", "/.%2f/evil.example", "/x/..//evil.example", "/bad%", "/%00", "/\n/evil.example"]) assert.equal(safeReturnPath(value, origin), "/", String(value));
 console.log("PASS: internal return paths and adversarial redirect inputs");
+
+const canvasGroup = HUB_NAV.find((group) => group.label === "Design canvas");
+assert.deepEqual(canvasGroup?.items.map((item) => [item.label, item.path]), [["New Employee", "/design-canvas#new-employee"], ["Event Attendance", "/design-canvas#event-attendance"]]);
+assert.equal(HUB_NAV.flatMap((group) => group.items).filter((item) => item.path?.startsWith("/toolkit")).length, 0);
+assert.equal(new Set(HUB_NAV.flatMap((group) => group.items).map((item) => item.id)).size, HUB_NAV.flatMap((group) => group.items).length);
+assert.equal(RESOURCE_PAGE_PATHS.toolkit, DESIGN_CANVAS_PATH);
+assert.equal(designCanvasTemplatePath("event-lets-meet"), "/design-canvas/event-lets-meet");
+assert.equal(designCanvasCategoryId(" Event  Attendance! "), "event-attendance");
+console.log("PASS: Design canvas nav lists each category once, and toolkit anchors point to it");
 
 const fixture = () => structuredClone(SOCIAL_TEMPLATE_FIXTURE);
 assert.deepEqual(validateSocialTemplates([fixture()], SOCIAL_ASSETS, true), []);

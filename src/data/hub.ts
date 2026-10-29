@@ -1,4 +1,4 @@
-import { publishedSocialTemplates } from "./social-templates";
+import { publishedSocialTemplates, type SocialTemplate } from "./social-templates";
 import { isEmployeeSectionVisible } from "./employee-launch";
 
 export type HubNavItem = {
@@ -15,9 +15,25 @@ export type HubNavGroup = {
   items: HubNavItem[];
 };
 
-/** Standalone resources, also used to redirect the former homepage anchors. */
+export const DESIGN_CANVAS_PATH = "/design-canvas";
+
+export function designCanvasTemplatePath(templateId: string) {
+  return `${DESIGN_CANVAS_PATH}/${encodeURIComponent(templateId)}`;
+}
+
+export function designCanvasCategoryId(category: string) {
+  return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+/** Published templates grouped by category, in first-appearance order. Drives the nav group and the Design canvas page. */
+export const DESIGN_CANVAS_CATEGORIES = [...publishedSocialTemplates().reduce((groups, template) => {
+  groups.set(template.category, [...(groups.get(template.category) ?? []), template]);
+  return groups;
+}, new Map<string, SocialTemplate[]>())].map(([category, templates]) => ({ id: designCanvasCategoryId(category), category, templates }));
+
+/** Standalone resources, also used to redirect the former homepage anchors. The toolkit became Design canvas. */
 export const RESOURCE_PAGE_PATHS = {
-  toolkit: "/toolkit",
+  toolkit: DESIGN_CANVAS_PATH,
   "ai-skills": "/ai-resources",
 } as const;
 
@@ -35,9 +51,19 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         id: "downloads",
         label: "Downloads",
         description: "Available logos and backgrounds.",
-        keywords: "assets files png logo logomark background download",
+        keywords: "assets files png logo logomark background download zoom",
       },
     ],
+  },
+  {
+    label: "Design canvas",
+    items: DESIGN_CANVAS_CATEGORIES.map(({ id, category, templates }) => ({
+      id,
+      path: `${DESIGN_CANVAS_PATH}#${id}`,
+      label: category,
+      description: `LinkedIn graphics: ${templates.map((template) => template.title).join(", ")}.`,
+      keywords: "design canvas social linkedin graphic customize photo toolkit",
+    })),
   },
   {
     label: "Brand foundation",
@@ -90,13 +116,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
   {
     label: "Resources",
     items: [
-      {
-        id: "toolkit",
-        path: RESOURCE_PAGE_PATHS.toolkit,
-        label: "GTM & employee toolkit",
-        description: "Available resources for day-to-day work.",
-        keywords: "zoom background employee resources",
-      },
       {
         id: "ai-skills",
         path: RESOURCE_PAGE_PATHS["ai-skills"],
@@ -174,56 +193,6 @@ export const TERMS: [string, string][] = [
   ["Autonomous Subscriptions", "Relationship Commerce"],
   ["Launch, deploy, activate", "Build (as adoption verb)"],
   ["Ready on day one", "Out of the box"],
-];
-
-export type ToolkitItem = {
-  title: string;
-  body: string;
-  cta: string;
-  href: string | null;
-  status: string | null;
-  action?: "download" | "internal";
-  templateId?: string;
-};
-
-export const TOOLKIT_ITEMS: ToolkitItem[] = [
-  {
-    title: "Slide template",
-    body: "On-brand Google Slides with correct colors, fonts, and layouts. The ordergroove-slides skill builds decks for you.",
-    cta: "Open template",
-    href: null,
-    status: "Not available yet",
-  },
-  {
-    title: "Word docs",
-    body: "On-brand documents via the ordergroove-doc skill. Midnight and white, Figtree, no forbidden fonts.",
-    cta: "How it works",
-    href: null,
-    status: "Not available yet",
-  },
-  {
-    title: "Email signatures",
-    body: "Fancy and simple variants, copy-paste ready. LinkedIn-only icons, correct-contrast green links.",
-    cta: "Get your signature",
-    href: null,
-    status: "Not available yet",
-  },
-  ...publishedSocialTemplates().map((template): ToolkitItem => ({
-    title: template.title,
-    body: template.description,
-    cta: "Customize graphic",
-    href: `/toolkit/social/${template.id}`,
-    action: "internal",
-    templateId: template.id,
-    status: null,
-  })),
-  {
-    title: "Zoom backgrounds",
-    body: "Midnight canvas with the paired-circle gradient, sized for video calls.",
-    cta: "Download PNG",
-    href: "/midnight_bg.png",
-    status: null,
-  },
 ];
 
 export const BRAND_SKILLS = [

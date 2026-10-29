@@ -15,6 +15,6 @@
 - [Voice & Language Rules](/voice): how we sound, plus the pass/fail language rules
 - [Visual Identity](/visual-identity): color, logo, gradients, signature shapes
 - [Icons](/#icons): Material Symbols Rounded, icon colors, and Plain, Tinted, and Solid treatments
-- [Downloads](/#downloads): available logos and backgrounds
-- [GTM & Employee Toolkit](/toolkit): available day-to-day resources, including Zoom backgrounds
+- [Downloads](/#downloads): available logos and backgrounds, including the Zoom background
+- [Design canvas](/design-canvas): on-brand LinkedIn graphics with your photo, for new employees and events
 - [AI Resources & Guidance](/ai-resources): shared Claude skills, starting with Ordergroove Slides 2.0 beta

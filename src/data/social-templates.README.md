@@ -2,9 +2,9 @@
 
 Three approved New Employee pilot templates are registered in `PUBLISHED_SOCIAL_TEMPLATES`: `new-employee-badge` (Proud to join), `new-employee-split-light` (I've joined), and `new-employee-split-dark` (Excited to share). Each exports at 1200 × 627, has one fixed variant and one full-canvas artwork layer, and allows a required circular photo, name and optional job title. Cameron Austin reviewed these on 2026-10-28, with review due 2027-01-28. Artwork and card thumbnails live in `public/social/`. The three Figma comparison renders live only in `docs/social-references/new-employee/` and are excluded from the shipped site.
 
-Toolkit groups published templates under an `h2` for each category, in first-category appearance order from `PUBLISHED_SOCIAL_TEMPLATES`; cards within each group retain that array's order and use `h3` titles. Optional preview images appear at the top of cards with alt text `<title> design preview`. Search labels use `<category>: <title>`. The editor eyebrow uses the category, and the Design picker appears only when a template has more than one variant.
+Design canvas (`/design-canvas`) groups published templates under an `h2` for each category, in first-category appearance order from `PUBLISHED_SOCIAL_TEMPLATES`; cards within each group retain that array's order and use `h3` titles. Each category is also a link in the sidebar's Design canvas group, to `/design-canvas#<category-slug>`, highlighted while it is in view. Optional preview images appear at the top of cards with alt text `<title> design preview`. Search labels use `<category>: <title>`. The editor eyebrow uses the category, and the Design picker appears only when a template has more than one variant.
 
-The lazy editor dynamically imports `social-template-fixture.ts` only in development. Direct routes `/toolkit/social/new-hire` and `/toolkit/social/event-fixture` exercise technical geometry, not approved artwork. Event artwork is source-local and excluded with the fixture module from production output. Unknown or unpublished IDs return to Toolkit. Retired metadata remains reachable only to explain unavailability and let people delete local records.
+The lazy editor dynamically imports `social-template-fixture.ts` only in development. Direct routes `/design-canvas/new-hire` and `/design-canvas/event-fixture` exercise technical geometry, not approved artwork. Event artwork is source-local and excluded with the fixture module from production output. Unknown or unpublished IDs return to Design canvas. The former `/toolkit` and `/toolkit/social/<id>` links redirect to `/design-canvas` and `/design-canvas/<id>`. Retired metadata remains reachable only to explain unavailability and let people delete local records.
 
 ## Package an approved template
 
@@ -18,15 +18,15 @@ The lazy editor dynamically imports `social-template-fixture.ts` only in develop
 
 ### Field reference
 
-Definitions are plain JSON-compatible data. Add approved distributable asset paths to `SOCIAL_ASSETS` in `social-templates.ts`, then add entries to `PUBLISHED_SOCIAL_TEMPLATES` in the order their Toolkit cards and search entries should appear. Each template has 1 route, `/toolkit/social/<id>`, and 1 output size.
+Definitions are plain JSON-compatible data. Add approved distributable asset paths to `SOCIAL_ASSETS` in `social-templates.ts`, then add entries to `PUBLISHED_SOCIAL_TEMPLATES` in the order their Design canvas cards and search entries should appear. Each template has 1 route, `/design-canvas/<id>`, and 1 output size.
 
 | Template property | Contract |
 | --- | --- |
 | `id` | Unique lowercase kebab-case route/usage/storage identifier. Keep stable across design changes. |
 | `version` | Positive integer. Bump for every approved design or field-rule change. |
-| `status` | `pilot`, `current` or `retired`. Only pilot/current entries appear in Toolkit/search. Retired editors disable editing, saving and export, retain local records, and allow deletion. |
+| `status` | `pilot`, `current` or `retired`. Only pilot/current entries appear in Design canvas and search. Retired editors disable editing, saving and export, retain local records, and allow deletion. |
 | `title` | Card, search and editor title. |
-| `category` | Required nonempty string. Toolkit category heading and editor eyebrow; search labels start with this value. |
+| `category` | Required nonempty string. Design canvas category heading, sidebar link and editor breadcrumb; search labels start with this value. |
 | `description` | Card/search description and editor introduction. |
 | `keywords` | Space-separated search terms. |
 | `sourceUrl` | HTTPS Figma master link. Only dev fixtures may use a `repo:` source. |
@@ -145,7 +145,7 @@ Versions are limited to 10 per account/template, newest first, with a 240 px thu
 
 Stored inputs always reopen using the available template definition. Same-key, same-type fields carry over, with choice values retained only while still offered. Photo and crop carry over only if the template still has a photo. A missing variant falls back to the first. Any template version mismatch, including a rollback, shows “The design was updated.” without disabling editing or export. Only retired definitions disable creation/export. New snapshots include `fieldTypes` for safe carry-over; legacy snapshots without it are treated as text fields. Object stores are unchanged, so IndexedDB stays at schema 1. No template artwork is stored in drafts or versions.
 
-Storage errors show the specified warning and disable Save version. In-memory editing and download remain available. Cleared storage starts empty. Draft existence for the Toolkit card is read asynchronously and does not block the page. The card and editor use `MARKETING_CONTACT_URL = null` in `src/components/social/MarketingContact.tsx`; the Marketing sentence is plain text until Cameron supplies a destination.
+Storage errors show the specified warning and disable Save version. In-memory editing and download remain available. Cleared storage starts empty. Draft existence for the Design canvas card is read asynchronously and does not block the page. The Design canvas page and editor use `MARKETING_CONTACT_URL = null` in `src/components/social/MarketingContact.tsx`; the Marketing sentence is plain text until Cameron supplies a destination.
 
 ## PNG downloads and phone sharing
 

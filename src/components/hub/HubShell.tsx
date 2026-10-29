@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, X } from "lucide-react";
-import { HUB_NAV, type HubNavItem } from "@/data/hub";
+import { designCanvasTemplatePath, HUB_NAV, type HubNavItem } from "@/data/hub";
 import { publishedSocialTemplates } from "@/data/social-templates";
 import { cn } from "@/lib/utils";
 
@@ -9,7 +9,7 @@ const ALL_NAV_ITEMS: HubNavItem[] = [
   ...HUB_NAV.flatMap((group) => group.items),
   ...publishedSocialTemplates().map((template) => ({
     id: `social-${template.id}`, label: `${template.category}: ${template.title}`, description: template.description,
-    keywords: template.keywords, path: `/toolkit/social/${template.id}`,
+    keywords: template.keywords, path: designCanvasTemplatePath(template.id),
   })),
 ];
 
