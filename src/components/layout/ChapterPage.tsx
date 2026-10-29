@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { WipNotice } from "@/components/brand/WorkInProgress";
 
 /** Page frame for a standalone brand chapter. Mirrors HubSection's rhythm so a
  *  chapter reads the same whether it is visited directly or reached from the hub. */
@@ -8,11 +9,14 @@ export function ChapterPage({
   eyebrow,
   title,
   intro,
+  wip,
   children,
 }: {
   eyebrow?: string;
   title: string;
   intro?: string;
+  /** Pass isWipSection(<nav id>) so the banner follows the nav flag. */
+  wip?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -26,6 +30,7 @@ export function ChapterPage({
         </Link>
         {/* Same uncapped head as HubSection: Home sets the line lengths. */}
         <div className="mb-10">
+          {wip && <WipNotice />}
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <h1 className="text-3xl font-extrabold md:text-[42px]">{title}</h1>
           {intro && <p className="mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}

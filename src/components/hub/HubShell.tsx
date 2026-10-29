@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Menu, Search, X } from "lucide-react";
 import { designCanvasTemplatePath, HUB_NAV, type HubNavItem } from "@/data/hub";
 import { publishedSocialTemplates } from "@/data/social-templates";
+import { WipTag } from "@/components/brand/WorkInProgress";
 import { cn } from "@/lib/utils";
 
 const ALL_NAV_ITEMS: HubNavItem[] = [
@@ -107,17 +108,19 @@ export function Sidebar({
                         to={item.path}
                         onClick={onClose}
                         aria-current={activeId === item.id ? "page" : undefined}
-                        className={cn(NAV_ITEM_CLASS, "block", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                        className={cn(NAV_ITEM_CLASS, "flex items-center justify-between gap-2", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
                       >
                         {item.label}
+                        {item.wip && <WipTag />}
                       </Link>
                     ) : (
                       <button
                         onClick={() => chooseSection(item.id)}
                         aria-current={activeId === item.id ? "location" : undefined}
-                        className={cn(NAV_ITEM_CLASS, "w-full text-left", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                        className={cn(NAV_ITEM_CLASS, "flex w-full items-center justify-between gap-2 text-left", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
                       >
                         {item.label}
+                        {item.wip && <WipTag />}
                       </button>
                     )}
                   </li>
@@ -142,6 +145,7 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const wipId = useId();
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -207,13 +211,16 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
         onBlur={() => window.setTimeout(() => setFocused(false), 120)}
         placeholder={hero ? "Search brand rules and assets" : "Search the brand hub"}
         aria-label={hero ? "Search brand rules and assets" : "Search the brand hub"}
+        aria-describedby={hero ? wipId : undefined}
         className={cn(
           "w-full outline-none transition",
           hero
-            ? "h-14 rounded-lg border border-white bg-white pl-11 pr-4 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-midnight focus:border-og-green focus:ring-4 focus:ring-og-green/15"
+            ? "h-14 rounded-lg border border-white bg-white pl-11 pr-16 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-midnight focus:border-og-green focus:ring-4 focus:ring-og-green/15"
             : "h-9 rounded-lg border border-white/15 bg-white/10 pl-9 pr-12 text-sm text-white placeholder:text-white/45 focus:border-og-green/60 focus:bg-white/15 focus:ring-2 focus:ring-og-green/10"
         )}
       />
+      {/* Search is still being tuned: flagged on the Home hero search only. */}
+      {hero && <WipTag id={wipId} className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 px-2 py-1 text-[11px]" />}
       {!compact && !hero && (
         <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded-[4px] border border-white/15 px-1.5 py-0.5 text-[10px] text-white/45">
           ⌘K
@@ -234,7 +241,7 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
               >
                 <Search className="mt-0.5 shrink-0 text-og-gray-600 group-hover:text-og-green-light" size={15} />
                 <span>
-                  <span className="block text-sm font-semibold">{item.label}</span>
+                  <span className="flex items-center gap-2 text-sm font-semibold">{item.label}{item.wip && <WipTag />}</span>
                   <span className="mt-0.5 block text-xs text-og-midnight">{item.description}</span>
                 </span>
               </button>
@@ -247,6 +254,20 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
         </div>
       )}
     </div>
+  );
+}
+
+/** Masthead date of the last commit (or build), set by vite.config.ts. Noon keeps
+ *  the calendar day from shifting in the reader's time zone. */
+function LastUpdated() {
+  const date = new Date(`${__LAST_UPDATED__}T12:00:00`);
+  return (
+    <time
+      dateTime={__LAST_UPDATED__}
+      className="hidden whitespace-nowrap rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/55 xl:inline-flex"
+    >
+      Updated {date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+    </time>
   );
 }
 
@@ -274,9 +295,7 @@ export function HubShell({ activeId, children, focused = false }: { activeId: st
           <div className="ml-auto hidden md:block">
             <SearchBox />
           </div>
-          <span className="hidden rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/55 xl:inline-flex">
-            V1
-          </span>
+          <LastUpdated />
         </div>
       </header>
 
