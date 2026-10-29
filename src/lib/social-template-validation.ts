@@ -34,14 +34,17 @@ export function validateSocialTemplates(templates: SocialTemplate[], assets: Rec
       bounds(rules, label);
       if (rules.align !== undefined && !["left", "center", "right"].includes(rules.align)) fail(`${label} has unknown alignment`);
       if (rules.fontFamily !== "Figtree" || !weights.has(rules.fontWeight)) fail(`${label} must use a bundled Figtree weight`);
+      if (rules.color !== undefined) color(rules.color);
+      if (rules.opacity !== undefined && (!Number.isFinite(rules.opacity) || rules.opacity < 0.1 || rules.opacity > 1)) fail(`${label} opacity must be from 0.1 to 1`);
       if (![rules.minFontSize, rules.maxFontSize, rules.lineHeight, rules.maxLines].every(Number.isFinite) || rules.minFontSize <= 0 || rules.maxFontSize < rules.minFontSize || rules.maxFontSize > 500 || rules.lineHeight < 1 || rules.lineHeight > 2 || !Number.isInteger(rules.maxLines) || rules.maxLines < 1 || rules.minFontSize * rules.lineHeight > rules.height) fail(`${label} has impossible text rules`);
     };
-    const color = (value: string) => { if (!approvedColors.has(value.toUpperCase())) fail(`unapproved color ${value}`); };
+    const color = (value: string) => { if (typeof value !== "string" || !approvedColors.has(value.toUpperCase())) fail(`unapproved color ${value}`); };
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(template.id) || ids.has(template.id)) fail("invalid or duplicate template ID");
     ids.add(template.id);
     if (!Number.isInteger(template.version) || template.version < 1) fail("version must be a positive integer");
     if (!["pilot", "current", "retired"].includes(template.status)) fail("unknown status");
     if (!template.title.trim() || !template.owner.trim()) fail("title and owner are required");
+    if (typeof template.category !== "string" || !template.category.trim()) fail("category is required");
     if (!template.description?.trim() || !template.keywords?.trim()) fail("description and keywords are required");
     if (template.developmentOnly && !allowFixtures) fail("fixtures cannot be published");
     try {
@@ -54,6 +57,7 @@ export function validateSocialTemplates(templates: SocialTemplate[], assets: Rec
     if (![template.width, template.height].every((n) => Number.isInteger(n) && n > 0 && n <= 8192) || template.width * template.height > 50_000_000) fail("invalid output size");
     unique(template.assetIds, "Assets");
     for (const id of template.assetIds) if (!Object.prototype.hasOwnProperty.call(assets, id)) fail(`unknown asset ${id}`);
+    if (template.previewAssetId !== undefined && (typeof template.previewAssetId !== "string" || !Object.prototype.hasOwnProperty.call(assets, template.previewAssetId))) fail(`unknown preview asset ${template.previewAssetId}`);
     if (!template.variants.length) fail("at least 1 variant is required");
     unique(template.variants.map((v) => v.id), "Variants");
     for (const variant of template.variants) {

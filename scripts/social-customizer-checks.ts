@@ -3,7 +3,7 @@ import { safeReturnPath } from "../src/lib/auth-return-path";
 import { SOCIAL_TEMPLATE_FIXTURE, EVENT_TEMPLATE_FIXTURE, SOCIAL_FIXTURE_ASSETS } from "../src/data/social-template-fixture";
 import { PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS, getPublishedSocialTemplate, publishedSocialTemplates, type SocialTemplate } from "../src/data/social-templates";
 import { validateSocialTemplates } from "../src/lib/social-template-validation";
-import { layoutSocialText, photoSourceRect, socialDownloadFilename } from "../src/lib/social-renderer";
+import { dragSocialCrop, drawSocialGraphic, layoutSocialText, photoSourceRect, socialDownloadFilename } from "../src/lib/social-renderer";
 import { socialTemplateBuildErrors } from "./validate-social-templates";
 import path from "node:path";
 
@@ -64,6 +64,34 @@ assert.ok(layoutSocialText(ctx, "Zoë O’Connor-Sánchez", definition.fields[0]
 assert.equal(layoutSocialText(ctx, "W".repeat(200), definition.fields[0]), null);
 assert.equal(socialDownloadFilename(definition, { name: "../Zoë / Sánchez?" }), "ordergroove-new-hire-Zoë-Sánchez.png");
 console.log("PASS: crop bounds at all edges/zoom levels, text overflow and safe filenames");
+
+// Session 5: drag in output pixels, independent of the rendered preview size.
+for (const template of PUBLISHED_SOCIAL_TEMPLATES) {
+  const frame = template.photo!;
+  const square = { width: 1200, height: 1200 };
+  const portrait = { width: 1200, height: 1800 };
+  const start = { x: 0.5, y: 0.5, zoom: 2 };
+  const original = structuredClone(start);
+  const before = photoSourceRect(square, frame, start);
+  const moved = dragSocialCrop(start, square, frame, 12, -9);
+  const after = photoSourceRect(square, frame, moved);
+  const scale = frame.width / before.width;
+  assert.ok(Math.abs((before.x - after.x) * scale - 12) < 1e-9, `${template.id}: horizontal movement is 1:1`);
+  assert.ok(Math.abs((before.y - after.y) * scale + 9) < 1e-9, `${template.id}: vertical movement is 1:1`);
+  assert.deepEqual(start, original, "drag must not mutate the input crop");
+  assert.deepEqual(dragSocialCrop(start, square, frame, 1e6, -1e6), { x: 0, y: 1, zoom: 2 });
+  assert.deepEqual(dragSocialCrop(start, square, frame, -1e6, 1e6), { x: 1, y: 0, zoom: 2 });
+  const atOne = { x: 0.3, y: 0.6, zoom: 1 };
+  assert.deepEqual(dragSocialCrop(atOne, square, frame, 50, -50), atOne, "square at 1× has no overflow on either axis");
+  const portraitMoved = dragSocialCrop(atOne, portrait, frame, 50, -10);
+  assert.equal(portraitMoved.x, atOne.x, "portrait at 1× has no horizontal overflow");
+  assert.ok(portraitMoved.y > atOne.y, "portrait at 1× moves vertically");
+  const landscapeMoved = dragSocialCrop(atOne, { width: 1800, height: 1200 }, frame, -10, 50);
+  assert.equal(landscapeMoved.y, atOne.y, "landscape at 1× has no vertical overflow");
+  assert.ok(landscapeMoved.x > atOne.x);
+  assert.deepEqual(dragSocialCrop(start, square, frame, 0, 0), start);
+}
+console.log("PASS: all New Employee designs drag 1:1, clamp at edges, preserve no-overflow axes, and distinguish portrait/square at 1×");
 
 // Storage planning is pure; the browser acceptance runner also exercises the real IndexedDB transactions.
 import {
@@ -204,9 +232,10 @@ console.log("PASS: forward/rollback carry-over, removed fields/types/options/pho
 assert.equal(socialDownloadFilename({ ...event, fields: event.fields.filter(field => field.type !== "text") }, {}), "ordergroove-event-fixture.png");
 const listFirst = { ...fixture(), developmentOnly: false, id: "list-first" };
 const listSecond = { ...fixture(), developmentOnly: false, id: "list-second", status: "current" as const };
+const originalPublished = [...PUBLISHED_SOCIAL_TEMPLATES];
 PUBLISHED_SOCIAL_TEMPLATES.push(listFirst, fixture(), { ...listFirst, id: "retired", status: "retired" }, listSecond);
-assert.deepEqual(publishedSocialTemplates().map(template => template.id), ["list-first", "list-second"]);
-PUBLISHED_SOCIAL_TEMPLATES.splice(0);
+assert.deepEqual(publishedSocialTemplates().map(template => template.id), [...originalPublished.map(template => template.id), "list-first", "list-second"]);
+PUBLISHED_SOCIAL_TEMPLATES.splice(originalPublished.length);
 console.log("PASS: no-text filenames and published-template list order/filtering");
 
 const prototypeKey = fixture(); prototypeKey.fields[0].key = "toString";
@@ -247,3 +276,78 @@ assert.equal(migratedPhotoDraft.photoId, state.photoId);
 assert.deepEqual(migratedPhotoDraft.crop, state.crop);
 assert.deepEqual(migratedPhotoDraft.fields, state.fields);
 console.log("PASS: one-time forward/rollback draft migration, current field types, retained photo/crop and retired/matching no-op");
+
+// Session 4: new schema rules apply to editable fields and locked text alike.
+assert.deepEqual(validateSocialTemplates(PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS), []);
+assert.deepEqual(PUBLISHED_SOCIAL_TEMPLATES.map(template => template.id), ["new-employee-badge", "new-employee-split-light", "new-employee-split-dark"]);
+for (const template of PUBLISHED_SOCIAL_TEMPLATES) {
+  assert.equal(template.category, "New Employee");
+  assert.equal(template.width, 1200);
+  assert.equal(template.height, 627);
+  assert.ok(SOCIAL_ASSETS[template.previewAssetId!]);
+  assert.equal(template.lockedLayers.length, 1);
+  assert.equal(template.lockedLayers[0].type, "asset");
+}
+const invalidSession4Cases: [string, (template: SocialTemplate) => void][] = [
+  ["category", t => { t.category = " "; }],
+  ["category", t => { delete (t as Partial<SocialTemplate>).category; }],
+  ["category", t => { Object.assign(t, { category: 7 }); }],
+  ["preview asset", t => { t.previewAssetId = "missing"; }],
+  ["preview asset", t => { t.previewAssetId = "toString"; }],
+  ["preview asset", t => { Object.assign(t, { previewAssetId: null }); }],
+  ["color", t => { t.fields[0].color = "#123456"; }],
+  ["color", t => { Object.assign(t.fields[0], { color: 12 }); }],
+  ["color", t => { Object.assign(t.lockedLayers[0], { color: "#123456" }); }],
+  ["opacity", t => { t.fields[0].opacity = 0.099; }],
+  ["opacity", t => { t.fields[0].opacity = 1.001; }],
+  ["opacity", t => { Object.assign(t.fields[0], { opacity: "0.7" }); }],
+  ["opacity", t => { Object.assign(t.lockedLayers[0], { opacity: 0 }); }],
+];
+for (const [message, mutate] of invalidSession4Cases) {
+  const template = fixture(); mutate(template);
+  assert.ok(validateSocialTemplates([template], SOCIAL_ASSETS, true).some(error => error.includes(message)), message);
+  template.developmentOnly = false; template.sourceUrl = "https://figma.com/design/example";
+  PUBLISHED_SOCIAL_TEMPLATES.push(template);
+  assert.ok(runBuildGuard().some(error => error.includes(message)), `build guard: ${message}`);
+  PUBLISHED_SOCIAL_TEMPLATES.pop();
+}
+for (const opacity of [0.1, 0.7, 1]) {
+  const template = fixture();
+  Object.assign(template.fields[0], { color: "#D8D7DF", opacity });
+  Object.assign(template.lockedLayers[0], { color: "#17132F", opacity });
+  template.previewAssetId = "new-employee-badge-preview";
+  assert.deepEqual(validateSocialTemplates([template], SOCIAL_ASSETS, true), []);
+}
+console.log("PASS: published New Employee templates, required category, optional registered preview, token text colors and opacity boundaries, including build guard");
+
+const painted: { text: string; color: string; opacity: number }[] = [];
+const paintContext = {
+  font: "", fillStyle: "", globalAlpha: 1,
+  save() { paintStack.push({ color: this.fillStyle, opacity: this.globalAlpha }); },
+  restore() { const saved = paintStack.pop()!; this.fillStyle = saved.color; this.globalAlpha = saved.opacity; },
+  fillText(text: string) { painted.push({ text, color: this.fillStyle, opacity: this.globalAlpha }); },
+  measureText(value: string) { return { width: value.length, actualBoundingBoxAscent: 10, actualBoundingBoxDescent: 2 }; },
+  fillRect() {}, drawImage() {},
+};
+const paintStack: { color: string; opacity: number }[] = [];
+const mockCanvas = () => ({ width: 0, height: 0, getContext: () => paintContext }) as unknown as HTMLCanvasElement;
+const priorDocument = Object.getOwnPropertyDescriptor(globalThis, "document");
+Object.defineProperty(globalThis, "document", { configurable: true, value: { createElement: mockCanvas } });
+try {
+  const template = fixture(); delete template.photo;
+  Object.assign(template.lockedLayers[0], { color: "#D8D7DF", opacity: 0.1 });
+  Object.assign(template.fields[0], { color: "#17132F", opacity: 0.7 });
+  for (const variant of template.variants) {
+    painted.length = 0;
+    assert.deepEqual(drawSocialGraphic(mockCanvas(), template, { fields: { name: "Name", jobTitle: "Job title" }, variantId: variant.id, crop: { x: 0.5, y: 0.5, zoom: 1 } }, { fontsLoaded: true, assets: {} }, null), {});
+    assert.deepEqual(painted, [
+      { text: "FIXTURE", color: "#D8D7DF", opacity: 0.1 },
+      { text: "Name", color: "#17132F", opacity: 0.7 },
+      { text: "Job title", color: variant.foreground, opacity: 1 },
+    ]);
+  }
+} finally {
+  if (priorDocument) Object.defineProperty(globalThis, "document", priorDocument);
+  else Reflect.deleteProperty(globalThis, "document");
+}
+console.log("PASS: editable and locked text overrides render without leaking color/opacity; omitted rules retain full-opacity variant foreground");

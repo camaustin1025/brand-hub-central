@@ -52,6 +52,9 @@ export function layoutSocialText(ctx: CanvasRenderingContext2D, value: string, r
 }
 
 function paintText(ctx: CanvasRenderingContext2D, layout: TextLayout, rules: TextRules) {
+  ctx.save();
+  ctx.fillStyle = rules.color ?? ctx.fillStyle;
+  ctx.globalAlpha = rules.opacity ?? 1;
   ctx.font = `${rules.fontWeight} ${layout.fontSize}px Figtree`;
   ctx.textBaseline = "alphabetic";
   ctx.textAlign = rules.align ?? "left";
@@ -62,6 +65,7 @@ function paintText(ctx: CanvasRenderingContext2D, layout: TextLayout, rules: Tex
   const lineHeight = layout.fontSize * rules.lineHeight;
   const baseline = rules.y + (lineHeight - ascent - descent) / 2 + ascent;
   layout.lines.forEach((line, index) => ctx.fillText(line, x, baseline + index * lineHeight));
+  ctx.restore();
 }
 
 export function photoSourceRect(photo: Pick<ProcessedPhoto, "width" | "height">, frame: NonNullable<SocialTemplate["photo"]>, crop: PhotoCropValue) {
@@ -70,6 +74,20 @@ export function photoSourceRect(photo: Pick<ProcessedPhoto, "width" | "height">,
   const width = frame.width / scale;
   const height = frame.height / scale;
   return { x: (photo.width - width) * Math.min(1, Math.max(0, crop.x)), y: (photo.height - height) * Math.min(1, Math.max(0, crop.y)), width, height };
+}
+
+/** Move the photo by logical output pixels, using the same source window as rendering. */
+export function dragSocialCrop(crop: PhotoCropValue, photoSize: Pick<ProcessedPhoto, "width" | "height">, frame: NonNullable<SocialTemplate["photo"]>, dxOutput: number, dyOutput: number): PhotoCropValue {
+  const source = photoSourceRect(photoSize, frame, crop);
+  const scale = frame.width / source.width;
+  const move = (position: number, overflow: number, delta: number) => overflow > 0
+    ? Math.min(1, Math.max(0, position - delta / scale / overflow))
+    : position;
+  return {
+    ...crop,
+    x: move(crop.x, photoSize.width - source.width, dxOutput),
+    y: move(crop.y, photoSize.height - source.height, dyOutput),
+  };
 }
 
 function paintSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate, inputs: SocialInputs, resources: SocialResources, photo: ProcessedPhoto | null): SocialFieldErrors {

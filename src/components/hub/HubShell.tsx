@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const ALL_NAV_ITEMS: HubNavItem[] = [
   ...HUB_NAV.flatMap((group) => group.items),
   ...publishedSocialTemplates().map((template) => ({
-    id: `social-${template.id}`, label: template.title, description: template.description,
+    id: `social-${template.id}`, label: `${template.category}: ${template.title}`, description: template.description,
     keywords: template.keywords, path: `/toolkit/social/${template.id}`,
   })),
 ];
@@ -224,20 +224,20 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
 
 /** The hub chrome: fixed masthead, section sidebar, and search. Shared by the
  *  single-page hub and the standalone chapter pages so navigation never changes shape. */
-export function HubShell({ activeId, children }: { activeId: string; children: ReactNode }) {
+export function HubShell({ activeId, children, focused = false }: { activeId: string; children: ReactNode; focused?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-white/10 bg-og-midnight text-white">
         <div className="flex h-full items-center gap-4 px-4 md:px-6">
-          <button
+          {!focused && <button
             onClick={() => setMenuOpen((value) => !value)}
             className="rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white lg:hidden"
             aria-label={menuOpen ? "Close section menu" : "Open section menu"}
           >
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
-          </button>
+          </button>}
           <Link to="/" className="flex shrink-0 items-center" aria-label="Ordergroove brand hub home">
             <img src="/logo-dark.png" alt="Ordergroove" className="h-12 w-auto md:h-14" />
           </Link>
@@ -253,12 +253,12 @@ export function HubShell({ activeId, children }: { activeId: string; children: R
       </header>
 
       <div className="h-16" />
-      <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />
+      {!focused && <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />}
 
-      <main className="lg:ml-[284px]">
-        <div className="bg-og-midnight px-4 py-3 md:hidden">
+      <main className={cn(!focused && "lg:ml-[284px]")}>
+        {!focused && <div className="bg-og-midnight px-4 py-3 md:hidden">
           <SearchBox compact />
-        </div>
+        </div>}
         {children}
       </main>
     </div>

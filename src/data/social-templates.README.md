@@ -1,13 +1,17 @@
 # Social templates
 
-No real template is approved or published. `PUBLISHED_SOCIAL_TEMPLATES` is empty, so production Toolkit and search have no social cards. The lazy editor dynamically imports `social-template-fixture.ts` only in development. Direct routes `/toolkit/social/new-hire` and `/toolkit/social/event-fixture` exercise technical geometry, not approved artwork. Event artwork is source-local and excluded with the fixture module from production output. Unknown or unpublished IDs return to Toolkit. Retired metadata remains reachable only to explain unavailability and let people delete local records.
+Three approved New Employee pilot templates are registered in `PUBLISHED_SOCIAL_TEMPLATES`: `new-employee-badge` (Proud to join), `new-employee-split-light` (I've joined), and `new-employee-split-dark` (Excited to share). Each exports at 1200 × 627, has one fixed variant and one full-canvas artwork layer, and allows a required circular photo, name and optional job title. Cameron Austin reviewed these on 2026-10-28, with review due 2027-01-28. Artwork and card thumbnails live in `public/social/`. The three Figma comparison renders live only in `docs/social-references/new-employee/` and are excluded from the shipped site.
+
+Toolkit groups published templates under an `h2` for each category, in first-category appearance order from `PUBLISHED_SOCIAL_TEMPLATES`; cards within each group retain that array's order and use `h3` titles. Optional preview images appear at the top of cards with alt text `<title> design preview`. Search labels use `<category>: <title>`. The editor eyebrow uses the category, and the Design picker appears only when a template has more than one variant.
+
+The lazy editor dynamically imports `social-template-fixture.ts` only in development. Direct routes `/toolkit/social/new-hire` and `/toolkit/social/event-fixture` exercise technical geometry, not approved artwork. Event artwork is source-local and excluded with the fixture module from production output. Unknown or unpublished IDs return to Toolkit. Retired metadata remains reachable only to explain unavailability and let people delete local records.
 
 ## Package an approved template
 
 ### Figma handoff checklist
 
 1. Supply the approved artwork PNG at the exact output width and height. Leave the photo area and intended background areas transparent so the photo and variant background can show through. Include locked graphics only, with no editable text baked in. For different artwork per variant, supply 1 PNG for each variant. Foreground artwork is drawn over the photo.
-2. Supply the HTTPS Figma master link, template title, description, search keywords, owner, approval and review dates. Only distributable artwork belongs in `public/`; the sign-in screen does not protect static files.
+2. Supply the HTTPS Figma master link, template title, category, description, search keywords, owner, approval and review dates. Include an optional card preview asset. Only distributable artwork belongs in `public/`; the sign-in screen does not protect static files.
 3. Supply every photo, field and locked-layer box as `x`, `y`, `width`, `height` in output pixels, measured from the top left. All boxes must stay inside the output. Specify the photo shape, requirement and maximum zoom, or omit the photo entirely.
 4. Supply field keys, types, labels, requirement and text rules: bundled Figtree weight, minimum/maximum size, line height, maximum lines and horizontal alignment. Text stays top-aligned. Supply date format, fixed time label, choice options and the optional Google-name prefill where applicable. Check long and accented values at minimum size.
 5. Supply variants with stable IDs, readable labels, background and foreground colors from `src/data/tokens.ts`. No invented colorways or unfinished brand decisions. Check the PNG and preview against the master before approval.
@@ -22,6 +26,7 @@ Definitions are plain JSON-compatible data. Add approved distributable asset pat
 | `version` | Positive integer. Bump for every approved design or field-rule change. |
 | `status` | `pilot`, `current` or `retired`. Only pilot/current entries appear in Toolkit/search. Retired editors disable editing, saving and export, retain local records, and allow deletion. |
 | `title` | Card, search and editor title. |
+| `category` | Required nonempty string. Toolkit category heading and editor eyebrow; search labels start with this value. |
 | `description` | Card/search description and editor introduction. |
 | `keywords` | Space-separated search terms. |
 | `sourceUrl` | HTTPS Figma master link. Only dev fixtures may use a `repo:` source. |
@@ -30,7 +35,8 @@ Definitions are plain JSON-compatible data. Add approved distributable asset pat
 | `developmentOnly` | Optional boolean for technical fixtures only. Never set on published entries. |
 | `width`, `height` | Positive integer output pixels, at most 8192 per side and 50 megapixels total. |
 | `assetIds` | Unique IDs from `SOCIAL_ASSETS` for every referenced artwork file. Empty is allowed. |
-| `variants` | At least 1 `{ id, label, background, foreground }`. IDs are unique/nonempty, colors are exact token hex values. Foreground colors apply to all editable and locked text. |
+| `previewAssetId` | Optional ID that must exist as an own entry in `SOCIAL_ASSETS`. Used for the card thumbnail, independent of composition `assetIds`. The build guard also verifies the registered file exists. |
+| `variants` | At least 1 `{ id, label, background, foreground }`. IDs are unique/nonempty, colors are exact token hex values. Foreground is the default color for editable and locked text. A single variant hides the Design picker. |
 | `lockedLayers` | Ordered array of locked rectangles, ellipses, artwork or text. Empty is allowed. See below. |
 | `photo` | Optional single frame: bounds plus `required` boolean, `shape` (`rect` or `ellipse`) and `maxZoom` from 1 to 5. Omit for no upload/crop controls, stored photo or placeholder. |
 | `fields` | At least 1 editable field, in form order. See below. |
@@ -45,6 +51,8 @@ Every box uses `x`, `y`, `width`, `height` in output pixels. Text fields and loc
 | `lineHeight` | Multiplier from 1 to 2. The minimum-size line must fit the box height. |
 | `maxLines` | Positive integer. Values shrink/wrap within these limits; overflow shows a field error and blocks export. |
 | `align` | Optional `left`, `center` or `right`, default `left`. Horizontal alignment only; text stays top-aligned. |
+| `color` | Optional exact approved hex token from `src/data/tokens.ts`. Defaults to the selected variant's `foreground`. Applies to editable and locked text. |
+| `opacity` | Optional finite number from 0.1 to 1 inclusive. Defaults to 1. Applies only while drawing that text, so later text and artwork keep their own opacity. |
 
 Every editable field also has:
 
@@ -65,7 +73,7 @@ Locked layers each have a unique `id` plus bounds:
 | --- | --- |
 | `rect`, `ellipse` | `color`, an exact token hex value. |
 | `asset` | Either `assetId` for all variants or `assetIdByVariant: { [variantId]: assetId }`. The map must cover every variant exactly, without unknown variant IDs. All assets must be declared in `assetIds`. Never provide both properties. |
-| `text` | Nonempty `text`, plus all shared text rules including optional `align`. Uses the selected variant's foreground. |
+| `text` | Nonempty `text`, plus all shared text rules including optional `align`, `color` and `opacity`. Defaults to the selected variant's foreground at full opacity. |
 
 ### Full example entry
 
@@ -77,6 +85,7 @@ This is illustrative data, not an approved or published template. The example as
   version: 1,
   status: "pilot",
   title: "Team event graphic",
+  category: "Events",
   description: "Add the event details and choose a design for your graphic.",
   keywords: "team event date time location social graphic",
   sourceUrl: "https://www.figma.com/design/REPLACE_WITH_APPROVED_MASTER",
@@ -107,9 +116,11 @@ This is illustrative data, not an approved or published template. The example as
 
 ### Draw order, approval and updates
 
-The shared preview/export renderer paints the variant background, then the clipped photo (or the editor's empty photo region if a frame exists), then locked layers in array order, then editable fields in array order. Artwork transparency exposes lower layers. An absent photo definition paints no placeholder. There is no editable text color, vertical alignment or text transform.
+The shared preview/export renderer paints the variant background, then the clipped photo (or the editor's empty photo region if a frame exists), then locked layers in array order, then editable fields in array order. Artwork transparency exposes lower layers. An absent photo definition paints no placeholder. Text color and opacity belong to template rules; employees cannot change them. There are no vertical-alignment or text-transform controls.
 
 Run `npm run test:social` in `TZ=America/Los_Angeles` and `TZ=Pacific/Auckland`, then `npm run build` and `npm run lint`. The build rejects invalid definitions and missing/unsafe production assets. Compare preview and PNG with the Figma master, check long/short/accented values, every variant, crop edges where relevant, and mobile sharing. Obtain Cameron's visual approval before adding an entry as `pilot` or `current`. Publishing code and applying database migrations are separate approvals.
+
+The Session 4 tests cover required/nonblank string categories, missing or inherited preview IDs, token-only text colors, numeric opacity bounds (including 0.1 and 1), and the same rejections through the build guard. Rendering checks cover editable and locked text overrides and confirm omitted rules still use the selected foreground at full opacity without inheriting a previous text layer's opacity. Browser checks cover category headings/card order/preview alt text, category search labels, the hidden single-variant picker, Figma text alignment, long/overflow/empty values, photo crop controls and full-size PNG parity.
 
 For each approved design change, replace the artwork/rules and bump `version`. Both higher and lower saved-version mismatches show “The design was updated.” and remain fully editable/exportable on the available design. Keep values only when key and field type match; a choice must still exist. Keep photo/crop only when a photo definition remains. Keep a surviving variant, otherwise use the first. Do not restore old artwork. Retiring a template hides its card/search entry and disables creation/export while preserving local deletion and Marketing contact.
 

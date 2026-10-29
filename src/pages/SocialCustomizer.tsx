@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { Navigate, useParams } from "react-router-dom";
-import { Download } from "lucide-react";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Download, Info, X, ZoomIn, ZoomOut } from "lucide-react";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { HubShell } from "@/components/hub/HubShell";
-import { ChapterPage } from "@/components/layout/ChapterPage";
 import { Button } from "@/components/ui/button";
-import { PhotoCrop } from "@/components/social/PhotoCrop";
+import { PhotoPosition } from "@/components/social/PhotoPosition";
 import { MarketingContact } from "@/components/social/MarketingContact";
-import { getPublishedSocialTemplate, PUBLISHED_SOCIAL_TEMPLATES, type SocialTemplate } from "@/data/social-templates";
+import { getPublishedSocialTemplate, publishedSocialTemplates, PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS, type SocialTemplate } from "@/data/social-templates";
+import { cn } from "@/lib/utils";
 import { canvasBlob, processSocialPhoto, restoreSocialPhoto, type ProcessedPhoto } from "@/lib/social-photo";
 import {
   currentSocialInputs, currentSocialPhotoId, deleteSocialRecord, isFirstSocialDownload, loadSocialState, migratedSocialDraft, saveSocialDraft, saveSocialVersion,
@@ -39,7 +39,7 @@ function VersionThumbnail({ blob }: { blob: Blob }) {
     setUrl(next);
     return () => URL.revokeObjectURL(next);
   }, [blob]);
-  return url ? <img src={url} alt="" className="aspect-square w-full object-contain" /> : null;
+  return url ? <img src={url} alt="" className="aspect-[1200/627] w-full object-contain" /> : null;
 }
 
 async function thumbnailFor(png: Blob): Promise<Blob> {
@@ -56,10 +56,13 @@ async function thumbnailFor(png: Blob): Promise<Blob> {
 }
 
 function SocialEditor({ definition, initialName, ownerUserId, assets }: { definition: SocialTemplate; initialName: string; ownerUserId: string; assets?: Record<string, string> }) {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState<SocialInputs>(() => emptyInputs(definition, initialName));
   const [resources, setResources] = useState<SocialResources | null>(null);
   const [photo, setPhoto] = useState<ProcessedPhoto | null>(null);
   const [photoBusy, setPhotoBusy] = useState(false);
+  const [switching, setSwitching] = useState(false);
+  const [storageInfoOpen, setStorageInfoOpen] = useState(false);
   const [photoError, setPhotoError] = useState("");
   const [templateError, setTemplateError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<SocialFieldErrors>({});
@@ -156,7 +159,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
           await enqueue(() => saveSocialDraft(migrated, definition.photo ? blob : null));
           if (!active) return;
         }
-        setSaveStatus("Saved in this browser");
+        setSaveStatus("Saved");
       }
     }).catch(() => { if (active) failStorage(); }).finally(() => { if (active) setLocalReady(true); });
     return () => { active = false; };
@@ -188,7 +191,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
       dispatched = true;
       pendingSave.current = null;
       void enqueue(() => saveSocialDraft(saved, blob)).then(() => {
-        if (mounted.current && generation === saveGeneration.current && !pendingSave.current) { setHasDraft(true); setSaveStatus("Saved in this browser"); }
+        if (mounted.current && generation === saveGeneration.current && !pendingSave.current) { setHasDraft(true); setSaveStatus("Saved"); }
       }).catch(failStorage);
     };
     pendingSave.current = flush;
@@ -242,20 +245,45 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
       const thumbnail = await thumbnailFor(png);
       const result = await enqueue(() => saveSocialVersion(saved, blob, thumbnail, downloaded));
       versionsRef.current = result.versions;
-      if (mounted.current) { setVersions(result.versions); if (!pendingSave.current) setSaveStatus("Saved in this browser"); }
+      if (mounted.current) { setVersions(result.versions); if (!pendingSave.current) setSaveStatus("Saved"); }
       return { firstDownload: result.firstDownload };
     } catch { failStorage(); return null; }
   };
   const saveVersion = async () => {
-    setAttempted(true);
     if (!validGraphic || !resources || storageFailed.current) return;
     setExporting(true); setStatus(""); setExportError("");
     try {
       const png = preparedPng ?? await exportSocialPng(definition, inputs, resources, photo);
       pendingSave.current?.();
-      if (await persistVersion(snapshot(), photo?.blob ?? null, png, false)) setStatus("Version saved in this browser.");
+      if (await persistVersion(snapshot(), photo?.blob ?? null, png, false)) setStatus("Version saved");
     } catch { setExportError("PNG couldn't be created. Try again."); }
     finally { if (mounted.current) setExporting(false); }
+  };
+
+  const removePhoto = () => {
+    photoRequest.current += 1;
+    replacePhoto(null, null);
+    setPhotoError("");
+    updateInputs({ ...inputs, crop: { ...DEFAULT_PHOTO_CROP } });
+  };
+
+  const switchDesign = async (target: SocialTemplate) => {
+    if (target.id === definition.id || switching || storageFailed.current) return;
+    setSwitching(true);
+    const saved = snapshot();
+    const carried: SocialSnapshot = {
+      ...currentSocialInputs(saved, target),
+      ownerUserId, templateId: target.id, templateVersion: target.version,
+      fieldTypes: Object.fromEntries(target.fields.map((field) => [field.key, field.type])),
+      photoId: currentSocialPhotoId(saved, target),
+    };
+    try {
+      pendingSave.current?.();
+      await saveQueue.current;
+      await enqueue(() => saveSocialDraft(carried, target.photo ? photo?.blob ?? null : null));
+      if (mounted.current) navigate(`/toolkit/social/${target.id}`);
+    } catch { failStorage(); }
+    finally { if (mounted.current) setSwitching(false); }
   };
   const download = async (event: FormEvent) => {
     event.preventDefault(); setAttempted(true);
@@ -280,10 +308,10 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
         window.setTimeout(() => { URL.revokeObjectURL(url); downloadUrls.current.delete(url); }, 30_000);
       }
       pendingSave.current?.();
-      if (mounted.current) setStatus("PNG ready.");
+      if (mounted.current) setStatus("PNG ready");
       const persisted = await persistVersion(saved, blob, png!, true);
       recordSocialUsage(definition, ownerUserId, "downloaded", persisted?.firstDownload ?? firstDownload);
-      if (mounted.current && persisted) setStatus("PNG ready. Saved to your recent versions.");
+      if (mounted.current && persisted) setStatus("PNG ready");
     } catch (error) {
       if (mounted.current && !(error instanceof Error && error.name === "AbortError")) setExportError("PNG couldn't be created. Try again.");
     } finally { if (mounted.current) setExporting(false); }
@@ -315,110 +343,143 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
         replacePhoto(null, null); setInputs(emptyInputs(definition, initialName)); setChanged(0); setHasDraft(false);
         setTouched({}); setAttempted(false); setDesignUpdated(false); setPreparedPng(null);
       }
-      setSaveStatus(""); setStatus(versionId ? "Version deleted." : "Draft deleted.");
+      setSaveStatus(""); setStatus(versionId ? "Version deleted" : "Draft deleted");
     } catch { failStorage(); }
   };
 
   const variant = definition.variants.find((item) => item.id === inputs.variantId) ?? definition.variants[0];
-  const canAct = localReady && !exporting && !photoBusy;
+  const canAct = localReady && !exporting && !photoBusy && !switching;
+  const designs = publishedSocialTemplates().filter((template) => template.category === definition.category);
   return (
-    <HubShell activeId="toolkit">
-      <ChapterPage eyebrow="Employee toolkit" title={definition.title} intro={definition.description}>
-        {import.meta.env.DEV && definition.developmentOnly && <p className="mb-6 rounded-lg border border-border bg-white p-4 text-sm">Development fixture. These shapes are for testing and are not approved artwork.</p>}
-        {designUpdated && <p role="status" className="mb-6 text-sm">The design was updated.</p>}
-        {unavailable && <div role="status" className="mb-6 space-y-2 rounded-lg border border-border bg-white p-4 text-sm"><p>This graphic is no longer available. Your inputs stay in this browser until you delete them.</p><MarketingContact /></div>}
-        <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
-          <figure className="min-w-0">
-            {!unavailable && <div className="overflow-hidden rounded-lg border border-border bg-white">
+    <HubShell activeId="toolkit" focused>
+      <div className="sticky top-16 z-30 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-border bg-white px-4 py-3 lg:px-6">
+        <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+          <Link to="/toolkit" className="action-focus text-muted-foreground hover:underline">Toolkit</Link>
+          <span aria-hidden="true" className="text-og-midnight/30">/</span>
+          <Link to={`/toolkit#social-${definition.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} className="action-focus text-muted-foreground hover:underline">{definition.category}</Link>
+          <span aria-hidden="true" className="text-og-midnight/30">/</span>
+          <h1 className="text-base font-semibold leading-6">{definition.title}</h1>
+        </nav>
+        <div className="flex w-full items-center justify-end gap-2 sm:w-auto sm:gap-3">
+          <p role="status" aria-live="polite" className="mr-auto text-xs text-muted-foreground sm:mr-1">{storageError ? "Not saved" : switching ? "Switching…" : status || saveStatus}</p>
+          <Button type="button" variant="outline" onClick={() => void saveVersion()} disabled={!canAct || !validGraphic || storageError} aria-describedby={storageError ? "social-storage-error" : undefined} className="min-h-11 bg-white px-4 text-og-midnight hover:bg-muted">Save version</Button>
+          <Button type="submit" form="social-editor-form" disabled={!canAct || !resources || !!templateError || unavailable || (shareSupported && validGraphic && !preparedPng)} className="min-h-11 px-4">
+            <Download size={16} aria-hidden="true" />{exporting ? "Preparing PNG…" : shareSupported ? "Save to Photos" : "Download PNG"}
+          </Button>
+        </div>
+      </div>
+      <div className="flex min-h-[calc(100svh-137px)] min-w-0 flex-col lg:flex-row">
+        <section aria-label="Graphic workspace" className="min-w-0 flex-1 bg-[#F5F5F8] px-4 py-8 sm:p-10 lg:px-12 lg:py-16">
+          <div className="mx-auto w-full max-w-[760px] space-y-6">
+            {import.meta.env.DEV && definition.developmentOnly && <p className="text-sm">Development fixture. These shapes are for testing and are not approved artwork.</p>}
+            {designUpdated && <p role="status" className="text-sm">The design was updated.</p>}
+            {unavailable && <p role="status" className="text-sm">This graphic is no longer available. Your inputs stay in this browser until you delete them.</p>}
+            {!unavailable && <div className="relative bg-white shadow-sm ring-1 ring-border">
               <canvas ref={canvasRef} width={definition.width} height={definition.height} role="img"
                 aria-label={`${definition.title} preview. ${definition.fields.map((field) => `${field.label}: ${formatSocialField(field, inputs.fields[field.key] ?? "") || "empty"}`).join(". ")}. ${variant.label} design.`}
-                aria-describedby="graphic-caption" className="block h-auto w-full" style={{ aspectRatio: `${definition.width} / ${definition.height}` }} />
+                className="block h-auto w-full" style={{ aspectRatio: `${definition.width} / ${definition.height}` }} />
+              <PhotoPosition template={definition} photo={photo} crop={inputs.crop} canvasRef={canvasRef} disabled={!canAct}
+                onChange={(crop) => updateInputs({ ...inputs, crop })} onChoose={() => fileRef.current?.click()} onFile={(file) => void choosePhoto(file)} />
             </div>}
-            <figcaption id="graphic-caption" className="mt-3 text-sm text-muted-foreground">{definition.width} × {definition.height} pixels. The PNG uses the same layout as this preview.</figcaption>
-          </figure>
-          <form onSubmit={download} noValidate className="min-w-0 space-y-6 rounded-lg border border-border bg-white p-6">
-            <fieldset disabled={!canAct || unavailable} className="min-w-0 space-y-5">
-              <legend className="sr-only">Customize graphic</legend>
-              {definition.fields.map((field) => {
-                const error = (touched[field.key] === true || attempted) && Object.prototype.hasOwnProperty.call(fieldErrors, field.key) ? fieldErrors[field.key] : undefined;
-                const qualifiers = [field.type === "time" ? field.timeZoneLabel : null, !field.required ? "optional" : null].filter(Boolean).join(", ");
-                const inputProps = {
-                  id: `social-${field.key}`, required: field.required, value: inputs.fields[field.key] ?? "",
-                  "aria-invalid": !!error, "aria-describedby": error ? `error-${field.key}` : undefined,
-                  className: "action-focus min-h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base",
-                  onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-                    setTouched((previous) => ({ ...previous, [field.key]: true }));
-                    updateInputs({ ...inputs, fields: { ...inputs.fields, [field.key]: event.target.value } });
-                  },
-                };
-                return <div key={field.key}>
-                  <label htmlFor={`social-${field.key}`} className="mb-2 block text-sm font-semibold">{field.label}{qualifiers && <span className="font-normal"> ({qualifiers})</span>}</label>
-                  {field.type === "choice" ? <select {...inputProps}>
-                    <option value="">Choose {field.label.toLowerCase()}</option>
-                    {field.options.map((option) => <option key={option} value={option}>{option}</option>)}
-                  </select> : <input {...inputProps} type={field.type} autoComplete="off" />}
-                  {error && <p id={`error-${field.key}`} role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
-                </div>;
-              })}
-              {definition.photo && <>
-              <div className="space-y-2">
-                <Button type="button" size="sm" disabled={photoBusy} onClick={() => fileRef.current?.click()} aria-describedby="photo-help photo-feedback">{photoBusy ? "Reading photo…" : photo ? "Replace photo" : "Add photo"}</Button>
-                <input ref={fileRef} type="file" accept="image/*,.heic,.heif" aria-label="Photo" hidden onChange={(event) => {
-                  const file = event.currentTarget.files?.[0]; event.currentTarget.value = "";
-                  if (file) void choosePhoto(file);
-                }} />
-                <p id="photo-help" className="text-sm text-muted-foreground">Up to 25 MB and 50 megapixels. Your photo stays on this device.</p>
-                <div id="photo-feedback">
-                  {photoError && <p role="alert" className="text-sm text-destructive">{photoError}</p>}
-                  {!photo && definition.photo?.required && !photoError && <p className="text-sm text-muted-foreground">Add a photo before downloading.</p>}
-                </div>
+            {photo && definition.photo && <div className="mx-auto flex max-w-[280px] items-center gap-3">
+              <ZoomOut size={18} aria-hidden="true" className="shrink-0 text-og-midnight/60" />
+              <input type="range" min="1" max={definition.photo.maxZoom} step="0.05" value={inputs.crop.zoom} disabled={!canAct || unavailable}
+                aria-label="Zoom" aria-valuetext={`${inputs.crop.zoom.toFixed(2)} times`} className="action-focus h-6 min-w-0 flex-1 accent-og-midnight"
+                onChange={(event) => updateInputs({ ...inputs, crop: { ...inputs.crop, zoom: Number(event.target.value) } })} />
+              <ZoomIn size={18} aria-hidden="true" className="shrink-0 text-og-midnight/60" />
+            </div>}
+            {designs.length > 1 && <div className="flex flex-wrap items-center gap-3">
+              <span className="mr-1 text-sm font-semibold">Design</span>
+              <div className="flex min-w-0 flex-1 gap-3">
+                {designs.map((design) => <button key={design.id} type="button" aria-label={`Switch to ${design.title}`} aria-current={design.id === definition.id ? "true" : undefined}
+                  disabled={!canAct || storageError || unavailable} onClick={() => void switchDesign(design)}
+                  className={cn("action-focus min-w-0 max-w-[120px] flex-1 overflow-hidden rounded border border-border bg-white transition-shadow hover:ring-2 hover:ring-og-midnight/30", design.id === definition.id && "ring-2 ring-og-midnight ring-offset-2 ring-offset-background")}>
+                  <img src={SOCIAL_ASSETS[design.previewAssetId!]} alt="" width={design.width} height={design.height} className="h-auto w-full" />
+                </button>)}
               </div>
-              <PhotoCrop value={inputs.crop} onChange={(crop) => updateInputs({ ...inputs, crop })} disabled={!photo || photoBusy} maxZoom={definition.photo.maxZoom} />
-              </>}
-              <fieldset className="space-y-3">
-                <legend className="mb-2 text-sm font-semibold">Design</legend>
-                {definition.variants.map((design) => <label key={design.id} className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-border px-3 py-2 text-sm">
-                  <input type="radio" name="design" value={design.id} checked={inputs.variantId === design.id} className="action-focus accent-og-midnight" onChange={() => updateInputs({ ...inputs, variantId: design.id })} />{design.label}
-                </label>)}
-              </fieldset>
-            </fieldset>
+            </div>}
+            {definition.variants.length > 1 && <div className="flex flex-wrap gap-2" role="group" aria-label="Color">
+              {definition.variants.map((design) => <Button key={design.id} type="button" size="sm" variant="ghost" aria-pressed={inputs.variantId === design.id} disabled={!canAct || unavailable} onClick={() => updateInputs({ ...inputs, variantId: design.id })}>{design.label}</Button>)}
+            </div>}
+            {versions.length > 0 && <section aria-labelledby="recent-versions-heading" className="border-t border-border pt-6">
+              <h2 id="recent-versions-heading" className="text-sm font-semibold">Versions</h2>
+              <ul className="mt-3 flex flex-wrap gap-4">
+                {versions.map((version) => <li key={version.id} className="relative w-[120px] min-w-0 rounded border border-border bg-white">
+                  <button type="button" disabled={!canAct} onClick={() => void selectVersion(version)} aria-label={`Load version for ${socialPrimaryValue(definition, version.fields)}`} className="action-focus block w-full rounded p-1 text-left">
+                    <VersionThumbnail blob={version.thumbnail} />
+                    <span className="mt-1 block truncate px-1 text-xs font-semibold">{socialPrimaryValue(definition, version.fields) || "Untitled graphic"}</span>
+                    <time dateTime={version.createdAt} className="block px-1 pb-1 text-[10px] text-muted-foreground">{new Date(version.createdAt).toLocaleDateString()}</time>
+                    {version.downloaded && <span className="mx-1 mb-1 inline-block rounded bg-muted px-1.5 py-0.5 text-[10px]">Downloaded</span>}
+                  </button>
+                  <Button type="button" variant="ghost" size="icon" aria-label="Delete version" disabled={!canAct || storageError} onClick={() => void deleteRecord(version.id)} className="absolute -right-2 -top-2 h-7 w-7 border border-border bg-white shadow-sm"><X size={12} aria-hidden="true" /></Button>
+                </li>)}
+              </ul>
+            </section>}
+          </div>
+        </section>
+        <form id="social-editor-form" onSubmit={download} noValidate className="flex w-full min-w-0 flex-col border-t border-border bg-white p-6 lg:w-[320px] lg:shrink-0 lg:border-l lg:border-t-0">
+          <fieldset disabled={!canAct || unavailable} className="min-w-0 space-y-5">
+            <legend className="sr-only">Customize graphic</legend>
+            {definition.fields.map((field) => {
+              const error = attempted && (touched[field.key] === true || attempted) && Object.prototype.hasOwnProperty.call(fieldErrors, field.key) ? fieldErrors[field.key] : undefined;
+              const qualifier = field.type === "time" ? field.timeZoneLabel : null;
+              const inputProps = {
+                id: `social-${field.key}`, required: field.required, value: inputs.fields[field.key] ?? "",
+                placeholder: !field.required ? "Optional" : undefined,
+                "aria-invalid": !!error, "aria-describedby": error ? `error-${field.key}` : undefined,
+                className: "action-focus min-h-11 w-full rounded-md border border-input bg-white px-3 py-2 text-base placeholder:text-og-midnight/40",
+                onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+                  setTouched((previous) => ({ ...previous, [field.key]: true }));
+                  updateInputs({ ...inputs, fields: { ...inputs.fields, [field.key]: event.target.value } });
+                },
+              };
+              return <div key={field.key}>
+                <label htmlFor={`social-${field.key}`} className="mb-2 block text-sm font-semibold">{field.label}{qualifier && <span className="font-normal"> ({qualifier})</span>}</label>
+                {field.type === "choice" ? <select {...inputProps}>
+                  <option value="">{!field.required ? "Optional" : `Choose ${field.label.toLowerCase()}`}</option>
+                  {field.options.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select> : <input {...inputProps} type={field.type} autoComplete="off" />}
+                {error && <p id={`error-${field.key}`} role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
+              </div>;
+            })}
+            {definition.photo && <div className="space-y-2">
+              <p className="text-sm font-semibold">Photo</p>
+              <div className="flex flex-wrap items-center gap-2">
+                {photo && <img src={photo.url} alt="Your photo" className="h-10 w-10 rounded-full object-cover" />}
+                <Button type="button" size="sm" variant="outline" onClick={() => fileRef.current?.click()} className="bg-white px-3 text-og-midnight hover:bg-muted">{photoBusy ? "Reading photo…" : photo ? "Replace" : "Add photo"}</Button>
+                {photo && <Button type="button" variant="ghost" size="sm" className="px-2" onClick={removePhoto}>Remove</Button>}
+              </div>
+              <input ref={fileRef} type="file" accept="image/*,.heic,.heif" aria-label="Photo" hidden onChange={(event) => {
+                const file = event.currentTarget.files?.[0]; event.currentTarget.value = "";
+                if (file) void choosePhoto(file);
+              }} />
+              {photoError && <p role="alert" className="text-sm text-destructive">{photoError}</p>}
+              {attempted && !photo && definition.photo.required && !photoError && <p role="alert" className="text-sm text-destructive">Add a photo to download.</p>}
+            </div>}
+          </fieldset>
+          <div className="space-y-3 pt-5">
             {templateError && <p role="alert" className="text-sm text-destructive">{templateError}</p>}
             {(!resources || !localReady) && !templateError && <p role="status" className="text-sm">Loading editor…</p>}
             {exportError && <div className="space-y-2">
               <p role="alert" className="text-sm text-destructive">{exportError}</p>
               <Button type="button" variant="ghost" size="sm" disabled={!canAct} onClick={() => { setExportError(""); setRenderAttempt((value) => value + 1); }}>Try again</Button>
             </div>}
-            <div className="flex flex-wrap gap-3">
-              <Button type="submit" disabled={!canAct || !resources || !!templateError || unavailable || (shareSupported && validGraphic && !preparedPng)} className="min-h-11 flex-1">
-                <Download size={16} aria-hidden="true" />{exporting ? "Preparing PNG…" : shareSupported ? "Save to Photos" : "Download PNG"}
-              </Button>
-              <Button type="button" variant="outline" onClick={() => void saveVersion()} disabled={!canAct || !validGraphic || storageError} aria-describedby={storageError ? "social-storage-error" : undefined} className="min-h-11">Save version</Button>
+          </div>
+          <div className="mt-8 space-y-2 pt-6 lg:mt-auto">
+            {storageError && <p id="social-storage-error" role="alert" className="text-sm text-destructive">{SOCIAL_STORAGE_ERROR}</p>}
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <span>Saved in this browser</span>
+              <Button type="button" variant="ghost" size="icon" aria-label="About browser storage" aria-expanded={storageInfoOpen} aria-controls="social-storage-info" onClick={() => setStorageInfoOpen((open) => !open)} className="h-8 w-8"><Info size={14} aria-hidden="true" /></Button>
             </div>
-            <div className="space-y-2 text-sm">
-              {storageError ? <p id="social-storage-error" role="alert">{SOCIAL_STORAGE_ERROR}</p> : <p role="status" aria-live="polite">{saveStatus}</p>}
-              <p className="text-muted-foreground">Your draft and saved versions stay in this browser. They won’t appear on another device, so download anything you want to keep.</p>
-              <p className="text-muted-foreground">Someone with access to this browser profile can access its stored data.</p>
-              <Button type="button" variant="ghost" size="sm" disabled={!hasDraft || !canAct || storageError} onClick={() => void deleteRecord()}>Delete draft</Button>
-            </div>
-            <p role="status" aria-live="polite" className="text-sm">{status}</p>
-          </form>
-        </div>
-        <section aria-labelledby="recent-versions-heading" className="mt-8">
-          <h2 id="recent-versions-heading" className="text-lg font-semibold">Your recent versions</h2>
-          {versions.length ? <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
-            {versions.map((version) => <li key={version.id} className="min-w-0 overflow-hidden rounded-lg border border-border bg-white">
-              <button type="button" disabled={!canAct} onClick={() => void selectVersion(version)} aria-label={`Load version for ${socialPrimaryValue(definition, version.fields)}`} className="action-focus block w-full p-2 text-left">
-                <VersionThumbnail blob={version.thumbnail} />
-                <span className="mt-2 block break-words text-sm font-semibold">{socialPrimaryValue(definition, version.fields) || "Untitled graphic"}</span>
-                <time dateTime={version.createdAt} className="block text-xs text-muted-foreground">{new Date(version.createdAt).toLocaleString()}</time>
-                {version.downloaded && <span className="mt-2 inline-block rounded bg-muted px-2 py-1 text-xs">Downloaded</span>}
-              </button>
-              <Button type="button" variant="ghost" size="sm" disabled={!canAct || storageError} onClick={() => void deleteRecord(version.id)} className="m-2">Delete version</Button>
-            </li>)}
-          </ul> : <p className="mt-3 text-sm text-muted-foreground">Saved versions will appear here.</p>}
-        </section>
-        <footer className="mt-8"><MarketingContact /></footer>
-      </ChapterPage>
+            {storageInfoOpen && <div id="social-storage-info" className="space-y-2 text-xs leading-5 text-muted-foreground">
+              <p>Your draft and saved versions stay in this browser. They won’t appear on another device, so download anything you want to keep.</p>
+              <p>Someone with access to this browser profile can access its stored data.</p>
+            </div>}
+            <Button type="button" variant="ghost" size="sm" disabled={!hasDraft || !canAct || storageError} onClick={() => void deleteRecord()} className="-ml-3 text-xs">Delete draft</Button>
+          </div>
+        </form>
+      </div>
+      <footer className="border-t border-border bg-white px-4 py-4 text-center [&_p]:text-xs"><MarketingContact /></footer>
     </HubShell>
   );
 }

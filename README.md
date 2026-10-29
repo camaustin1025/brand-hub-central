@@ -31,6 +31,19 @@ docs/            decision docs + the Phase 0 audit + DAM design direction
 assets/          starter kit (Figtree TTFs, logos, gradients)
 ```
 
+## Social customizer
+
+The Toolkit includes three New Employee pilot templates: Proud to join, I've joined and Excited to share. Each uses Figtree and exports a 1200 × 627 PNG. Artwork and thumbnails ship from `public/social/`; Figma comparison renders stay in `docs/social-references/new-employee/`.
+
+Templates require a nonempty `category` and may reference a registered `previewAssetId`. Text rules accept an approved-token `color` and an `opacity` from 0.1 to 1; omitted values retain the variant foreground at full opacity. Toolkit cards are grouped by category, search labels include the category, and editors with one variant hide the Design picker. Schema details, validation coverage and browser checks are documented in [the social template README](src/data/social-templates.README.md).
+
+```bash
+TZ=America/Los_Angeles npm run test:social
+TZ=Pacific/Auckland npm run test:social
+npm run build
+npm run lint
+```
+
 ## Design system notes
 
 - **Light by default.** The page canvas is a soft off-white (`#F5F5F8`) with white cards. Midnight (`#17132F`) is used for accent islands (hero, footer, preview tiles), each wrapped in a `.dark` class so shadcn tokens flip correctly.
