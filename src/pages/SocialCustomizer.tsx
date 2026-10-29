@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PhotoPosition } from "@/components/social/PhotoPosition";
 import { MarketingContact } from "@/components/social/MarketingContact";
 import { getPublishedSocialTemplate, publishedSocialTemplates, PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS, type SocialTemplate } from "@/data/social-templates";
-import { DESIGN_CANVAS_PATH, designCanvasCategoryId, designCanvasTemplatePath } from "@/data/hub";
+import { DESIGN_CANVAS_NAV_ID, DESIGN_CANVAS_PATH, designCanvasCategoryId, designCanvasTemplatePath } from "@/data/hub";
 import { cn } from "@/lib/utils";
 import { canvasBlob, processSocialPhoto, restoreSocialPhoto, type ProcessedPhoto } from "@/lib/social-photo";
 import {
@@ -358,7 +358,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
   const canAct = localReady && !exporting && !photoBusy && !switching;
   const designs = publishedSocialTemplates().filter((template) => template.category === definition.category);
   return (
-    <HubShell activeId={designCanvasCategoryId(definition.category)} focused>
+    <HubShell activeId={DESIGN_CANVAS_NAV_ID} focused>
       <div className="sticky top-16 z-30 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-border bg-white px-4 py-3 lg:px-6">
         <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm">
           <Link to={DESIGN_CANVAS_PATH} className="action-focus text-muted-foreground hover:underline">Design canvas</Link>

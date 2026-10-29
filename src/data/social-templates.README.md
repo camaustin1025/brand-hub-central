@@ -2,7 +2,7 @@
 
 Three approved New Employee pilot templates are registered in `PUBLISHED_SOCIAL_TEMPLATES`: `new-employee-badge` (Proud to join), `new-employee-split-light` (I've joined), and `new-employee-split-dark` (Excited to share). Each exports at 1200 × 627, has one fixed variant and one full-canvas artwork layer, and allows a required circular photo, name and optional job title. Cameron Austin reviewed these on 2026-10-28, with review due 2027-01-28. Artwork and card thumbnails live in `public/social/`. The three Figma comparison renders live only in `docs/social-references/new-employee/` and are excluded from the shipped site.
 
-Design canvas (`/design-canvas`) groups published templates under an `h2` for each category, in first-category appearance order from `PUBLISHED_SOCIAL_TEMPLATES`; cards within each group retain that array's order and use `h3` titles. Each category is also a link in the sidebar's Design canvas group, to `/design-canvas#<category-slug>`, highlighted while it is in view. Optional preview images appear at the top of cards with alt text `<title> design preview`. Search labels use `<category>: <title>`. The editor eyebrow uses the category, and the Design picker appears only when a template has more than one variant.
+Design canvas (`/design-canvas`) groups published templates under an `h2` for each category, in first-category appearance order from `PUBLISHED_SOCIAL_TEMPLATES`; cards within each group retain that array's order and use `h3` titles. The sidebar shows Design canvas as one title link to `/design-canvas`; categories are not listed there, but each keeps its `#<category-slug>` anchor for the editor breadcrumb. Optional preview images appear at the top of cards with alt text `<title> design preview`. Search labels use `<category>: <title>`. The editor eyebrow uses the category, and the Design picker appears only when a template has more than one variant.
 
 The lazy editor dynamically imports `social-template-fixture.ts` only in development. Direct routes `/design-canvas/new-hire` and `/design-canvas/event-fixture` exercise technical geometry, not approved artwork. Event artwork is source-local and excluded with the fixture module from production output. Unknown or unpublished IDs return to Design canvas. The former `/toolkit` and `/toolkit/social/<id>` links redirect to `/design-canvas` and `/design-canvas/<id>`. Retired metadata remains reachable only to explain unavailability and let people delete local records.
 
@@ -26,7 +26,7 @@ Definitions are plain JSON-compatible data. Add approved distributable asset pat
 | `version` | Positive integer. Bump for every approved design or field-rule change. |
 | `status` | `pilot`, `current` or `retired`. Only pilot/current entries appear in Design canvas and search. Retired editors disable editing, saving and export, retain local records, and allow deletion. |
 | `title` | Card, search and editor title. |
-| `category` | Required nonempty string. Design canvas category heading, sidebar link and editor breadcrumb; search labels start with this value. |
+| `category` | Required nonempty string. Design canvas category heading and editor breadcrumb; search labels start with this value. |
 | `description` | Card/search description and editor introduction. |
 | `keywords` | Space-separated search terms. |
 | `sourceUrl` | HTTPS Figma master link. Only dev fixtures may use a `repo:` source. |
