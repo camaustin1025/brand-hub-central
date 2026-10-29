@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Download } from "lucide-react";
 import { HubShell, jumpTo } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
+import { WipNotice } from "@/components/brand/WorkInProgress";
 import { ColorTiers } from "@/components/brand/ColorTiers";
 import { AssetTiles } from "@/components/brand/AssetTiles";
 import { DraftBadge } from "@/components/brand/DraftBadge";
@@ -10,7 +11,7 @@ import { GradientDetails } from "@/components/brand/GradientDetails";
 import { IconGuidance } from "@/components/brand/IconGuidance";
 import { buttonVariants } from "@/components/ui/button";
 import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
-import { HUB_NAV } from "@/data/hub";
+import { HUB_NAV, isWipSection } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
 import { CORE } from "@/data/tokens";
 import { cn } from "@/lib/utils";
@@ -41,6 +42,7 @@ function HubSection({
         {/* Section heads run the full column; ChapterPage matches this so a
             heading wraps the same way on Home and on every chapter page. */}
         <div className="mb-10">
+          {isWipSection(id) && <WipNotice />}
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
           {intro && <p className="mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}

@@ -54,7 +54,7 @@
 .searchTitle { margin-bottom: 16px; font-size: 22px; font-weight: 700; }
 /* Style only this use of the existing SearchBox; masthead/mobile search stay intact. */
 .searchBox > div > svg { left: 25px; width: 28px; height: 28px; color: #17132f; stroke-width: 1.8; }
-.searchBox input { height: 64px; padding: 0 25px 0 69px; border-radius: 18px; background: #fff; color: #17132f; font-size: 16px; font-weight: 500; border: 1px solid #17132f26; box-shadow: 0 3px 12px #17132f12; }
+.searchBox input { height: 64px; padding: 0 80px 0 69px; border-radius: 18px; background: #fff; color: #17132f; font-size: 16px; font-weight: 500; border: 1px solid #17132f26; box-shadow: 0 3px 12px #17132f12; }
 .searchBox input::placeholder { color: #17132f; font-weight: 500; opacity: 1; }
 .searchBox input:focus, .searchBox input:focus-visible { outline: none; border-color: #17132f26; box-shadow: 0 3px 12px #17132f12; }
 .searchBox input:focus-visible { background: #f5f4fa; }
@@ -131,7 +131,9 @@
   .palette { left: 31px; top: 122px; width: 160px; height: 44px; padding-block: 15px; transform: rotate(-9deg); }
   .searchDock { padding: 22px 16px 23px; }
   .searchBox > div > svg { left: 15px; width: 22px; height: 22px; }
-  .searchBox input { height: 56px; padding: 0 15px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
+  .searchBox input { height: 56px; padding: 0 64px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
+  /* WIP tag: same inset as the search icon on the left. */
+  .searchBox > div > span { right: 15px; }
   .samples { grid-template-columns: 1fr; gap: 8px; margin-top: 14px; }
   .samples a, .samples button { width: 100%; min-height: 48px; font-size: 16px; }
   .assetPill { display: none; }

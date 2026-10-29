@@ -8,6 +8,8 @@ export type HubNavItem = {
   keywords: string;
   /** Set when the section lives on its own route instead of inline on the hub. */
   path?: string;
+  /** Still being written: tagged WIP in the nav, in search, and at the top of the section. */
+  wip?: boolean;
 };
 
 export type HubNavGroup = {
@@ -78,6 +80,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       {
         id: "messaging",
         path: "/foundation",
+        wip: true,
         label: "Foundation & messaging",
         description: "Positioning, audience, Rights to Win, and message ladder.",
         keywords: "autonomous subscriptions everychannel groove network testing velocity category",
@@ -85,6 +88,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       {
         id: "voice",
         path: "/voice",
+        wip: true,
         label: "Voice & language",
         description: "Personality, pass/fail rules, and preferred terms.",
         keywords: "tone words copy writing language rules use avoid ai em dash",
@@ -114,6 +118,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       },
       {
         id: "icons",
+        wip: true,
         label: "Icons",
         description: "Material Symbols Rounded, icon colors, and tile treatments.",
         keywords: "icons iconography material symbols rounded plain tinted solid figma teal",
@@ -126,6 +131,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       {
         id: "ai-skills",
         path: RESOURCE_PAGE_PATHS["ai-skills"],
+        wip: true,
         label: "AI Resources & Guidance",
         description: "Shared Claude skills, starting with Ordergroove Slides 2.0.",
         keywords: "ai claude skills slides 2.0 presentations prompt guidance resources",
@@ -149,6 +155,10 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
 export const HUB_NAV = DRAFT_HUB_NAV
   .map((group) => ({ ...group, items: group.items.filter((item) => isEmployeeSectionVisible(item.id)) }))
   .filter((group) => group.items.length > 0);
+
+export function isWipSection(id: string) {
+  return HUB_NAV.some((group) => group.items.some((item) => item.id === id && item.wip));
+}
 
 export const RIGHTS = [
   {
