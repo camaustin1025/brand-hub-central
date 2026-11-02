@@ -8,6 +8,8 @@ import DesignCanvas from "@/pages/DesignCanvas";
 import HeroLab from "@/pages/HeroLab";
 import LayoutLab from "@/pages/LayoutLab";
 import { employeeSectionId } from "@/data/employee-launch";
+import AdminGuests from "@/pages/AdminGuests";
+import { useAccess } from "@/hooks/use-access";
 import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, RESOURCE_PAGE_PATHS } from "@/data/hub";
 
 const SocialCustomizer = lazy(() => import("@/pages/SocialCustomizer"));
@@ -33,17 +35,21 @@ function ToolkitGraphicRoute() {
 
 /** Shared route inventory. App keeps this entire tree inside AuthGate. */
 export function HubRoutes() {
+  const access = useAccess();
+  const isGuest = access === "guest";
   return (
     <Routes>
+      {access === "admin" && <Route path="/admin/guests" element={<AdminGuests />} />}
       <Route path="/" element={<HomeRoute />} />
       <Route path="/foundation" element={<Foundation />} />
       <Route path="/voice" element={<Voice />} />
-      <Route path={DESIGN_CANVAS_PATH} element={<DesignCanvas />} />
-      <Route path={`${DESIGN_CANVAS_PATH}/:templateId`} element={
+      {/* Guests are view-only, so the graphic editor and its downloads stay staff-only. */}
+      {!isGuest && <Route path={DESIGN_CANVAS_PATH} element={<DesignCanvas />} />}
+      {!isGuest && <Route path={`${DESIGN_CANVAS_PATH}/:templateId`} element={
         <Suspense fallback={<p role="status" className="p-6">Loading graphic...</p>}>
           <SocialCustomizer />
         </Suspense>
-      } />
+      } />}
       <Route path="/toolkit" element={<Navigate to={DESIGN_CANVAS_PATH} replace />} />
       <Route path="/toolkit/social/:templateId" element={<ToolkitGraphicRoute />} />
       <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />
