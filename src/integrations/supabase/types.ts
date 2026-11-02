@@ -103,6 +103,36 @@ export type Database = {
           },
         ]
       }
+      social_usage_events: {
+        Row: {
+          created_at: string
+          event: string
+          first_download: boolean
+          id: string
+          template_id: string
+          template_version: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event: string
+          first_download?: boolean
+          id?: string
+          template_id: string
+          template_version: number
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          event?: string
+          first_download?: boolean
+          id?: string
+          template_id?: string
+          template_version?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
