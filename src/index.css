@@ -169,3 +169,10 @@
     border-bottom-left-radius: 0;
   }
 }
+
+/* Guests are view-only: hide download controls and Design canvas links. */
+html[data-guest] a[download],
+html[data-guest] [data-download],
+html[data-guest] a[href^="/design-canvas"] {
+  display: none !important;
+}
