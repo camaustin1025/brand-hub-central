@@ -16,6 +16,49 @@ import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-lau
 import { CORE } from "@/data/tokens";
 import { cn } from "@/lib/utils";
 
+/** Every bundled Figtree weight, each rendered in itself. */
+const TYPE_WEIGHTS = [
+  { name: "Regular", value: 400 },
+  { name: "Medium", value: 500 },
+  { name: "SemiBold", value: 600 },
+  { name: "Bold", value: 700 },
+  { name: "ExtraBold", value: 800 },
+];
+
+/**
+ * Canon 5.3 web hierarchy, set at true size. Character limits come from the
+ * hero pattern (6.4); the four-line body note is salvaged from the old hub.
+ */
+const TYPE_HIERARCHY = [
+  {
+    role: "Eyebrow",
+    spec: "12px · SemiBold 600",
+    note: "ALL CAPS, 0.16em letter-spacing",
+    sample: "Brand guidelines",
+    className: "eyebrow",
+  },
+  {
+    role: "Headline",
+    spec: "40 to 44px · ExtraBold 800",
+    note: "Title Case, 60 characters or fewer",
+    sample: "Make It Look Like Ordergroove",
+    className: "text-[40px] font-extrabold leading-[1.08] tracking-tight [text-wrap:balance] md:text-[44px]",
+  },
+  {
+    role: "Subhead",
+    spec: "21px · Regular 400",
+    note: "140 characters or fewer",
+    sample: "Clear words. Consistent design",
+    className: "text-[21px] leading-[1.45]",
+  },
+  {
+    role: "Body",
+    spec: "15px · Regular 400",
+    note: "About four lines in display layouts",
+    sample: "Use clear, direct sentences. Keep the structure easy to follow and let evidence carry the message.",
+    className: "measure text-[15px] leading-[1.65]",
+  },
+];
 
 function HubSection({
   id,
@@ -149,43 +192,68 @@ export default function BrandHub() {
           title="Typography"
           intro="Figtree is the only brand typeface. Use tight spacing for display text and open spacing for body copy."
         >
-          <div className="mb-6">
-            <a href="/fonts/Figtree-font-kit.zip" download className={buttonVariants({ size: "lg" })}>
-              <Download size={16} aria-hidden="true" /> Download fonts
-            </a>
+          {/* The family plate: the face on Midnight, every weight beside it. */}
+          <div className="grid overflow-hidden rounded-lg border border-border bg-card md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+            <div className="dark flex flex-col justify-between gap-10 bg-og-midnight p-6 text-foreground md:p-8">
+              <p aria-hidden="true" className="text-[6rem] font-extrabold leading-[0.85] tracking-[-0.04em] text-primary">
+                Aa
+              </p>
+              <div>
+                <h3 className="text-2xl">Figtree</h3>
+                <p className="mt-2 text-sm leading-6 tracking-[0.005em] text-white">
+                  Free from Google Fonts and available in Google Workspace. No substitute font needed.
+                </p>
+                <a href="/fonts/Figtree-font-kit.zip" download className={cn(buttonVariants({ size: "lg" }), "mt-6")}>
+                  <Download size={16} aria-hidden="true" /> Download fonts
+                </a>
+              </div>
+            </div>
+            <ul aria-label="Figtree weights" className="divide-y divide-border">
+              {TYPE_WEIGHTS.map((weight) => (
+                <li key={weight.value} className="flex items-baseline justify-between gap-6 px-6 py-4 md:px-8 md:py-5">
+                  <span className="text-[28px] leading-none tracking-tight md:text-[32px]" style={{ fontWeight: weight.value }}>
+                    {weight.name}
+                  </span>
+                  <span className="text-sm font-semibold tabular-nums">{weight.value}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="mb-6 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-2">
-            {[
-              ["Family", "Figtree everywhere"],
-              ["Weights", "400 to 800"],
-            ].map(([label, value]) => (
-              <div key={label} className="bg-white p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
-                <p className="mt-2 font-semibold">{value}</p>
+
+          <h3 className="mb-5 mt-12 text-2xl font-bold">Web hierarchy</h3>
+          <div className="overflow-hidden rounded-lg border border-border bg-card">
+            {TYPE_HIERARCHY.map((level) => (
+              <div
+                key={level.role}
+                className="grid gap-x-10 gap-y-4 border-b border-border p-6 last:border-b-0 md:grid-cols-[248px_minmax(0,1fr)] md:items-center md:p-8"
+              >
+                <div className="text-sm leading-6">
+                  <p className="font-semibold">{level.role}</p>
+                  <p className="tabular-nums">{level.spec}</p>
+                  <p>{level.note}</p>
+                </div>
+                <p className={level.className}>{level.sample}</p>
               </div>
             ))}
           </div>
-          <div className="overflow-hidden rounded-lg border border-border bg-white">
-            <div className="grid gap-8 border-b border-border p-7 md:grid-cols-[180px_1fr]">
-              <div>
-                <p className="eyebrow">Display</p>
-                <p className="mt-2 text-sm text-muted-foreground">ExtraBold 800</p>
-              </div>
-              <p className="text-4xl font-extrabold tracking-tight md:text-5xl">Make it look like Ordergroove</p>
+
+          <h3 className="mb-5 mt-12 text-2xl font-bold">Usage rules</h3>
+          <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div>
+              <h4 className="text-base font-semibold">Drop the trailing period</h4>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Headlines, titles, labels, and subtitles are statements, not sentences. Set titles in Title Case and eyebrow labels in ALL CAPS.</p>
             </div>
-            <div className="grid gap-8 border-b border-border p-7 md:grid-cols-[180px_1fr]">
-              <div>
-                <p className="eyebrow">Heading</p>
-                <p className="mt-2 text-sm text-muted-foreground">Bold 700</p>
-              </div>
-              <p className="text-3xl font-bold tracking-tight">Clear words. Consistent design.</p>
+            <div>
+              <h4 className="text-base font-semibold">Use Figtree only</h4>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Never use Arial, Helvetica, Calibri, or Soleil, and check that nothing falls back to them. Cormorant is allowed on campaign cards only.</p>
             </div>
-            <div className="grid gap-8 p-7 md:grid-cols-[180px_1fr]">
-              <div>
-                <p className="eyebrow">Body</p>
-                <p className="mt-2 text-sm text-muted-foreground">Regular 400</p>
-              </div>
-              <p className="measure text-base leading-7 text-muted-foreground">Use clear, direct sentences. Keep the structure easy to follow and let evidence carry the message.</p>
+            <div>
+              <h4 className="text-base font-semibold">Keep display copy short</h4>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">In display layouts, keep body copy to about four lines. Set secondary headlines in the same color as the primary.</p>
+            </div>
+            <div>
+              <h4 className="text-base font-semibold">Skip emoji</h4>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Keep emoji out of designed materials.</p>
             </div>
           </div>
         </HubSection>
