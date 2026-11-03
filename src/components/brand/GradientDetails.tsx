@@ -1,10 +1,12 @@
-import { ArrowUpRight, Check, Copy, Download } from "lucide-react";
+import { Check, Copy, Download } from "lucide-react";
+import { findAssetFile } from "@/data/assets";
 import { BACKGROUND_GRADIENT, BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
 import { useCopyText } from "@/hooks/use-copy-text";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function GradientDetails() {
+  const download = findAssetFile("brand-gradient", "PNG");
   const { copy, copied, error } = useCopyText(BACKGROUND_GRADIENT_CSS);
 
   return (
@@ -54,12 +56,9 @@ export function GradientDetails() {
           {error ? "Copy unavailable. Select the CSS above to copy manually." : copied ? "Gradient CSS copied" : ""}
         </p>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
-          <a href={BACKGROUND_GRADIENT.image} download className="action-focus inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4">
+          {download && <a href={download.href} download className="action-focus inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4">
             <Download size={15} aria-hidden="true" /> Download PNG
-          </a>
-          <a href={BACKGROUND_GRADIENT.source} target="_blank" rel="noopener noreferrer" className="action-focus inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4">
-            Open in Figma <ArrowUpRight size={15} aria-hidden="true" />
-          </a>
+          </a>}
         </div>
       </div>
     </div>

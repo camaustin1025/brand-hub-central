@@ -1,55 +1,34 @@
-import { Download } from "lucide-react";
-import type { Asset } from "@/data/assets";
+import { assetAnchor, type Asset } from "@/data/assets";
+import { AssetDownloads } from "./AssetDownloads";
 import { cn } from "@/lib/utils";
 
-const isLogo = (asset: Asset) => asset.type === "logo";
-const isMark = (asset: Asset) => asset.tags.includes("logomark");
-const isLight = (asset: Asset) => asset.previewBg === "light";
-
-/** Logos are named by artwork and background; everything else by its own title. */
-function label(asset: Asset) {
-  if (!isLogo(asset)) return { name: asset.title, detail: asset.description };
-  return {
-    name: isMark(asset) ? "Logomark" : "Full logo",
-    detail: isLight(asset) ? "Light backgrounds" : "Dark backgrounds",
-  };
-}
-
-/**
- * Downloads as compact tiles: four to a row on desktop, each with a preview,
- * a short label, and a small format button.
- */
 export function AssetTiles({ assets }: { assets: Asset[] }) {
+  const single = assets.length === 1;
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+    <div className={cn("grid gap-4", single ? "grid-cols-1" : assets.length === 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-2 md:grid-cols-4")}>
       {assets.map((asset) => {
-        const { name, detail } = label(asset);
+        const logo = asset.type === "logo";
+        const light = asset.previewBg === "light";
         return (
-          <div key={asset.id} className="visual-container flex flex-col overflow-hidden border border-border bg-card">
-            <div className={cn("flex aspect-[16/10] items-center justify-center overflow-hidden", isLight(asset) ? "border-b border-border bg-white" : "bg-og-midnight")}>
-              <img
-                src={asset.preview!}
-                alt={asset.title}
-                className={cn(isLogo(asset) ? "object-contain" : "h-full w-full object-cover", isLogo(asset) && (isMark(asset) ? "h-24" : "w-[78%]"))}
-              />
+          <article key={asset.id} id={assetAnchor(asset.id)} tabIndex={-1}
+            className={cn("action-focus visual-container scroll-mt-24 overflow-hidden border border-border bg-white", single && "sm:grid sm:grid-cols-[minmax(180px,0.7fr)_1.3fr]")}>
+            <div className={cn("flex aspect-[16/10] items-center justify-center overflow-hidden", single && "sm:aspect-auto sm:min-h-48", light ? "border-b border-border bg-white" : "bg-og-midnight")}>
+              {asset.preview ? (
+                <img src={asset.preview} alt={asset.title} loading="lazy"
+                  className={cn(logo || asset.type === "icon" ? "max-h-[70%] w-[78%] object-contain" : "h-full w-full object-cover", logo && asset.tags.includes("logomark") && "w-auto max-w-[60%]")} />
+              ) : (
+                <span className="text-6xl font-semibold tracking-tight text-og-midnight" aria-label="Figtree font preview">Aa</span>
+              )}
             </div>
-            {/* Tiles run ~150px wide below xl, so the button drops under the label until there is room beside it. */}
-            <div className="flex flex-1 flex-col items-start gap-2 p-3 xl:flex-row xl:items-center xl:justify-between">
-              <div className="min-w-0">
-                <h4 className="text-sm font-semibold leading-tight">{name}</h4>
-                <p className="mt-0.5 text-xs text-muted-foreground">{detail}</p>
+            <div className={cn("space-y-3 p-4", single && "sm:p-6")}>
+              <div>
+                <h4 className="text-sm font-semibold leading-snug">{logo ? asset.tags.includes("logomark") ? "Logomark" : "Full logo" : asset.title}</h4>
+                <p className="mt-1 text-xs leading-5 text-muted-foreground">{logo ? light ? "Light backgrounds" : "Dark backgrounds" : asset.description}</p>
               </div>
-              {/* download attr + GA4 hook point: track('download_asset', { id }) */}
-              <a
-                href={asset.href!}
-                download
-                aria-label={`Download ${asset.title} (${asset.formats[0]})`}
-                className="action-focus inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-og-midnight px-3 text-xs font-bold text-og-midnight transition-colors hover:bg-og-midnight hover:text-white"
-              >
-                <Download size={13} /> {asset.formats[0]}
-              </a>
+              <AssetDownloads asset={asset} />
+              <a href={`/#${asset.section}`} className="action-focus inline-flex min-h-11 items-center text-xs font-semibold underline underline-offset-4">Usage guide<span className="sr-only"> for {asset.title}</span></a>
             </div>
-          </div>
+          </article>
         );
       })}
     </div>

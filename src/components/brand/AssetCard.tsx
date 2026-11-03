@@ -1,6 +1,7 @@
-import { Download, Clock } from "lucide-react";
-import type { Asset } from "@/data/assets";
+import { Clock } from "lucide-react";
+import { isAssetAvailable, type Asset } from "@/data/assets";
 import { Button } from "@/components/ui/button";
+import { AssetDownloads } from "./AssetDownloads";
 import { cn } from "@/lib/utils";
 
 /**
@@ -8,7 +9,7 @@ import { cn } from "@/lib/utils";
  * DAM-lite grid (it already reads tags/type/formats), so the DAM is additive.
  */
 export function AssetCard({ asset, showDescription = true }: { asset: Asset; showDescription?: boolean }) {
-  const available = asset.href !== null;
+  const available = isAssetAvailable(asset);
 
   return (
     <div className="visual-container group flex flex-col overflow-hidden border border-border bg-card">
@@ -49,12 +50,7 @@ export function AssetCard({ asset, showDescription = true }: { asset: Asset; sho
         </div>
 
         {available ? (
-          <Button asChild size="sm" className="w-full">
-            {/* download attr + GA4 hook point: track('download_asset', { id }) */}
-            <a href={asset.href!} download aria-label={`Download ${asset.title} (${asset.formats[0]})`}>
-              <Download size={16} /> Download {asset.formats[0]}
-            </a>
-          </Button>
+          <AssetDownloads asset={asset} />
         ) : (
           <Button size="sm" variant="secondary" disabled className="w-full">
             <Clock size={16} /> Not available yet

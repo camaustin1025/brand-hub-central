@@ -1,18 +1,14 @@
-import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Menu, Search, X } from "lucide-react";
-import { designCanvasTemplatePath, HUB_NAV, type HubNavItem } from "@/data/hub";
-import { publishedSocialTemplates } from "@/data/social-templates";
+import { ArrowRight, Menu, X } from "lucide-react";
+import { HUB_NAV } from "@/data/hub";
+import { SearchBox } from "./HubSearch";
+import { jumpTo } from "@/lib/hub-navigation";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { cn } from "@/lib/utils";
 
-const ALL_NAV_ITEMS: HubNavItem[] = [
-  ...HUB_NAV.flatMap((group) => group.items),
-  ...publishedSocialTemplates().map((template) => ({
-    id: `social-${template.id}`, label: `${template.category}: ${template.title}`, description: template.description,
-    keywords: template.keywords, path: designCanvasTemplatePath(template.id),
-  })),
-];
+export { SearchBox } from "./HubSearch";
+export { jumpTo } from "@/lib/hub-navigation";
 
 const NAV_ITEM_CLASS = "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
 const NAV_ITEM_ACTIVE =
@@ -27,18 +23,6 @@ const NAV_TITLE_LINK = "group relative flex items-center justify-between transit
 const NAV_TITLE_LINK_ACTIVE =
   "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
 const NAV_TITLE_LINK_IDLE = "hover:bg-og-midnight hover:text-white";
-
-export function jumpTo(id: string, closeMenu?: () => void) {
-  const target = document.getElementById(id);
-  if (!target) {
-    // Not on the single-page hub (e.g. /foundation) — go home and land on the section.
-    window.location.assign(`/#${id}`);
-    return;
-  }
-  window.history.replaceState(null, "", `#${id}`);
-  target.scrollIntoView({ behavior: "smooth", block: "start" });
-  closeMenu?.();
-}
 
 export function Sidebar({
   activeId,
@@ -131,129 +115,6 @@ export function Sidebar({
         </nav>
       </aside>
     </>
-  );
-}
-
-const SEARCH_STOP_WORDS = new Set([
-  "a", "an", "and", "are", "brand", "can", "do", "for", "goes", "hub",
-  "i", "in", "is", "me", "my", "of", "on", "the", "to", "use", "what",
-  "where", "which", "with",
-]);
-
-export function SearchBox({ compact = false, hero = false }: { compact?: boolean; hero?: boolean }) {
-  const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
-  const wipId = useId();
-
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        inputRef.current?.focus();
-      }
-      if (event.key === "Escape") {
-        setQuery("");
-        inputRef.current?.blur();
-      }
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  const results = useMemo(() => {
-    const value = query.trim().toLowerCase();
-    if (!value) return [];
-    const terms = value
-      .replace(/[^a-z0-9+#]+/g, " ")
-      .split(" ")
-      .filter((term) => term.length > 1 && !SEARCH_STOP_WORDS.has(term));
-
-    return ALL_NAV_ITEMS
-      .map((item) => {
-        const haystack = `${item.label} ${item.description} ${item.keywords}`.toLowerCase();
-        const score = terms.reduce((total, term) => total + (haystack.includes(term) ? 1 : 0), 0);
-        return { item, score };
-      })
-      .filter(({ score }) => score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 7)
-      .map(({ item }) => item);
-  }, [query]);
-
-  function choose(item: HubNavItem) {
-    setQuery("");
-    setFocused(false);
-    inputRef.current?.blur();
-    if (item.path) {
-      navigate(item.path);
-      return;
-    }
-    if (document.getElementById(item.id)) jumpTo(item.id);
-    else navigate(`/#${item.id}`);
-  }
-
-  return (
-    <div className={cn("relative", compact || hero ? "w-full" : "w-[310px]")}>
-      <Search
-        className={cn(
-          "pointer-events-none absolute left-3 top-1/2 -translate-y-1/2",
-          hero ? "text-og-midnight/45" : "text-white/50"
-        )}
-        size={hero ? 19 : 16}
-      />
-      <input
-        ref={inputRef}
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => window.setTimeout(() => setFocused(false), 120)}
-        placeholder={hero ? "Search brand rules and assets" : "Search the brand hub"}
-        aria-label={hero ? "Search brand rules and assets" : "Search the brand hub"}
-        aria-describedby={hero ? wipId : undefined}
-        className={cn(
-          "w-full outline-none transition",
-          hero
-            ? "h-14 rounded-lg border border-white bg-white pl-11 pr-16 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-midnight focus:border-og-green focus:ring-4 focus:ring-og-green/15"
-            : "h-9 rounded-lg border border-white/15 bg-white/10 pl-9 pr-12 text-sm text-white placeholder:text-white/45 focus:border-og-green/60 focus:bg-white/15 focus:ring-2 focus:ring-og-green/10"
-        )}
-      />
-      {/* Search is still being tuned: flagged on the Home hero search only. */}
-      {hero && <WipTag id={wipId} className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 px-2 py-1 text-[11px]" />}
-      {!compact && !hero && (
-        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded-[4px] border border-white/15 px-1.5 py-0.5 text-[10px] text-white/45">
-          ⌘K
-        </span>
-      )}
-      {focused && query && (
-        <div className={cn(
-          "absolute right-0 top-[calc(100%+10px)] z-50 w-full min-w-[310px] overflow-hidden rounded-lg border border-border bg-white p-1.5 text-og-midnight shadow-2xl shadow-og-midnight/20",
-          hero && "left-0 right-auto"
-        )}>
-          {results.length > 0 ? (
-            results.map((item) => (
-              <button
-                key={item.id}
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => choose(item)}
-                className="group flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-og-gray-950"
-              >
-                <Search className="mt-0.5 shrink-0 text-og-gray-600 group-hover:text-og-green-light" size={15} />
-                <span>
-                  <span className="flex items-center gap-2 text-sm font-semibold">{item.label}{item.wip && <WipTag />}</span>
-                  <span className="mt-0.5 block text-xs text-og-midnight">{item.description}</span>
-                </span>
-              </button>
-            ))
-          ) : (
-            <p className="px-3 py-5 text-center text-sm text-og-midnight">
-              No matching section. Try “logo,” “voice,” or “downloads.”
-            </p>
-          )}
-        </div>
-      )}
-    </div>
   );
 }
 

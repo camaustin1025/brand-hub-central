@@ -21,3 +21,9 @@ export const ICON_COLORS = {
 };
 
 export const SLIDES_STARTER_PROMPT = "Use the Ordergroove Slides 2.0 skill to turn the attached content into an Ordergroove presentation. Keep the supplied wording, numbers, images, and speaker notes. Use placeholders for anything missing and list those items for review. Ask me for the audience and goal if I haven't provided them.";
+
+// Contact confirmed by Cameron on 2026-11-03; profile and workspace verified in Slack.
+export const MARKETING_CONTACT = {
+  label: "@cameron.austin",
+  url: "https://ordergroove.slack.com/team/U07HGNK3VJ5",
+};

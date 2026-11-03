@@ -1,3 +1,4 @@
+import { VoiceExample } from "./BrandExamples";
 import { TERMS, VOICE_RULES } from "@/data/hub";
 
 /** Voice principles, the pass/fail rules, and approved terminology.
@@ -15,6 +16,8 @@ export function VoiceContent() {
           <p className="text-lg font-semibold">Hype-driven, breathless, salesy, academic, cute for cuteness's sake</p>
         </div>
       </div>
+
+      <VoiceExample />
 
       <div className="mt-14">
         <h3 className="text-2xl font-bold">The pass/fail rules</h3>

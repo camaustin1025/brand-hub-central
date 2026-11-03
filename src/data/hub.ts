@@ -55,7 +55,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       {
         id: "downloads",
         label: "Downloads",
-        description: "Available logos and backgrounds.",
+        description: "Available logos, fonts, backgrounds, and icon examples.",
         keywords: "assets files png logo logomark background download zoom",
       },
     ],

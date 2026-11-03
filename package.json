@@ -9,7 +9,8 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test:social": "node scripts/check-social-customizer.mjs"
+    "test:social": "node scripts/check-social-customizer.mjs",
+    "test:hub": "node scripts/check-hub-resources.mjs"
   },
   "dependencies": {
     "@lovable.dev/cloud-auth-js": "^1.1.2",

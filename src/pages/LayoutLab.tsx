@@ -17,7 +17,7 @@ import lab from "./LayoutLab.module.css";
  * ------------------------------------------------------------------ */
 
 const ARTWORK = {
-  logo: { title: "Ordergroove logo", detail: "The original wordmark for light backgrounds.", href: "/working-canvas/logo-light.svg", format: "SVG", label: "Download SVG" },
+  logo: { title: "Ordergroove logo", detail: "The original wordmark for light backgrounds.", href: "/working-canvas/logo-light-bg.svg", format: "SVG", label: "Download SVG" },
   gradient: { title: "Brand gradient", detail: "The original gradient artwork, ready to use.", href: "/working-canvas/gradient-accent-3.png", format: "PNG", label: "Download PNG" },
   type: { title: "Figtree", detail: "Our brand typeface. Regular weight shown in the download.", href: "/fonts/Figtree-Regular.ttf", format: "TTF", label: "Download font" },
   icons: { title: "Brand icons", detail: "Payment, heart, and chart icons in the original SVG export.", href: "/working-canvas/icon-examples.svg", format: "SVG", label: "Download SVG" },
@@ -225,7 +225,7 @@ function DeskBand({ variant }: { variant: HeroVariant }) {
         <div className={hero.worktable}>
           <img className={hero.photograph} src="/working-canvas/desk-photo.png" alt="" />
           <button {...control("logo")} className={hero.logoCard}>
-            <img src="/working-canvas/logo-light.svg" alt="" width="436" height="75" />
+            <img src="/working-canvas/logo-light-bg.svg" alt="" width="436" height="75" />
           </button>
           <button {...control("gradient")} className={hero.gradient}>
             <img src="/working-canvas/gradient-accent-3.png" alt="" width="1920" height="1458" />

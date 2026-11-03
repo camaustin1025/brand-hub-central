@@ -1,7 +1,5 @@
-export const MARKETING_CONTACT_URL: string | null = null;
+import { MARKETING_CONTACT } from "@/data/brand-resources";
 
 export function MarketingContact() {
-  return <p className="text-sm text-muted-foreground">Need something different? {MARKETING_CONTACT_URL
-    ? <a href={MARKETING_CONTACT_URL} className="action-focus underline underline-offset-4">Reach out to Marketing.</a>
-    : "Reach out to Marketing."}</p>;
+  return <p className="text-sm text-muted-foreground">Need something different? <a href={MARKETING_CONTACT.url} target="_blank" rel="noopener noreferrer" className="action-focus inline-flex min-h-11 items-center underline underline-offset-4">Ping {MARKETING_CONTACT.label} in Slack.</a></p>;
 }

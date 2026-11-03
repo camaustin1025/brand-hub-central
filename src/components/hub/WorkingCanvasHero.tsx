@@ -4,14 +4,15 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, Download, X } from "lucide-react";
 import { SearchBox, jumpTo } from "@/components/hub/HubShell";
 import { Button } from "@/components/ui/button";
-import { BACKGROUND_GRADIENT, BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
+import { getAsset, findAssetFile } from "@/data/assets";
+import { BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
 import styles from "./WorkingCanvasHero.module.css";
 
 const ARTWORK = {
-  logo: { title: "Ordergroove logo", detail: "The original wordmark for light backgrounds.", href: "/working-canvas/logo-light.svg", format: "SVG", label: "Download SVG", section: "logo-gradients" },
-  gradient: { title: "Brand gradient", detail: "The Cyan to Lemon background gradient, ready to use.", href: BACKGROUND_GRADIENT.image, format: "PNG", label: "Download PNG", section: "logo-gradients" },
-  type: { title: "Figtree", detail: "Our brand typeface. Regular weight shown in the download.", href: "/fonts/Figtree-Regular.ttf", format: "TTF", label: "Download font", section: "typography" },
-  icons: { title: "Brand icons", detail: "Payment, heart, and chart icons in the original SVG export.", href: "/working-canvas/icon-examples.svg", format: "SVG", label: "Download SVG", section: "icons" },
+  logo: { title: "Ordergroove logo", detail: getAsset("logo-light").description, ...findAssetFile("logo-light", "SVG"), label: "Download SVG", section: getAsset("logo-light").section },
+  gradient: { title: "Brand gradient", detail: getAsset("brand-gradient").description, ...findAssetFile("brand-gradient", "PNG"), label: "Download PNG", section: getAsset("brand-gradient").section },
+  type: { title: "Figtree", detail: "Our brand typeface. Regular weight shown in the download.", ...findAssetFile("font-kit", "TTF"), label: "Download font", section: getAsset("font-kit").section },
+  icons: { title: "Brand icons", detail: getAsset("icon-examples").description, ...findAssetFile("icon-examples", "SVG"), label: "Download SVG", section: getAsset("icon-examples").section },
 };
 type ArtworkId = keyof typeof ARTWORK;
 type ArtworkAnchor = "logo" | "gradient" | "type" | "payment" | "heart" | "chart";
@@ -104,6 +105,7 @@ export function WorkingCanvasHero() {
   function artworkControl(id: ArtworkId, anchor: ArtworkAnchor = id as ArtworkAnchor) {
     return {
       type: "button" as const,
+      disabled: !ARTWORK[id].href,
       "aria-label": `View ${ARTWORK[id].title} details`,
       "aria-haspopup": "dialog" as const,
       "data-lit": spotlight?.anchor === anchor ? "" : undefined,
@@ -137,7 +139,6 @@ export function WorkingCanvasHero() {
         </h1>
         <p className={styles.subhead}>Find brand guidelines, useful tools, and employee resources to help you get things done.</p>
         <div className={styles.actions}>
-          <Button className={styles.action} onClick={() => jumpTo("quick-reference")}>View quick reference</Button>
           <Button className={styles.action} onClick={() => jumpTo("downloads")}>Browse assets</Button>
         </div>
       </div>
@@ -150,7 +151,7 @@ export function WorkingCanvasHero() {
           <i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" />
         </a>
         <button {...artworkControl("logo")} className={styles.logoCard}>
-          <img src="/working-canvas/logo-light.svg" alt="" width="436" height="75" />
+          <img src={ARTWORK.logo.href} alt="" width="436" height="75" />
         </button>
         <button {...artworkControl("gradient")} className={styles.gradient} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} />
         <button {...artworkControl("type")} className={styles.typePaper}>
@@ -163,13 +164,13 @@ export function WorkingCanvasHero() {
         {/* Reveal each tile from the unchanged 320 × 80 export in its own crop. */}
         {(["payment", "heart", "chart"] as const).map((anchor) => (
           <button {...artworkControl("icons", anchor)} key={anchor} className={`${styles.iconCutout} ${styles[`${anchor}Icon`]}`}>
-            <img src="/working-canvas/icon-examples.svg" alt="" width="320" height="80" />
+            <img src={ARTWORK.icons.href} alt="" width="320" height="80" />
           </button>
         ))}
       </div>
       {spotlight && lit && <div ref={pillRef} className={styles.assetPill} data-side={POPUP_SIDE[spotlight.anchor]} data-anchor={spotlight.anchor} onPointerEnter={keepSpotlight} style={pillPosition ?? { visibility: "hidden" }}>
         <strong>{lit.title}</strong>
-        <a href={lit.href} download aria-label={`${lit.label}: ${lit.title}`}><Download size={14} /> {lit.format}</a>
+        {lit.href && <a href={lit.href} download aria-label={`${lit.label}: ${lit.title}`}><Download size={14} /> {lit.format}</a>}
         <button type="button" onClick={() => guidance(spotlight.id)}>Guidance <ArrowRight size={14} /></button>
       </div>}
       </div>
@@ -194,7 +195,7 @@ export function WorkingCanvasHero() {
               <Dialog.Title className={styles.assetTitle}>{ARTWORK[selected].title}</Dialog.Title>
               <p className={styles.assetDescription}>{ARTWORK[selected].detail}</p>
               <div className={styles.assetActions}>
-                <a href={ARTWORK[selected].href} download><Download size={14} /> {ARTWORK[selected].label}</a>
+                {ARTWORK[selected].href && <a href={ARTWORK[selected].href} download><Download size={14} /> {ARTWORK[selected].label}</a>}
                 <button type="button" onClick={() => guidance(selected)}>View guidance <ArrowRight size={14} /></button>
               </div>
             </>}

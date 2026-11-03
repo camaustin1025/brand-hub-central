@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { ArrowRight, Download } from "lucide-react";
 import { HubShell, jumpTo } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
@@ -8,10 +8,11 @@ import { ColorTiers } from "@/components/brand/ColorTiers";
 import { AssetTiles } from "@/components/brand/AssetTiles";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { GradientDetails } from "@/components/brand/GradientDetails";
+import { ColorExamples, LayoutExample, LogoExamples } from "@/components/brand/BrandExamples";
 import { IconGuidance } from "@/components/brand/IconGuidance";
 import { buttonVariants } from "@/components/ui/button";
-import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
-import { HUB_NAV, isWipSection } from "@/data/hub";
+import { availableAssets, ASSET_CATEGORIES, findAssetFile } from "@/data/assets";
+import { isWipSection } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
 import { CORE } from "@/data/tokens";
 import { cn } from "@/lib/utils";
@@ -54,6 +55,8 @@ function HubSection({
 }
 
 export default function BrandHub() {
+  const { hash } = useLocation();
+  const fontKit = findAssetFile("font-kit", "ZIP");
   const [activeId, setActiveId] = useState(() => employeeSectionId(window.location.hash.slice(1) || "overview"));
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function BrandHub() {
   }, []);
 
   useEffect(() => {
-    const requestedId = window.location.hash.slice(1);
+    const requestedId = hash.slice(1);
     const id = employeeSectionId(requestedId);
     if (!id) return;
     if (id !== requestedId) window.history.replaceState(null, "", `#${id}`);
@@ -85,41 +88,24 @@ export default function BrandHub() {
       window.scrollTo(0, Math.max(0, target.offsetTop - 64));
       window.requestAnimationFrame(() => {
         root.style.scrollBehavior = previousBehavior;
+        if (id.startsWith("asset-")) target.focus({ preventScroll: true });
       });
     }, 0);
-  }, []);
+  }, [hash]);
 
   return (
     <HubShell activeId={activeId}>
         <WorkingCanvasHero />
 
-        <div id="quick-reference" className="scroll-mt-20">
         <HubSection
           id="downloads"
           eyebrow="Resources"
           title="Grab-and-go assets"
-          intro="Download logos and backgrounds for your work."
+          intro="Logos, fonts, backgrounds, and original icon examples. Choose the format that fits your work."
         >
-          <div className="mb-6 flex flex-wrap gap-2">
-            {["messaging", "voice", "color", "downloads"].map((id) => {
-              const item = HUB_NAV.flatMap((group) => group.items).find(
-                (navItem) => navItem.id === id
-              )!;
-              const chipClass = buttonVariants({ size: "sm" });
-              return item.path ? (
-                <Link key={id} to={item.path} className={chipClass}>
-                  {item.label} <ArrowRight size={14} />
-                </Link>
-              ) : (
-                <button key={id} onClick={() => jumpTo(id)} className={chipClass}>
-                  {item.label} <ArrowRight size={14} />
-                </button>
-              );
-            })}
-          </div>
           <div className="space-y-12">
             {ASSET_CATEGORIES.map((category) => {
-              const assets = ASSETS.filter((asset) => asset.type === category.type && asset.href && !asset.employeeHold);
+              const assets = availableAssets().filter((asset) => asset.type === category.type);
               if (!assets.length) return null;
               return (
                 <div key={category.type}>
@@ -131,9 +117,6 @@ export default function BrandHub() {
           </div>
         </HubSection>
 
-        </div>
-
-
         <HubSection
           id="color"
           eyebrow="Visual identity"
@@ -141,6 +124,7 @@ export default function BrandHub() {
           intro="Select any color to copy its hex value."
         >
           <ColorTiers />
+          <ColorExamples />
         </HubSection>
 
         <HubSection
@@ -149,15 +133,15 @@ export default function BrandHub() {
           title="Typography"
           intro="Figtree is the only brand typeface. Use tight spacing for display text and open spacing for body copy."
         >
-          <div className="mb-6">
-            <a href="/fonts/Figtree-font-kit.zip" download className={buttonVariants({ size: "lg" })}>
+          {fontKit && <div className="mb-6">
+            <a href={fontKit.href} download className={buttonVariants({ size: "lg" })}>
               <Download size={16} aria-hidden="true" /> Download fonts
             </a>
-          </div>
+          </div>}
           <div className="mb-6 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-2">
             {[
               ["Family", "Figtree everywhere"],
-              ["Weights", "400 to 800"],
+              ["Weights", "Regular 400, Medium 500, SemiBold 600, Bold 700, ExtraBold 800"],
             ].map(([label, value]) => (
               <div key={label} className="bg-white p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
@@ -180,6 +164,15 @@ export default function BrandHub() {
               </div>
               <p className="text-3xl font-bold tracking-tight">Clear words. Consistent design.</p>
             </div>
+            {[{ name: "SemiBold", weight: 600 }, { name: "Medium", weight: 500 }].map(({ name, weight }) => (
+              <div key={weight} className="grid gap-8 border-b border-border p-7 md:grid-cols-[180px_1fr]">
+                <div>
+                  <p className="eyebrow">{name}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">Weight {weight}</p>
+                </div>
+                <p className="text-3xl tracking-tight" style={{ fontWeight: weight }}>Clear words. Consistent design.</p>
+              </div>
+            ))}
             <div className="grid gap-8 p-7 md:grid-cols-[180px_1fr]">
               <div>
                 <p className="eyebrow">Body</p>
@@ -188,6 +181,7 @@ export default function BrandHub() {
               <p className="measure text-base leading-7 text-muted-foreground">Use clear, direct sentences. Keep the structure easy to follow and let evidence carry the message.</p>
             </div>
           </div>
+          <LayoutExample />
         </HubSection>
 
         <HubSection
@@ -196,23 +190,10 @@ export default function BrandHub() {
           title="Logo and gradients"
           intro="Use the primary logo whenever space allows. Reserve gradients for key moments."
         >
-          <div className="grid gap-6 sm:grid-cols-2">
-            <figure>
-              <div className="dark flex min-h-52 items-center justify-center rounded-lg bg-og-midnight p-6">
-                <img src="/logo-dark.png" alt="Ordergroove logo with white lettering and Groovy Green rings" className="w-full max-w-md" />
-              </div>
-              <figcaption className="mt-3 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">On Midnight:</strong> white wordmark with Groovy Green (#00FF85) rings.</figcaption>
-            </figure>
-            <figure>
-              <div className="flex min-h-52 items-center justify-center rounded-lg border border-border bg-white p-6">
-                <img src="/logo-white.png" alt="Ordergroove logo with Midnight lettering and #00CC6A green rings" className="w-full max-w-md" />
-              </div>
-              <figcaption className="mt-3 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">On white:</strong> Midnight wordmark with #00CC6A rings. Keep the supplied artwork unchanged.</figcaption>
-            </figure>
-          </div>
+          <LogoExamples />
           <h3 className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</h3>
           <div className="grid gap-6 sm:grid-cols-2">
-            {ASSETS.filter((asset) => asset.tags.includes("logomark") && asset.href && !asset.employeeHold).map((asset) => (
+            {availableAssets().filter((asset) => asset.tags.includes("logomark")).map((asset) => (
               <figure key={asset.id}>
                 <div className={cn("flex h-64 items-center justify-center rounded-lg", asset.previewBg === "light" ? "border border-border bg-white" : "bg-og-midnight")}>
                   <img src={asset.preview!} alt={asset.title} className="h-full max-w-full object-contain" />
