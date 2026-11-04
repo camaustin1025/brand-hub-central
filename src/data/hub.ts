@@ -36,10 +36,14 @@ export const DESIGN_CANVAS_CATEGORIES = [...publishedSocialTemplates().reduce((g
   return groups;
 }, new Map<string, SocialTemplate[]>())].map(([category, templates]) => ({ id: designCanvasCategoryId(category), category, templates }));
 
+export const ICON_LIBRARY_PATH = "/icon-library";
+export const ICON_LIBRARY_NAV_ID = "icon-library";
+
 /** Standalone resources, also used to redirect the former homepage anchors. The toolkit became Design canvas. */
 export const RESOURCE_PAGE_PATHS = {
   toolkit: DESIGN_CANVAS_PATH,
   "ai-skills": "/ai-resources",
+  [ICON_LIBRARY_NAV_ID]: ICON_LIBRARY_PATH,
 } as const;
 
 const DRAFT_HUB_NAV: HubNavGroup[] = [
@@ -122,6 +126,15 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         label: "Icons",
         description: "Material Symbols Rounded, icon colors, and tile treatments.",
         keywords: "icons iconography material symbols rounded plain tinted solid figma teal",
+      },
+      {
+        // Search lists this page once, as an asset (see hub-search.ts).
+        id: ICON_LIBRARY_NAV_ID,
+        path: ICON_LIBRARY_PATH,
+        wip: true,
+        label: "Icon library",
+        description: "Every brand icon as PNG or SVG, in each icon color and treatment.",
+        keywords: "icon library download png svg zip",
       },
     ],
   },

@@ -170,9 +170,10 @@
   }
 }
 
-/* Guests are view-only: hide download controls and Design canvas links. */
+/* Guests are view-only: hide download controls, Design canvas links, and icon library links. */
 html[data-guest] a[download],
 html[data-guest] [data-download],
-html[data-guest] a[href^="/design-canvas"] {
+html[data-guest] a[href^="/design-canvas"],
+html[data-guest] a[href^="/icon-library"] {
   display: none !important;
 }

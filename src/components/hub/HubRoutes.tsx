@@ -5,12 +5,13 @@ import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
 import AiResources from "@/pages/AiResources";
 import DesignCanvas from "@/pages/DesignCanvas";
+import IconLibraryPage from "@/pages/IconLibrary";
 import HeroLab from "@/pages/HeroLab";
 import LayoutLab from "@/pages/LayoutLab";
 import { employeeSectionId } from "@/data/employee-launch";
 import AdminGuests from "@/pages/AdminGuests";
 import { useAccess } from "@/hooks/use-access";
-import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, RESOURCE_PAGE_PATHS } from "@/data/hub";
+import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, ICON_LIBRARY_PATH, RESOURCE_PAGE_PATHS } from "@/data/hub";
 
 const SocialCustomizer = lazy(() => import("@/pages/SocialCustomizer"));
 
@@ -50,6 +51,7 @@ export function HubRoutes() {
           <SocialCustomizer />
         </Suspense>
       } />}
+      {!isGuest && <Route path={ICON_LIBRARY_PATH} element={<IconLibraryPage />} />}
       <Route path="/toolkit" element={<Navigate to={DESIGN_CANVAS_PATH} replace />} />
       <Route path="/toolkit/social/:templateId" element={<ToolkitGraphicRoute />} />
       <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />

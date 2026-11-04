@@ -83,7 +83,7 @@ const RECORDS: AssetRecord[] = [
   },
   {
     id: "icon-examples", title: "Brand icon examples",
-    description: "Original payment, heart, and chart SVG specimens. Open the Icons guide for the full Figma library and treatments.",
+    description: "Original payment, heart, and chart SVG specimens. For all 293 icons in every brand color, use the Icon library page.",
     type: "icon", tags: ["icon", "icons", "payment", "heart", "chart", "material", "symbols", "rounded", "vector", "examples"],
     preview: "/working-canvas/icon-examples.svg", previewBg: "light", section: "icons",
     files: [{ format: "SVG", href: "/working-canvas/icon-examples.svg" }],

@@ -32,7 +32,7 @@ export default defineConfig([
     rules: { "prefer-const": "off" },
   },
   {
-    files: ["scripts/*.mjs"],
+    files: ["scripts/**/*.mjs"],
     languageOptions: {
       globals: { Buffer: "readonly", console: "readonly", process: "readonly" },
     },

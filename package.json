@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "test:social": "node scripts/check-social-customizer.mjs",
-    "test:hub": "node scripts/check-hub-resources.mjs"
+    "test:hub": "node scripts/check-hub-resources.mjs && node scripts/check-icon-library.mjs"
   },
   "dependencies": {
     "@lovable.dev/cloud-auth-js": "^1.1.2",

@@ -1,11 +1,22 @@
 import { availableAssets, assetAnchor } from "../data/assets";
-import { designCanvasTemplatePath, HUB_NAV, isWipSection, type HubNavItem } from "../data/hub";
+import { designCanvasTemplatePath, HUB_NAV, ICON_LIBRARY_NAV_ID, ICON_LIBRARY_PATH, isWipSection, type HubNavItem } from "../data/hub";
+import { ICON_ALIASES, ICON_CATEGORY_NAMES, ICON_COUNT } from "../data/icon-library";
 import { publishedSocialTemplates } from "../data/social-templates";
 
 export type HubSearchItem = HubNavItem & { kind: "Guide" | "Asset" | "Template" };
 
+// The icon library is a download page, so search lists it once, as an asset, not also as a guide.
+const ICON_LIBRARY_ITEM: HubSearchItem = {
+  id: ICON_LIBRARY_NAV_ID, path: ICON_LIBRARY_PATH, label: "Icon library",
+  description: `All ${ICON_COUNT} brand icons as PNG or SVG, in every icon color and treatment. Download one icon or a ZIP.`,
+  keywords: ["icons icon library download png svg zip material symbols rounded plain tinted solid pictogram glyph",
+    ...ICON_CATEGORY_NAMES, ...Object.values(ICON_ALIASES)].join(" ").toLowerCase(),
+  kind: "Asset", wip: isWipSection(ICON_LIBRARY_NAV_ID),
+};
+
 export const HUB_SEARCH_ITEMS: HubSearchItem[] = [
-  ...HUB_NAV.flatMap((group) => group.items).map((item) => ({ ...item, kind: "Guide" as const })),
+  ...HUB_NAV.flatMap((group) => group.items).filter((item) => item.id !== ICON_LIBRARY_NAV_ID).map((item) => ({ ...item, kind: "Guide" as const })),
+  ICON_LIBRARY_ITEM,
   ...availableAssets().map((asset) => ({
     id: assetAnchor(asset.id), label: asset.title, description: asset.description,
     keywords: [...asset.tags, ...asset.formats, asset.type, "download", ...(["logo", "background"].includes(asset.type) ? ["backgrounds"] : [])].join(" "),

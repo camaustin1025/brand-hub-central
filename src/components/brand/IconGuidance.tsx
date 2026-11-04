@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { ICON_COLORS, ICONS_FIGMA_URL, MATERIAL_SYMBOLS_GUIDE_URL } from "@/data/brand-resources";
 import { buttonVariants } from "@/components/ui/button";
+import { ICON_LIBRARY_PATH } from "@/data/hub";
 import { cn } from "@/lib/utils";
 
 const TREATMENTS = ["Plain", "Tinted", "Solid"] as const;
@@ -16,9 +18,12 @@ export function IconGuidance() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap gap-3">
-        <a href={ICONS_FIGMA_URL} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants(), "min-h-11")}>
-          Open icon library in Figma <ArrowUpRight size={16} aria-hidden="true" />
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+        <Link to={ICON_LIBRARY_PATH} className={cn(buttonVariants(), "min-h-11")}>
+          Download icons <ArrowRight size={16} aria-hidden="true" />
+        </Link>
+        <a href={ICONS_FIGMA_URL} target="_blank" rel="noopener noreferrer" className="action-focus inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4">
+          Open icon library in Figma <ArrowUpRight size={15} aria-hidden="true" />
         </a>
         <a href={MATERIAL_SYMBOLS_GUIDE_URL} target="_blank" rel="noopener noreferrer" className="action-focus inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4">
           Material Symbols guide <ArrowUpRight size={15} aria-hidden="true" />
@@ -90,7 +95,6 @@ export function IconGuidance() {
         <div><h3 className="text-base font-semibold">Choose the symbol for the meaning</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Use a Material Symbols Rounded icon that matches the idea: renewals, payments, loyalty, data, or another library category. Keep weight and fill consistent within a set. Use the supplied glyphs instead of emoji or drawn substitutes.</p></div>
         <div><h3 className="text-base font-semibold">Keep the label readable</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Pair decorative icon tiles with text that carries the meaning. Pink and teal treatments can have low contrast on white. Use Midnight for small text on light backgrounds.</p></div>
       </div>
-      <p className="border-t border-border pt-5 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">Downloadable icon library, planned for v2.</strong> For now, use the linked Figma library for the original icons and components.</p>
     </div>
   );
 }

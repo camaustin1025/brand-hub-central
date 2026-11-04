@@ -1,0 +1,117 @@
+{
+  "source": "Figma Slide Skill 2.0 (1LAizYM7R7QVubcHuix1KF), Icons page, Icon Library frame 18:782",
+  "glyphSource": "Google Material Symbols Rounded, 48px optical size, weight 400, fill 0, grade 0",
+  "figmaExports": {
+    "note": "These glyphs differ from Google's current Material Symbols release. Export them from Figma (SVG) instead of downloading from Google.",
+    "icons": {
+      "smartphone": "224:1812",
+      "install_mobile": "224:1814",
+      "mobile_friendly": "224:1815",
+      "pin_drop": "224:1819",
+      "query_stats": "25:873",
+      "extension": "25:886",
+      "automation": "25:908",
+      "auto_awesome": "223:1763",
+      "keep": "25:965",
+      "share": "25:978"
+    }
+  },
+  "categories": [
+    {
+      "id": "subscriptions-renewals",
+      "name": "Subscriptions & Renewals",
+      "figmaNode": "18:783",
+      "icons": ["autorenew", "subscriptions", "event_repeat", "repeat", "cycle", "all_inclusive", "restart_alt", "history", "calendar_month", "edit_calendar", "pause_circle", "play_circle", "skip_next", "swap_horiz", "card_membership", "package_2"]
+    },
+    {
+      "id": "orders-shipping",
+      "name": "Orders & Shipping",
+      "figmaNode": "18:786",
+      "icons": ["local_shipping", "delivery_truck_speed", "package", "orders", "inventory_2", "warehouse", "conveyor_belt", "shopping_cart", "add_shopping_cart", "shopping_cart_checkout", "shopping_bag", "storefront", "receipt_long", "assignment_return", "location_on", "barcode", "eco", "smartphone", "devices", "install_mobile", "mobile_friendly", "directions_car", "markunread_mailbox", "door_front", "pin_drop", "deployed_code", "local_post_office", "undo", "u_turn_left", "delivery_truck_bolt"]
+    },
+    {
+      "id": "payments-pricing",
+      "name": "Payments & Pricing",
+      "figmaNode": "18:789",
+      "icons": ["credit_card", "payments", "account_balance_wallet", "attach_money", "paid", "savings", "percent", "percent_discount", "sell", "receipt", "request_quote", "price_change", "currency_exchange", "account_balance", "add_card", "credit_card_off", "calculate", "contactless", "money_off", "euro"]
+    },
+    {
+      "id": "retention-loyalty",
+      "name": "Retention & Loyalty",
+      "figmaNode": "18:792",
+      "icons": ["favorite", "loyalty", "redeem", "stars", "star", "trophy", "workspace_premium", "diamond", "thumb_up", "volunteer_activism", "sentiment_satisfied", "sentiment_dissatisfied", "celebration", "handshake", "recommend", "reviews"]
+    },
+    {
+      "id": "customers-people",
+      "name": "Customers & People",
+      "figmaNode": "18:795",
+      "icons": ["person", "group", "groups", "diversity_3", "person_add", "person_remove", "person_check", "account_circle", "manage_accounts", "support_agent", "face", "family_restroom", "badge", "person_search", "corporate_fare", "partner_exchange"]
+    },
+    {
+      "id": "data-growth",
+      "name": "Data & Growth",
+      "figmaNode": "18:798",
+      "icons": ["bar_chart", "trending_up", "trending_down", "trending_flat", "show_chart", "monitoring", "analytics", "pie_chart", "leaderboard", "query_stats", "search", "speed", "ads_click", "conversion_path", "filter_alt", "target", "rocket_launch", "database", "dashboard"]
+    },
+    {
+      "id": "platform-integrations",
+      "name": "Platform & Integrations",
+      "figmaNode": "18:801",
+      "icons": ["api", "integration_instructions", "hub", "extension", "webhook", "cloud", "cloud_sync", "code", "account_tree", "link", "widgets", "stacks", "settings", "tune", "lock", "shield", "verified_user", "language", "web"]
+    },
+    {
+      "id": "ai-automation",
+      "name": "AI & Automation",
+      "figmaNode": "18:804",
+      "icons": ["star_shine", "psychology", "smart_toy", "robot_2", "neurology", "model_training", "automation", "flowchart", "route", "bolt", "precision_manufacturing", "wand_stars", "batch_prediction", "experiment", "lightbulb", "auto_awesome"]
+    },
+    {
+      "id": "time-planning",
+      "name": "Time & Planning",
+      "figmaNode": "18:807",
+      "icons": ["schedule", "calendar_today", "event", "event_available", "date_range", "timer", "pending_actions", "checklist", "task_alt", "assignment", "flag", "map", "timeline", "view_timeline", "view_kanban", "tour"]
+    },
+    {
+      "id": "status-comparison",
+      "name": "Status & Comparison",
+      "figmaNode": "18:810",
+      "icons": ["check_circle", "cancel", "check", "close", "error", "warning", "info", "help", "block", "thumb_down", "compare_arrows", "compare", "balance", "rule", "verified", "priority_high", "pending", "visibility"]
+    },
+    {
+      "id": "arrows-markers",
+      "name": "Arrows & Markers",
+      "figmaNode": "18:813",
+      "icons": ["arrow_forward", "arrow_back", "arrow_upward", "arrow_downward", "north_east", "south_east", "arrow_right_alt", "chevron_right", "arrow_circle_right", "open_in_new", "sync_alt", "add", "remove", "circle", "keep", "counter_1", "counter_2", "counter_3", "counter_4"]
+    },
+    {
+      "id": "messaging-engagement",
+      "name": "Messaging & Engagement",
+      "figmaNode": "18:816",
+      "icons": ["mail", "sms", "chat", "forum", "notifications", "notifications_active", "campaign", "send", "share", "feedback", "rate_review", "mark_email_read", "call", "contact_support", "touch_app"]
+    },
+    {
+      "id": "documents-content",
+      "name": "Documents & Content",
+      "figmaNode": "18:819",
+      "icons": ["description", "article", "newspaper", "format_list_numbered", "summarize", "edit_note", "format_quote", "image", "slideshow", "co_present"]
+    },
+    {
+      "id": "merchant-categories",
+      "name": "Merchant Categories",
+      "figmaNode": "222:1752",
+      "icons": ["pets", "coffee", "spa", "health_and_beauty", "pill", "nutrition", "fitness_center", "grocery", "restaurant", "liquor", "child_care", "apparel", "home", "cleaning_services", "soap", "potted_plant"]
+    },
+    {
+      "id": "shopping-store",
+      "name": "Shopping & Store",
+      "figmaNode": "222:1755",
+      "icons": ["store", "local_mall", "shopping_basket", "remove_shopping_cart", "production_quantity_limits", "point_of_sale", "qr_code_scanner", "featured_seasonal_and_gifts", "confirmation_number", "heart_plus", "category", "inventory", "new_releases", "local_fire_department", "quiz"]
+    },
+    {
+      "id": "tech-devices",
+      "name": "Tech & Devices",
+      "figmaNode": "222:1758",
+      "icons": ["mouse", "arrow_selector_tool", "left_click", "pan_tool_alt", "computer", "desktop_windows", "keyboard", "tablet_mac", "headphones", "browse", "web_asset", "screen_share", "terminal", "data_object", "bug_report", "memory", "dns", "wifi", "cloud_upload", "key", "fingerprint", "encrypted", "desktop_mac", "laptop_mac", "devices_other", "right_click", "captive_portal", "cloud_download", "cloud_done", "lan", "schema", "open_in_browser"]
+    }
+  ]
+}
