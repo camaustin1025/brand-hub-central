@@ -144,8 +144,8 @@ export default function BrandHub() {
         <HubSection
           id="downloads"
           eyebrow="Downloads"
-          title="Grab-and-go assets"
-          intro="Logos, fonts, backgrounds, and icon examples, each in every format we have."
+          title="Grab-and-go Assets"
+          intro="Original logo, font, background, and icon files. Download them here instead of copying from old decks or screenshots."
         >
           <div className="space-y-12">
             {ASSET_CATEGORIES.map((category) => {
@@ -164,8 +164,8 @@ export default function BrandHub() {
         <HubSection
           id="color"
           eyebrow="Visual identity"
-          title="Color palette"
-          intro="Select any color to copy its hex value."
+          title="Color Palette"
+          intro="Midnight, white, and Groovy Green lead. Secondary colors are accents only. Select any color to copy its hex."
         >
           <ColorTiers />
           <ColorExamples />
@@ -247,8 +247,8 @@ export default function BrandHub() {
         <HubSection
           id="logo-gradients"
           eyebrow="Visual identity"
-          title="Logo and gradients"
-          intro="Use the primary logo whenever space allows. Reserve gradients for key moments."
+          title="Logo and Gradients"
+          intro="Use the primary logo whenever space allows. Use one gradient per section, on the moment that matters most."
         >
           <LogoExamples />
           <h3 className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</h3>
@@ -273,7 +273,7 @@ export default function BrandHub() {
             </div>
             <div>
               <h3 className="text-base font-semibold">Use the original file</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork from Grab-and-go assets instead of taking a screenshot.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork from Grab-and-go Assets instead of taking a screenshot.</p>
             </div>
             <div>
               <h3 className="text-base font-semibold">Need another version?</h3>
@@ -289,6 +289,7 @@ export default function BrandHub() {
 
         <HubSection
           id="icons"
+          eyebrow="Visual identity"
           title="Icons"
           intro="One icon family, three treatments. Match the treatment and color to the background."
         >
@@ -298,8 +299,8 @@ export default function BrandHub() {
         {isEmployeeSectionVisible("tokens") && <HubSection
           id="tokens"
           eyebrow="Brand systems"
-          title="Marketing color tokens"
-          intro="Use these approved marketing tokens. Product tokens are managed separately."
+          title="Marketing Color Tokens"
+          intro="Hex and RGB values for marketing work. Product UI uses its own tokens, managed separately."
         >
           <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr]">
             <div className="overflow-hidden rounded-lg border border-border bg-white">
