@@ -41,6 +41,39 @@ export type Database = {
         }
         Relationships: []
       }
+      asset_download_events: {
+        Row: {
+          asset_id: string
+          asset_type: string
+          created_at: string
+          format: string
+          id: string
+          item_count: number
+          user_id: string
+          variant: string | null
+        }
+        Insert: {
+          asset_id: string
+          asset_type: string
+          created_at?: string
+          format: string
+          id?: string
+          item_count?: number
+          user_id?: string
+          variant?: string | null
+        }
+        Update: {
+          asset_id?: string
+          asset_type?: string
+          created_at?: string
+          format?: string
+          id?: string
+          item_count?: number
+          user_id?: string
+          variant?: string | null
+        }
+        Relationships: []
+      }
       assets: {
         Row: {
           category_id: string | null
