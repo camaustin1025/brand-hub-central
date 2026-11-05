@@ -83,7 +83,7 @@ export function IconGuidance() {
 
       <details className="border-y border-border py-2">
         <summary className="action-focus min-h-11 cursor-pointer py-3 text-sm font-semibold">Material Symbols settings</summary>
-        <p className="mt-2 max-w-[68ch] text-sm leading-6 text-muted-foreground">Choose the Rounded family. Google’s settings control the glyph itself; Plain, Tinted, and Solid describe the surrounding tile treatment. Match the Figma examples and keep these settings consistent within a set.</p>
+        <p className="mt-2 max-w-[68ch] text-sm leading-6 text-muted-foreground">Google’s settings control the glyph itself; Plain, Tinted, and Solid describe the tile around it. Match the Figma examples and keep these settings consistent within a set.</p>
         <dl className="my-4 grid gap-4 text-sm sm:grid-cols-2">
           {[["Fill", "Outline or filled glyph"], ["Weight", "Stroke thickness"], ["Grade", "Fine adjustments to stroke thickness"], ["Optical size", "Adjusts the symbol for its display size"]].map(([label, description]) => (
             <div key={label}><dt className="font-semibold">{label}</dt><dd className="mt-1 leading-6 text-muted-foreground">{description}</dd></div>
@@ -92,7 +92,7 @@ export function IconGuidance() {
       </details>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <div><h3 className="text-base font-semibold">Choose the symbol for the meaning</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Use a Material Symbols Rounded icon that matches the idea: renewals, payments, loyalty, data, or another library category. Keep weight and fill consistent within a set. Use the supplied glyphs instead of emoji or drawn substitutes.</p></div>
+        <div><h3 className="text-base font-semibold">Choose the symbol for the meaning</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Pick the icon that matches the idea: renewals, payments, loyalty, data, or another library category. Use the supplied glyphs, not emoji or drawn substitutes.</p></div>
         <div><h3 className="text-base font-semibold">Keep the label readable</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Pair decorative icon tiles with text that carries the meaning. Pink and teal treatments can have low contrast on white. Use Midnight for small text on light backgrounds.</p></div>
       </div>
     </div>

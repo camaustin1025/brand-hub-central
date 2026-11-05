@@ -48,14 +48,14 @@ const RECORDS: AssetRecord[] = [
   },
   {
     id: "logomark-dark", title: "Logomark for dark backgrounds",
-    description: "Standalone Groovy Green rings for dark backgrounds. Use the supplied artwork unchanged.",
+    description: "Standalone Groovy Green rings for dark backgrounds.",
     type: "logo", tags: ["logo", "logomark", "mark", "dark", "midnight", "rings"],
     preview: "/ordergroove-logomark-dark-bgs.png", section: "logo-gradients",
     files: [{ format: "PNG", href: "/ordergroove-logomark-dark-bgs.png" }],
   },
   {
     id: "logomark-light", title: "Logomark for light backgrounds",
-    description: "Standalone green rings for light backgrounds. Use the supplied artwork unchanged.",
+    description: "Standalone green rings for light backgrounds.",
     type: "logo", tags: ["logo", "logomark", "mark", "light", "white", "rings"],
     preview: "/ordergroove-logomark-light-bgs.png", previewBg: "light", section: "logo-gradients",
     files: [{ format: "PNG", href: "/ordergroove-logomark-light-bgs.png" }],

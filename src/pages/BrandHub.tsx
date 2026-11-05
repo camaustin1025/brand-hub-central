@@ -143,9 +143,9 @@ export default function BrandHub() {
 
         <HubSection
           id="downloads"
-          eyebrow="Resources"
+          eyebrow="Downloads"
           title="Grab-and-go assets"
-          intro="Logos, fonts, backgrounds, and original icon examples. Choose the format that fits your work."
+          intro="Logos, fonts, backgrounds, and icon examples, each in every format we have."
         >
           <div className="space-y-12">
             {ASSET_CATEGORIES.map((category) => {
@@ -175,7 +175,7 @@ export default function BrandHub() {
           id="typography"
           eyebrow="Visual identity"
           title="Typography"
-          intro="Figtree is the only brand typeface. Use tight spacing for display text and open spacing for body copy."
+          intro="One typeface in five weights. Use tight spacing for display text and open spacing for body copy."
         >
           {/* The family plate: the face on Midnight, every weight beside it. */}
           <div className="grid overflow-hidden rounded-lg border border-border bg-card md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
@@ -225,16 +225,16 @@ export default function BrandHub() {
           <h3 className="mb-5 mt-12 text-2xl font-bold">Usage rules</h3>
           <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
-              <h4 className="text-base font-semibold">Drop the trailing period</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Headlines, titles, labels, and subtitles are statements, not sentences. Set titles in Title Case and eyebrow labels in ALL CAPS.</p>
+              <h4 className="text-base font-semibold">Style headlines as statements</h4>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Drop the trailing period on headlines, titles, labels, and subtitles. Set titles in Title Case and eyebrow labels in ALL CAPS.</p>
             </div>
             <div>
               <h4 className="text-base font-semibold">Use Figtree only</h4>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Never use Arial, Helvetica, Calibri, or Soleil, and check that nothing falls back to them. Cormorant is allowed on campaign cards only.</p>
             </div>
             <div>
-              <h4 className="text-base font-semibold">Keep display copy short</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">In display layouts, keep body copy to about four lines. Set secondary headlines in the same color as the primary.</p>
+              <h4 className="text-base font-semibold">Keep display layouts simple</h4>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Hold body copy to about four lines. Set secondary headlines in the same color as the primary.</p>
             </div>
             <div>
               <h4 className="text-base font-semibold">Skip emoji</h4>
@@ -269,7 +269,7 @@ export default function BrandHub() {
             </div>
             <div>
               <h3 className="text-base font-semibold">Keep it readable</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use the full wordmark whenever space allows. Place it on a plain Midnight or white background and check that it stays crisp and legible at the size people will see.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Place it on a plain Midnight or white background. Check that it stays crisp at the size people will see it.</p>
             </div>
             <div>
               <h3 className="text-base font-semibold">Use the original file</h3>
@@ -290,7 +290,7 @@ export default function BrandHub() {
         <HubSection
           id="icons"
           title="Icons"
-          intro="Use Material Symbols Rounded for Ordergroove visuals. Match the treatment and color to the background."
+          intro="One icon family, three treatments. Match the treatment and color to the background."
         >
           <IconGuidance />
         </HubSection>
@@ -319,12 +319,12 @@ export default function BrandHub() {
                 <h3 className="text-lg font-bold">Token kits</h3>
                 <DraftBadge>Pending green approval</DraftBadge>
               </div>
-              <p className="measure mt-3 text-sm leading-6 text-muted-foreground">We’ll publish both token kits after the remaining green values are approved.</p>
+              <p className="measure mt-3 text-sm leading-6 text-muted-foreground">Both kits publish once the remaining green values are approved.</p>
               <div className="mt-5 space-y-2">
                 {["tokens.json", "tokens.css"].map((file) => (
                   <div key={file} className="flex items-center justify-between rounded-lg bg-og-gray-950 px-3 py-2.5">
                     <code className="text-sm font-semibold">{file}</code>
-                    <span className="text-xs font-semibold text-muted-foreground">Pending green approval</span>
+                    <span className="text-xs font-semibold text-muted-foreground">Pending</span>
                   </div>
                 ))}
               </div>
