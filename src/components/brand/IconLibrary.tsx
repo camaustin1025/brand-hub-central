@@ -13,10 +13,6 @@ import {
 
 const DEFAULT_COLOR: Record<IconSurface, string> = { light: "Brand Green", dark: "Groovy Green" };
 const LICENSE_URL = "/icon-guidance/LICENSE.txt";
-const SURFACE_HINT: Record<IconSurface, string> = {
-  light: "For white or light backgrounds. Solid tiles use a white icon.",
-  dark: "For non-white backgrounds, like Midnight. Solid tiles use a Midnight icon, because white disappears on these colors.",
-};
 
 let licenseText: string | null = null;
 async function loadLicense() {
@@ -150,7 +146,7 @@ export function IconLibrary() {
   return (
     <div id="icon-library">
       <div className="grid gap-6 lg:grid-cols-2">
-        <ControlGroup label="Background" hint={SURFACE_HINT[surface]}>
+        <ControlGroup label="Background">
           {ICON_SURFACES.map((item) => (
             <Toggle key={item.id} pressed={surface === item.id} onClick={() => changeSurface(item.id)}>{item.label}</Toggle>
           ))}
@@ -163,7 +159,7 @@ export function IconLibrary() {
             </Toggle>
           ))}
         </ControlGroup>
-        <ControlGroup label="Style" hint={ICON_TREATMENTS.find((item) => item.id === treatment)?.description}>
+        <ControlGroup label="Style">
           {ICON_TREATMENTS.map((item) => (
             <Toggle key={item.id} pressed={treatment === item.id} onClick={() => setTreatment(item.id)}>{item.label}</Toggle>
           ))}
@@ -201,6 +197,9 @@ export function IconLibrary() {
           {zipLabel}
         </button>
       </div>
+      <p className="mt-3 text-xs leading-5 text-muted-foreground">
+        Every ZIP has a folder per category, plus the Material Symbols license (Apache 2.0) and a notice. Icons not in this library? Use Material Symbols Rounded at weight 400, or ask Marketing.
+      </p>
       <div className="mt-2 min-h-5 text-sm">
         {error ? <p role="alert" className="font-semibold text-og-radish dark:text-og-flamingo">{error}</p> : <p role="status" className="text-muted-foreground">{status}</p>}
       </div>
@@ -247,9 +246,6 @@ export function IconLibrary() {
           </div>
         )}
       </div>
-      <p className="mt-3 text-xs leading-5 text-muted-foreground">
-        Every ZIP has a folder per category, plus the Material Symbols license (Apache 2.0) and a notice. Icons not in this library? Use Material Symbols Rounded at weight 400, or ask Marketing.
-      </p>
     </div>
   );
 }

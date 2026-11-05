@@ -131,7 +131,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         // Search lists this page once, as an asset (see hub-search.ts).
         id: ICON_LIBRARY_NAV_ID,
         path: ICON_LIBRARY_PATH,
-        wip: true,
         label: "Icon library",
         description: "Every brand icon as PNG or SVG, in each icon color and treatment.",
         keywords: "icon library download png svg zip",
