@@ -289,9 +289,8 @@ export default function BrandHub() {
 
         <HubSection
           id="icons"
-          eyebrow="Visual identity"
           title="Icons"
-          intro="One icon family, three treatments. Match the treatment and color to the background."
+          intro="Three treatments for light and dark backgrounds."
         >
           <IconGuidance />
         </HubSection>

@@ -1,5 +1,6 @@
 export const ICONS_FIGMA_URL = "https://www.figma.com/design/1LAizYM7R7QVubcHuix1KF/Slide-Skill-2.0?node-id=289-2635";
 export const MATERIAL_SYMBOLS_GUIDE_URL = "https://developers.google.com/fonts/docs/material_symbols";
+export const MATERIAL_SYMBOLS_LIBRARY_URL = "https://fonts.google.com/icons";
 export const CLAUDE_SKILLS_GUIDE_URL = "https://support.claude.com/en/articles/12512180-use-skills-in-claude";
 
 // Verified against Figma Icon Tile (27:782) and Icon Tile Dark (32:803).
