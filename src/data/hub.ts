@@ -173,17 +173,17 @@ export function isWipSection(id: string) {
 
 export const RIGHTS = [
   {
-    n: "01",
+    n: "1",
     title: "Everychannel Infrastructure",
     body: "Subscriptions that work across every channel: in-store, digital, wholesale, and emerging surfaces. Scan to Subscribe is a proof point here.",
   },
   {
-    n: "02",
+    n: "2",
     title: "The Groove Network",
     body: "The data moat: 1,000+ brands, $110B+ in transaction signals, 75M+ subscriber profiles. The most diversified data network in the category.",
   },
   {
-    n: "03",
+    n: "3",
     title: "Testing Velocity",
     body: "Continuous experimentation at a pace no team could match alone. Agents appear by name only inside this pillar.",
   },
