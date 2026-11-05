@@ -223,7 +223,7 @@ Still to source: numeric minimum-size specs and a clean standalone-mark master. 
 - **Figtree, everywhere.** Weights 400/500/600/700/800. Cormorant is permitted only on campaign cards.
 - **Forbidden fonts:** Arial, Helvetica, Calibri, Soleil (and any silent fallback to them).
 - **Hierarchy (web reference):** eyebrow 12px, ALL CAPS, 0.16em letter-spacing → H1 40 to 44px → subhead 21px → body 15px.
-- **Casing:** Title Case on titles; ALL CAPS with letter-spacing on eyebrow labels.
+- **Casing:** Sentence case on titles (capitalize the first word and proper nouns only); ALL CAPS with letter-spacing on eyebrow labels.
 - **No trailing periods** on headlines, titles, labels, or subtitles. Statements, not sentences.
 - **No emoji** in designed materials.
 

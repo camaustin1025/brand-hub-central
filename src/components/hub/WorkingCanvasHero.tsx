@@ -176,7 +176,7 @@ export function WorkingCanvasHero() {
       </div>
 
       <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
-        <h2 className={styles.searchTitle}>Find What You Need</h2>
+        <h2 className={styles.searchTitle}>Find what you need</h2>
         <div className={styles.searchBox}><SearchBox hero /></div>
         <div className={styles.samples}>
           <button className="action-focus" onClick={() => jumpTo("color")}>Which green goes on white? <ArrowRight size={16} /></button>

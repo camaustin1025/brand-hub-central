@@ -65,41 +65,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
     ],
   },
   {
-    // One link, not a list: the page itself sorts the graphics by category.
-    label: "Design canvas",
-    linkTitle: true,
-    items: [
-      {
-        id: DESIGN_CANVAS_NAV_ID,
-        path: DESIGN_CANVAS_PATH,
-        label: "Design canvas",
-        description: `LinkedIn graphics: ${DESIGN_CANVAS_CATEGORIES.flatMap(({ templates }) => templates.map((template) => template.title)).join(", ")}.`,
-        keywords: `design canvas social linkedin graphic customize photo toolkit ${DESIGN_CANVAS_CATEGORIES.map(({ category }) => category.toLowerCase()).join(" ")}`,
-      },
-    ],
-  },
-  {
-    label: "Brand foundation",
-    items: [
-      {
-        id: "messaging",
-        path: "/foundation",
-        wip: true,
-        label: "Foundation & messaging",
-        description: "Positioning, audience, Rights to Win, and message ladder.",
-        keywords: "autonomous subscriptions everychannel groove network testing velocity category",
-      },
-      {
-        id: "voice",
-        path: "/voice",
-        wip: true,
-        label: "Voice & language",
-        description: "Personality, pass/fail rules, and preferred terms.",
-        keywords: "tone words copy writing language rules use avoid ai em dash",
-      },
-    ],
-  },
-  {
     label: "Visual identity",
     items: [
       {
@@ -137,15 +102,37 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
     ],
   },
   {
-    label: "Resources",
+    // One link, not a list: the page itself sorts the graphics by category.
+    label: "Design canvas",
+    linkTitle: true,
     items: [
       {
-        id: "ai-skills",
-        path: RESOURCE_PAGE_PATHS["ai-skills"],
+        id: DESIGN_CANVAS_NAV_ID,
+        path: DESIGN_CANVAS_PATH,
+        label: "Design canvas",
+        description: `LinkedIn graphics: ${DESIGN_CANVAS_CATEGORIES.flatMap(({ templates }) => templates.map((template) => template.title)).join(", ")}.`,
+        keywords: `design canvas social linkedin graphic customize photo toolkit ${DESIGN_CANVAS_CATEGORIES.map(({ category }) => category.toLowerCase()).join(" ")}`,
+      },
+    ],
+  },
+  {
+    label: "Verbal identity",
+    items: [
+      {
+        id: "messaging",
+        path: "/foundation",
         wip: true,
-        label: "AI Resources & Guidance",
-        description: "Shared Claude skills, starting with Ordergroove Slides 2.0.",
-        keywords: "ai claude skills slides 2.0 presentations prompt guidance resources",
+        label: "Foundation & messaging",
+        description: "Positioning, audience, Rights to Win, and message ladder.",
+        keywords: "autonomous subscriptions everychannel groove network testing velocity category",
+      },
+      {
+        id: "voice",
+        path: "/voice",
+        wip: true,
+        label: "Voice & language",
+        description: "Personality, pass/fail rules, and preferred terms.",
+        keywords: "tone words copy writing language rules use avoid ai em dash",
       },
     ],
   },
@@ -157,6 +144,19 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         label: "Design tokens",
         description: "Approved marketing color values. Code kits pending approval.",
         keywords: "developer css json code variables design system",
+      },
+    ],
+  },
+  {
+    label: "Resources",
+    items: [
+      {
+        id: "ai-skills",
+        path: RESOURCE_PAGE_PATHS["ai-skills"],
+        wip: true,
+        label: "AI Resources & Guidance",
+        description: "Shared Claude skills, starting with Ordergroove Slides 2.0.",
+        keywords: "ai claude skills slides 2.0 presentations prompt guidance resources",
       },
     ],
   },
