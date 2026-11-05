@@ -42,8 +42,8 @@ const TYPE_HIERARCHY = [
   {
     role: "Headline",
     spec: "40 to 44px · ExtraBold 800",
-    note: "Title Case, 60 characters or fewer",
-    sample: "Make It Look Like Ordergroove",
+    note: "Sentence case, 60 characters or fewer",
+    sample: "Make it look like Ordergroove",
     className: "text-[40px] font-extrabold leading-[1.08] tracking-tight [text-wrap:balance] md:text-[44px]",
   },
   {
@@ -144,7 +144,7 @@ export default function BrandHub() {
         <HubSection
           id="downloads"
           eyebrow="Downloads"
-          title="Grab-and-go Assets"
+          title="Grab-and-go assets"
           intro="Original logo, font, background, and icon files. Download them here instead of copying from old decks or screenshots."
         >
           <div className="space-y-12">
@@ -164,7 +164,7 @@ export default function BrandHub() {
         <HubSection
           id="color"
           eyebrow="Visual identity"
-          title="Color Palette"
+          title="Color palette"
           intro="Midnight, white, and Groovy Green lead. Secondary colors are accents only. Select any color to copy its hex."
         >
           <ColorTiers />
@@ -226,7 +226,7 @@ export default function BrandHub() {
           <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
               <h4 className="text-base font-semibold">Style headlines as statements</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Drop the trailing period on headlines, titles, labels, and subtitles. Set titles in Title Case and eyebrow labels in ALL CAPS.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Drop the trailing period on headlines, titles, labels, and subtitles. Set titles in sentence case and eyebrow labels in ALL CAPS.</p>
             </div>
             <div>
               <h4 className="text-base font-semibold">Use Figtree only</h4>
@@ -247,7 +247,7 @@ export default function BrandHub() {
         <HubSection
           id="logo-gradients"
           eyebrow="Visual identity"
-          title="Logo and Gradients"
+          title="Logo and gradients"
           intro="Use the primary logo whenever space allows. Use one gradient per section, on the moment that matters most."
         >
           <LogoExamples />
@@ -273,7 +273,7 @@ export default function BrandHub() {
             </div>
             <div>
               <h3 className="text-base font-semibold">Use the original file</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork from Grab-and-go Assets instead of taking a screenshot.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork from Grab-and-go assets instead of taking a screenshot.</p>
             </div>
             <div>
               <h3 className="text-base font-semibold">Need another version?</h3>
@@ -299,7 +299,7 @@ export default function BrandHub() {
         {isEmployeeSectionVisible("tokens") && <HubSection
           id="tokens"
           eyebrow="Brand systems"
-          title="Marketing Color Tokens"
+          title="Marketing color tokens"
           intro="Hex and RGB values for marketing work. Product UI uses its own tokens, managed separately."
         >
           <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr]">

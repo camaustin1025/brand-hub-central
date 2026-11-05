@@ -8,7 +8,7 @@ export default function Voice() {
     <HubShell activeId="voice">
       <ChapterPage
         wip={isWipSection("voice")}
-        eyebrow="Brand foundation"
+        eyebrow="Verbal identity"
         title="How we sound and the lines we don't cross"
         intro="Ordergroove sounds like the confident operator in the room who doesn't need to shout. Calm authority, earned from 15+ years of doing the work."
       >
