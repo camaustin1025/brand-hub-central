@@ -20,7 +20,7 @@ export function IconGuidance() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
         <Link to={ICON_LIBRARY_PATH} className={cn(buttonVariants(), "min-h-11")}>
-          Download icons <ArrowRight size={16} aria-hidden="true" />
+          Browse all 293 icons <ArrowRight size={16} aria-hidden="true" />
         </Link>
         <a href={ICONS_FIGMA_URL} target="_blank" rel="noopener noreferrer" className="action-focus inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4">
           Open icon library in Figma <ArrowUpRight size={15} aria-hidden="true" />

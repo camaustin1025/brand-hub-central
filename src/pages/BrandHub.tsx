@@ -298,7 +298,7 @@ export default function BrandHub() {
         {isEmployeeSectionVisible("tokens") && <HubSection
           id="tokens"
           eyebrow="Brand systems"
-          title="Canonical values, ready for code"
+          title="Marketing color tokens"
           intro="Use these approved marketing tokens. Product tokens are managed separately."
         >
           <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr]">
