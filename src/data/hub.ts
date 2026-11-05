@@ -155,7 +155,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       {
         id: "tokens",
         label: "Design tokens",
-        description: "Approved marketing values, ready for code.",
+        description: "Approved marketing color values. Code kits pending approval.",
         keywords: "developer css json code variables design system",
       },
     ],

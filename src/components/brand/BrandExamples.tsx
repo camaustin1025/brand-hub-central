@@ -22,9 +22,9 @@ export function LogoExamples() {
   return (
     <div id="logo-examples" className="mt-10 scroll-mt-24">
       <h3 className="text-xl font-bold">Match the logo to its background</h3>
-      <p className="mb-5 mt-2 text-sm leading-6">A background change needs the right original artwork.</p>
+      <p className="mb-5 mt-2 text-sm leading-6">Each background has its own logo file.</p>
       <div className="grid grid-cols-1 gap-5">
-        <Example good coloredIcons note="On Midnight, use the white wordmark with Groovy Green-500 rings. On white, use the Midnight wordmark.">
+        <Example good coloredIcons note="On Midnight, use the white wordmark with Groovy Green rings. On white, use the Midnight wordmark.">
           <div className="grid sm:grid-cols-2">
             <div className="flex h-24 items-center justify-center bg-og-midnight px-8"><img src={darkLogo} alt="Correct: white wordmark on Midnight" className="h-auto w-full max-w-80 object-contain" /></div>
             <div className="flex h-24 items-center justify-center bg-white px-8"><img src={lightLogo} alt="Correct: Midnight wordmark on white" className="h-auto w-full max-w-80 object-contain" /></div>
@@ -74,16 +74,16 @@ export function LayoutExample() {
       <div className="grid gap-5 sm:grid-cols-2">
         <Example good note="A clear heading, quieter supporting copy, and room between groups. The gradient adds one moment of color.">
           <div className="flex min-h-72 flex-col p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-og-midnight">Ordergroove resources</p>
-            <p className="mt-4 max-w-[18ch] text-[28px] font-extrabold leading-[1.1] tracking-tight text-og-midnight">Your starting point for everyday work</p>
-            <p className="mt-4 max-w-[34ch] text-sm leading-6 text-og-midnight">Brand guidelines, useful tools, and employee resources.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-og-midnight">Ordergroove Brand Hub</p>
+            <p className="mt-4 max-w-[18ch] text-[28px] font-extrabold leading-[1.1] tracking-tight text-og-midnight">Make your work look and sound like Ordergroove</p>
+            <p className="mt-4 max-w-[34ch] text-sm leading-6 text-og-midnight">Approved logos, fonts, colors, and templates, plus the rules for using them</p>
             <img src={BACKGROUND_GRADIENT.image} alt="" className="mt-6 h-9 w-full rounded-md object-cover" />
           </div>
         </Example>
         <Example good={false} note="Equal emphasis, cramped spacing, and a busy background make it harder to know what to read first.">
           <div className="flex min-h-72 items-center p-3" style={{ backgroundImage: `url(${BACKGROUND_GRADIENT.image})`, backgroundSize: "cover" }}>
             <div className="w-full text-center text-xl font-bold leading-tight text-og-midnight">
-              <p>ORDERGROOVE RESOURCES</p><p>Your starting point for everyday work</p><p>Brand guidelines, useful tools, and employee resources.</p>
+              <p>ORDERGROOVE BRAND HUB</p><p>Make your work look and sound like Ordergroove</p><p>Approved logos, fonts, colors, and templates, plus the rules for using them</p>
             </div>
           </div>
         </Example>

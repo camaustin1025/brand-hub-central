@@ -133,11 +133,11 @@ export function WorkingCanvasHero() {
   return (
     <section id="overview" data-hub-section className={styles.hero}>
       <div className={styles.intro}>
-        <p className={styles.eyebrow}>Ordergroove resources</p>
+        <p className={styles.eyebrow}>Ordergroove Brand Hub</p>
         <h1 className={styles.title}>
-          <span>Your starting point</span>{" "}<span>for everyday work</span>
+          <span>Make your work look</span>{" "}<span>and sound like Ordergroove</span>
         </h1>
-        <p className={styles.subhead}>Brand guidelines, downloads, and employee tools in one place</p>
+        <p className={styles.subhead}>Approved logos, fonts, colors, and templates, plus the rules for using them</p>
         <div className={styles.actions}>
           <Button className={styles.action} onClick={() => jumpTo("downloads")}>Browse assets</Button>
         </div>
@@ -176,7 +176,7 @@ export function WorkingCanvasHero() {
       </div>
 
       <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
-        <h2 className={styles.searchTitle}>Find what you need</h2>
+        <h2 className={styles.searchTitle}>Find What You Need</h2>
         <div className={styles.searchBox}><SearchBox hero /></div>
         <div className={styles.samples}>
           <button className="action-focus" onClick={() => jumpTo("color")}>Which green goes on white? <ArrowRight size={16} /></button>
