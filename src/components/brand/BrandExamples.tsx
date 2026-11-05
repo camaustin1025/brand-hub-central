@@ -24,13 +24,13 @@ export function LogoExamples() {
       <h3 className="text-xl font-bold">Match the logo to its background</h3>
       <p className="mb-5 mt-2 text-sm leading-6">A background change needs the right original artwork.</p>
       <div className="grid grid-cols-1 gap-5">
-        <Example good coloredIcons note="When on a dark background (such as Midnight), our default is to display the logo in white with Groovy Green-500 interlocking rings.">
+        <Example good coloredIcons note="On Midnight, use the white wordmark with Groovy Green-500 rings. On white, use the Midnight wordmark.">
           <div className="grid sm:grid-cols-2">
             <div className="flex h-24 items-center justify-center bg-og-midnight px-8"><img src={darkLogo} alt="Correct: white wordmark on Midnight" className="h-auto w-full max-w-80 object-contain" /></div>
             <div className="flex h-24 items-center justify-center bg-white px-8"><img src={lightLogo} alt="Correct: Midnight wordmark on white" className="h-auto w-full max-w-80 object-contain" /></div>
           </div>
         </Example>
-        <Example good={false} coloredIcons note="The wrong version loses its lettering against the background. Choose another supplied file instead of recoloring the logo.">
+        <Example good={false} coloredIcons note="The wordmark disappears into the background. Switch to the other supplied file instead of recoloring the logo.">
           <div className="grid sm:grid-cols-2">
             <div className="flex h-24 items-center justify-center bg-white px-8"><img src={darkLogo} alt="Incorrect: white wordmark disappears on white" className="h-auto w-full max-w-80 object-contain" /></div>
             <div className="flex h-24 items-center justify-center bg-og-midnight px-8"><img src={lightLogo} alt="Incorrect: Midnight wordmark disappears on Midnight" className="h-auto w-full max-w-80 object-contain" /></div>

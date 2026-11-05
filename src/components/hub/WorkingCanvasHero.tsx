@@ -11,7 +11,7 @@ import styles from "./WorkingCanvasHero.module.css";
 const ARTWORK = {
   logo: { title: "Ordergroove logo", detail: getAsset("logo-light").description, ...findAssetFile("logo-light", "SVG"), label: "Download SVG", section: getAsset("logo-light").section },
   gradient: { title: "Brand gradient", detail: getAsset("brand-gradient").description, ...findAssetFile("brand-gradient", "PNG"), label: "Download PNG", section: getAsset("brand-gradient").section },
-  type: { title: "Figtree", detail: "Our brand typeface. Regular weight shown in the download.", ...findAssetFile("font-kit", "TTF"), label: "Download font", section: getAsset("font-kit").section },
+  type: { title: "Figtree", detail: "Our brand typeface. This file is Regular only; the font kit has all five weights.", ...findAssetFile("font-kit", "TTF"), label: "Download font", section: getAsset("font-kit").section },
   icons: { title: "Brand icons", detail: getAsset("icon-examples").description, ...findAssetFile("icon-examples", "SVG"), label: "Download SVG", section: getAsset("icon-examples").section },
 };
 type ArtworkId = keyof typeof ARTWORK;
@@ -137,7 +137,7 @@ export function WorkingCanvasHero() {
         <h1 className={styles.title}>
           <span>Your starting point</span>{" "}<span>for everyday work</span>
         </h1>
-        <p className={styles.subhead}>Find brand guidelines, useful tools, and employee resources to help you get things done.</p>
+        <p className={styles.subhead}>Brand guidelines, downloads, and employee tools in one place.</p>
         <div className={styles.actions}>
           <Button className={styles.action} onClick={() => jumpTo("downloads")}>Browse assets</Button>
         </div>
