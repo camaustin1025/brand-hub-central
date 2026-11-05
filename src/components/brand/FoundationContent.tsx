@@ -20,12 +20,6 @@ export function FoundationContent() {
             </p>
           </div>
           <div>
-            <h3 className="text-2xl font-bold">Central belief</h3>
-            <p className="measure mt-3 leading-7 text-muted-foreground">
-              Subscriptions aren't programs. They're relationships. Growth comes from flexibility, not lock-in, and the best retention is giving customers control, not friction.
-            </p>
-          </div>
-          <div>
             <h3 className="text-2xl font-bold">Who we serve</h3>
             <p className="measure mt-3 leading-7 text-muted-foreground">
               Enterprise and mid-market B2C brands with repeat purchase patterns, typically $50M+ GMV. Buyers are VP or Director of eCommerce, VP or Head of Digital, and retention, loyalty, CRM, and subscription leaders.
