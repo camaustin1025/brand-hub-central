@@ -122,7 +122,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       },
       {
         id: "icons",
-        wip: true,
         label: "Icons",
         description: "Material Symbols Rounded, icon colors, and tile treatments.",
         keywords: "icons iconography material symbols rounded plain tinted solid figma teal",
