@@ -137,7 +137,7 @@ export function WorkingCanvasHero() {
         <h1 className={styles.title}>
           <span>Your starting point</span>{" "}<span>for everyday work</span>
         </h1>
-        <p className={styles.subhead}>Brand guidelines, downloads, and employee tools in one place.</p>
+        <p className={styles.subhead}>Brand guidelines, downloads, and employee tools in one place</p>
         <div className={styles.actions}>
           <Button className={styles.action} onClick={() => jumpTo("downloads")}>Browse assets</Button>
         </div>
