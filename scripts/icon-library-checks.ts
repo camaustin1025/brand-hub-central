@@ -13,7 +13,8 @@ import {
 } from "../src/data/icon-library";
 import { buildIconSvg, buildIconZip, buildZip, crc32 } from "../src/lib/icon-render";
 import { HUB_SEARCH_ITEMS, searchHub } from "../src/lib/hub-search";
-import { HUB_NAV, ICON_LIBRARY_NAV_ID, ICON_LIBRARY_PATH, RESOURCE_PAGE_PATHS } from "../src/data/hub";
+import { BUYING_GROUPS, HUB_NAV, ICON_LIBRARY_NAV_ID, ICON_LIBRARY_PATH, RESOURCE_PAGE_PATHS } from "../src/data/hub";
+import { PAGE_ICONS, PAGE_ONLY_ICONS, type PageIconName } from "../src/data/page-icons";
 
 const data = glyphData as IconLibraryData;
 const icons = data.categories.flatMap((category) => category.icons.map((icon) => ({ icon, category })));
@@ -30,6 +31,25 @@ for (const { icon } of icons) {
   assert(numbers.length > 2 && numbers.every(Number.isFinite), icon.name + " has invalid numbers");
 }
 console.log(`PASS: ${ICON_COUNT} glyphs in ${ICON_CATEGORY_COUNT} categories match the Figma manifest and parse cleanly`);
+
+const glyphsByName = new Map(icons.map(({ icon }) => [icon.name, icon]));
+for (const [key, glyph] of Object.entries(PAGE_ICONS)) {
+  const source = glyphsByName.get(key);
+  assert.equal(glyph.name, key, `Page icon "${key}" has a mismatched name`);
+  if (PAGE_ONLY_ICONS.has(key as PageIconName)) {
+    // Page-only glyphs come straight from Google; hold them to the library's path rules,
+    // and flag the day one joins the library so the page copies the library version.
+    assert(!source, `Page icon "${key}" is now in the icon library: copy its path and drop it from PAGE_ONLY_ICONS`);
+    assert.match(glyph.d, /^M[\d.]/, `Page icon "${key}" must start with an absolute moveto`);
+    assert.match(glyph.d, /^[MmLlHhVvCcSsQqTtZz\d.\s-]+$/, `Page icon "${key}" has unexpected path characters`);
+    continue;
+  }
+  assert(source, `Page icon "${key}" is not in the icon library; add it to PAGE_ONLY_ICONS if that is intended`);
+  assert.equal(glyph.d, source.d, `Page icon "${key}" drifted from icon-glyphs.json`);
+  assert.equal((glyph as { rule?: string }).rule ?? null, source.rule ?? null, `Page icon "${key}" fill rule drifted`);
+}
+for (const group of BUYING_GROUPS) assert(group.icon in PAGE_ICONS, `${group.group} uses an icon missing from PAGE_ICONS`);
+console.log(`PASS: ${Object.keys(PAGE_ICONS).length} inline page icons match the icon library or are declared page-only`);
 
 assert.equal(ICON_COLORS.light.length, 4);
 assert.equal(ICON_COLORS.dark.length, 5);

@@ -16,9 +16,13 @@ Apply everything below to all Ordergroove copy and visual work without being ask
 
 - Ordergroove is **"the enterprise standard for subscriptions and recurring revenue."**
 - Lead message is a category move — **Autonomous Subscriptions** — never a feature list. Ladder DOWN from the category shift, not UP from features.
-- Products: Payment Agent, Retention Agent, Analytics Agent, Ordergroove MCP server.
-- Rights-to-Win, in this locked order: **01 Everychannel Infrastructure** (Scan to Subscribe is a proof point here), **02 The Groove Network** (1,000+ brands, $110B+ transaction signals, 75M+ subscriber profiles), **03 Testing Velocity** (agents appear by name only here).
-- Audience: enterprise B2C — VP eCommerce / VP Digital / retention & CRM leaders.
+- Category definition: *"Subscription infrastructure that runs itself. Built for every channel, trained on the largest enterprise subscription network, and able to test and grow faster than any team could alone."*
+- Products: **Agents** (the autonomous layer: Payment Agent, Retention Agent, Analytics Agent) · **Workflows** (orchestration) · **Open Platform** (GraphQL API, Ordergroove MCP server).
+- Rights-to-Win, in this locked order:
+  1. **Everychannel Infrastructure.** *One platform. Everychannel.* Integrate once and capture every channel: storefronts, retail, voice, and agent endpoints not built yet. Scan to Subscribe is a proof point here.
+  2. **The Groove Network.** *The largest enterprise subscription dataset.* Every reach, retry, recovery, and retention test is refined by the most diversified subscription data in enterprise commerce (1,000+ brands, $110B+ transaction signals, 75M+ subscriber profiles).
+  3. **Testing Velocity.** *Test faster. Compound the wins.* Agents propose variants, the brand deploys at 1%, 5%, or 10%, and every winner compounds. Agents appear by name only here.
+- Audience: enterprise and mid-market B2C brands with repeat purchase patterns, typically $50M+ GMV. Two buying groups: **business leaders** (VP/Director of eCommerce, VP/Head of Digital, retention, loyalty, CRM, and subscription leaders; they care about revenue, churn, and speed to market) and **technology leaders** (CTO, CIO, VP of Engineering, eCommerce platform and enterprise architecture leaders; they care about integration, scalability, data access, and readiness for an agentic stack).
 - "Autonomous Commerce" is not yet cleared for external use — internal framing only.
 
 ## Hard language rules (pass/fail, not suggestions)

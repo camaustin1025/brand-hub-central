@@ -1,73 +1,136 @@
 import { DraftBadge } from "@/components/brand/DraftBadge";
-import { LADDER, RIGHTS } from "@/data/hub";
+import { TintedIcon } from "@/components/brand/TintedIcon";
+import { BUYING_GROUPS, LADDER, RIGHTS } from "@/data/hub";
 import { SHOW_DRAFT_BOILERPLATE } from "@/data/employee-launch";
 import { cn } from "@/lib/utils";
 
-/** Positioning, audience, Rights to Win, and the message ladder.
- *  Lives on /foundation; no longer inlined on the hub home page. */
+/*
+ * Positioning, audience, the message ladder, and Rights to Win, in the order
+ * the copy is written. Lives on /foundation.
+ *
+ * Layout keys off this column's width, not the viewport: the hub sidebar takes
+ * 284px from lg up, so a viewport breakpoint misjudges the room.
+ *
+ * One grid for every row module. The definition panel, the ladder, and Rights
+ * to Win all sit 32px inside their frame, then split into a 16rem label column
+ * and a content column at 48rem. Every label starts at the same x and every
+ * description starts at the same x, so the three modules read as one table.
+ * Below 48rem a row stacks: label, then content.
+ *
+ * The page uses ChapterPage's "reading" width (57rem, 912px): 32px inset x2 +
+ * 16rem label + 32px gap + the ~554px measure. Wider, and every panel and row
+ * carries empty space to the right of its text.
+ *
+ * Type, six sizes: 42 page title, 28 section head, 24 definition and numerals,
+ * 18 item titles and the page intro, 16 body, 12 eyebrow. Bold is for headings;
+ * the taglines keep semibold because they are the pillar messages.
+ * Line length targets (Bringhurst, WCAG 1.4.8): body 45-75 characters, ~66
+ * ideal; phones 30-45; display text 30-50; never past 80.
+ * Rhythm: 64px between the page head and every section (56 on phones), 12px
+ * head to lede, 24px lede to module. Padding: 24px boxes, 32px panels and rows.
+ */
+const SECTION_HEAD = "text-[28px] font-bold leading-tight";
+const LEDE = "measure mt-3 leading-7 text-muted-foreground";
+const ROW_GRID =
+  "[@container(min-width:48rem)]:grid [@container(min-width:48rem)]:grid-cols-[16rem_minmax(0,1fr)] [@container(min-width:48rem)]:gap-x-8";
+
 export function FoundationContent() {
   return (
-    <>
-      <div className="grid gap-10 lg:grid-cols-[1fr_.9fr]">
-        <div className="space-y-9">
-          <div>
-            <h3 className="text-2xl font-bold">The category we own</h3>
-            <p className="measure mt-3 leading-7 text-muted-foreground">
-              Our lead message is a category move, not a product pitch. <strong className="text-foreground">Autonomous Subscriptions</strong> is the category we are defining: a team of agents that help enterprise brands recover revenue, reduce churn, and act on subscriber data faster.
-            </p>
-            <p className="measure mt-3 text-sm leading-6 text-muted-foreground">
-              Cleared for external use since June 17, 2026. “Autonomous Commerce” stays internal for now. “Relationship Commerce” is retired, never use it.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold">Who we serve</h3>
-            <p className="measure mt-3 leading-7 text-muted-foreground">
-              Enterprise and mid-market B2C brands with repeat purchase patterns, typically $50M+ GMV. Buyers are VP or Director of eCommerce, VP or Head of Digital, and retention, loyalty, CRM, and subscription leaders.
-            </p>
-          </div>
-        </div>
-        <div className="rounded-lg bg-og-midnight p-7 text-white">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-og-green">Message ladder</p>
-          <ol className="mt-6 space-y-0">
-            {LADDER.map((item, index) => (
-              <li key={item.rung} className="relative flex gap-4 pb-6 last:pb-0">
-                {index < LADDER.length - 1 && <span className="absolute left-[15px] top-8 h-[calc(100%-24px)] w-px bg-white/15" />}
-                <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-og-green text-sm font-extrabold text-og-midnight">{index + 1}</span>
-                <div>
-                  <h4 className="font-bold">{item.rung}</h4>
-                  <p className="measure mt-1 text-sm leading-6 text-white/60">{item.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
+    // --measure 54ch (~554px, ~77 Figtree characters at 16px; Figtree averages
+    // 7.2px a character). The site default 50ch caps near 71, which split the
+    // 71-character first ladder step into two 36-character lines. Measured
+    // 2026-11-06: 55ch and 56ch push the first pillar to an 80/81-character line
+    // (past the 75 target and at the WCAG 1.4.8 ceiling). .measure wraps
+    // "pretty" (see src/index.css), so lines fill to this measure instead of
+    // being evened out short of it.
+    <div className="flex flex-col gap-14 pt-4 [--measure:54ch] [container-type:inline-size] md:gap-16 md:pt-6">
+      <section aria-labelledby="foundation-category">
+        <h2 id="foundation-category" className={SECTION_HEAD}>The category we own</h2>
+        <p className={LEDE}>
+          Our lead message is a category move, not a product pitch. Autonomous Subscriptions is the category we are defining:
+        </p>
+        {/* The page's key statement, set as a term and its definition: the
+            category name holds the label column, the definition the content
+            column, so the panel's width carries meaning instead of empty space. */}
+        <dl className={cn("mt-6 rounded-lg bg-og-midnight p-6 md:p-8 [@container(min-width:48rem)]:items-baseline", ROW_GRID)}>
+          <dt className="text-2xl font-bold leading-tight tracking-tight text-og-green md:text-[28px]">Autonomous Subscriptions</dt>
+          <dd className="mt-3 max-w-[34rem] text-lg font-semibold leading-snug tracking-tight text-white text-balance md:text-2xl [@container(min-width:48rem)]:mt-0">
+            Subscription infrastructure that runs itself. Built for every channel, trained on the largest enterprise subscription network, and able to test and grow faster than any team could alone.
+          </dd>
+        </dl>
+      </section>
 
-      <div className="mt-14">
-        <div className="mb-5 flex items-end justify-between gap-4">
-          <h3 className="text-2xl font-bold">Rights to Win</h3>
-          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Locked order</span>
-        </div>
-        <div className="grid border-y border-border md:grid-cols-3">
-          {RIGHTS.map((item, index) => (
-            <div key={item.n} className={cn("py-6 md:px-6", index > 0 && "border-t border-border md:border-l md:border-t-0", index === 0 && "md:pl-0", index === RIGHTS.length - 1 && "md:pr-0")}>
-              <span className="text-sm font-extrabold text-primary">{item.n}</span>
-              <h4 className="mt-3 text-lg font-bold">{item.title}</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">{item.body}</p>
-            </div>
+      <section aria-labelledby="foundation-audience">
+        <h2 id="foundation-audience" className={SECTION_HEAD}>Who we serve</h2>
+        <p className={LEDE}>
+          Enterprise and mid-market B2C brands with repeat purchase patterns, typically $50M+ GMV. We sell to two buying groups:
+        </p>
+        <ul className="mt-6 grid gap-4 [@container(min-width:44rem)]:grid-cols-2">
+          {BUYING_GROUPS.map((item) => (
+            // Subgrid shares the icon / title / roles / priorities rows across
+            // both boxes, so the divider lines up even when one list runs longer.
+            <li key={item.group} className="row-span-4 grid grid-rows-subgrid gap-0 rounded-lg border border-border bg-white p-6">
+              <TintedIcon name={item.icon} className="mb-4" />
+              <h3 className="text-lg font-bold leading-7">{item.group}</h3>
+              <p className="measure mb-5 mt-2 leading-7 text-muted-foreground">{item.roles}</p>
+              <div className="border-t border-border pt-4">
+                <p className="measure leading-7 text-muted-foreground">{item.cares}</p>
+              </div>
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </section>
 
-      {SHOW_DRAFT_BOILERPLATE && <div className="mt-10 rounded-lg border border-border bg-white p-6">
+      <section aria-labelledby="foundation-ladder">
+        <h2 id="foundation-ladder" className={SECTION_HEAD}>Message ladder</h2>
+        <ol className="mt-6 rounded-lg bg-og-midnight p-6 text-white md:p-8">
+          {LADDER.map((item, index) => (
+            <li key={item.rung} className={cn("relative pb-6 last:pb-0", ROW_GRID)}>
+              {index < LADDER.length - 1 && <span aria-hidden="true" className="absolute bottom-0 left-[15px] top-8 hidden w-px bg-white/15 [@container(min-width:30rem)]:block" />}
+              <div className="flex items-center gap-4 self-start">
+                <span aria-hidden="true" className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-og-green text-sm font-extrabold text-og-midnight">{index + 1}</span>
+                <h3 className="text-lg font-bold leading-7 tracking-normal">{item.rung}</h3>
+              </div>
+              {/* Phones: full width under the title, connector hidden, which buys
+                  ~10 characters a line. Stacked with room: indented past the circle
+                  and connector. Wide: its own column; pt-0.5 matches the title,
+                  which centers on the 32px circle. */}
+              <p className="measure mt-2 leading-7 text-white [@container(min-width:30rem)_and_(max-width:47.99rem)]:pl-12 [@container(min-width:48rem)]:mt-0 [@container(min-width:48rem)]:pt-0.5">{item.body}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="foundation-rights">
+        <h2 id="foundation-rights" className={SECTION_HEAD}>Rights to Win</h2>
+        <ol className="mt-6 border-t border-border">
+          {RIGHTS.map((item) => (
+            <li key={item.n} className={cn("border-b border-border py-6 md:px-8", ROW_GRID)}>
+              <div className="flex items-baseline gap-4 self-start">
+                {/* Same 32px slot as the ladder's step circles, so numerals and
+                    circles share a center line. 24px keeps the green above 3:1. */}
+                <span className="w-8 shrink-0 text-center text-2xl font-extrabold leading-7 tabular-nums text-primary">{item.n}</span>
+                <h3 className="text-lg font-bold leading-7">{item.title}</h3>
+              </div>
+              {/* Wide: pt-1 matches the title, which sits on the 24px numeral's baseline. */}
+              <div className="mt-3 [@container(min-width:48rem)]:mt-0 [@container(min-width:48rem)]:pt-1">
+                <p className="measure font-semibold leading-7 text-foreground">{item.tagline}</p>
+                <p className="measure mt-1 leading-7 text-muted-foreground">{item.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {SHOW_DRAFT_BOILERPLATE && <div className="rounded-lg border border-border bg-white p-6">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-lg font-bold">Company boilerplate</h3>
+          <h2 className="text-lg font-bold">Company boilerplate</h2>
           <DraftBadge>Pending leadership approval</DraftBadge>
         </div>
-        <p className="measure mt-3 text-sm leading-6 text-muted-foreground">
+        <p className="measure mt-3 leading-7 text-muted-foreground">
           Ordergroove is the enterprise standard for subscriptions and recurring revenue, powering flexible subscriber experiences for 1,000+ leading brands across every channel.
         </p>
       </div>}
-    </>
+    </div>
   );
 }
