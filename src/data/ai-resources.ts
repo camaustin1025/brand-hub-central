@@ -30,7 +30,7 @@ export const SECURITY_GUIDELINES: ResourceLink = {
 };
 
 export const SECURITY_SUMMARY: ResourceLink = {
-  label: "Ofir’s summary in #ogofficial",
+  label: "a summary in #ogofficial",
   url: `${SLACK}/CEKAB3HE2/p1770164079224739`,
 };
 
@@ -127,13 +127,11 @@ export const TRAINING = [
   },
 ];
 
+/** org: published to the org library. shared: its creator shared it org-wide. catalog: findable in search, not shared org-wide. */
 export type SkillStatus = "org" | "shared" | "catalog";
 
-export const SKILL_STATUS: Record<SkillStatus, { label: string; body: string }> = {
-  org: { label: "Org library", body: "Published to the org skill library." },
-  shared: { label: "Shared with everyone", body: "Its creator shared it with the whole org." },
-  catalog: { label: "Search only", body: "Find it by searching the skill catalog. Not shared org-wide yet." },
-};
+/** Only "catalog" skills get a visible tag: org and shared skills both work for everyone. */
+export const SEARCH_ONLY_LABEL = "Search only";
 
 const skill = (id: string) => `https://claude.ai/customize/skills/id/${id}`;
 
@@ -181,7 +179,13 @@ export const SKILL_GROUPS: { id: string; label: string; skills: Skill[] }[] = [
         extra: { label: "How-to", url: "https://claude.ai/artifact/9T5wDXvcCRAqK7oe8hSzb5?sk=xQ90Br2WZ-n3cci05ovZqQ" },
       },
       { name: "internal-handoff", url: skill("plugin_01U9wAX94m9N4QobPZSzaJQX"), status: "shared", body: "A deal handoff deck built from Salesforce, the Technical Proposal, and Slack." },
-      { name: "ordergroove-shopify-bundles", url: skill("plugin_01A118VxwcGzvLFU4xo8k1Kv"), status: "catalog", body: "Build-your-own-box bundle subscriptions on Shopify." },
+      {
+        name: "ordergroove-shopify-bundles",
+        url: skill("plugin_01A118VxwcGzvLFU4xo8k1Kv"),
+        status: "catalog",
+        body: "Build-your-own-box bundle subscriptions on Shopify.",
+        extra: { label: "One-pager", url: "https://docs.google.com/presentation/d/1GGjmrHXBkB0EZ_ztrgZw2-ni4uUlOD5ARLZ2Of29Oz0/edit" },
+      },
     ],
   },
 ];
@@ -191,10 +195,11 @@ export const ORG_PLUGINS = [
   { name: "vet-incentives-builder-for-shopify", body: "Checks a Shopify merchant’s storefront before and after go-live on Incentives Builder. For Solutions; uses the Ordergroove MCP." },
 ];
 
-export const SKILL_ONE_PAGERS: ResourceLink[] = [
-  { label: "Ordergroove Offer Builder Skill", url: "https://drive.google.com/file/d/1DUiqc4DsmoqvptnnrKDhccbJNeFuoZQ3/view" },
-  { label: "OG Claude Skill Shopify Bundles", url: "https://docs.google.com/presentation/d/1GGjmrHXBkB0EZ_ztrgZw2-ni4uUlOD5ARLZ2Of29Oz0/edit" },
-];
+/** Its skill isn't in the catalog list, so it sits as one line under the Brand group. */
+export const OFFER_BUILDER_ONE_PAGER: ResourceLink = {
+  label: "Ordergroove Offer Builder Skill one-pager",
+  url: "https://drive.google.com/file/d/1DUiqc4DsmoqvptnnrKDhccbJNeFuoZQ3/view",
+};
 
 export const CONNECTORS = [
   { name: "Claude Team", body: "The main AI tool. ChatGPT and Gemini Team accounts are also covered by the security guidelines." },
