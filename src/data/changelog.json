@@ -1,0 +1,34 @@
+[
+  {
+    "date": "2026-11-05",
+    "changes": [
+      "Combine light and dark icon panels into one stacked table",
+      "Simplify homepage icons with light and dark comparisons",
+      "Removed Central belief section",
+      "Fast Visual Edit",
+      "Reorder the nav, rename Brand foundation to Verbal identity, and adopt sentence case",
+      "Sharpen landing page copy for clarity, brand fit, and purpose",
+      "Fix three landing page microcopy issues and drop Icons WIP tag",
+      "Tighten landing page copy and remove repetition",
+      "Refine icon library guidance and remove WIP status"
+    ]
+  },
+  {
+    "date": "2026-11-04",
+    "changes": [
+      "Add a downloadable icon library page"
+    ]
+  },
+  {
+    "date": "2026-11-03",
+    "changes": [
+      "Improve brand resource downloads, search, and usage examples"
+    ]
+  },
+  {
+    "date": "2026-11-02",
+    "changes": [
+      "Added dark mode toggle"
+    ]
+  }
+]
