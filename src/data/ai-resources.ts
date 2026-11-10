@@ -21,6 +21,7 @@ export const AI_RESOURCE_SECTIONS = [
 ];
 
 export const OG_AI_CHANNEL: ResourceLink = { label: "#og-ai", url: `${SLACK}/C09HTBGS8JD` };
+export const TRAINING_CHANNEL: ResourceLink = { label: "#og-claudetraining", url: `${SLACK}/C0B008FP10X` };
 export const SECURITY_CHANNEL: ResourceLink = { label: "#security", url: `${SLACK}/C0B6SSKUPM4` };
 export const INFOSEC_CHANNEL: ResourceLink = { label: "#infosec-reviews", url: `${SLACK}/C06TAFL3R63` };
 
@@ -53,8 +54,7 @@ export const SHARING_RULES = {
 };
 
 export const SLACK_CHANNELS = [
-  { ...OG_AI_CHANNEL, body: "The main hub for AI resources, tips, best practices, and new skill launches. Started by Alyson Murphy." },
-  { label: "#og-claudetraining", url: `${SLACK}/C0B008FP10X`, body: "Where people post their Claude 101 certificates." },
+  { ...OG_AI_CHANNEL, body: "AI questions, resources, and new skills." },
   { label: "#mcp", url: `${SLACK}/C0BCQ3FPTLH`, body: "Questions about the Ordergroove MCP, like access, data gaps, and merchant setup." },
   { ...SECURITY_CHANNEL, body: "Questions about getting connectors and MCP servers approved." },
   { ...INFOSEC_CHANNEL, body: "Security reviews of new tools." },
@@ -71,27 +71,28 @@ export const RUBBER_DUCKY_POST: ResourceLink = { label: "Abbie Cook, Nov 5", url
 export const APPROVAL_STEPS = [
   {
     link: {
-      label: "Approved set of 3rd-party applications, services and vendors",
+      label: "Check approved tools",
       url: `${CONFLUENCE}/51773599/Approved+set+of+3rd+party+applications+services+vendors+with+an+owner`,
     },
-    body: "Check the allowed list first. Any new Claude connector or MCP server goes through this request process.",
+    body: "Check the list before connecting a tool, Claude connector, or MCP server.",
   },
   {
     link: {
-      label: "Security vetting for new 3rd-party software tools",
+      label: "Request a security review",
       url: `${CONFLUENCE}/3980984360/Security+vetting+for+new+3rd+party+software+tools`,
     },
-    body: "Not on the list? Request a review through the Google Form. It now includes an AI review step.",
-  },
-  {
-    link: {
-      label: "Vetting process for 3rd-party tools (no merchant PII)",
-      url: `${CONFLUENCE}/3992584204/Vetting+process+for+3rd+party+tools+-+no+merchant+PII`,
-    },
-    body: "The criteria the review uses.",
-    extra: { label: "SRE veto dashboard", url: "https://sre-dashboard.ops.ordergroove.com/veto/" },
+    body: "Not on the list? Follow the request process to submit a review.",
   },
 ];
+
+export const APPROVAL_CRITERIA: ResourceLink = {
+  label: "Review criteria (no merchant PII)",
+  url: `${CONFLUENCE}/3992584204/Vetting+process+for+3rd+party+tools+-+no+merchant+PII`,
+};
+export const APPROVAL_DECISIONS: ResourceLink = {
+  label: "Review decisions",
+  url: "https://sre-dashboard.ops.ordergroove.com/veto/",
+};
 
 export const TRAINING = [
   {
@@ -209,10 +210,10 @@ export const CONNECTORS = [
 ];
 
 export const HOW_TO_POSTS = [
-  { title: "Token-saving tips", url: ogAiPost("1774893684.767989"), byline: "Ethan Jones, Mar 30", body: "Edit your prompt instead of sending follow-ups, start a new chat every 15 to 20 messages, pick the right model for the job, set up Memory, and turn off features you aren’t using." },
-  { title: "Peer reviews with Cowork", url: ogAiPost("1775050558.526889"), byline: "Ethan Jones, Apr 1", body: "Have Cowork find themes in your Slack, email, and Docs history with a teammate before you write their review." },
-  { title: "Self-evaluations with Cowork", url: ogAiPost("1775247880.852659"), byline: "Ethan Jones, Apr 3", body: "Draft your self-evaluation from your own work, edit it, then have Cowork fill in the Rippling form." },
-  { title: "Monday OKR planning prompt for Slackbot", url: ogAiPost("1773071879.927559"), byline: "Ethan Jones, Mar 9", body: "Checks your week’s calendar and recent Slack against the OKRs and suggests 3 actions to start now." },
-  { title: "Scheduled Gong follow-up prompt", url: ogAiPost("1779378538.624079"), byline: "Valentina Miller, May 21", body: "Drafts next steps and a follow-up email after each call and sends them to her own DM." },
-  { title: "ordergroove-doc and ordergroove-xlsx skills", url: ogAiPost("1785781314.812299"), byline: "Cameron Austin, Aug 3", body: "Branded Word docs and spreadsheets, shared as .skill files." },
+  { title: "Token-saving tips", url: ogAiPost("1774893684.767989"), byline: "Ethan Jones, Mar 30", body: "Reduce token use in Claude." },
+  { title: "Peer reviews with Cowork", url: ogAiPost("1775050558.526889"), byline: "Ethan Jones, Apr 1", body: "Find examples and themes for a teammate’s review." },
+  { title: "Self-evaluations with Cowork", url: ogAiPost("1775247880.852659"), byline: "Ethan Jones, Apr 3", body: "Draft a self-evaluation from your work history." },
+  { title: "Monday OKR planning prompt for Slackbot", url: ogAiPost("1773071879.927559"), byline: "Ethan Jones, Mar 9", body: "Plan your week around your OKRs." },
+  { title: "Scheduled Gong follow-up prompt", url: ogAiPost("1779378538.624079"), byline: "Valentina Miller, May 21", body: "Schedule call summaries and follow-up drafts." },
+  { title: "ordergroove-doc and ordergroove-xlsx skills", url: ogAiPost("1785781314.812299"), byline: "Cameron Austin, Aug 3", body: "Create branded Word docs and spreadsheets." },
 ];
