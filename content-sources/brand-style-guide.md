@@ -20,7 +20,9 @@ We are 16 years old. We are never "new," "emerging," or a "startup." Only a cate
 
 ### 1.2 The category: Autonomous Subscriptions
 
-Our lead message is a category move, not a product pitch. **Autonomous Subscriptions** is the category we are defining: a team of AI agents that help enterprise brands recover revenue, reduce churn, and act on subscriber data faster.
+Our lead message is a category move, not a product pitch. **Autonomous Subscriptions** is the category we are defining:
+
+> Subscription infrastructure that runs itself. Built for every channel, trained on the largest enterprise subscription network, and able to test and grow faster than any team could alone.
 
 Always ladder DOWN from the category shift to the product. Never ladder UP from features.
 
@@ -37,20 +39,24 @@ Subscriptions aren't programs. They're relationships. Growth comes from flexibil
 ### 1.4 Who we serve
 
 - **ICP:** Enterprise and mid-market B2C brands with repeat purchase patterns (CPG, beauty, wellness, pet, food, retail, omnichannel), typically $50M+ GMV
-- **Buyer personas:** VP/Director of eCommerce, VP/Head of Digital, retention/loyalty/CRM/subscription leaders
+- **Buying groups:** we sell to two.
+  - **Business leaders:** VP or Director of eCommerce, VP or Head of Digital, and retention, loyalty, CRM, and subscription leaders. They care about revenue, churn, and speed to market.
+  - **Technology leaders:** CTO, CIO, VP of Engineering, and eCommerce platform and enterprise architecture leaders. They care about integration, scalability, data access, and readiness for an agentic stack.
 - **Their pains:** subscription churn, inflexible tools, poor subscriber experience, difficulty scaling, pressure to prove ROI
 
 ### 1.5 Rights to Win (locked order, do not reorder)
 
-1. **01 Everychannel Infrastructure.** Subscriptions that work across every channel: in-store, digital, wholesale, and emerging surfaces. Scan to Subscribe is a proof point here. ("Everychannel" is one word.)
-2. **02 The Groove Network.** The data moat: 1,000+ brands, $110B+ in transaction signals, 75M+ subscriber profiles. The most diversified data network in the category.
-3. **03 Testing Velocity.** Continuous experimentation at a pace no team could match alone. Agents appear by name only inside this pillar.
+1. **Everychannel Infrastructure.** *One platform. Everychannel.* Storefronts, retail, voice, and agent endpoints you haven't built yet. Integrate once and capture every channel, without re-architecting for each one. Scan to Subscribe is a proof point here. ("Everychannel" is one word.)
+2. **The Groove Network.** *The largest enterprise subscription dataset.* Every reach, retry, recovery, and retention test, refined by the most diversified subscription data in enterprise commerce. Proof points: 1,000+ brands, $110B+ in transaction signals, 75M+ subscriber profiles.
+3. **Testing Velocity.** *Test faster. Compound the wins.* Ordergroove agents propose variants. You deploy at 1%, 5%, or 10%. Every winner compounds, 24/7, alongside your team. Agents appear by name only inside this pillar.
 
 `[OPEN]` An older four-pillar framework (flexibility, profitability, enterprise-ready, omnichannel) still circulates in legacy materials. It is superseded as the primary differentiation framework. Reconcile any doc still leading with it.
 
 ### 1.6 Products
 
-Payment Agent · Retention Agent · Analytics Agent · Ordergroove MCP server · Workflows (drag-and-drop canvas) · GraphQL API
+- **Agents** (the autonomous layer): Payment Agent · Retention Agent · Analytics Agent
+- **Workflows** (orchestration): drag-and-drop canvas
+- **Open Platform:** GraphQL API · Ordergroove MCP server
 
 Agent naming pattern: role-based, human-team framing ("Your Payments Specialist," "Your Retention Manager," "Your Growth Analyst"). Agents are reinforcements for the team, never replacements for it.
 
@@ -153,9 +159,9 @@ These are binary checks. If a draft violates any of them, it fails review. Each 
 Every asset starts at the top of this ladder and steps down only as far as the format requires:
 
 1. **Category:** Autonomous Subscriptions, the shift in how subscription commerce works
-2. **Rights to Win:** Everychannel Infrastructure → The Groove Network → Testing Velocity (locked order)
-3. **Products:** the agents, Workflows, GraphQL, MCP server
-4. **Features and proof points:** capabilities, stats, customer results
+2. **Rights to Win:** Everychannel Infrastructure, The Groove Network, Testing Velocity, in that locked order
+3. **Products:** Agents (the autonomous layer), Workflows (orchestration), Open Platform (GraphQL API, MCP server)
+4. **Proof points:** capabilities, stats, customer results. Deep-dive content only
 
 A hero section lives at rungs 1 and 2. A product page lives at 2 and 3. Only deep-dive content reaches rung 4.
 
@@ -327,6 +333,7 @@ Brand & Content (Cameron Austin) owns this guide, arbitrates edge cases, and shi
 ### 8.4 Changelog
 
 - **v0.1, July 8, 2026:** first comprehensive draft, assembled from the canonical brand context file, the voice & messaging framework, the design-token canon, and the Summer 2026 Drop launch materials.
+- **November 6, 2026:** messaging refresh to match the Brand Hub's Verbal identity page. New category definition (1.2), two buying groups (1.4), new Rights to Win copy (1.5), products grouped as Agents, Workflows, and Open Platform (1.6), ladder rungs 3 and 4 updated (4.1).
 
 ---
 

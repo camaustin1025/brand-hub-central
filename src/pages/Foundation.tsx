@@ -8,8 +8,9 @@ export default function Foundation() {
     <HubShell activeId="messaging">
       <ChapterPage
         wip={isWipSection("messaging")}
+        width="reading"
         eyebrow="Verbal identity"
-        title="Who we are and what we lead with"
+        title="Foundation & Messaging"
         intro="Ordergroove is the enterprise standard for subscriptions and recurring revenue. Always ladder down from the category, never up from features."
       >
         <FoundationContent />

@@ -1,5 +1,6 @@
 import { publishedSocialTemplates, type SocialTemplate } from "./social-templates";
 import { isEmployeeSectionVisible } from "./employee-launch";
+import type { PageIconName } from "./page-icons";
 
 export type HubNavItem = {
   id: string;
@@ -121,7 +122,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       {
         id: "messaging",
         path: "/foundation",
-        wip: true,
         label: "Foundation & messaging",
         description: "Positioning, audience, Rights to Win, and message ladder.",
         keywords: "autonomous subscriptions everychannel groove network testing velocity category",
@@ -175,24 +175,42 @@ export const RIGHTS = [
   {
     n: "1",
     title: "Everychannel Infrastructure",
-    body: "Subscriptions that work across every channel: in-store, digital, wholesale, and emerging surfaces. Scan to Subscribe is a proof point here.",
+    tagline: "One platform. Everychannel.",
+    body: "Storefronts, retail, voice, and agent endpoints you haven’t built yet. Integrate once and capture every channel, without re-architecting for each one.",
   },
   {
     n: "2",
     title: "The Groove Network",
-    body: "The data moat: 1,000+ brands, $110B+ in transaction signals, 75M+ subscriber profiles. The most diversified data network in the category.",
+    tagline: "The largest enterprise subscription dataset.",
+    body: "Every reach, retry, recovery, and retention test, refined by the most diversified subscription data in enterprise commerce.",
   },
   {
     n: "3",
     title: "Testing Velocity",
-    body: "Continuous experimentation at a pace no team could match alone. Agents appear by name only inside this pillar.",
+    tagline: "Test faster. Compound the wins.",
+    body: "Ordergroove agents propose variants. You deploy at 1%, 5%, or 10%. Every winner compounds, 24/7, alongside your team.",
   },
 ];
+
+export const BUYING_GROUPS = [
+  {
+    group: "Business leaders",
+    icon: "work",
+    roles: "VP or Director of eCommerce, VP or Head of Digital, and retention, loyalty, CRM, and subscription leaders.",
+    cares: "They care about revenue, churn, and speed to market.",
+  },
+  {
+    group: "Technology leaders",
+    icon: "language",
+    roles: "CTO, CIO, VP of Engineering, and eCommerce platform and enterprise architecture leaders.",
+    cares: "They care about integration, scalability, data access, and readiness for an agentic stack.",
+  },
+] as const satisfies readonly { group: string; icon: PageIconName; roles: string; cares: string }[];
 
 export const LADDER = [
   { rung: "Category", body: "Autonomous Subscriptions, the shift in how subscription commerce works." },
   { rung: "Rights to Win", body: "Everychannel Infrastructure, The Groove Network, Testing Velocity, in that locked order." },
-  { rung: "Products", body: "The agents, Workflows, GraphQL, the MCP server." },
+  { rung: "Products", body: "Agents (the autonomous layer), Workflows (orchestration), Open Platform (GraphQL API, MCP server)." },
   { rung: "Proof points", body: "Capabilities, stats, customer results. Deep-dive content only." },
 ];
 

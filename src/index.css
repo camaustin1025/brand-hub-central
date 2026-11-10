@@ -145,10 +145,14 @@
   /* ----------------------------------------------------------------- */
   .measure {
     max-width: var(--measure);
-    /* No lone word on the last line. `pretty` is too conservative at this
-       block length — it left most widows standing. Revisit only if a prose
-       block ever grows past ~6 lines, where balancing stops applying. */
-    text-wrap: balance;
+    /* Fill each line to the measure; `pretty` still keeps a lone word off the
+       last line. Not `balance`: it evens every line of a paragraph, so a
+       paragraph that spills one word past a line ran all its lines ~20
+       characters short of the measure, and two boxes of similar copy wrapped
+       to visibly different widths. Checked 2026-11-06 across every page at
+       1440px and 375px: no single-word last lines. Headings and display text
+       keep `balance` (the h1-h3 base rule, or `text-balance` where set). */
+    text-wrap: pretty;
   }
 
   /* ----------------------------------------------------------------- */
