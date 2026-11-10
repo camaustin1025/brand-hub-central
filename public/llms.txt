@@ -18,4 +18,4 @@
 - [Icon library](/icon-library): all 293 brand icons as PNG (512 px) or SVG, in every icon color and Plain, Tinted, or Solid, one at a time or as a ZIP
 - [Downloads](/#downloads): available logos and backgrounds, including the Zoom background
 - [Design canvas](/design-canvas): on-brand LinkedIn graphics with your photo, for new employees and events
-- [AI Resources & Guidance](/ai-resources): shared Claude skills, starting with Ordergroove Slides 2.0 beta
+- [AI Resources & Guidance](/ai-resources): what you can share with AI tools, Claude skills in the org library, training, Slack channels, and connectors
