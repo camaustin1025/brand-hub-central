@@ -168,6 +168,12 @@ export function HubShell({ activeId, children, focused = false }: { activeId: st
           <SearchBox compact />
         </div>}
         {children}
+        {!focused && <footer className="border-t border-border px-6 py-8 md:px-10">
+          <div className="mx-auto flex max-w-[1060px] flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">
+            <p>Internal use only · Maintained by Brand &amp; Content</p>
+            <Link to="/changelog" className="font-medium text-og-indigo underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-indigo">What’s changed</Link>
+          </div>
+        </footer>}
       </main>
     </div>
   );

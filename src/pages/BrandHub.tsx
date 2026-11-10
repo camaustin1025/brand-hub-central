@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { ArrowRight, Download } from "lucide-react";
-import { HubShell, jumpTo } from "@/components/hub/HubShell";
+import { Download } from "lucide-react";
+import { HubShell } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
 import { WipNotice } from "@/components/brand/WorkInProgress";
 import { ColorTiers } from "@/components/brand/ColorTiers";
@@ -332,17 +332,7 @@ export default function BrandHub() {
           </div>
         </HubSection>}
 
-        <footer className="border-t border-border px-6 py-10 md:px-10">
-          <div className="mx-auto flex max-w-[1060px] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <img src="/logo-white.png" alt="Ordergroove" className="h-4 w-auto md:h-5" />
-              <p className="mt-2 text-xs text-muted-foreground">Internal use only · Maintained by Brand & Content</p>
-            </div>
-            <button onClick={() => jumpTo("overview")} className={buttonVariants({ size: "sm" })}>
-              Back to the top <ArrowRight className="-rotate-90" size={14} />
-            </button>
-          </div>
-        </footer>
+
     </HubShell>
   );
 }

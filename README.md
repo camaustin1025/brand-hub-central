@@ -70,3 +70,18 @@ The app runs fully standalone today (no backend required), so it imports and pre
 - Real asset files — most download links point at assets being re-sourced (every old-hub link was dead).
 
 See `docs/Phase 0 - Old Hub Content Audit.md` for the full content audit and decision list, and `docs/DAM & Downloads - Design Direction.md` for the asset-surface design direction.
+
+## Daily changelog
+
+`/changelog` stays inside AuthGate and is linked as **What’s changed** in the shared
+footer, not the Resources navigation. `src/data/changelog.json` contains one entry
+per completed Eastern calendar day. Run `node scripts/update-changelog.mjs` to
+collect eligible committed site edits, starting November 1, 2026. Commit subjects
+become the change notes; write them for visitors. Existing entries are preserved
+for editorial corrections, and days without changes are omitted.
+
+The live Lovable project syncs `codex/single-page-brand-hub`, not `main`.
+A daily Codex automation generates completed days on that branch, commits only
+the changelog JSON when changed, waits for Lovable sync, publishes the site, and
+verifies the deployment. This requires the local Codex scheduler and connected
+GitHub/Lovable access. Local uncommitted changes are never published by the job.

@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import Changelog from "@/pages/Changelog";
 import BrandHub from "@/pages/BrandHub";
 import Foundation from "@/pages/Foundation";
 import Voice from "@/pages/Voice";
@@ -42,6 +43,7 @@ export function HubRoutes() {
     <Routes>
       {access === "admin" && <Route path="/admin/guests" element={<AdminGuests />} />}
       <Route path="/" element={<HomeRoute />} />
+      <Route path="/changelog" element={<Changelog />} />
       <Route path="/foundation" element={<Foundation />} />
       <Route path="/voice" element={<Voice />} />
       {/* Guests are view-only, so the graphic editor and its downloads stay staff-only. */}
