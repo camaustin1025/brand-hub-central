@@ -54,7 +54,8 @@ export function HubRoutes() {
       {!isGuest && <Route path={ICON_LIBRARY_PATH} element={<IconLibraryPage />} />}
       <Route path="/toolkit" element={<Navigate to={DESIGN_CANVAS_PATH} replace />} />
       <Route path="/toolkit/social/:templateId" element={<ToolkitGraphicRoute />} />
-      <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />
+      {/* Internal links (Slack, Confluence, security policy), so staff-only like Design canvas. */}
+      {!isGuest && <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />}
       <Route path="/ai-skills" element={<Navigate to={RESOURCE_PAGE_PATHS["ai-skills"]} replace />} />
       {/* The ladder layout now lives on /foundation; keep old preview links working. */}
       <Route path="/foundation-preview" element={<Navigate to="/foundation" replace />} />

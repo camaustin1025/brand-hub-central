@@ -153,10 +153,9 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
       {
         id: "ai-skills",
         path: RESOURCE_PAGE_PATHS["ai-skills"],
-        wip: true,
-        label: "AI Resources & Guidance",
-        description: "Shared Claude skills, starting with Ordergroove Slides 2.0.",
-        keywords: "ai claude skills slides 2.0 presentations prompt guidance resources",
+        label: "AI resources & guidance",
+        description: "Claude skills, training, Slack channels, and what you can share with AI tools.",
+        keywords: "ai claude skills slides presentations prompt guidance resources security guidelines pii training claude 101 slack og-ai mcp connectors salesforce gong plugins",
       },
     ],
   },
