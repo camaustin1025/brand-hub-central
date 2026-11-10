@@ -183,3 +183,25 @@ html[data-guest] a[href^="/ai-resources"],
 html[data-guest] a[href^="/ai-skills"] {
   display: none !important;
 }
+
+/* Compact resource directory: metadata stays in one disclosure per row. */
+.directory-toolbar { position: sticky; top: 4rem; z-index: 20; background: hsl(var(--background)); padding: .5rem 0; }
+.resource-table thead { border-block: 1px solid hsl(var(--border)); }
+.resource-table th { padding: .625rem 1rem; font-weight: 600; }
+.resource-row { border-bottom: 1px solid hsl(var(--border)); background: white; }
+.resource-row:hover { background: #fafafc; }
+.resource-main { padding: .75rem 1rem; vertical-align: middle; }
+.resource-identity { display: flex; align-items: center; gap: .75rem; }
+.resource-identity > span { width: 1.75rem; height: 1.75rem; border: 0; margin: 0; }
+.resource-description { margin-top: .125rem; line-height: 1.25rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.resource-type { width: 9rem; padding: .75rem; vertical-align: middle; }
+.resource-actions { width: 12rem; padding: .5rem .75rem; vertical-align: middle; }
+.resource-expanded { background: #f7f7fa; border-bottom: 1px solid hsl(var(--border)); }
+@container (max-width: 44rem) {
+  .resource-table, .resource-table tbody, .resource-row, .resource-expanded, .resource-expanded td { display: block; }
+  .resource-table thead, .resource-table .resource-type { display: none; }
+  .resource-main { display: block; padding: .75rem .75rem .125rem; }
+  .resource-description { -webkit-line-clamp: 2; }
+  .resource-actions { display: block; width: auto; padding: 0 .75rem .25rem 3.25rem; }
+  .directory-toolbar { top: 7.5rem; }
+}
