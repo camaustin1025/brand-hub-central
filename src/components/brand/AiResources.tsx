@@ -11,7 +11,7 @@ export function AiResources() {
     <div className="space-y-10">
       <article className="rounded-lg border border-border bg-white p-6 md:p-8" aria-labelledby="slides-skill-title">
         <div className="flex flex-wrap items-center gap-3">
-          <h2 id="slides-skill-title" className="text-2xl font-bold">Ordergroove Slides 2.0</h2>
+          <h2 id="slides-skill-title" className="scroll-mt-24 text-2xl font-bold">Ordergroove Slides 2.0</h2>
           <span className="rounded bg-og-lemon px-2 py-1 text-xs font-semibold text-og-midnight">Beta</span>
         </div>
         <p className="mt-4 max-w-[68ch] text-base leading-7 text-muted-foreground">Create a new deck or put an existing presentation on brand. This Claude skill applies Ordergroove’s Figma layouts, Figtree, approved colors, logos, icons, and chart styles.</p>

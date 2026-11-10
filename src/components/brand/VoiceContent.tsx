@@ -20,7 +20,7 @@ export function VoiceContent() {
       <VoiceExample />
 
       <div className="mt-14">
-        <h3 className="text-2xl font-bold">The pass/fail rules</h3>
+        <h3 id="pass-fail-rules" className="scroll-mt-24 text-2xl font-bold">The pass/fail rules</h3>
         <p className="measure mt-2 text-sm leading-6 text-muted-foreground">These are binary checks. If a draft violates any of them, it fails review.</p>
         <ol className="mt-6 grid gap-x-10 border-t border-border lg:grid-cols-2">
           {VOICE_RULES.map((rule, index) => (

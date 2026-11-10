@@ -56,6 +56,8 @@ export function HubRoutes() {
       <Route path="/toolkit/social/:templateId" element={<ToolkitGraphicRoute />} />
       <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />
       <Route path="/ai-skills" element={<Navigate to={RESOURCE_PAGE_PATHS["ai-skills"]} replace />} />
+      {/* The ladder layout now lives on /foundation; keep old preview links working. */}
+      <Route path="/foundation-preview" element={<Navigate to="/foundation" replace />} />
       {/* Design exploration only, not linked from navigation. */}
       <Route path="/hero-lab" element={<HeroLab />} />
       <Route path="/layout-lab" element={<LayoutLab />} />

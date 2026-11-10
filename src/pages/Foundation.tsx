@@ -1,19 +1,26 @@
 import { HubShell } from "@/components/hub/HubShell";
-import { FoundationContent } from "@/components/brand/FoundationContent";
+import { FoundationLadderPreview } from "@/components/brand/FoundationLadderPreview";
+import { HeroAction } from "@/components/layout/ChapterHero";
 import { ChapterPage } from "@/components/layout/ChapterPage";
 import { isWipSection } from "@/data/hub";
 
+/**
+ * Foundation & Messaging, built on the message ladder (ladder strip, category plate,
+ * Say it shelf, Rights to Win, products, ICPs). The previous layout is
+ * components/brand/FoundationContent.tsx, kept until this one is committed.
+ */
 export default function Foundation() {
   return (
     <HubShell activeId="messaging">
       <ChapterPage
+        navId="messaging"
         wip={isWipSection("messaging")}
-        width="reading"
-        eyebrow="Verbal identity"
+        updated="2026-11-10"
         title="Foundation & Messaging"
-        intro="Ordergroove is the enterprise standard for subscriptions and recurring revenue. Always ladder down from the category, never up from features."
+        intro="The approved positioning, message ladder, ready-to-use lines, and ICPs. Start here before you write anything about Ordergroove."
+        primaryAction={<HeroAction href="#boilerplate">Get the boilerplate</HeroAction>}
       >
-        <FoundationContent />
+        <FoundationLadderPreview />
       </ChapterPage>
     </HubShell>
   );

@@ -168,7 +168,7 @@ export function FoundationContent() {
       </section>
 
       <section aria-labelledby="foundation-boilerplate" className="rounded-lg border border-border bg-white p-6">
-        <h2 id="foundation-boilerplate" className="text-lg font-bold">Company boilerplate</h2>
+        <h2 id="foundation-boilerplate" className="scroll-mt-24 text-lg font-bold">Company boilerplate</h2>
         <p className="mt-3 leading-7 text-muted-foreground">
           <a href="http://ordergroove.com/?utm_source=pr&utm_medium=press&utm_campaign=0926q3_goop_email_press_all&utm_content=demo&" className="font-bold text-foreground underline underline-offset-4">Ordergroove</a>{" "}
           is the enterprise standard for subscriptions and recurring revenue in the autonomous commerce era. Agent-friendly by architecture and trained on the largest subscription data set in enterprise commerce, Ordergroove powers the world’s most iconic brands, including L’Oréal, PetSmart, Keurig, Manscaped, Liquid I.V., Mattel, and Fiji Water. Across every channel, from storefront to retail to the next AI interface, Ordergroove turns one-time buyers into lasting relationships. Learn more at ordergroove.com.
