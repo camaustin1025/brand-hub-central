@@ -26,7 +26,7 @@ function ResourceRow({ resource: r, showType }: { resource: AiResource; showType
   return <>
     <tr className="resource-row">
       <td className="resource-main">
-        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><h3 className="text-sm font-bold leading-5">{r.title}</h3><p className="resource-description text-muted-foreground">{r.body}</p></div></div>
+        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><h3 className="resource-title">{r.title}</h3><p className="resource-description text-muted-foreground">{r.body}</p></div></div>
       </td>
       {showType && <td className="resource-type text-muted-foreground">{r.type}</td>}
       <td className="resource-actions">
