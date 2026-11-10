@@ -1,7 +1,5 @@
-import { DraftBadge } from "@/components/brand/DraftBadge";
 import { TintedIcon } from "@/components/brand/TintedIcon";
 import { BUYING_GROUPS, LADDER, RIGHTS } from "@/data/hub";
-import { SHOW_DRAFT_BOILERPLATE } from "@/data/employee-launch";
 import { cn } from "@/lib/utils";
 
 /*
@@ -34,6 +32,29 @@ const LEDE = "measure mt-3 leading-7 text-muted-foreground";
 const ROW_GRID =
   "[@container(min-width:48rem)]:grid [@container(min-width:48rem)]:grid-cols-[16rem_minmax(0,1fr)] [@container(min-width:48rem)]:gap-x-8";
 
+const ICP_SEGMENTS = [
+  {
+    name: "Non-Shopify", priority: "Primary focus", revenue: "All revenue segments",
+    description: "BigCommerce · SFCC · Magento · commercetools · Custom platforms",
+    detail: "Partner motion: platform + agency ecosystems. Complexity is a recurring enterprise fit signal.",
+  },
+  {
+    name: "Shopify Enterprise", priority: "Primary focus", revenue: "$100M+ company revenue",
+    description: "Shopify brands at enterprise scale",
+    detail: "Partner motion: Shopify + agencies. Territory discussed: North America + UK.",
+  },
+  {
+    name: "Shopify Mid-Market", priority: "Selective fit", revenue: "$10M–$100M company revenue",
+    description: "Growing Shopify brands",
+    detail: "Ease and speed of implementation matter. Leadership sees a growth path into ICP 2.",
+  },
+  {
+    name: "Shopify SMB", priority: "Opportunistic", revenue: "Under $10M company revenue",
+    description: "Smaller Shopify brands",
+    detail: "Pursue when the opportunity fits. Outside the core enterprise GTM focus.",
+  },
+];
+
 export function FoundationContent() {
   return (
     // --measure 54ch (~554px, ~77 Figtree characters at 16px; Figtree averages
@@ -63,8 +84,32 @@ export function FoundationContent() {
       <section aria-labelledby="foundation-audience">
         <h2 id="foundation-audience" className={SECTION_HEAD}>Who we serve</h2>
         <p className={LEDE}>
-          Enterprise and mid-market B2C brands with repeat purchase patterns, typically $50M+ GMV. We sell to two buying groups:
+          Our direct-to-consumer ideal customer profiles (ICPs) are defined by commerce platform and company revenue. Non-Shopify and Shopify Enterprise are our primary focus.
         </p>
+        <ol className="mt-6 grid gap-4 [@container(min-width:44rem)]:grid-cols-2">
+          {ICP_SEGMENTS.map((segment, index) => (
+            <li key={segment.name} className={cn("flex flex-col rounded-lg border p-6", index < 2 ? "border-og-midnight bg-og-midnight text-white" : "border-border bg-white")}>
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold uppercase tracking-wide">
+                <span className={index < 2 ? "text-og-green" : "text-muted-foreground"}>ICP {index + 1}</span>
+                <span>{segment.priority}</span>
+              </div>
+              <h3 className="mt-4 text-2xl font-bold leading-tight">{segment.name}</h3>
+              <p className={cn("mt-2 font-semibold leading-7", index < 2 && "text-og-green")}>{segment.revenue}</p>
+              <p className="mt-3 leading-7">{segment.description}</p>
+              <p className={cn("mt-5 border-t pt-4 leading-7", index < 2 ? "border-white/20" : "border-border text-muted-foreground")}>{segment.detail}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="mt-4 rounded-lg border border-border bg-white p-6">
+          <h3 className="text-sm font-bold">GTM focus across the two priority segments</h3>
+          <div aria-hidden="true" className="mt-4 flex h-3 overflow-hidden rounded-full">
+            <div className="w-2/3 bg-og-midnight" />
+            <div className="w-1/3 bg-og-green" />
+          </div>
+          <p className="mt-3 text-sm leading-6">Approximately 2/3 ICP 1 · Non-Shopify and 1/3 ICP 2 · Shopify Enterprise.</p>
+        </div>
+        <h3 className="mt-8 text-2xl font-bold">Our buying groups</h3>
+        <p className={LEDE}>Across these segments, we sell to two buying groups:</p>
         <ul className="mt-6 grid gap-4 [@container(min-width:44rem)]:grid-cols-2">
           {BUYING_GROUPS.map((item) => (
             // Subgrid shares the icon / title / roles / priorities rows across
@@ -122,15 +167,13 @@ export function FoundationContent() {
         </ol>
       </section>
 
-      {SHOW_DRAFT_BOILERPLATE && <div className="rounded-lg border border-border bg-white p-6">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-lg font-bold">Company boilerplate</h2>
-          <DraftBadge>Pending leadership approval</DraftBadge>
-        </div>
-        <p className="measure mt-3 leading-7 text-muted-foreground">
-          Ordergroove is the enterprise standard for subscriptions and recurring revenue, powering flexible subscriber experiences for 1,000+ leading brands across every channel.
+      <section aria-labelledby="foundation-boilerplate" className="rounded-lg border border-border bg-white p-6">
+        <h2 id="foundation-boilerplate" className="text-lg font-bold">Company boilerplate</h2>
+        <p className="mt-3 leading-7 text-muted-foreground">
+          <a href="http://ordergroove.com/?utm_source=pr&utm_medium=press&utm_campaign=0926q3_goop_email_press_all&utm_content=demo&" className="font-bold text-foreground underline underline-offset-4">Ordergroove</a>{" "}
+          is the enterprise standard for subscriptions and recurring revenue in the autonomous commerce era. Agent-friendly by architecture and trained on the largest subscription data set in enterprise commerce, Ordergroove powers the world’s most iconic brands, including L’Oréal, PetSmart, Keurig, Manscaped, Liquid I.V., Mattel, and Fiji Water. Across every channel, from storefront to retail to the next AI interface, Ordergroove turns one-time buyers into lasting relationships. Learn more at ordergroove.com.
         </p>
-      </div>}
+      </section>
     </div>
   );
 }

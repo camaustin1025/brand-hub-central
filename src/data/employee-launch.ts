@@ -5,8 +5,6 @@ export const HELD_SECTION_REDIRECTS: Record<string, string> = {
   "quick-reference": "downloads",
 };
 
-export const SHOW_DRAFT_BOILERPLATE = false;
-
 export function employeeSectionId(id: string) {
   return Object.prototype.hasOwnProperty.call(HELD_SECTION_REDIRECTS, id) ? HELD_SECTION_REDIRECTS[id] : id;
 }

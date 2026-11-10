@@ -230,7 +230,7 @@ export default function BrandHub() {
             </div>
             <div>
               <h4 className="text-base font-semibold">Use Figtree only</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Never use Arial, Helvetica, Calibri, or Soleil, and check that nothing falls back to them. Cormorant is allowed on campaign cards only.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Never use Arial, Helvetica, Calibri, or Soleil, and check that nothing falls back to them.</p>
             </div>
             <div>
               <h4 className="text-base font-semibold">Keep display layouts simple</h4>

@@ -6,7 +6,7 @@ Apply everything below to all Ordergroove copy and visual work without being ask
 
 - Midnight `#17132F` (primary dark bg) · Groovy Green `#00FF85` (dark bg only; use `#009A50` on light backgrounds) · Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Flamingo Pink `#FF61D3` · Dark Indigo `#2E2A47`
 - Brand gradient: `linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)`
-- Font: **Figtree** everywhere (Cormorant only for campaign cards)
+- Font: **Figtree** everywhere
 - Cross-check hexes against this file, not from memory — near-miss variants (`#0b0820`, `#0B0E22`, `#14102a`) are drift, not alternatives.
 - Logo-only exception (Cameron approved, 2026-10-26): preserve the supplied light-background logo with Midnight lettering and `#00CC6A` rings. Do not recolor it to `#009A50` or add `#00CC6A` to the general palette.
 - On light surfaces, use Midnight for small text and links. Green `#009A50` buttons need Midnight labels; white labels do not meet normal-text contrast requirements.
