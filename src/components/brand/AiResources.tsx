@@ -26,22 +26,22 @@ function ResourceRow({ resource: r, showType }: { resource: AiResource; showType
   return <>
     <tr className="resource-row">
       <td className="resource-main">
-        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><h3 className="resource-title">{r.title}</h3><p className="resource-description text-muted-foreground">{r.body}</p></div></div>
+        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><h3 className="resource-title">{r.title}</h3><p className="resource-description text-og-gray-400">{r.body}</p></div></div>
       </td>
-      {showType && <td className="resource-type text-muted-foreground">{r.type}</td>}
+      {showType && <td className="resource-type text-og-gray-400">{r.type}</td>}
       <td className="resource-actions">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           {r.url && !r.catalog && (r.type === 'Skills'
             ? <a href={r.url} target="_blank" rel="noopener noreferrer" className="action-focus tap-target inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full border border-og-midnight bg-white px-3 text-[13px] font-semibold text-og-midnight transition-colors hover:bg-og-midnight hover:text-white">Open skill<span className="sr-only">: {r.title} (opens in a new tab)</span></a>
             : <External href={r.url}>{action}<ArrowUpRight size={13} className="ml-1 inline" aria-hidden="true" /><span className="sr-only">: {r.title}</span></External>)}
-          <button type="button" className="action-focus min-h-11 rounded-sm text-sm underline-offset-4 hover:underline" aria-expanded={open} aria-controls={detailId} onClick={() => setOpen(!open)}>
+          <button type="button" className="action-focus min-h-11 rounded-sm text-[13px] font-semibold underline decoration-og-midnight/25 underline-offset-4 transition-colors hover:decoration-og-midnight" aria-expanded={open} aria-controls={detailId} onClick={() => setOpen(!open)}>
             {r.catalog ? 'Catalog access' : !r.url ? 'Access details' : open ? 'Less' : 'Details'}<span className="sr-only">: {r.title}</span>
           </button>
         </div>
       </td>
     </tr>
     {open && <tr className="resource-expanded"><td colSpan={showType ? 3 : 2} id={detailId} className="px-4 pb-5 pt-1 text-sm leading-6">
-      <div className="max-w-[70ch] space-y-2"><p>{r.body}</p>
+      <div className="max-w-[var(--measure)] space-y-2"><p>{r.body}</p>
       {r.identifier && <p><strong>{r.source === 'Org plugin' ? 'Plugin' : 'Skill'} name:</strong> <code className="select-all break-all">{r.identifier}</code></p>}
       {r.catalog && <p>Not shared org-wide. Search the Claude skill catalog for the skill name above. <External href={r.url!}>View skill<span className="sr-only">: {r.title}</span></External>.</p>}
       {!r.url && <p>No direct link is listed here. Ask in <External href="https://ordergroove.slack.com/archives/C09HTBGS8JD">#og-ai</External> for access.</p>}
@@ -94,7 +94,7 @@ export function AiResources() {
       </div>
       <div id="directory-filters" className={`${filtersOpen ? 'flex' : 'hidden'} mt-3 flex-col gap-3 md:flex md:flex-row md:flex-wrap md:items-center`}>
         <div className="hidden flex-wrap gap-1.5 md:flex" role="group" aria-label="Filter by resource type">
-          {['', ...RESOURCE_TYPES].map(t => { const Icon = t ? ICONS[t as keyof typeof ICONS] : null; return <button key={t} type="button" aria-pressed={type === t} onClick={() => update('type', t)} className={`action-focus tap-target inline-flex h-8 items-center gap-1.5 rounded-full border border-og-midnight px-3 text-[13px] font-semibold transition-colors [&_svg]:size-3.5 ${type === t ? 'bg-og-midnight text-white' : 'bg-white text-og-midnight hover:bg-og-gray-950'}`}>{Icon && <Icon size={15} aria-hidden="true" />}{t || 'All'}</button>; })}
+          {['', ...RESOURCE_TYPES].map(t => { const Icon = t ? ICONS[t as keyof typeof ICONS] : null; return <button key={t} type="button" aria-pressed={type === t} onClick={() => update('type', t)} className={`action-focus tap-target inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-[13px] font-semibold transition-colors [&_svg]:size-3.5 ${type === t ? 'border-og-midnight bg-og-midnight text-white' : 'border-og-midnight/20 bg-white text-og-midnight hover:border-og-midnight'}`}>{Icon && <Icon size={15} aria-hidden="true" />}{t || 'All'}</button>; })}
         </div>
         <label className="flex items-center gap-2 text-sm md:hidden">Type<select value={type} onChange={e => update('type', e.target.value)} className="action-focus min-h-11 min-w-0 flex-1 rounded-md border border-border bg-white px-2"><option value="">All resources</option>{RESOURCE_TYPES.map(t => <option key={t}>{t}</option>)}</select></label>
         <label className="flex items-center gap-2 text-sm md:ml-auto">Team<select value={team} onChange={e => update('team', e.target.value)} className="action-focus min-h-11 min-w-0 flex-1 rounded-md border border-border bg-white px-2 md:max-w-48"><option value="">All teams</option>{teams.map(t => <option key={t}>{t}</option>)}</select></label>
@@ -109,7 +109,21 @@ export function AiResources() {
       {pageCount > 1 && <nav aria-label="Resource pages" className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3 text-sm"><p>Page {page} of {pageCount}</p><div className="flex gap-2"><button onClick={() => goToPage(page - 1)} disabled={page === 1} className="action-focus h-10 rounded-full border border-og-midnight bg-white px-5 font-semibold transition-colors hover:bg-og-midnight hover:text-white disabled:pointer-events-none disabled:opacity-40">Previous</button><button onClick={() => goToPage(page + 1)} disabled={page === pageCount} className="action-focus h-10 rounded-full border border-og-midnight bg-white px-5 font-semibold transition-colors hover:bg-og-midnight hover:text-white disabled:pointer-events-none disabled:opacity-40">Next</button></div></nav>}
       {!results.length && <div className="border-y border-border py-12 text-center"><h3 className="text-lg font-bold">No matching resources</h3><p className="mt-2 text-muted-foreground">Try a different search or clear your filters.</p><button onClick={clear} className={`${LINK} mt-5 min-h-11`}>Clear filters</button></div>}
     </section>
-    <section id="ai-sharing" className="mt-16 scroll-mt-24 border-t border-border pt-8"><span id="ai-start-here" className="scroll-mt-24" /><h2 className="flex items-center gap-3 text-2xl font-bold"><ShieldCheck aria-hidden="true" size={24} />What you can share</h2><p className="mt-3 text-sm leading-6">Use your OG Gmail to sign in to Team accounts (Claude, ChatGPT, Gemini). Read the <External href={SECURITY_GUIDELINES.url}>{SECURITY_GUIDELINES.label}</External>.</p><div className="mt-6 grid gap-8 [@container(min-width:40rem)]:grid-cols-2">{[{title:'Never share', items:SHARING_RULES.never}, {title:'Team account only', items:SHARING_RULES.teamOnly}].map(group => <div key={group.title}><h3 className="font-bold">{group.title}</h3><ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-muted-foreground">{group.items.map(item => <li key={item}>{item}</li>)}</ul></div>)}</div><p className="mt-6 max-w-[70ch] text-sm leading-6"><strong>Brief Claude, then review.</strong> Include your audience, goal, and source material. Check facts, branding, and the final file before sharing.</p></section>
+    <section id="ai-sharing" className="sharing-panel dark scroll-mt-24">
+      <span id="ai-start-here" className="scroll-mt-24" />
+      <h2><ShieldCheck aria-hidden="true" size={26} />What you can share</h2>
+      <p className="sharing-panel__intro">Use your OG Gmail to sign in to Team accounts (Claude, ChatGPT, Gemini). Read the <External href={SECURITY_GUIDELINES.url}>{SECURITY_GUIDELINES.label}</External>.</p>
+      <div className="sharing-panel__cols">
+        <div className="sharing-panel__col sharing-panel__col--never">
+          <h3><span className="sharing-panel__mark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></span>Never share</h3>
+          <ul>{SHARING_RULES.never.map(item => <li key={item}>{item}</li>)}</ul>
+        </div>
+        <div className="sharing-panel__col sharing-panel__col--team">
+          <h3><span className="sharing-panel__mark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>Team account only</h3>
+          <ul>{SHARING_RULES.teamOnly.map(item => <li key={item}>{item}</li>)}</ul>
+        </div>
+      </div>
+    </section>
     <section id="ai-connectors" className="mt-12 scroll-mt-24 border-t border-border pt-8"><h2 className="text-2xl font-bold">Get a new tool approved</h2><p className="mt-3 text-sm leading-6">Get approval before connecting a tool. Questions: <External href={SECURITY_CHANNEL.url}>{SECURITY_CHANNEL.label}</External>. Reviews: <External href={INFOSEC_CHANNEL.url}>{INFOSEC_CHANNEL.label}</External>.</p><ol className="mt-5 list-decimal space-y-4 pl-5 text-sm">{APPROVAL_STEPS.map(s => <li key={s.link.url}><External href={s.link.url}>{s.link.label}</External><p className="mt-1 leading-6 text-muted-foreground">{s.body}</p></li>)}</ol><p className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm"><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p></section>
 
   </div>;

@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T12:00:00-05:00",
+  "title": "Design System: Ordergroove Brand Hub",
+  "extensions": {
+    "colorMeta": {
+      "midnight": { "role": "primary", "displayName": "Midnight", "canonical": "#17132F", "tonalRamp": ["#17132F", "#2E2A47", "#4F4A6A", "#666279", "#787688", "#9896A7", "#ABA9BA", "#EBEAF0"] },
+      "groovy-green": { "role": "primary", "displayName": "Groovy Green (dark backgrounds)", "canonical": "#00FF85", "tonalRamp": ["#003D20", "#00592F", "#00753D", "#009A50", "#00C766", "#00FF85", "#66FFB6", "#CCFFE7"] },
+      "green-on-light": { "role": "primary", "displayName": "Green on Light", "canonical": "#009A50", "tonalRamp": ["#003D20", "#00592F", "#00753D", "#009A50", "#00C766", "#00FF85", "#66FFB6", "#CCFFE7"] },
+      "dark-indigo": { "role": "secondary", "displayName": "Dark Indigo", "canonical": "#2E2A47", "tonalRamp": ["#17132F", "#2E2A47", "#4F4A6A", "#666279", "#787688", "#9896A7", "#ABA9BA", "#EBEAF0"] },
+      "lemon": { "role": "tertiary", "displayName": "Lemon (WIP and draft tags)", "canonical": "#EAFF00", "tonalRamp": ["#3D4200", "#5E6600", "#8A9600", "#B8C700", "#EAFF00", "#F0FF4D", "#F6FF99", "#FBFFD6"] },
+      "cyan": { "role": "tertiary", "displayName": "Cyan", "canonical": "#00FAFF", "tonalRamp": ["#003F40", "#005E60", "#008A8C", "#00B8BB", "#00FAFF", "#4DFCFF", "#99FDFF", "#D6FEFF"] },
+      "carrot": { "role": "tertiary", "displayName": "Carrot", "canonical": "#FF8500", "tonalRamp": ["#402100", "#663500", "#995000", "#CC6A00", "#FF8500", "#FFA84D", "#FFCB99", "#FFEBD6"] },
+      "radish": { "role": "tertiary", "displayName": "Radish (also destructive)", "canonical": "#D32E55", "tonalRamp": ["#3A0C17", "#5E1426", "#8A1D37", "#B02647", "#D32E55", "#E06D88", "#EDABBB", "#F8E0E6"] },
+      "flamingo": { "role": "tertiary", "displayName": "Flamingo", "canonical": "#FF61D3", "tonalRamp": ["#401835", "#662755", "#993A7F", "#CC4EA9", "#FF61D3", "#FF90E0", "#FFC0ED", "#FFE7F8"] },
+      "eggplant": { "role": "tertiary", "displayName": "Eggplant", "canonical": "#8500FF", "tonalRamp": ["#210040", "#350066", "#500099", "#6A00CC", "#8500FF", "#A84DFF", "#CB99FF", "#EBD6FF"] },
+      "white": { "role": "neutral", "displayName": "White", "canonical": "#FFFFFF" },
+      "canvas": { "role": "neutral", "displayName": "Canvas", "canonical": "#F5F5F8" },
+      "rail": { "role": "neutral", "displayName": "Rail", "canonical": "#F8F8FA" },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#D8D7DF" },
+      "slate": { "role": "neutral", "displayName": "Slate", "canonical": "#666279" },
+      "ink-on-dark": { "role": "neutral", "displayName": "Ink on Dark", "canonical": "#EBEAF0" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Chapter hero titles on Midnight; 40px rising to 56px by container width." },
+      "headline": { "displayName": "Headline", "purpose": "Page titles in the Midnight page header; 32px on phones, 36px from md." },
+      "title": { "displayName": "Title", "purpose": "Section headings inside a page." },
+      "item-title": { "displayName": "Item Title", "purpose": "Row and card titles in directories." },
+      "body": { "displayName": "Body", "purpose": "Explanatory copy, capped at the site measure." },
+      "body-sm": { "displayName": "Body Small", "purpose": "Row descriptions, nav items, meta." },
+      "control": { "displayName": "Control", "purpose": "Compact buttons, filter chips, download links." },
+      "eyebrow": { "displayName": "Eyebrow", "purpose": "Uppercase labels above headings; Groovy Green on dark." },
+      "nav-label": { "displayName": "Nav Label", "purpose": "Rail group titles." }
+    },
+    "shadows": [
+      { "name": "floating-layer", "value": "0 25px 50px -12px rgba(23, 19, 47, 0.2)", "purpose": "Search results and popovers only." },
+      { "name": "active-item", "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(23, 19, 47, 0.05)", "purpose": "Soft lift on the current rail item." }
+    ],
+    "motion": [
+      { "name": "color-transition", "value": "200ms ease", "purpose": "Button and nav color changes." },
+      { "name": "ease-highlighter", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Download highlighter swipe (300ms), arrow dip (220ms), saved check pop (350ms)." },
+      { "name": "fade-up", "value": "0.5s ease-out", "purpose": "Entrance for content blocks: 12px rise with fade." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "directory-stack", "value": "44rem (container query)" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action on a light surface. Midnight pill that inverts on hover.",
+      "html": "<button class=\"ds-btn-primary\">Open skill</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 20px; border-radius: 9999px; border: 1px solid #17132F; background: #17132F; color: #FFFFFF; font-family: Figtree, system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 200ms, color 200ms; } .ds-btn-primary:hover { background: #FFFFFF; color: #17132F; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #17132F; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action beside a filled one. Fills Midnight on hover.",
+      "html": "<button class=\"ds-btn-outline\">Copy link</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 20px; border-radius: 9999px; border: 1px solid #17132F; background: #FFFFFF; color: #17132F; font-family: Figtree, system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 200ms, color 200ms; } .ds-btn-outline:hover { background: #17132F; color: #FFFFFF; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #17132F; }"
+    },
+    {
+      "name": "Compact Button",
+      "kind": "button",
+      "refersTo": "button-compact",
+      "description": "32px pill for repeated or in-row controls.",
+      "html": "<button class=\"ds-btn-compact\">Open skill</button>",
+      "css": ".ds-btn-compact { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 9999px; border: 1px solid #17132F; background: #FFFFFF; color: #17132F; font-family: Figtree, system-ui, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: background-color 200ms, color 200ms; } .ds-btn-compact:hover { background: #17132F; color: #FFFFFF; } .ds-btn-compact:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #17132F; }"
+    },
+    {
+      "name": "Download Link",
+      "kind": "custom",
+      "refersTo": "download-link",
+      "description": "A file download as a link: Groovy Green highlighter swipes in behind the label on hover.",
+      "html": "<a class=\"ds-download\" href=\"#\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><g class=\"ds-download-arrow\"><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/></g></svg><span>SVG</span></a>",
+      "css": ".ds-download { position: relative; display: inline-flex; align-items: center; gap: 5px; padding: 4px; border-radius: 4px; color: #17132F; font-family: Figtree, system-ui, sans-serif; font-size: 13px; font-weight: 600; line-height: 1.2; text-decoration: none; } .ds-download > * { position: relative; z-index: 1; } .ds-download svg { overflow: visible; } .ds-download::before { content: \"\"; position: absolute; left: 0; right: 0; top: 18%; bottom: 12%; z-index: 0; border-radius: 2px; background: #00FF85; transform: scaleX(0) skewX(-12deg); transform-origin: left center; transition: transform .3s cubic-bezier(.16, 1, .3, 1); } .ds-download-arrow { transition: transform .22s cubic-bezier(.16, 1, .3, 1); } .ds-download:hover::before, .ds-download:focus-visible::before { transform: scaleX(1) skewX(-12deg); } .ds-download:hover .ds-download-arrow { transform: translateY(4px); } .ds-download:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #17132F; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "button-compact",
+      "description": "32px pill filter with a light border; selected fills Midnight.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip ds-chip-on\" aria-pressed=\"true\">All</button><button class=\"ds-chip\" aria-pressed=\"false\">Skills</button></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; } .ds-chip { height: 32px; padding: 0 12px; border-radius: 9999px; border: 1px solid rgba(23, 19, 47, 0.2); background: #FFFFFF; color: #17132F; font-family: Figtree, system-ui, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: background-color 200ms, color 200ms, border-color 200ms; } .ds-chip:hover { border-color: #17132F; } .ds-chip-on, .ds-chip-on:hover { border-color: #17132F; background: #17132F; color: #FFFFFF; } .ds-chip:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #17132F; }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "48px white field with an inset search glyph; search comes first on finding pages.",
+      "html": "<label class=\"ds-search\"><svg width=\"19\" height=\"19\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input type=\"search\" placeholder=\"Search AI resources\"></label>",
+      "css": ".ds-search { position: relative; display: block; width: 100%; max-width: 420px; } .ds-search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: rgba(23, 19, 47, 0.6); pointer-events: none; } .ds-search input { width: 100%; height: 48px; padding: 0 16px 0 48px; border: 1px solid #D8D7DF; border-radius: 8px; background: #FFFFFF; color: #17132F; font-family: Figtree, system-ui, sans-serif; font-size: 16px; } .ds-search input::placeholder { color: #666279; } .ds-search input:focus-visible { outline: none; box-shadow: 0 0 0 2px #F5F5F8, 0 0 0 4px #17132F; }"
+    },
+    {
+      "name": "Section Rail",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Left rail: uppercase group label, items on a guide line, active item as a white chip with a green bar.",
+      "html": "<nav class=\"ds-rail\"><p class=\"ds-rail-label\">Resources</p><ul><li><a class=\"ds-rail-item ds-rail-active\" href=\"#\">AI resources &amp; guidance</a></li><li><a class=\"ds-rail-item\" href=\"#\">Changelog</a></li></ul></nav>",
+      "css": ".ds-rail { width: 252px; padding: 20px 16px; background: #F8F8FA; font-family: Figtree, system-ui, sans-serif; } .ds-rail-label { margin: 0; padding: 8px 12px; border-radius: 8px; background: rgba(46, 42, 71, 0.06); color: #2E2A47; font-size: 11px; font-weight: 700; line-height: 16px; letter-spacing: 0.12em; text-transform: uppercase; } .ds-rail ul { list-style: none; margin: 6px 0 0 12px; padding: 0 0 0 8px; border-left: 1px solid rgba(23, 19, 47, 0.1); } .ds-rail-item { position: relative; display: block; padding: 8px 12px; border-radius: 8px; color: #17132F; font-size: 14px; font-weight: 500; text-decoration: none; transition: background-color 200ms; } .ds-rail-item:hover { background: rgba(255, 255, 255, 0.7); } .ds-rail-active { background: #FFFFFF; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(23, 19, 47, 0.05); } .ds-rail-active::before { content: \"\"; position: absolute; left: -11px; top: 50%; width: 2px; height: 24px; transform: translateY(-50%); background: #009A50; }"
+    },
+    {
+      "name": "WIP Tag",
+      "kind": "chip",
+      "refersTo": "tag-wip",
+      "description": "Marks unresolved canon instead of hiding it.",
+      "html": "<span class=\"ds-wip\">WIP</span>",
+      "css": ".ds-wip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; border: 1px solid #EAFF00; background: rgba(234, 255, 0, 0.2); color: #17132F; font-family: Figtree, system-ui, sans-serif; font-size: 11px; font-weight: 600; }"
+    },
+    {
+      "name": "Resource Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "White surface, hairline border, 8px radius, no resting shadow.",
+      "html": "<article class=\"ds-card\"><p class=\"ds-card-kind\">Skill</p><h3>Account signal tracker</h3><p>Turns news about an account into outreach messaging.</p></article>",
+      "css": ".ds-card { max-width: 320px; padding: 16px; border: 1px solid #D8D7DF; border-radius: 8px; background: #FFFFFF; color: #17132F; font-family: Figtree, system-ui, sans-serif; } .ds-card-kind { margin: 0 0 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; } .ds-card h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 22px; } .ds-card p:last-child { margin: 4px 0 0; font-size: 14px; line-height: 20px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Reference Desk",
+    "overview": "The hub is a well-run reference desk. Everything is labeled, shelved where you expect it, and handed over in seconds. People arrive from a Slack link or the search box with one need (a logo, a hex, a voice rule, a Claude skill) and the system's job is to get out of the way between them and the answer. Pages are calm and light; the desk itself (masthead, page headers) is Midnight; Groovy Green is the spark that tells you where you are and what you can take.\n\nThe mood is precise, quick, and quietly electric. Density is comfortable rather than airy: compact rows, two button sizes, 13 to 16px working type, with display weight reserved for page and chapter openers. Components are tactile and confident. Actions answer a hover or a click with a decisive change: a full Midnight inversion, a green highlighter swipe, a check that pops in. Because people copy what they see here, the hub follows the brand's own rules to the letter: Figtree everywhere, the two-greens contrast rule, Midnight labels on green.",
+    "keyCharacteristics": [
+      "Midnight chrome (masthead, page headers) framing a light canvas (#F5F5F8) with white surfaces",
+      "One surface radius (8px); pills for every button",
+      "Flat at rest; shadows only on floating layers",
+      "Groovy Green as a spark, not a field, on light pages",
+      "Decisive, tactile state changes: inversions, highlighter swipes, pop-in checks",
+      "Compact, scannable directories with search and filters first"
+    ],
+    "rules": [
+      { "name": "The Two Greens Rule", "body": "Groovy Green (#00FF85) lives on dark backgrounds only. On light, green is #009A50. Never set #00FF85 as text or a fill on white, and never put white text on either green: labels on green are Midnight.", "section": "colors" },
+      { "name": "The Spark Rule", "body": "On a light page, green marks position and possession (active item, focus, download, saved) and covers a small fraction of the screen. Large green fields belong to brand specimens, not to UI.", "section": "colors" },
+      { "name": "The Statement Rule", "body": "Display and headline type are statements: no trailing periods, text-wrap: balance. Paragraphs use text-wrap: pretty and fill the measure.", "section": "typography" },
+      { "name": "The Measure-Is-Rendered Rule", "body": "Figtree's ch overstates line length by about 30%. Verify line length from rendered line boxes before changing --measure.", "section": "typography" },
+      { "name": "The Search-First Rule", "body": "On any page whose job is finding, the search field and filters come before the content they filter.", "section": "layout" },
+      { "name": "The Flat Desk Rule", "body": "Cards and rows never carry a resting shadow. If something needs to read as separate, give it a white surface and a hairline, not a shadow.", "section": "elevation" },
+      { "name": "The One Radius Rule", "body": "Surfaces are 8px, actions are pills. A third radius needs a reason.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do use #009A50 for any green on light surfaces and #00FF85 only on Midnight.",
+      "Do put Midnight labels on green fills.",
+      "Do keep buttons to two sizes: 40px for the main action, 32px for repeated controls.",
+      "Do present file downloads as links with the green highlighter, not as buttons.",
+      "Do answer every interaction with a decisive state change: a full inversion, the highlighter, a check.",
+      "Do give every control a visible keyboard focus ring.",
+      "Do open finding pages with search and filters before the content."
+    ],
+    "donts": [
+      "Don't set #00FF85 as text or a fill on white, or put white text on any green.",
+      "Don't add resting shadows to cards or rows.",
+      "Don't introduce a radius other than 8px for surfaces or full pills for actions.",
+      "Don't end display or headline type with a period.",
+      "Don't use any typeface other than Figtree.",
+      "Don't ship placeholder or \"Coming soon\" surfaces; show real content or a WIP tag."
+    ]
+  }
+}
