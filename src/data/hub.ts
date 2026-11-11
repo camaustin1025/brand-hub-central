@@ -40,6 +40,9 @@ export const DESIGN_CANVAS_CATEGORIES = [...publishedSocialTemplates().reduce((g
 export const ICON_LIBRARY_PATH = "/icon-library";
 export const ICON_LIBRARY_NAV_ID = "icon-library";
 
+export const NEW_EMPLOYEE_PATH = "/new-employee-resources";
+export const NEW_EMPLOYEE_NAV_ID = "new-employee-resources";
+
 export const ZOOM_BACKGROUNDS_PATH = "/zoom-backgrounds";
 export const ZOOM_BACKGROUNDS_NAV_ID = "zoom-backgrounds";
 
@@ -49,6 +52,7 @@ export const RESOURCE_PAGE_PATHS = {
   "ai-skills": "/ai-resources",
   [ICON_LIBRARY_NAV_ID]: ICON_LIBRARY_PATH,
   [ZOOM_BACKGROUNDS_NAV_ID]: ZOOM_BACKGROUNDS_PATH,
+  [NEW_EMPLOYEE_NAV_ID]: NEW_EMPLOYEE_PATH,
 } as const;
 
 /** The standalone page that holds a section's assets, if the section moved off the homepage. */
@@ -97,9 +101,9 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
     items: [
       {
         id: "color",
-        label: "Color palette",
-        description: "Canonical color values with contrast guidance.",
-        keywords: "midnight groovy green cyan hex rgb swatches palette",
+        label: "Color & gradients",
+        description: "Canonical color values, contrast guidance, and the brand gradient.",
+        keywords: "midnight groovy green cyan lemon hex rgb cmyk pantone swatches palette gradient",
       },
       {
         id: "typography",
@@ -108,10 +112,10 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         keywords: "font type figtree headings eyebrow body weights",
       },
       {
-        id: "logo-gradients",
-        label: "Logo & gradients",
-        description: "Primary lockups and approved gradient treatments.",
-        keywords: "wordmark logomark dark light signature green cyan",
+        id: "logo",
+        label: "Logo",
+        description: "Primary lockups, standalone logomarks, and clear-space rules.",
+        keywords: "wordmark logomark dark light lockup clear space",
       },
       {
         id: "icons",
@@ -161,6 +165,13 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         label: "AI resources & guidance",
         description: "Claude skills, training, Slack channels, and what you can share with AI tools.",
         keywords: "ai claude skills slides presentations prompt guidance resources security guidelines pii training claude 101 slack og-ai mcp connectors salesforce gong plugins",
+      },
+      {
+        id: NEW_EMPLOYEE_NAV_ID,
+        path: NEW_EMPLOYEE_PATH,
+        label: "New employee resources",
+        description: "Your first-week brand kit: announce your new role, set up calls, and learn how we sound.",
+        keywords: "new employee new hire onboarding first week start joined linkedin announcement zoom background welcome",
       },
     ],
   },

@@ -11,11 +11,12 @@ import HeroLab from "@/pages/HeroLab";
 import LayoutLab from "@/pages/LayoutLab";
 import ButtonLab from "@/pages/ButtonLab";
 import ZoomBackgrounds from "@/pages/ZoomBackgrounds";
+import NewEmployeeResources from "@/pages/NewEmployeeResources";
 import { employeeSectionId } from "@/data/employee-launch";
 import AdminGuests from "@/pages/AdminGuests";
 import { useAccess } from "@/hooks/use-access";
 import { ASSETS, assetAnchor } from "@/data/assets";
-import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, ICON_LIBRARY_PATH, RESOURCE_PAGE_PATHS, sectionPagePath, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
+import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, ICON_LIBRARY_PATH, NEW_EMPLOYEE_PATH, RESOURCE_PAGE_PATHS, sectionPagePath, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
 
 const SocialCustomizer = lazy(() => import("@/pages/SocialCustomizer"));
 
@@ -71,6 +72,8 @@ export function HubRoutes() {
       <Route path="/toolkit/social/:templateId" element={<ToolkitGraphicRoute />} />
       {/* Internal links (Slack, Confluence, security policy), so staff-only like Design canvas. */}
       {!isGuest && <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />}
+      {/* Links into staff-only pages (graphic editor, Zoom backgrounds, AI resources), so staff-only too. */}
+      {!isGuest && <Route path={NEW_EMPLOYEE_PATH} element={<NewEmployeeResources />} />}
       <Route path="/ai-skills" element={<Navigate to={RESOURCE_PAGE_PATHS["ai-skills"]} replace />} />
       {/* The ladder layout now lives on /foundation; keep old preview links working. */}
       <Route path="/foundation-preview" element={<Navigate to="/foundation" replace />} />

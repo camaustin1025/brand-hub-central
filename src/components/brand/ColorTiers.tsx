@@ -178,10 +178,6 @@ export function ColorTiers({ tiers = TIERS }: { tiers?: Tier[] }) {
       {tiers.map((tier) => (
         <ColorTierRow key={tier.group.title} tier={tier} />
       ))}
-      <p className="mt-6 max-w-[68ch] text-xs leading-snug text-og-midnight">
-        Pantone codes (C = coated paper) are proposed print matches, pending a physical swatch
-        check. CMYK values carry no printer profile. Ask your printer for a proof before any run.
-      </p>
     </>
   );
 }

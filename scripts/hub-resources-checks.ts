@@ -41,7 +41,7 @@ assert.equal(searchHub("Zoom")[0]?.id, "zoom-backgrounds");
 assert.equal(searchHub("Zoom")[0]?.path, "/zoom-backgrounds");
 assert.equal(HUB_SEARCH_ITEMS.find((item) => item.id === "asset-zoom-bg")?.path, "/zoom-backgrounds#asset-zoom-bg");
 assert.equal(HUB_SEARCH_ITEMS.find((item) => item.id === "asset-font-kit")?.path, undefined);
-assert.equal(HUB_SEARCH_ITEMS.find((item) => item.id === "asset-brand-gradient")?.path, "/#logo-gradients");
+assert.equal(HUB_SEARCH_ITEMS.find((item) => item.id === "asset-brand-gradient")?.path, "/#color");
 const vectors = searchHub("SVG");
 assert(vectors.some((item) => item.id === "asset-logo-dark"));
 assert(vectors.some((item) => item.id === "asset-logo-light"));

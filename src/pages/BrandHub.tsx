@@ -194,10 +194,14 @@ export default function BrandHub() {
         <HubSection
           id="color"
           eyebrow="Visual identity"
-          title="Color palette"
-          intro="Midnight, white, and Groovy Green lead. Secondary colors are accents only. Select any color to copy its hex."
+          title="Color and gradients"
+          intro="Midnight, white, and Groovy Green lead. Secondary colors are accents only. Use one gradient per section, on the moment that matters most. Select any color to copy its hex."
         >
           <ColorTiers />
+          <div className="mt-10">
+            <h3 className="mb-5 text-xl font-bold">Brand gradient</h3>
+            <GradientDetails />
+          </div>
           <ColorExamples />
         </HubSection>
 
@@ -275,10 +279,10 @@ export default function BrandHub() {
         </HubSection>
 
         <HubSection
-          id="logo-gradients"
+          id="logo"
           eyebrow="Visual identity"
-          title="Logo and gradients"
-          intro="Use the primary logo whenever space allows. Use one gradient per section, on the moment that matters most."
+          title="Logo"
+          intro="Use the primary logo whenever space allows."
         >
           <LogoExamples />
           <h3 className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</h3>
@@ -311,10 +315,6 @@ export default function BrandHub() {
             </div>
           </div>
 
-          <div className="mt-12">
-            <h3 className="mb-5 text-2xl font-bold">Brand gradient</h3>
-            <GradientDetails />
-          </div>
         </HubSection>
 
         <HubSection

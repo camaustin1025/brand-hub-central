@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { HUB_NAV } from "@/data/hub";
 import { SearchBox } from "./HubSearch";
 import { jumpTo } from "@/lib/hub-navigation";
@@ -17,8 +17,7 @@ const NAV_ITEM_IDLE = "text-og-midnight hover:bg-white/70 hover:text-og-midnight
 
 const NAV_TITLE_CLASS = "rounded-lg bg-og-indigo/[0.06] px-3 py-2 text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-indigo";
 // A group title that is itself the link (Design canvas). Every other title is a
-// static label, so the arrow marks this one as clickable before any hover, and
-// hover flips it to the masthead's Midnight with Groovy Green, the dark-bg green.
+// static label, so hover flips this one to the masthead's Midnight to show it is clickable.
 const NAV_TITLE_LINK = "group relative flex items-center justify-between transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
 const NAV_TITLE_LINK_ACTIVE =
   "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
@@ -69,14 +68,6 @@ export function Sidebar({
                 className={cn(NAV_TITLE_CLASS, NAV_TITLE_LINK, activeId === group.items[0].id ? NAV_TITLE_LINK_ACTIVE : NAV_TITLE_LINK_IDLE)}
               >
                 {group.label}
-                <ArrowRight
-                  size={14}
-                  aria-hidden="true"
-                  className={cn(
-                    "shrink-0 transition-[transform,opacity,color] duration-200 group-hover:translate-x-0.5",
-                    activeId === group.items[0].id ? "text-og-green-light" : "opacity-60 group-hover:text-og-green group-hover:opacity-100"
-                  )}
-                />
               </Link>
             </div>
           ) : (
@@ -88,7 +79,6 @@ export function Sidebar({
                 {group.items.map((item) => (
                   <li key={item.id}>
                     {item.path ? (
-                      // An arrow marks every link that opens its own page; in-page jumps have none.
                       <Link
                         to={item.path}
                         onClick={onClose}
@@ -97,14 +87,6 @@ export function Sidebar({
                       >
                         <span className="flex-1">{item.label}</span>
                         {item.wip && <WipTag />}
-                        <ArrowRight
-                          size={14}
-                          aria-hidden="true"
-                          className={cn(
-                            "shrink-0 transition-[transform,opacity] duration-200 group-hover:translate-x-0.5 group-hover:opacity-100",
-                            activeId === item.id ? "opacity-100" : "opacity-45"
-                          )}
-                        />
                       </Link>
                     ) : (
                       <button
