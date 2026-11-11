@@ -94,17 +94,17 @@ export function AiResources() {
   return <div className="ai-directory [container-type:inline-size]">
     <section aria-label="AI resource directory" id="ai-skills-library" className="scroll-mt-24">
       <div className="directory-toolbar">
-      <div className="flex items-center gap-3">
-        <label className="relative flex-1"><span className="sr-only">Search AI resources</span><Search size={19} className="pointer-events-none absolute left-4 top-4 text-muted-foreground" aria-hidden="true" /><input type="search" value={query} onChange={e => update('q', e.target.value)} placeholder="Search AI resources" className="action-focus min-h-12 w-full rounded-md border border-border bg-white pl-12 pr-4 text-base placeholder:text-muted-foreground" /></label>
-        <button type="button" className="action-focus tap-target h-8 shrink-0 rounded-full border border-og-midnight bg-white px-3 text-[13px] font-semibold md:hidden" aria-expanded={filtersOpen} aria-controls="directory-filters" onClick={() => setFiltersOpen(!filtersOpen)}>Filters{(type || team) && ' · on'}</button>
-      </div>
-      <div id="directory-filters" className={`${filtersOpen ? 'flex' : 'hidden'} mt-3 flex-col gap-3 md:flex md:flex-row md:flex-wrap md:items-center`}>
-        <div className="hidden flex-wrap gap-1.5 md:flex" role="group" aria-label="Filter by resource type">
-          {(['', ...RESOURCE_TYPES] as const).map(t => { const Icon = t ? ICONS[t] : null; const selected = type === t; return <button key={t} type="button" aria-pressed={selected} onClick={() => update('type', t)} className={`action-focus tap-target inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-[13px] font-semibold transition-colors [&_svg]:size-3.5 ${selected ? 'border-og-midnight bg-og-midnight text-white' : 'border-og-midnight/20 bg-white text-og-midnight hover:border-og-midnight'}`}>{Icon && <Icon size={15} aria-hidden="true" />}{t || 'All'}<span className={`font-medium tabular-nums ${selected ? 'text-white/75' : 'text-og-midnight/60'}`}>{t ? counts[t] : total}</span></button>; })}
+        <div className="directory-search-row">
+          <label className="relative flex-1"><span className="sr-only">Search AI resources</span><Search size={19} className="pointer-events-none absolute left-4 top-4 text-muted-foreground" aria-hidden="true" /><input type="search" value={query} onChange={e => update('q', e.target.value)} placeholder="Search AI resources" className="action-focus min-h-12 w-full rounded-md border border-border bg-white pl-12 pr-4 text-base placeholder:text-muted-foreground" /></label>
+          <button type="button" className="action-focus tap-target h-8 shrink-0 rounded-full border border-og-midnight bg-white px-3 text-[13px] font-semibold md:hidden" aria-expanded={filtersOpen} aria-controls="directory-filters" onClick={() => setFiltersOpen(!filtersOpen)}>Filters{(type || team) && ' · on'}</button>
         </div>
-        <label className="flex items-center gap-2 text-sm md:hidden">Type<select value={type} onChange={e => update('type', e.target.value)} className="action-focus min-h-11 min-w-0 flex-1 rounded-md border border-border bg-white px-2"><option value="">All resources ({total})</option>{RESOURCE_TYPES.map(t => <option key={t} value={t}>{t} ({counts[t]})</option>)}</select></label>
-        <label className="flex items-center gap-2 text-sm md:ml-auto">Skills for<select value={team} onChange={e => update('team', e.target.value)} className="action-focus min-h-11 min-w-0 flex-1 rounded-md border border-border bg-white px-2 md:max-w-56"><option value="">All teams</option>{teams.map(t => <option key={t}>{t}</option>)}</select></label>
-      </div>
+        <div id="directory-filters" className={`${filtersOpen ? 'flex' : 'hidden'} directory-filter-row flex-col md:flex md:flex-row md:flex-wrap md:items-center`}>
+          <div className="type-chips hidden md:flex" role="group" aria-label="Filter by resource type">
+            {(['', ...RESOURCE_TYPES] as const).map(t => { const Icon = t ? ICONS[t] : null; const selected = type === t; return <button key={t} type="button" aria-pressed={selected} onClick={() => update('type', t)} className="type-chip action-focus tap-target">{Icon && <Icon size={14} aria-hidden="true" />}{t || 'All'}<span className="type-chip__count">{t ? counts[t] : total}</span></button>; })}
+          </div>
+          <label className="flex items-center gap-2 text-sm md:hidden">Type<select value={type} onChange={e => update('type', e.target.value)} className="action-focus min-h-11 min-w-0 flex-1 rounded-md border border-border bg-white px-2"><option value="">All resources ({total})</option>{RESOURCE_TYPES.map(t => <option key={t} value={t}>{t} ({counts[t]})</option>)}</select></label>
+          <label className="team-filter"><span className="team-filter__label">Skills for</span><select value={team} onChange={e => update('team', e.target.value)}><option value="">All teams</option>{teams.map(t => <option key={t}>{t}</option>)}</select><ChevronDown size={14} aria-hidden="true" /></label>
+        </div>
       </div>
       <div className="my-3 flex min-h-6 items-center justify-between gap-4 text-sm"><p role="status" aria-live="polite">{results.length} {results.length === 1 ? 'resource' : 'resources'}{type && ` · ${type}`}{team && ` · Skills for ${team}`}</p>{(query || type || team) && <button className={`${LINK} min-h-11`} onClick={clear}>Clear filters</button>}</div>
       {results.length > 0 && <table className="resource-table w-full border-collapse text-left text-sm">

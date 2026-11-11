@@ -193,6 +193,32 @@ html[data-guest] a[href^="/ai-skills"] {
 
 /* Compact resource directory: metadata stays in one disclosure per row. */
 .directory-toolbar { position: sticky; top: 4rem; z-index: 20; background: hsl(var(--background)); padding: .5rem 0; }
+/* Search on top; type chips and the team filter share one line below it. The chips are tight
+   (4px apart, 11px sides) and the team filter is a 32px pill sized to its value, so all of it
+   fits the 1060px column. Display stays with the Tailwind hidden/md:flex classes. */
+.directory-search-row { display: flex; align-items: center; gap: 12px; }
+.directory-filter-row { margin-top: 12px; gap: 12px; }
+.type-chips { flex-wrap: wrap; gap: 4px; }
+.type-chip { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border: 1px solid rgba(23, 19, 47, .2); border-radius: 9999px; background: #fff; color: theme('colors.og.midnight'); font-size: 13px; font-weight: 600; white-space: nowrap; transition: border-color .2s, background-color .2s, color .2s; }
+.type-chip:hover { border-color: theme('colors.og.midnight'); }
+.type-chip[aria-pressed="true"] { border-color: theme('colors.og.midnight'); background: theme('colors.og.midnight'); color: #fff; }
+.type-chip svg { width: 14px; height: 14px; flex-shrink: 0; }
+.type-chip__count { font-weight: 500; font-variant-numeric: tabular-nums; color: rgba(23, 19, 47, .6); }
+.type-chip[aria-pressed="true"] .type-chip__count { color: rgba(255, 255, 255, .75); }
+.team-filter { position: relative; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; height: 32px; padding-left: 12px; border: 1px solid rgba(23, 19, 47, .2); border-radius: 9999px; background: #fff; font-size: 13px; cursor: pointer; transition: border-color .2s; }
+.team-filter:hover { border-color: theme('colors.og.midnight'); }
+.team-filter:has(select:focus-visible) { box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px theme('colors.og.midnight'); }
+.team-filter__label { color: theme('colors.og.gray.400'); font-weight: 500; white-space: nowrap; }
+/* The select fills the pill (its right padding sits under the chevron) so any click opens it. */
+.team-filter select { height: 100%; margin: 0; padding: 0 32px 0 0; border: 0; background: transparent; color: theme('colors.og.midnight'); font: inherit; font-weight: 600; field-sizing: content; appearance: none; -webkit-appearance: none; outline: none; cursor: pointer; }
+.team-filter svg { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: theme('colors.og.midnight'); }
+@media (min-width: 768px) {
+  .directory-filter-row { justify-content: space-between; }
+}
+@media (max-width: 767.98px) {
+  .team-filter { width: 100%; height: 44px; border-radius: 8px; }
+  .team-filter select { flex: 1; }
+}
 .resource-table thead { border-block: 1px solid hsl(var(--border)); }
 .resource-table th { padding: .625rem 1rem; font-weight: 600; }
 .resource-row { border-bottom: 1px solid hsl(var(--border)); background: white; }

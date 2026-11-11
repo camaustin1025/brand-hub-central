@@ -288,8 +288,9 @@ Tactile pills that invert completely on hover.
 The hub's signature control. A file is a link, not a button: the format name and a download glyph in 13px semibold Midnight. On hover a Groovy Green highlighter swipes in behind the label at a -12deg skew (300ms, cubic-bezier(0.16, 1, 0.3, 1)) while the arrow dips toward the tray. On click the arrow becomes a #009A50 check that pops in. Motion drops out under reduced-motion preferences.
 
 ### Chips (filters)
-- **Style:** 32px pills, white with a light Midnight border (20% opacity), Midnight label, optional 14px icon.
+- **Style:** 32px pills, 4px apart with 11px sides, white with a light Midnight border (20% opacity), Midnight label, optional 14px icon, and a count in Midnight at 60%.
 - **State:** The selected chip fills Midnight with a white label, so it is the only heavy mark in the filter row; unselected chips take a full Midnight border on hover.
+- **Filter row:** Search sits on its own line; the type chips and a matching 32px team-filter pill share the line below, chips left, pill right. The pill holds a Slate label ("Skills for"), the chosen value in semibold Midnight, and a chevron, and sizes to its value so the row stays on one line at 1060px. On phones the filters fold behind a Filters button and each select goes full width at 44px.
 
 ### Cards / Containers
 - **Corner Style:** 8px.
