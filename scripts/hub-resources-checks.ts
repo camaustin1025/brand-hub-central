@@ -46,3 +46,11 @@ assert(searchHub("new employee").some((item) => item.kind === "Template" && item
 assert.equal(searchHub("???").length, 0);
 assert.equal(searchHub("for the").length, 0);
 console.log("PASS: natural-language logo selection, Figtree, Zoom, SVG, templates, and empty search");
+
+// Asset lookups in page components must resolve before the app can render.
+for (const file of ["src/components/hub/WorkingCanvasHero.tsx", "src/components/brand/GradientDetails.tsx"]) {
+  const source = fs.readFileSync(file, "utf8");
+  for (const match of source.matchAll(/(?:getAsset|findAssetFile)\("([^"]+)"/g)) getAsset(match[1]);
+}
+assert.equal(ASSETS.filter((asset) => asset.type === "background").length, 6);
+console.log("PASS: homepage asset references resolve and Zoom collection has six backgrounds");

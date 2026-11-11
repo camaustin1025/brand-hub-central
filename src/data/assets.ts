@@ -1,6 +1,7 @@
 import { isEmployeeSectionVisible } from "./employee-launch";
+import { BACKGROUND_GRADIENT } from "./tokens";
 
-export type AssetType = "logo" | "font" | "token" | "background" | "social" | "template" | "icon";
+export type AssetType = "logo" | "font" | "token" | "background" | "social" | "template" | "icon" | "artwork";
 export type AssetFormat = "SVG" | "PNG" | "EPS" | "TTF" | "JSON" | "CSS" | "ZIP";
 export type AssetFile = { format: AssetFormat; href: string; label?: string };
 
@@ -65,6 +66,13 @@ const RECORDS: AssetRecord[] = [
     type: "font", tags: ["font", "figtree", "typography", "typeface", "regular", "bold", "install"],
     preview: null, previewBg: "light", section: "typography",
     files: [{ format: "ZIP", href: "/fonts/Figtree-font-kit.zip", label: "Font kit ZIP" }, { format: "TTF", href: "/fonts/Figtree-Regular.ttf", label: "Regular TTF" }],
+  },
+  {
+    id: "brand-gradient", title: "Cyan to Lemon gradient",
+    description: "Original 3840 × 2160 background artwork. Keep text on a clear, readable surface.",
+    type: "artwork", tags: ["gradient", "cyan", "lemon", "brand", "16:9"],
+    preview: BACKGROUND_GRADIENT.image, previewBg: "light", section: "logo-gradients",
+    files: [{ format: "PNG", href: BACKGROUND_GRADIENT.image }],
   },
   {
     id: "zoom-bg", title: "Office lounge",
