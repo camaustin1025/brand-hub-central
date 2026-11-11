@@ -40,6 +40,13 @@ typography:
     lineHeight: 1.25
     letterSpacing: "-0.015em"
     fontFeature: "\"ss01\", \"cv01\""
+  group-heading:
+    fontFamily: "Figtree, system-ui, sans-serif"
+    fontSize: "18px"
+    fontWeight: 700
+    lineHeight: 1.33
+    letterSpacing: "-0.01em"
+    fontFeature: "\"ss01\", \"cv01\""
   item-title:
     fontFamily: "Figtree, system-ui, sans-serif"
     fontSize: "15px"
@@ -235,12 +242,13 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 - **Display** (800, 40px rising to 56px by container width, 1.02, -0.03em): Chapter hero titles on Midnight.
 - **Headline** (700, 32px on phones, 36px from md, 1.1, -0.02em): Page titles in the Midnight page header.
 - **Title** (600, 24px, 1.25, -0.015em): Section headings inside a page.
+- **Group Heading** (700, 18px, 1.33, -0.01em): Section headings inside a directory table (e.g. "Skills · Sales and AEs"). One clear step above Item Title so a group never reads as another row.
 - **Item Title** (600, 15px, 1.47): Row and card titles in directories.
 - **Body** (400, 16px, 1.625): Explanatory copy. Paragraphs cap at the site measure (50ch, which renders 68 to 75 Figtree characters); directory descriptions at 70ch.
 - **Body Small** (400, 14px, 1.43): Row descriptions, nav items, meta.
 - **Control** (600, 13px): Compact buttons, filter chips, download links.
 - **Eyebrow** (600, 12px, 0.16em, uppercase): Labels above headings. Midnight on light, Groovy Green on dark.
-- **Nav Label** (700, 11px, 0.12em, uppercase): Rail group titles.
+- **Nav Label** (700, 11px, 0.12em, uppercase): Rail group titles. Table column headers use the same 11px caps at 600 and 0.1em, as the quietest label on a table.
 
 ### Named Rules
 **The Statement Rule.** Display and headline type are statements: no trailing periods, `text-wrap: balance`. Paragraphs use `text-wrap: pretty` and fill the measure.
@@ -312,7 +320,7 @@ The hub's signature control. A file is a link, not a button: the format name and
 - **WIP / Draft:** Small pill, Lemon border, 20% Lemon tint, Midnight label. Unresolved canon shows this tag rather than being hidden.
 
 ### Resource Rows
-Directory rows on white with a hairline bottom border: a 32px icon, a 15px semibold Midnight title, a 14px Slate description (up to 2 lines at the site measure), and right-aligned actions (a 32px outline pill plus a 13px semibold underlined Details disclosure). Rows are grouped under 15px bold Midnight type headings with a 13px Slate count; a multi-step workflow collapses into one row with a "Show N steps" disclosure in the same underlined style. Column headers are 12px uppercase Midnight; the result count is 13px Slate. Titles, headings and actions are Midnight; descriptions and counts recede to Slate, so the eye lands on the titles first. Hover tints the row to #FAFAFC; expanded details sit on #F7F7FA.
+Directory rows on white with a hairline bottom border: a 32px icon, a 15px semibold Midnight title, a 14px Slate description (up to 2 lines at the site measure), and right-aligned actions (a 32px outline pill plus a 13px semibold underlined Details disclosure). Rows are grouped under 18px bold Midnight Group Headings with a 13px Slate count and 32px of space above; a multi-step workflow collapses into one row with a "Show N steps" disclosure in the same underlined style. Column headers are 11px uppercase Midnight, the smallest label on the table; the result count is 13px Slate. Titles, headings and actions are Midnight; descriptions and counts recede to Slate, so the eye lands on the titles first. Hover tints the row to #FAFAFC; expanded details sit on #F7F7FA.
 
 ### Policy Panel
 Rules people must follow (what you can share with AI tools) sit in a Midnight block instead of loose text at the end of a page. 8px radius, 40px padding (24px under a 40rem container), with `.dark` on the section so focus rings and link hovers use the dark-surface tokens. All text in the panel is pure white (not Ink on Dark). A 24px bold title with a Groovy Green icon, an intro, then two columns split by a 12% white hairline: a 24px Radish circle with a white X heads what is never allowed, a 24px Groovy Green circle with a Midnight check heads what is allowed with conditions. Items are 16px ruled rows (10% white top border). The lists end the panel; no closing line. Columns stack below 40rem.
