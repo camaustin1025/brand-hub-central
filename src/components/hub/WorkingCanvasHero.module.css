@@ -48,7 +48,7 @@
 .palette i:nth-child(5) { background: #ff61d3; }
 .palette:hover, .palette:focus-visible { z-index: 2; outline: 2px solid #17132f; outline-offset: 4px; }
 
-.searchDock { position: relative; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)) 27px; }
+.searchDock { position: relative; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)); }
 .searchTitle { margin-bottom: 16px; font-size: 22px; font-weight: 700; }
 /* Style only this use of the existing SearchBox; masthead/mobile search stay intact. */
 .searchBox > div > svg { left: 25px; width: 28px; height: 28px; color: #17132f; stroke-width: 1.8; }
@@ -57,11 +57,6 @@
 .searchBox input:focus, .searchBox input:focus-visible { outline: none; border-color: #17132f26; box-shadow: 0 3px 12px #17132f12; }
 .searchBox input:focus-visible { background: #f5f4fa; }
 .searchBox > div > div { min-width: 0; }
-.samples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-.samples a, .samples button { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; padding: 10px 14px; border: 1px solid #17132f26; border-radius: 12px; background: #ffffffb8; color: #17132f; font-size: 16px; line-height: 1.3; text-align: left; }
-.samples svg { flex-shrink: 0; }
-.samples a:hover, .samples button:hover { background: #fff; }
-.samples :focus-visible { outline: 2px solid #17132f; outline-offset: 4px; }
 
 /* Popups sit above/below the selected specimen, with a transparent hover bridge. */
 .assetPill { position: absolute; z-index: 3; display: flex; align-items: center; height: 42px; padding: 0 4px 0 16px; border-radius: 999px; background: #17132f; color: #fff; white-space: nowrap; box-shadow: 0 8px 24px #17132f40; }
@@ -95,8 +90,6 @@
   .typeSemibold { font-size: 14px; }
   .typeWeights { font-size: 6px; margin-top: 9px; }
   .iconCutout { width: 46px; height: 46px; }
-  .samples { gap: 12px; }
-  .samples a, .samples button { font-size: 14px; }
 }
 
 @media (max-width: 767px) {
@@ -118,13 +111,11 @@
   .heartIcon { left: auto; right: 102px; top: 90px; }
   .chartIcon { right: 45px; top: 293px; }
   .palette { left: 31px; top: 122px; width: 160px; height: 44px; padding-block: 15px; transform: rotate(-9deg); }
-  .searchDock { padding: 22px 16px 23px; }
+  .searchDock { padding: 22px 16px; }
   .searchBox > div > svg { left: 15px; width: 22px; height: 22px; }
   .searchBox input { height: 56px; padding: 0 64px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
   /* WIP tag: same inset as the search icon on the left. */
   .searchBox > div > span { right: 15px; }
-  .samples { grid-template-columns: 1fr; gap: 8px; margin-top: 14px; }
-  .samples a, .samples button { width: 100%; min-height: 48px; font-size: 16px; }
   .assetPill { display: none; }
 }
 

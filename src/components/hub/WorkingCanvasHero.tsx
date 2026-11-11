@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, Download, X } from "lucide-react";
 import { SearchBox, jumpTo } from "@/components/hub/HubShell";
 import { HomeTasks } from "@/components/hub/HomeTasks";
-import { assetAnchor, getAsset, findAssetFile } from "@/data/assets";
+import { getAsset, findAssetFile } from "@/data/assets";
 import { BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
 import styles from "./WorkingCanvasHero.module.css";
 
@@ -173,11 +173,6 @@ export function WorkingCanvasHero() {
       <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
         <h2 className={styles.searchTitle}>Find what you need</h2>
         <div className={styles.searchBox}><SearchBox hero /></div>
-        <div className={styles.samples}>
-          <button className="action-focus" onClick={() => jumpTo("color")}>Which green goes on white? <ArrowRight size={16} /></button>
-          <button className="action-focus" onClick={() => jumpTo(assetAnchor("logo-dark"))}>Which logo goes on dark backgrounds? <ArrowRight size={16} /></button>
-          <button className="action-focus" onClick={() => jumpTo(assetAnchor("font-kit"))}>Where do I get Figtree? <ArrowRight size={16} /></button>
-        </div>
       </section>
 
       <HomeTasks className={styles.tasks} />
