@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { ASSETS, availableAssets, assetAnchor, getAsset, getAssetFile, isAssetAvailable } from "../src/data/assets";
 import { HUB_SEARCH_ITEMS, searchHub } from "../src/lib/hub-search";
+import { AI_DIRECTORY, RESOURCE_TYPES, WORKFLOWS, countByType, filterResources, groupResources } from "../src/data/ai-directory";
 
 const available = availableAssets();
 assert.equal(new Set(ASSETS.map((asset) => asset.id)).size, ASSETS.length);
@@ -58,3 +59,28 @@ for (const file of ["src/components/hub/WorkingCanvasHero.tsx", "src/components/
 }
 assert.equal(ASSETS.filter((asset) => asset.type === "background").length, 6);
 console.log("PASS: homepage asset references resolve and Zoom collection has six backgrounds");
+
+// AI resources: grouped sections must cover every resource exactly once, workflows hold their steps in order,
+// and the team filter narrows skills without hiding resources that belong to everyone.
+{
+  const sections = groupResources(AI_DIRECTORY);
+  const shown = sections.flatMap((s) => s.entries.flatMap((e) => (e.kind === "resource" ? [e.resource.id] : e.steps.map((r) => r.id))));
+  assert.equal(shown.length, AI_DIRECTORY.length, "Every AI resource appears once in the grouped list");
+  assert.equal(new Set(shown).size, shown.length);
+  assert.equal(sections.reduce((sum, s) => sum + s.count, 0), AI_DIRECTORY.length);
+  assert.equal(sections[0].label.startsWith("Skills"), true, "Skills lead the directory");
+  const counts = countByType(AI_DIRECTORY);
+  assert.equal(RESOURCE_TYPES.reduce((sum, t) => sum + counts[t], 0), AI_DIRECTORY.length);
+  for (const w of WORKFLOWS) {
+    const entry = sections.flatMap((s) => s.entries).find((e) => e.kind === "workflow" && e.id === w.id);
+    assert(entry && entry.kind === "workflow", "Workflow row missing: " + w.id);
+    assert.deepEqual(entry.steps.map((r) => r.id), w.steps, "Workflow steps out of order: " + w.id);
+  }
+  const team = AI_DIRECTORY.find((r) => r.team)!.team!;
+  const forTeam = filterResources(AI_DIRECTORY, "", "", team);
+  assert(forTeam.every((r) => !r.team || r.team === team), "Team filter leaked another team's skills");
+  assert.equal(forTeam.filter((r) => !r.team).length, AI_DIRECTORY.filter((r) => !r.team).length, "Team filter hid shared resources");
+  const recap = groupResources(filterResources(AI_DIRECTORY, "recap", "", "")).flatMap((s) => s.entries);
+  assert(recap.some((e) => e.kind === "workflow" && e.steps.length === 1 && e.steps[0].id === "sbr-recap"), "Search for one step shows it inside its workflow");
+}
+console.log("PASS: AI resources group by type, roll SBR into one workflow row, and scope the team filter to skills");
