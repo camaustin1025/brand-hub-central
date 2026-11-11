@@ -4,7 +4,7 @@ Apply everything below to all Ordergroove copy and visual work without being ask
 
 ## Colors & type
 
-- Midnight `#17132F` (primary dark bg) · Groovy Green `#00FF85` (dark bg only; use `#009A50` on light backgrounds) · Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Flamingo Pink `#FF61D3` · Dark Indigo `#2E2A47`
+- Midnight `#17132F` (primary dark bg) · Groovy Green `#00FF85` (dark bg only; use `#009A50` on light backgrounds; print: Pantone 802 C, fallback 7479 C) · Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Flamingo Pink `#FF61D3` · Dark Indigo `#2E2A47`
 - Brand gradient: `linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)`
 - Font: **Figtree** everywhere
 - Cross-check hexes against this file, not from memory — near-miss variants (`#0b0820`, `#0B0E22`, `#14102a`) are drift, not alternatives.

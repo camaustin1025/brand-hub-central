@@ -207,12 +207,14 @@ Still to source: numeric minimum-size specs and a clean standalone-mark master. 
 |---|---|---|
 | Midnight | `#17132F` | Dark backgrounds; heading/body text on light. Never pure black text. |
 | Dark Indigo | `#2E2A47` | Subtitle/muted text on light; muted surfaces |
-| Groovy Green | `#00FF85` | Accent on DARK backgrounds only |
+| Groovy Green | `#00FF85` | Accent on DARK backgrounds only. Print: Pantone 802 C (neon spot ink; 7479 C if the printer can't run neon) |
 | Green (light-bg) | `#009A50` | Accent on LIGHT backgrounds |
 | White | `#FFFFFF` | Light backgrounds |
 | Gray-900 | `#EBEAF0` | Subtitle text on dark |
 | Gray-800 | `#D8D7DF` | Borders |
 | Muted / Soft | `#4F4A6A` / `#666279` | Text tones on light |
+
+**Print color:** Pantone spot colors work on solid fills such as the logo and type, never on gradients; gradients print CMYK and will look duller than on screen. Groovy Green's 802 C is the standing spec. Proposed Pantone matches and CMYK values for the rest of the palette (added 2026-11-11) live on the hub's color palette and are pending a physical swatch check; proof before any print run.
 
 **The green contrast rule (most-missed rule in the system):** light background → `#009A50` accents; dark background → `#00FF85`. Use Midnight for small text and links on light surfaces, and for labels on green buttons. White text on `#009A50` fails normal-text contrast. The supplied logo's `#00CC6A` rings are a logo-only exception, not a UI color.
 

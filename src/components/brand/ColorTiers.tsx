@@ -106,9 +106,24 @@ export function ColorTile({ swatch, hideUsage }: { swatch: Swatch; hideUsage?: b
         <span className="mt-1 block font-mono text-[11px] leading-snug text-og-gray-400">
           RGB: {swatch.rgb.replace(/,/g, "")}
         </span>
-        {!hideUsage && (
+        {swatch.cmyk && (
+          <span className="mt-0.5 block font-mono text-[11px] leading-snug text-og-gray-400">
+            CMYK: {swatch.cmyk.replace(/,/g, "")}
+          </span>
+        )}
+        {swatch.pantone && (
+          <span className="mt-0.5 block font-mono text-[11px] leading-snug text-og-gray-400">
+            Pantone: {swatch.pantone}
+          </span>
+        )}
+        {!hideUsage && !swatch.hideTileUsage && (
           <span className="mt-1 block text-xs leading-snug text-og-midnight">
             {swatch.usage}
+          </span>
+        )}
+        {swatch.tileNote && (
+          <span className="mt-1 block text-xs leading-snug text-og-midnight">
+            {swatch.tileNote}
           </span>
         )}
       </span>
@@ -163,6 +178,10 @@ export function ColorTiers({ tiers = TIERS }: { tiers?: Tier[] }) {
       {tiers.map((tier) => (
         <ColorTierRow key={tier.group.title} tier={tier} />
       ))}
+      <p className="mt-6 max-w-[68ch] text-xs leading-snug text-og-midnight">
+        Pantone codes (C = coated paper) are proposed print matches, pending a physical swatch
+        check. CMYK values carry no printer profile. Ask your printer for a proof before any run.
+      </p>
     </>
   );
 }
