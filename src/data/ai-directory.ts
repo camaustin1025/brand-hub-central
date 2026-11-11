@@ -15,7 +15,45 @@ export const AI_DIRECTORY: AiResource[] = [
   { id: 'offer-builder', title: 'Offer Builder one-pager', body: 'Ordergroove Offer Builder Skill reference on the shared drive.', type: 'Assets' as const, url: OFFER_BUILDER_ONE_PAGER.url, source: 'Shared drive' },
   ...SLACK_CHANNELS.map(r => ({ id: r.label, title: r.label, body: r.body, type: 'Help & channels' as const, url: r.url, source: 'Slack' })),
 ].sort((a, b) => a.title.localeCompare(b.title));
+/** Team narrows skills only. Guides, tools, assets, and channels belong to everyone, so they stay visible. */
 export function filterResources(resources: AiResource[], query: string, type: string, team: string) {
   const words = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-  return resources.filter(r => (!type || r.type === type) && (!team || r.team === team) && words.every(word => [r.title, r.identifier, r.body, r.team, r.source, r.related?.label].filter(Boolean).join(' ').toLocaleLowerCase().includes(word)));
+  return resources.filter(r => (!type || r.type === type) && (!team || !r.team || r.team === team) && words.every(word => [r.title, r.identifier, r.body, r.team, r.source, r.related?.label].filter(Boolean).join(' ').toLocaleLowerCase().includes(word)));
+}
+
+export function countByType(resources: AiResource[]) {
+  return Object.fromEntries(RESOURCE_TYPES.map(t => [t, resources.filter(r => r.type === t).length])) as Record<ResourceType, number>;
+}
+
+/** Skills that run in sequence collapse into one row, with their steps in workflow order. */
+export const WORKFLOWS = [
+  { id: 'sbr', title: 'SBR workflow', body: 'Run a strategic business review in four skills: scan, prep, practice, and recap.', steps: ['sbr-scan', 'sbr-prep', 'sbr-practice', 'sbr-recap'] },
+];
+
+export type DirectoryEntry =
+  | { kind: 'resource'; resource: AiResource }
+  | { kind: 'workflow'; id: string; title: string; body: string; total: number; steps: AiResource[] };
+export type DirectorySection = { id: string; label: string; count: number; entries: DirectoryEntry[] };
+
+const entryTitle = (e: DirectoryEntry) => (e.kind === 'resource' ? e.resource.title : e.title);
+
+function toEntries(resources: AiResource[]): DirectoryEntry[] {
+  const inWorkflow = new Set(WORKFLOWS.flatMap(w => w.steps));
+  const entries: DirectoryEntry[] = resources.filter(r => !inWorkflow.has(r.id)).map(resource => ({ kind: 'resource', resource }));
+  for (const w of WORKFLOWS) {
+    const steps = w.steps.flatMap(id => resources.filter(r => r.id === id));
+    if (steps.length) entries.push({ kind: 'workflow', id: w.id, title: w.title, body: w.body, total: w.steps.length, steps });
+  }
+  return entries.sort((a, b) => entryTitle(a).localeCompare(entryTitle(b)));
+}
+
+/** One section per resource type, in RESOURCE_TYPES order. Skills split by team, in SKILL_GROUPS order. Empty sections drop out. */
+export function groupResources(resources: AiResource[]): DirectorySection[] {
+  return RESOURCE_TYPES.flatMap(type => {
+    const ofType = resources.filter(r => r.type === type);
+    const groups = type === 'Skills'
+      ? SKILL_GROUPS.map(g => ({ id: `skills-${g.id}`, label: `Skills · ${g.label}`, items: ofType.filter(r => r.team === g.label) }))
+      : [{ id: type.toLowerCase().replace(/[^a-z]+/g, '-'), label: type, items: ofType }];
+    return groups.filter(g => g.items.length).map(g => ({ id: g.id, label: g.label, count: g.items.length, entries: toEntries(g.items) }));
+  });
 }

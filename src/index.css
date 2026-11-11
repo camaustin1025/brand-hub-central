@@ -201,15 +201,25 @@ html[data-guest] a[href^="/ai-skills"] {
 .resource-identity { display: flex; align-items: center; gap: .75rem; }
 .resource-identity > span { width: 1.75rem; height: 1.75rem; border: 0; margin: 0; }
 .resource-description { margin-top: .125rem; line-height: 1.25rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-.resource-type { width: 9rem; padding: .75rem; vertical-align: middle; }
 .resource-actions { width: 12rem; padding: .5rem .75rem; vertical-align: middle; }
 .resource-expanded { background: #f7f7fa; border-bottom: 1px solid hsl(var(--border)); }
+/* Section headers group rows by type (and skills by team), so the list reads in chunks instead of one long scroll. */
+.resource-group th { padding: 1.75rem 1rem .5rem; border-bottom: 1px solid hsl(var(--border)); }
+.resource-table tbody:first-of-type .resource-group th { padding-top: 1rem; }
+.resource-group h2 { display: flex; align-items: baseline; gap: .5rem; font-size: .9375rem; line-height: 1.375rem; font-weight: 700; color: hsl(var(--foreground)); letter-spacing: 0; }
+.resource-group-count { font-size: .8125rem; font-weight: 500; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; }
+/* Workflow steps sit indented under their parent row. */
+.resource-step.resource-row { background: #fcfcfd; }
+.resource-step .resource-main, .resource-step.resource-expanded td { padding-left: 3.25rem; }
 @container (max-width: 44rem) {
-  .resource-table, .resource-table tbody, .resource-row, .resource-expanded, .resource-expanded td { display: block; }
-  .resource-table thead, .resource-table .resource-type { display: none; }
+  .resource-table, .resource-table tbody, .resource-row, .resource-expanded, .resource-expanded td, .resource-group, .resource-group th { display: block; }
+  .resource-table thead { display: none; }
+  .resource-group th { padding-inline: .75rem; }
   .resource-main { display: block; padding: .75rem .75rem .125rem; }
   .resource-description { -webkit-line-clamp: 2; }
   .resource-actions { display: block; width: auto; padding: 0 .75rem .25rem 3.25rem; }
+  .resource-step .resource-main, .resource-step.resource-expanded td { padding-left: 2rem; }
+  .resource-step .resource-actions { padding-left: 4.5rem; }
   .directory-toolbar { top: 7.5rem; }
 }
 
@@ -219,8 +229,7 @@ html[data-guest] a[href^="/ai-skills"] {
 .ai-directory .resource-title { font-size: .9375rem; line-height: 1.375rem; font-weight: 600; letter-spacing: 0; text-wrap: wrap; overflow-wrap: anywhere; }
 .ai-directory .resource-description { font-size: .875rem; max-width: 70ch; font-weight: 400; letter-spacing: 0; }
 .ai-directory .resource-table th { font-size: .8125rem; line-height: 1.25rem; color: hsl(var(--muted-foreground)); font-weight: 500; letter-spacing: .015em; }
-.ai-directory .resource-type { font-size: .8125rem; line-height: 1.25rem; }
-.ai-directory [role="status"], .ai-directory nav[aria-label="Resource pages"] p { font-size: .8125rem; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; }
+.ai-directory [role="status"] { font-size: .8125rem; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; }
 .ai-directory #ai-sharing h2, .ai-directory #ai-connectors h2 { font-size: 1.5rem; line-height: 1.875rem; font-weight: 600; letter-spacing: -.015em; }
 .ai-directory #ai-sharing p, .ai-directory #ai-sharing li, .ai-directory #ai-connectors p, .ai-directory #ai-connectors li { font-size: 1rem; line-height: 1.625; text-wrap: pretty; }
 .ai-directory #ai-sharing p, .ai-directory #ai-connectors p { max-width: 70ch; }
