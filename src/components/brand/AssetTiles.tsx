@@ -15,12 +15,12 @@ export function AssetTiles({ assets }: { assets: Asset[] }) {
             <div className={cn("flex items-center justify-center overflow-hidden", asset.type === "background" ? "aspect-video" : "aspect-[16/10]", single && "sm:aspect-auto sm:min-h-48", light ? "border-b border-border bg-white" : "bg-og-midnight")}>
               {asset.preview ? (
                 <img src={asset.preview} alt={asset.title} loading="lazy"
-                  className={cn(logo || asset.type === "icon" ? "max-h-[70%] w-[78%] object-contain" : asset.type === "background" ? "h-full w-full object-contain" : "h-full w-full object-cover", logo && asset.tags.includes("logomark") && "w-auto max-w-[60%]")} />
+                  className={cn(logo ? "max-h-[77%] w-[86%] object-contain" : asset.type === "icon" ? "max-h-[70%] w-[78%] object-contain" : asset.type === "background" ? "h-full w-full object-contain" : "h-full w-full object-cover", logo && asset.tags.includes("logomark") && "w-auto max-w-[66%]")} />
               ) : (
                 <span className="text-6xl font-semibold tracking-tight text-og-midnight" aria-label="Figtree font preview">Aa</span>
               )}
             </div>
-            <div className={cn("space-y-3 p-4", single && "sm:p-6")}>
+            <div className={cn("space-y-3 p-3 sm:p-4", single && "sm:p-6")}>
               <div>
                 <h4 className="text-sm font-semibold leading-snug">{logo ? asset.tags.includes("logomark") ? "Logomark" : "Full logo" : asset.title}</h4>
                 {asset.type !== "background" && <p className="mt-1 text-xs leading-5 text-muted-foreground">{logo ? light ? "Light backgrounds" : "Dark backgrounds" : asset.description}</p>}
