@@ -1,5 +1,4 @@
 import { isEmployeeSectionVisible } from "./employee-launch";
-import { BACKGROUND_GRADIENT } from "./tokens";
 
 export type AssetType = "logo" | "font" | "token" | "background" | "social" | "template" | "icon";
 export type AssetFormat = "SVG" | "PNG" | "EPS" | "TTF" | "JSON" | "CSS" | "ZIP";
@@ -25,7 +24,7 @@ export type Asset = AssetRecord & { href: string | null; formats: AssetFormat[] 
 export const ASSET_CATEGORIES: { type: AssetType; label: string }[] = [
   { type: "logo", label: "Logo kit" },
   { type: "font", label: "Font kit" },
-  { type: "background", label: "Backgrounds" },
+  { type: "background", label: "Zoom backgrounds" },
   { type: "icon", label: "Icon examples" },
   { type: "token", label: "Design tokens" },
   { type: "social", label: "Social graphics" },
@@ -68,18 +67,46 @@ const RECORDS: AssetRecord[] = [
     files: [{ format: "ZIP", href: "/fonts/Figtree-font-kit.zip", label: "Font kit ZIP" }, { format: "TTF", href: "/fonts/Figtree-Regular.ttf", label: "Regular TTF" }],
   },
   {
-    id: "brand-gradient", title: "Cyan to Lemon gradient",
-    description: "Original 3840 × 2160 background artwork. Keep text on a clear, readable surface.",
-    type: "background", tags: ["gradient", "cyan", "lemon", "background", "brand", "16:9"],
-    preview: BACKGROUND_GRADIENT.image, previewBg: "light", section: "logo-gradients",
-    files: [{ format: "PNG", href: BACKGROUND_GRADIENT.image }],
+    id: "zoom-bg", title: "Office lounge",
+    description: "Green wall and glass meeting room.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "lounge", "green wall"],
+    preview: "/zoom-backgrounds/office-lounge.png", section: "downloads",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/office-lounge.png" }],
   },
   {
-    id: "zoom-bg", title: "Groovy Green Zoom background",
-    description: "Midnight canvas with the paired-circle gradient for video calls.",
-    type: "background", tags: ["zoom", "background", "circles", "video", "meeting", "calls"],
-    preview: "/midnight_bg.png", section: "logo-gradients",
-    files: [{ format: "PNG", href: "/midnight_bg.png" }],
+    id: "zoom-office-workspace", title: "Office workspace",
+    description: "Open office with a green wall and meeting pod.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "desks", "green wall"],
+    preview: "/zoom-backgrounds/office-workspace.png", section: "downloads",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/office-workspace.png" }],
+  },
+  {
+    id: "zoom-midnight-loop", title: "Midnight loop",
+    description: "Midnight with a Groovy Green loop in the upper right.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "loop", "rings"],
+    preview: "/zoom-backgrounds/midnight-loop.png", section: "downloads",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/midnight-loop.png" }],
+  },
+  {
+    id: "zoom-gradient", title: "Cyan to Lemon gradient",
+    description: "Bright brand gradient with a Midnight logo.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "gradient", "cyan", "lemon"],
+    preview: "/zoom-backgrounds/gradient.png", section: "downloads",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/gradient.png" }],
+  },
+  {
+    id: "zoom-midnight-glow", title: "Midnight glow",
+    description: "Midnight with a soft green and cyan glow.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "glow", "gradient"],
+    preview: "/zoom-backgrounds/midnight-glow.png", section: "downloads",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/midnight-glow.png" }],
+  },
+  {
+    id: "zoom-office-reception", title: "Office reception",
+    description: "Warm wood reception with a Midnight logo wall.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "reception", "wood"],
+    preview: "/zoom-backgrounds/office-reception.png", section: "downloads",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/office-reception.png" }],
   },
   {
     id: "icon-examples", title: "Brand icon examples",

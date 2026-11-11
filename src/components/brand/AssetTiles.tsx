@@ -5,17 +5,17 @@ import { cn } from "@/lib/utils";
 export function AssetTiles({ assets }: { assets: Asset[] }) {
   const single = assets.length === 1;
   return (
-    <div className={cn("grid gap-4", single ? "grid-cols-1" : assets.length === 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-2 md:grid-cols-4")}>
+    <div className={cn("grid gap-4", single ? "grid-cols-1" : assets.length === 2 ? "grid-cols-1 sm:grid-cols-2" : assets.every((asset) => asset.type === "background") ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-2 md:grid-cols-4")}>
       {assets.map((asset) => {
         const logo = asset.type === "logo";
         const light = asset.previewBg === "light";
         return (
           <article key={asset.id} id={assetAnchor(asset.id)} tabIndex={-1}
             className={cn("action-focus visual-container scroll-mt-24 overflow-hidden border border-border bg-white", single && "sm:grid sm:grid-cols-[minmax(180px,0.7fr)_1.3fr]")}>
-            <div className={cn("flex aspect-[16/10] items-center justify-center overflow-hidden", single && "sm:aspect-auto sm:min-h-48", light ? "border-b border-border bg-white" : "bg-og-midnight")}>
+            <div className={cn("flex items-center justify-center overflow-hidden", asset.type === "background" ? "aspect-video" : "aspect-[16/10]", single && "sm:aspect-auto sm:min-h-48", light ? "border-b border-border bg-white" : "bg-og-midnight")}>
               {asset.preview ? (
                 <img src={asset.preview} alt={asset.title} loading="lazy"
-                  className={cn(logo || asset.type === "icon" ? "max-h-[70%] w-[78%] object-contain" : "h-full w-full object-cover", logo && asset.tags.includes("logomark") && "w-auto max-w-[60%]")} />
+                  className={cn(logo || asset.type === "icon" ? "max-h-[70%] w-[78%] object-contain" : asset.type === "background" ? "h-full w-full object-contain" : "h-full w-full object-cover", logo && asset.tags.includes("logomark") && "w-auto max-w-[60%]")} />
               ) : (
                 <span className="text-6xl font-semibold tracking-tight text-og-midnight" aria-label="Figtree font preview">Aa</span>
               )}
