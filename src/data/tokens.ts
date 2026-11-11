@@ -40,8 +40,8 @@ export type SwatchGroup = {
 };
 
 export const CORE: SwatchGroup = {
-  title: "Core",
-  note: "Use #009A50 accents on light surfaces and #00FF85 on dark. Use Midnight for small text on light surfaces.",
+  title: "Primary",
+  note: "Use #009A50 accents on light surfaces and #00FF85 on dark.\nUse Midnight for small text on light surfaces.",
   swatches: [
     {
       name: "Midnight",

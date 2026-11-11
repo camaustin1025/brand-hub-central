@@ -62,7 +62,7 @@ const RECORDS: AssetRecord[] = [
   },
   {
     id: "font-kit", title: "Figtree font kit",
-    description: "Our brand typeface, with five static weights from Regular 400 to ExtraBold 800. The ZIP includes the font license.",
+    description: "Figtree in five static weights from Regular 400 to ExtraBold 800. The ZIP includes the font license.",
     type: "font", tags: ["font", "figtree", "typography", "typeface", "regular", "bold", "install"],
     preview: null, previewBg: "light", section: "typography",
     files: [{ format: "ZIP", href: "/fonts/Figtree-font-kit.zip", label: "Font kit ZIP" }, { format: "TTF", href: "/fonts/Figtree-Regular.ttf", label: "Regular TTF" }],

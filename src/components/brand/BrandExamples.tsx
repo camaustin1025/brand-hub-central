@@ -21,19 +21,13 @@ export function LogoExamples() {
   const lightLogo = findAssetFile("logo-light", "SVG")?.href ?? getAsset("logo-light").preview!;
   return (
     <div id="logo-examples" className="mt-10 scroll-mt-24">
-      <h3 className="text-xl font-bold">Match the logo to its background</h3>
-      <p className="mb-5 mt-2 text-sm leading-6">Each background has its own logo file.</p>
+      <h3 className="mb-5 text-xl font-bold">Match the logo to its background</h3>
+
       <div className="grid grid-cols-1 gap-5">
-        <Example good coloredIcons note="On Midnight, use the white wordmark with Groovy Green rings. On white, use the Midnight wordmark.">
+        <Example good coloredIcons note="White wordmark on Midnight; Midnight wordmark on white.">
           <div className="grid sm:grid-cols-2">
             <div className="flex h-24 items-center justify-center bg-og-midnight px-8"><img src={darkLogo} alt="Correct: white wordmark on Midnight" className="h-auto w-full max-w-80 object-contain" /></div>
             <div className="flex h-24 items-center justify-center bg-white px-8"><img src={lightLogo} alt="Correct: Midnight wordmark on white" className="h-auto w-full max-w-80 object-contain" /></div>
-          </div>
-        </Example>
-        <Example good={false} coloredIcons note="The wordmark disappears into the background. Switch to the other supplied file instead of recoloring the logo.">
-          <div className="grid sm:grid-cols-2">
-            <div className="flex h-24 items-center justify-center bg-white px-8"><img src={darkLogo} alt="Incorrect: white wordmark disappears on white" className="h-auto w-full max-w-80 object-contain" /></div>
-            <div className="flex h-24 items-center justify-center bg-og-midnight px-8"><img src={lightLogo} alt="Incorrect: Midnight wordmark disappears on Midnight" className="h-auto w-full max-w-80 object-contain" /></div>
           </div>
         </Example>
       </div>
@@ -44,16 +38,16 @@ export function LogoExamples() {
 export function ColorExamples() {
   return (
     <div id="color-examples" className="mt-10 scroll-mt-24">
-      <h3 className="text-xl font-bold">Keep the message readable</h3>
-      <p className="mb-5 mt-2 text-sm leading-6">An accent color and a text color have different jobs.</p>
+      <h3 className="mb-5 text-xl font-bold">Keep the message readable</h3>
+
       <div className="grid gap-5 sm:grid-cols-2">
-        <Example good note="Midnight carries small text on white. Groovy Green works on Midnight. Light-background green stays an accent.">
+        <Example good note="Midnight text on white; Groovy Green on Midnight. Light-background green is an accent.">
           <div className="space-y-4 p-5">
             <div className="flex min-h-20 items-center gap-3 rounded-md border border-border p-4 text-sm text-og-midnight"><span className="h-8 w-2 shrink-0 rounded-full bg-[#009A50]" aria-hidden="true" />Clear words. Consistent design.</div>
             <div className="flex min-h-20 items-center rounded-md bg-og-midnight p-4 text-sm text-[#00FF85]">Clear words. Consistent design.</div>
           </div>
         </Example>
-        <Example good={false} note="Neon green disappears on white. White labels on light-background green are also too low-contrast for small text.">
+        <Example good={false} note="Avoid neon green on white and small white text on green.">
           <div className="space-y-4 p-5" aria-label="Incorrect color combinations, shown for comparison">
             <div className="flex min-h-20 items-center rounded-md border border-border p-4 text-sm text-[#00FF85]">Clear words. Consistent design.</div>
             <div className="flex min-h-20 items-center rounded-md bg-[#009A50] p-4 text-sm text-white">Clear words. Consistent design.</div>
@@ -69,21 +63,21 @@ export function ColorExamples() {
 export function LayoutExample() {
   return (
     <div id="layout-example" className="mt-10 scroll-mt-24">
-      <h3 className="text-xl font-bold">Give each element a job</h3>
-      <p className="mb-5 mt-2 text-sm leading-6">Use type, spacing, and one accent to guide the reading order.</p>
+      <h3 className="mb-5 text-xl font-bold">Give each element a job</h3>
+
       <div className="grid gap-5 sm:grid-cols-2">
-        <Example good note="A clear heading, quieter supporting copy, and room between groups. The gradient adds one moment of color.">
+        <Example good note="Clear hierarchy, room between groups, one accent.">
           <div className="flex min-h-72 flex-col p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-og-midnight">Ordergroove Brand Hub</p>
             <p className="mt-4 max-w-[18ch] text-[28px] font-extrabold leading-[1.1] tracking-tight text-og-midnight">Make your work look and sound like Ordergroove</p>
-            <p className="mt-4 max-w-[34ch] text-sm leading-6 text-og-midnight">Approved logos, fonts, colors, and templates, plus the rules for using them</p>
+            <p className="mt-4 max-w-[34ch] text-sm leading-6 text-og-midnight">Brand assets and guidance</p>
             <img src={BACKGROUND_GRADIENT.image} alt="" className="mt-6 h-9 w-full rounded-md object-cover" />
           </div>
         </Example>
-        <Example good={false} note="Equal emphasis, cramped spacing, and a busy background make it harder to know what to read first.">
+        <Example good={false} note="Competing text and a busy background obscure the reading order.">
           <div className="flex min-h-72 items-center p-3" style={{ backgroundImage: `url(${BACKGROUND_GRADIENT.image})`, backgroundSize: "cover" }}>
             <div className="w-full text-center text-xl font-bold leading-tight text-og-midnight">
-              <p>ORDERGROOVE BRAND HUB</p><p>Make your work look and sound like Ordergroove</p><p>Approved logos, fonts, colors, and templates, plus the rules for using them</p>
+              <p>ORDERGROOVE BRAND HUB</p><p>Make your work look and sound like Ordergroove</p><p>Brand assets and guidance</p>
             </div>
           </div>
         </Example>

@@ -22,7 +22,7 @@ export function GradientDetails() {
         <div className="p-6">
           <h4 className="text-xl font-bold">{BACKGROUND_GRADIENT.name}</h4>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            The gradient behind the homepage search. Use the original PNG for backgrounds, or copy the CSS for web layouts.
+            Download the PNG for backgrounds or copy the CSS for web.
           </p>
           <dl className="mt-5 space-y-4">
             {BACKGROUND_GRADIENT.stops.map((stop) => (

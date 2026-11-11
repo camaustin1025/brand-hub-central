@@ -135,7 +135,7 @@ export function WorkingCanvasHero() {
         <h1 className={styles.title}>
           <span>Make your work look</span>{" "}<span>and sound like Ordergroove</span>
         </h1>
-        <p className={styles.subhead}>Approved logos, fonts, colors, and templates, plus the rules for using them</p>
+        <p className={styles.subhead}>Brand assets and guidance</p>
       </div>
 
       <div ref={artworkRef} className={styles.artwork} data-spotlight={spotlight ? "" : undefined} onPointerEnter={keepSpotlight} onPointerLeave={leaveArtwork} onBlur={(event) => {

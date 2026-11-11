@@ -60,7 +60,7 @@ const TYPE_HIERARCHY = [
     role: "Body",
     spec: "15px · Regular 400",
     note: "About four lines in display layouts",
-    sample: "Use clear, direct sentences. Keep the structure easy to follow and let evidence carry the message.",
+    sample: "Write clearly. Let evidence carry the message.",
     className: "measure text-[15px] leading-[1.65]",
   },
 ];
@@ -108,7 +108,7 @@ function FontKitRow({ asset }: { asset: Asset }) {
       className="action-focus visual-container mt-10 flex scroll-mt-24 flex-col gap-5 border border-border bg-white p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
       <span aria-hidden="true" className="grid size-16 shrink-0 place-items-center rounded-lg bg-og-midnight text-[34px] font-extrabold leading-none tracking-[-0.04em] text-og-green">Aa</span>
       <div className="min-w-0 flex-1">
-        <h3 id="font-kit-title" className="text-xl font-bold">Font kit</h3>
+        <h3 id="font-kit-title" className="text-xl font-bold">Download our font</h3>
         <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{asset.description}</p>
       </div>
       <AssetDownloads asset={asset} />
@@ -124,7 +124,6 @@ function HubHelp() {
       <div className="mx-auto flex max-w-[1060px] flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 id="hub-help-heading" className="text-2xl font-extrabold md:text-3xl">Can't find what you need?</h2>
-          <p className="measure mt-2 text-base leading-7 text-muted-foreground">Ask for a file, a rule, or a template that isn't here yet.</p>
         </div>
         <a href={MARKETING_CONTACT.url} target="_blank" rel="noopener noreferrer"
           className={cn(buttonVariants(), "shrink-0 self-start md:self-auto")}>
@@ -184,7 +183,7 @@ export default function BrandHub() {
           id="downloads"
           eyebrow="Grab-and-go"
           title="Logos & fonts"
-          intro="Original logo and font files. Download them here instead of copying from old decks or screenshots."
+          intro="Download original files, not screenshots or copies from old decks."
         >
           <h3 className="mb-5 text-xl font-bold">Logo kit</h3>
           <AssetTiles assets={availableAssets().filter((asset) => asset.type === "logo")} />
@@ -195,7 +194,7 @@ export default function BrandHub() {
           id="color"
           eyebrow="Visual identity"
           title="Color and gradients"
-          intro="Midnight, white, and Groovy Green lead. Secondary colors are accents only. Use one gradient per section, on the moment that matters most. Select any color to copy its hex."
+          intro="Midnight, white, and Groovy Green lead. Use one gradient per section. Select a color to copy its hex."
         >
           <ColorTiers />
           <div className="mt-10">
@@ -209,7 +208,6 @@ export default function BrandHub() {
           id="typography"
           eyebrow="Visual identity"
           title="Typography"
-          intro="One typeface in five weights. Use tight spacing for display text and open spacing for body copy."
         >
           {/* The family plate: the face on Midnight, every weight beside it. */}
           <div className="grid overflow-hidden rounded-lg border border-border bg-card md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
@@ -220,7 +218,7 @@ export default function BrandHub() {
               <div>
                 <h3 className="text-2xl">Figtree</h3>
                 <p className="mt-2 text-sm leading-6 tracking-[0.005em] text-white">
-                  Free from Google Fonts and available in Google Workspace. No substitute font needed.
+                  Available in Google Fonts and Google Workspace.
                 </p>
                 {fontKit && <a href={fontKit.href} download className={cn(buttonVariants(), "mt-6")}>
                   <Download size={16} aria-hidden="true" /> Download fonts
@@ -257,22 +255,18 @@ export default function BrandHub() {
           </div>
 
           <h3 className="mb-5 mt-12 text-2xl font-bold">Usage rules</h3>
-          <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          <div className="grid gap-x-8 gap-y-6 sm:grid-cols-3">
             <div>
-              <h4 className="text-base font-semibold">Style headlines as statements</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Drop the trailing period on headlines, titles, labels, and subtitles. Set titles in sentence case and eyebrow labels in ALL CAPS.</p>
+              <h4 className="text-base font-semibold">Sentence case, no trailing periods</h4>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use for headings, labels, and subtitles. Eyebrows stay ALL CAPS.</p>
             </div>
             <div>
               <h4 className="text-base font-semibold">Use Figtree only</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Never use Arial, Helvetica, Calibri, or Soleil, and check that nothing falls back to them.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Check for fallback fonts in exports.</p>
             </div>
             <div>
               <h4 className="text-base font-semibold">Keep display layouts simple</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Hold body copy to about four lines. Set secondary headlines in the same color as the primary.</p>
-            </div>
-            <div>
-              <h4 className="text-base font-semibold">Skip emoji</h4>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Keep emoji out of designed materials.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use tight headline spacing and open body spacing. Match primary and secondary headline colors. Skip emoji.</p>
             </div>
           </div>
           <LayoutExample />
@@ -282,7 +276,7 @@ export default function BrandHub() {
           id="logo"
           eyebrow="Visual identity"
           title="Logo"
-          intro="Use the primary logo whenever space allows."
+          intro="Use the full logo when space allows."
         >
           <LogoExamples />
           <h3 className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</h3>
@@ -292,26 +286,26 @@ export default function BrandHub() {
                 <div className={cn("flex h-64 items-center justify-center rounded-lg", asset.previewBg === "light" ? "border border-border bg-white" : "bg-og-midnight")}>
                   <img src={asset.preview!} alt={asset.title} className="h-full max-w-full object-contain" />
                 </div>
-                <figcaption className="mt-3 text-sm leading-6 text-muted-foreground">{asset.description}</figcaption>
+                <figcaption className="mt-3 text-sm leading-6 text-muted-foreground">{asset.previewBg === "light" ? "Light backgrounds" : "Dark backgrounds"}</figcaption>
               </figure>
             ))}
           </div>
           <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
               <h3 className="text-base font-semibold">Give it room</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Leave clear space on every side at least equal to the width of the interlocking-rings mark within the logo. Keep text, other graphics, and page edges outside that space.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Leave at least one logomark’s width of clear space on every side, including at page edges.</p>
             </div>
             <div>
               <h3 className="text-base font-semibold">Keep it readable</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Place it on a plain Midnight or white background. Check that it stays crisp at the size people will see it.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use plain Midnight or white backgrounds. Keep the logo crisp at its final size.</p>
             </div>
             <div>
               <h3 className="text-base font-semibold">Use the original file</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Do not stretch, crop, rotate, recolor, outline, or add shadows or effects. Download the artwork from Grab-and-go assets instead of taking a screenshot.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Don’t stretch, crop, rotate, recolor, outline, or add effects.</p>
             </div>
             <div>
               <h3 className="text-base font-semibold">Need another version?</h3>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Ask Marketing for a master file for large-format work or an approved single-color logo for print or other backgrounds.</p>
+              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Ask Marketing for large-format or single-color files.</p>
             </div>
           </div>
 
@@ -320,7 +314,6 @@ export default function BrandHub() {
         <HubSection
           id="icons"
           title="Icons"
-          intro="Three treatments for light and dark backgrounds."
         >
           <IconGuidance />
         </HubSection>

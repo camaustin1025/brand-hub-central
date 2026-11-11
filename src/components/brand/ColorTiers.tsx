@@ -138,7 +138,7 @@ export function ColorTierRow({ tier }: { tier: Tier }) {
     <div className="mt-9 first:mt-0">
       <div className="flex items-center gap-2 border-b border-border pb-2">
         <h3
-          id={slug(group.title)}
+          id={group === CORE ? "core" : slug(group.title)}
           className="scroll-mt-20 text-[15px] font-semibold leading-normal tracking-normal text-og-midnight"
         >
           {group.title}
@@ -155,7 +155,7 @@ export function ColorTierRow({ tier }: { tier: Tier }) {
         )}
       </div>
       {group.note && (
-        <p className="mt-2 max-w-[68ch] text-xs leading-snug text-og-midnight">{group.note}</p>
+        <p className="mt-2 max-w-[68ch] whitespace-pre-line text-xs leading-snug text-og-midnight">{group.note}</p>
       )}
       {/* 156px floor: the longest name, ELECTRIC EGGPLANT, sets 131px of
           12px bold caps, plus 20px of padding and the border. Any narrower and

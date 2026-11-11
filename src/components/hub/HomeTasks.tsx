@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 
 type Task = {
   label: string;
-  blurb: string;
   to: string;
   /** Staff-only destination, so guests don't get a door that sends them back here. */
   staffOnly?: boolean;
@@ -23,7 +22,6 @@ const ZOOM_PREVIEWS = ["office-lounge", "midnight-logo", "gradient"];
 const TASKS: Task[] = [
   {
     label: "Zoom backgrounds",
-    blurb: "Download one before your next call",
     to: ZOOM_BACKGROUNDS_PATH,
     staffOnly: true,
     preview: (
@@ -36,14 +34,12 @@ const TASKS: Task[] = [
   },
   {
     label: "LinkedIn graphics",
-    blurb: "Add your photo to a ready-made post",
     to: DESIGN_CANVAS_PATH,
     staffOnly: true,
     preview: <img src={SOCIAL_ASSETS["new-employee-split-dark-preview"]} alt="" loading="lazy" className="h-full w-full object-cover" />,
   },
   {
     label: "Words to use and avoid",
-    blurb: "Check a phrase before you publish",
     to: "/voice",
     wip: isWipSection("voice"),
     preview: (
@@ -55,7 +51,6 @@ const TASKS: Task[] = [
   },
   {
     label: "AI and Claude guidance",
-    blurb: "Skills, training, and what's safe to share",
     to: RESOURCE_PAGE_PATHS["ai-skills"],
     staffOnly: true,
     preview: (
@@ -98,7 +93,6 @@ export function HomeTasks({ className }: { className?: string }) {
                     {task.label}
                     {task.wip && <WipTag />}
                   </span>
-                  <span className="mt-1 block text-sm leading-5 text-og-midnight/75">{task.blurb}</span>
                 </span>
                 <ArrowRight size={16} aria-hidden="true" className="shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
               </span>
