@@ -26,7 +26,6 @@ export function AssetTiles({ assets }: { assets: Asset[] }) {
                 {asset.type !== "background" && <p className="mt-1 text-xs leading-5 text-muted-foreground">{logo ? light ? "Light backgrounds" : "Dark backgrounds" : asset.description}</p>}
               </div>
               <AssetDownloads asset={asset} />
-              {(logo || asset.type === "font") && <a href={`/#${asset.section}`} className="action-focus inline-flex min-h-11 items-center text-xs font-semibold underline underline-offset-4">Usage guide<span className="sr-only"> for {asset.title}</span></a>}
             </div>
           </article>
         );
