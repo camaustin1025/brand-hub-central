@@ -127,7 +127,7 @@ function HubHelp() {
           <p className="measure mt-2 text-base leading-7 text-muted-foreground">Ask for a file, a rule, or a template that isn't here yet.</p>
         </div>
         <a href={MARKETING_CONTACT.url} target="_blank" rel="noopener noreferrer"
-          className={cn(buttonVariants({ size: "lg" }), "shrink-0 self-start md:self-auto")}>
+          className={cn(buttonVariants(), "shrink-0 self-start md:self-auto")}>
           Ping {MARKETING_CONTACT.label} in Slack <ArrowUpRight size={16} aria-hidden="true" />
           <span className="sr-only"> (opens in a new tab)</span>
         </a>
@@ -218,7 +218,7 @@ export default function BrandHub() {
                 <p className="mt-2 text-sm leading-6 tracking-[0.005em] text-white">
                   Free from Google Fonts and available in Google Workspace. No substitute font needed.
                 </p>
-                {fontKit && <a href={fontKit.href} download className={cn(buttonVariants({ size: "lg" }), "mt-6")}>
+                {fontKit && <a href={fontKit.href} download className={cn(buttonVariants(), "mt-6")}>
                   <Download size={16} aria-hidden="true" /> Download fonts
                 </a>}
               </div>

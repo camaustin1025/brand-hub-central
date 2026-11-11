@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowDown, ArrowRight, Check, ChevronRight, Clock, Link2 } from "lucide-react";
 import { WipTag } from "@/components/brand/WorkInProgress";
+import { buttonVariants } from "@/components/ui/button";
 import { useCopyText } from "@/hooks/use-copy-text";
 import { cn } from "@/lib/utils";
 
@@ -94,8 +95,13 @@ export function ChapterHero({
   );
 }
 
-export const PRIMARY_ACTION =
-  "inline-flex min-h-11 items-center gap-2 rounded-md bg-og-green px-4 text-sm font-bold text-og-midnight transition-colors hover:bg-[#33FF9D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-og-midnight";
+const ON_MIDNIGHT_FOCUS = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-og-midnight";
+
+/** The hero's main action: a white pill on Midnight, inverting on hover. */
+export const PRIMARY_ACTION = cn(buttonVariants({ variant: "inverse" }), ON_MIDNIGHT_FOCUS);
+
+/** The hero's secondary action: the same pill, outlined. */
+const SECONDARY_ACTION = cn(buttonVariants(), "border-white/40 bg-transparent px-4 text-white hover:border-white hover:bg-white/10 hover:text-white dark:border-white/40", ON_MIDNIGHT_FOCUS);
 
 /**
  * Primary hero action: the one thing most visitors came for. `href` jumps within the page
@@ -124,7 +130,7 @@ export function CopyPageLinkButton() {
       <button
         type="button"
         onClick={copy}
-        className="inline-flex min-h-11 items-center gap-2 rounded-md border border-white/30 px-4 text-sm font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-og-midnight"
+        className={SECONDARY_ACTION}
       >
         {copied ? <Check size={16} aria-hidden="true" /> : <Link2 size={16} aria-hidden="true" />}
         {/* Short label so both hero actions share one row on a phone. */}

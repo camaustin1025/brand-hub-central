@@ -48,7 +48,7 @@ export default function DesignCanvas() {
                       <div className="flex-1">
                         <h3 className="text-lg font-bold">{template.title}</h3>
                       </div>
-                      <Link to={designCanvasTemplatePath(template.id)} className={cn(buttonVariants({ size: "sm" }), "mt-5 min-h-11 self-start")}>
+                      <Link to={designCanvasTemplatePath(template.id)} className={cn(buttonVariants(), "mt-5 self-start")}>
                         {draftTemplates.has(template.id) ? "Continue draft" : "Customize graphic"} <ArrowRight size={15} aria-hidden="true" />
                       </Link>
                     </div>

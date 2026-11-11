@@ -30,7 +30,7 @@ function svgDataUrl(svg: string) {
 function Toggle({ pressed, onClick, children }: { pressed: boolean; onClick: () => void; children: ReactNode }) {
   return (
     <button type="button" aria-pressed={pressed} onClick={onClick}
-      className={cn("action-focus inline-flex min-h-11 items-center gap-2 rounded-full border border-og-midnight px-4 py-2 text-sm font-semibold transition-colors", pressed ? "bg-og-midnight text-white" : "bg-white text-og-midnight hover:bg-og-gray-950")}>
+      className={cn("action-focus tap-target inline-flex h-8 items-center gap-1.5 rounded-full border border-og-midnight px-3 text-[13px] font-semibold transition-colors", pressed ? "bg-og-midnight text-white" : "bg-white text-og-midnight hover:bg-og-gray-950")}>
       {children}
     </button>
   );
@@ -192,7 +192,7 @@ export function IconLibrary() {
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold" aria-live="polite">{library ? summary : ""}</p>
-        <button type="button" onClick={downloadZip} disabled={!library || visibleCount === 0 || Boolean(zipProgress)} className={cn(buttonVariants(), "min-h-11")}>
+        <button type="button" onClick={downloadZip} disabled={!library || visibleCount === 0 || Boolean(zipProgress)} className={buttonVariants()}>
           {zipProgress ? <Loader2 aria-hidden="true" className="animate-spin" /> : <Download aria-hidden="true" />}
           {zipLabel}
         </button>
@@ -211,7 +211,7 @@ export function IconLibrary() {
         {loadError && (
           <div className="flex min-h-40 flex-col items-center justify-center gap-3 p-6 text-center text-sm">
             <p>The icon library didn't load. Check your connection and try again.</p>
-            <button type="button" onClick={() => setAttempt((value) => value + 1)} className={cn("min-h-11 rounded-full border px-4 font-semibold", dark ? "border-white" : "border-og-midnight")}>Try again</button>
+            <button type="button" onClick={() => setAttempt((value) => value + 1)} className={cn("h-10 rounded-full border px-5 text-sm font-semibold", dark ? "border-white" : "border-og-midnight")}>Try again</button>
           </div>
         )}
         {library && visibleCount === 0 && (

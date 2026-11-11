@@ -138,6 +138,12 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
+  /* Compact 32px buttons keep a 44px tap area on touch screens without looking bigger. */
+  @media (pointer: coarse) {
+    .tap-target { position: relative; }
+    .tap-target::after { content: ""; position: absolute; inset: -6px -2px; }
+  }
+
   /* ----------------------------------------------------------------- */
   /* Reading measure. Applies to the paragraph itself, never to a shared  */
   /* wrapper: display type reads correctly far wider than body copy, so a  */

@@ -216,7 +216,9 @@ Still to source: numeric minimum-size specs and a clean standalone-mark master. 
 
 **The green contrast rule (most-missed rule in the system):** light background → `#009A50` accents; dark background → `#00FF85`. Use Midnight for small text and links on light surfaces, and for labels on green buttons. White text on `#009A50` fails normal-text contrast. The supplied logo's `#00CC6A` rings are a logo-only exception, not a UI color.
 
-**Hub CTA buttons (approved 2026-10-26):** Midnight fill with white text, inverting to white fill with Midnight text on hover. Preserve the pill shape, a visible border, and a distinct keyboard-focus ring. Hero buttons, quick-reference shortcuts, downloads, toolkit actions, and sign-in share this treatment.
+**Hub buttons (approved 2026-11-11, replaces the 2026-10-26 rule):** Every button is a pill with a visible border and a distinct keyboard-focus ring, in two sizes only: 40px for the one main action on a surface, and 32px for repeated or in-card controls such as copy, filters, and row actions. On light surfaces the main action is Midnight fill with white text, inverting to white fill with Midnight text on hover. On Midnight it is a white pill that inverts to Midnight. Secondary actions use the same pill, outlined. Compact buttons keep a 44px tap area on touch screens without looking bigger.
+
+**Hub file downloads (approved 2026-11-11):** Files are links, not buttons: a download arrow and the format name (PNG, SVG, ZIP, TTF). On hover a Groovy Green `#00FF85` highlighter swipes in behind the Midnight label and the arrow dips toward the tray. The green is a fill behind Midnight text, the same pairing as a green button label, so it does not break the green contrast rule above. After the click a check replaces the arrow for a moment.
 
 **Secondary palette** (sparingly, decorative "pop" only, never leading/primary): Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Neon Carrot `#FF8500` · Radiant Radish `#D32E55` · Flamboyant Flamingo `#FF61D3` · Electric Eggplant `#8500FF`. Laser Lemon is never text on white.
 

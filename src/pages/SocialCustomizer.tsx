@@ -369,8 +369,8 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
         </nav>
         <div className="flex w-full items-center justify-end gap-2 sm:w-auto sm:gap-3">
           <p role="status" aria-live="polite" className="mr-auto text-xs text-muted-foreground sm:mr-1">{storageError ? "Not saved" : switching ? "Switching…" : status || saveStatus}</p>
-          <Button type="button" variant="outline" onClick={() => void saveVersion()} disabled={!canAct || !validGraphic || storageError} aria-describedby={storageError ? "social-storage-error" : undefined} className="min-h-11 bg-white px-4 text-og-midnight hover:bg-muted">Save version</Button>
-          <Button type="submit" form="social-editor-form" disabled={!canAct || !resources || !!templateError || unavailable || (shareSupported && validGraphic && !preparedPng)} className="min-h-11 px-4">
+          <Button type="button" variant="outline" onClick={() => void saveVersion()} disabled={!canAct || !validGraphic || storageError} aria-describedby={storageError ? "social-storage-error" : undefined}>Save version</Button>
+          <Button type="submit" form="social-editor-form" disabled={!canAct || !resources || !!templateError || unavailable || (shareSupported && validGraphic && !preparedPng)}>
             <Download size={16} aria-hidden="true" />{exporting ? "Preparing PNG…" : shareSupported ? "Save to Photos" : "Download PNG"}
           </Button>
         </div>
@@ -455,7 +455,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
               <p className="text-sm font-semibold">Photo</p>
               <div className="flex flex-wrap items-center gap-2">
                 {photo && <img src={photo.url} alt="Your photo" className="h-10 w-10 rounded-full object-cover" />}
-                <Button type="button" size="sm" variant="outline" onClick={() => fileRef.current?.click()} className="bg-white px-3 text-og-midnight hover:bg-muted">{photoBusy ? "Reading photo…" : photo ? "Replace" : "Add photo"}</Button>
+                <Button type="button" size="sm" variant="outline" onClick={() => fileRef.current?.click()}>{photoBusy ? "Reading photo…" : photo ? "Replace" : "Add photo"}</Button>
                 {photo && <Button type="button" variant="ghost" size="sm" className="px-2" onClick={removePhoto}>Remove</Button>}
               </div>
               <input ref={fileRef} type="file" accept="image/*,.heic,.heif" aria-label="Photo" hidden onChange={(event) => {

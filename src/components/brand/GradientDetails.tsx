@@ -1,9 +1,9 @@
-import { Check, Copy, Download } from "lucide-react";
+import { Check, Copy } from "lucide-react";
+import { DownloadLink } from "./DownloadLink";
 import { findAssetFile } from "@/data/assets";
 import { BACKGROUND_GRADIENT, BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
 import { useCopyText } from "@/hooks/use-copy-text";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export function GradientDetails() {
   const download = findAssetFile("brand-gradient", "PNG");
@@ -44,7 +44,7 @@ export function GradientDetails() {
       <div className="space-y-4 border-t border-border p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h4 className="text-sm font-semibold">Gradient CSS</h4>
-          <button type="button" onClick={copy} className={cn(buttonVariants({ size: "sm" }), "min-h-11")}>
+          <button type="button" onClick={copy} className={buttonVariants({ variant: "outline", size: "sm" })}>
             {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
             {copied ? "Copied" : "Copy CSS"}
           </button>
@@ -56,9 +56,7 @@ export function GradientDetails() {
           {error ? "Copy unavailable. Select the CSS above to copy manually." : copied ? "Gradient CSS copied" : ""}
         </p>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
-          {download && <a href={download.href} download className="action-focus inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4">
-            <Download size={15} aria-hidden="true" /> Download PNG
-          </a>}
+          {download && <DownloadLink href={download.href} label="Download the Cyan to Lemon gradient (PNG)">Download PNG</DownloadLink>}
         </div>
       </div>
     </div>

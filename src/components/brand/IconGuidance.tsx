@@ -21,7 +21,7 @@ function HexCopyBox({ name, hex, dark }: { name: string; hex: string; dark: bool
   return (
     <>
       <button type="button" onClick={copy} aria-label={`Copy ${name} hex ${hex}`} title={`Copy ${hex}`}
-        className={cn("action-focus inline-flex min-h-11 w-[108px] shrink-0 select-text items-center justify-center gap-1.5 rounded border px-2 font-mono text-[11px] font-normal tracking-normal transition-colors",
+        className={cn("action-focus tap-target inline-flex h-8 w-[108px] shrink-0 select-text items-center justify-center gap-1.5 rounded-full border px-2 font-mono text-[11px] font-normal tracking-normal transition-colors",
           dark ? "border-white/40 bg-white/5 text-white hover:bg-white/10 focus-visible:outline-white" : "border-og-midnight/50 bg-og-midnight/[0.03] text-og-midnight hover:bg-og-midnight/[0.07]")}>
         {copied ? <Check size={12} aria-hidden="true" className="shrink-0" /> : <Copy size={12} aria-hidden="true" className="shrink-0 opacity-60" />}
         {copied ? "Copied" : hex}
@@ -99,7 +99,7 @@ export function IconGuidance() {
   return (
     <div className="space-y-6">
       <div>
-        <Link to={ICON_LIBRARY_PATH} className={cn(buttonVariants(), "min-h-11")}>
+        <Link to={ICON_LIBRARY_PATH} className={buttonVariants()}>
           Browse all 293 icons <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>

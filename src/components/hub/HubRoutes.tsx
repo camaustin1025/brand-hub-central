@@ -9,6 +9,7 @@ import DesignCanvas from "@/pages/DesignCanvas";
 import IconLibraryPage from "@/pages/IconLibrary";
 import HeroLab from "@/pages/HeroLab";
 import LayoutLab from "@/pages/LayoutLab";
+import ButtonLab from "@/pages/ButtonLab";
 import ZoomBackgrounds from "@/pages/ZoomBackgrounds";
 import { employeeSectionId } from "@/data/employee-launch";
 import AdminGuests from "@/pages/AdminGuests";
@@ -76,6 +77,7 @@ export function HubRoutes() {
       {/* Design exploration only, not linked from navigation. */}
       <Route path="/hero-lab" element={<HeroLab />} />
       <Route path="/layout-lab" element={<LayoutLab />} />
+      <Route path="/button-lab" element={<ButtonLab />} />
       {LEGACY_ROUTES.map(([path, anchor]) => (
         <Route key={path} path={path} element={<Navigate to={`/#${employeeSectionId(anchor)}`} replace />} />
       ))}

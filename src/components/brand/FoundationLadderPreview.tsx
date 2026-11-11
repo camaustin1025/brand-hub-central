@@ -35,10 +35,10 @@ export function CopyButton({ value, label, tone = "light" }: { value: string; la
         onClick={copy}
         aria-label={`Copy ${label}`}
         className={cn(
-          "inline-flex min-h-11 shrink-0 items-center gap-1.5 self-start rounded-md border px-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:min-h-9",
+          "tap-target inline-flex h-8 shrink-0 items-center gap-1.5 self-start rounded-full border px-3 text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 [&_svg]:size-3.5",
           tone === "dark"
-            ? "border-white/35 text-white hover:border-white/70 hover:bg-white/10 focus-visible:ring-white focus-visible:ring-offset-og-midnight"
-            : "border-og-midnight/25 bg-white text-og-midnight hover:border-og-midnight/60 hover:bg-og-midnight/[0.04] focus-visible:ring-og-midnight focus-visible:ring-offset-white",
+            ? "border-white/40 text-white hover:border-white hover:bg-white/10 focus-visible:ring-white focus-visible:ring-offset-og-midnight"
+            : "border-og-midnight bg-white text-og-midnight hover:bg-og-midnight hover:text-white focus-visible:ring-og-midnight focus-visible:ring-offset-white",
         )}
       >
         {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}

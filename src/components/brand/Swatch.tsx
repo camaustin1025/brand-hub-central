@@ -18,7 +18,7 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
         style={{ backgroundColor: swatch.hex }}
       >
         <span className="flex h-full w-full items-end justify-end p-3">
-          <span className="inline-flex min-h-9 items-center gap-2 rounded-md bg-og-midnight px-3 py-2 text-xs font-semibold text-white transition-colors group-hover:bg-og-indigo">
+          <span className="inline-flex h-8 items-center gap-1.5 rounded-full bg-og-midnight px-3 text-xs font-semibold text-white transition-colors group-hover:bg-og-indigo">
             {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
             {copied ? "Copied" : "Copy hex"}
           </span>
