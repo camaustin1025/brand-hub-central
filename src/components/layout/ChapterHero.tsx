@@ -24,7 +24,9 @@ export function ChapterHero({
   wip,
   actions,
   children,
+  compact = false,
 }: {
+  compact?: boolean;
   crumbs: Crumb[];
   title: string;
   intro?: string;
@@ -37,7 +39,7 @@ export function ChapterHero({
 }) {
   const date = updated ? new Date(`${updated}T12:00:00`) : null;
   return (
-    <header className="dark bg-og-midnight px-6 pb-10 pt-8 text-white [container-type:inline-size] md:px-10 md:pb-12">
+    <header className={cn("dark bg-og-midnight px-6 text-white [container-type:inline-size] md:px-10", compact ? "py-7 md:py-8" : "pb-10 pt-8 md:pb-12")}>
       <div className="mx-auto max-w-[1060px]">
         <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 text-sm">
           <nav aria-label="Breadcrumb">
@@ -64,6 +66,8 @@ export function ChapterHero({
               })}
             </ol>
           </nav>
+          <div className="flex flex-col items-end gap-2">
+            <CopyPageLinkButton />
           {date && (
             <p className="inline-flex items-center gap-1.5 text-white">
               <Clock size={14} aria-hidden="true" />
@@ -71,6 +75,7 @@ export function ChapterHero({
               <time dateTime={updated}>{date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time>
             </p>
           )}
+          </div>
         </div>
 
         {/* The light page's WIP banner is Midnight, so inside the hero the same notice runs as a line. */}
@@ -81,10 +86,10 @@ export function ChapterHero({
           </p>
         )}
 
-        <div className="mt-10 flex flex-col gap-6 md:mt-12 [@container(min-width:56rem)]:flex-row [@container(min-width:56rem)]:items-end [@container(min-width:56rem)]:justify-between">
+        <div className={cn("flex flex-col gap-5 [@container(min-width:56rem)]:flex-row [@container(min-width:56rem)]:items-end [@container(min-width:56rem)]:justify-between", compact ? "mt-5" : "mt-10 md:mt-12")}>
           <div>
-            <h1 className="text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] text-white [@container(min-width:40rem)]:text-[56px]">{title}</h1>
-            {intro && <p className="measure mt-4 text-lg leading-[1.6] text-white">{intro}</p>}
+            <h1 className={cn("tracking-[-0.02em] text-white", compact ? "text-[32px] font-bold leading-tight md:text-4xl" : "text-[40px] font-extrabold leading-[1.02] [@container(min-width:40rem)]:text-[56px]")}>{title}</h1>
+            {intro && <p className={cn("measure text-white", compact ? "mt-2 text-base leading-7" : "mt-4 text-lg leading-[1.6]")}>{intro}</p>}
           </div>
           {actions && <div className="flex flex-wrap gap-3 [@container(min-width:56rem)]:shrink-0">{actions}</div>}
         </div>

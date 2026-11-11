@@ -343,3 +343,12 @@ Rules people must follow (what you can share with AI tools) sit in a Midnight bl
 - **Don't** end display or headline type with a period.
 - **Don't** use any typeface other than Figtree.
 - **Don't** ship placeholder or "Coming soon" surfaces; show real content or a WIP tag.
+
+
+## Shared reference pages (November 11, 2026 refinement)
+
+ChapterPage defaults to the compact ChapterHero: 32px title on phones and 36px on larger screens. Copy link lives in the top-right metadata column above the date. Optional primary task actions remain beside the title; Foundation has none. AI Resources uses the same compact ChapterHero. Changelog uses ChapterPage. New reference pages must reuse these components rather than authoring a custom header.
+
+Use `.reference-section-title` for major sections (24px/600/1.25) and `.reference-item-title` for items within them (18px/600/1.333). Reading copy is 16px regular; metadata is 14px. Foundation, Voice, LinkedIn graphics and Zoom setup reuse these roles. Directory group headings (18px), row titles (15px), icon category labels and editor controls retain their intentionally denser hierarchy. Homepage specimens and hero remain expressive brand examples; do not shrink them to reference-page typography.
+
+Keep reference surfaces white, flat, 8px rounded with hairlines. Avoid decorative nested cards and inert filter-like chips. Foundation keeps a single dark category specimen. These local refinement rules supersede the earlier large chapter-title default above; they do not change canonical brand specimen typography.

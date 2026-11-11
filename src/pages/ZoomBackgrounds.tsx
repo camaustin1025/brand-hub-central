@@ -99,11 +99,11 @@ export default function ZoomBackgrounds() {
         <AssetTiles assets={backgrounds} />
 
         <section aria-labelledby="zoom-setup-heading" className="mt-16">
-          <h2 id="zoom-setup-heading" className="text-2xl font-extrabold md:text-3xl">Set up your background</h2>
+          <h2 id="zoom-setup-heading" className="reference-section-title">Set up your background</h2>
           <div className="mt-8 grid gap-x-10 gap-y-8 md:grid-cols-3">
             {SETUP.map(({ app, steps }) => (
               <div key={app}>
-                <h3 className="text-base font-bold">{app}</h3>
+                <h3 className="reference-item-title">{app}</h3>
                 <ol className="mt-3 space-y-2.5 text-sm leading-6 text-muted-foreground">
                   {steps.map((step, index) => (
                     <li key={step} className="flex gap-3">
@@ -117,7 +117,7 @@ export default function ZoomBackgrounds() {
           </div>
 
           <div className="mt-10 border-t border-border pt-8">
-            <h3 className="text-base font-bold">Does the logo look backwards?</h3>
+            <h3 className="reference-item-title">Does the logo look backwards?</h3>
             <p className="measure mt-2 text-sm leading-6 text-muted-foreground">
               Most video apps mirror your own preview, so the logo reads backwards to you. Everyone else on the call sees it the right way round. In Zoom, turn off Mirror my video under Settings, then Video, to check.
             </p>

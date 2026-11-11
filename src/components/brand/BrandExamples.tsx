@@ -90,7 +90,7 @@ export function LayoutExample() {
 export function VoiceExample() {
   return (
     <div className="mt-12">
-      <h3 className="text-2xl font-bold">Put the rule into practice</h3>
+      <h2 className="reference-section-title">Put the rule into practice</h2>
       <p className="mb-5 mt-3 text-sm leading-6">Replace vague packaging language with a clear statement about adoption.</p>
       <div className="grid gap-5 sm:grid-cols-2">
         <Example good note="Direct, specific language. The reader knows what to expect."><p className="p-6 text-xl font-semibold leading-8 text-og-midnight">Ready on day one, no custom builds required.</p></Example>

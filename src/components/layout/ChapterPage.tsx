@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from "react";
-import { ChapterHero, CopyPageLinkButton, type Crumb } from "@/components/layout/ChapterHero";
+import { ChapterHero, type Crumb } from "@/components/layout/ChapterHero";
 import { HUB_NAV } from "@/data/hub";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +23,7 @@ function trailFor(navId: string | undefined, title: string): Crumb[] {
  */
 export function ChapterPage({
   navId,
+  compactHeader = true,
   title,
   intro,
   wip,
@@ -35,6 +36,7 @@ export function ChapterPage({
 }: {
   /** The page's sidebar id; drives the breadcrumb. */
   navId?: string;
+  compactHeader?: boolean;
   title: string;
   intro?: string;
   /** Pass isWipSection(<nav id>) so the notice follows the nav flag. */
@@ -63,17 +65,13 @@ export function ChapterPage({
   return (
     <>
       <ChapterHero
+        compact={compactHeader}
         crumbs={trailFor(navId, title)}
         title={title}
         intro={intro}
         updated={updated}
         wip={wip}
-        actions={
-          <>
-            <CopyPageLinkButton />
-            {primaryAction}
-          </>
-        }
+        actions={primaryAction}
       >
         {heroFooter}
       </ChapterHero>

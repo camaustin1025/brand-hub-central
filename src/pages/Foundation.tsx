@@ -1,6 +1,5 @@
 import { HubShell } from "@/components/hub/HubShell";
 import { FoundationLadderPreview } from "@/components/brand/FoundationLadderPreview";
-import { HeroAction } from "@/components/layout/ChapterHero";
 import { ChapterPage } from "@/components/layout/ChapterPage";
 import { OnThisPage } from "@/components/layout/OnThisPage";
 import { isWipSection } from "@/data/hub";
@@ -23,14 +22,14 @@ export default function Foundation() {
   return (
     <HubShell activeId="messaging">
       <ChapterPage
+        compactHeader
         navId="messaging"
         wip={isWipSection("messaging")}
         updated="2026-11-11"
         title="Foundation & Messaging"
         intro="The approved positioning, message ladder, ready-to-use lines, and ICPs. Start here before you write anything about Ordergroove."
-        primaryAction={<HeroAction href="#boilerplate">Get the boilerplate</HeroAction>}
-        heroFooter={<OnThisPage sections={SECTIONS} />}
       >
+        <div className="foundation-jumps mb-10 border-b border-border pb-5"><OnThisPage tone="light" sections={SECTIONS} /></div>
         <FoundationLadderPreview />
       </ChapterPage>
     </HubShell>

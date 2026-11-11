@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 /*
  * Layout preview for /foundation, built on the message ladder: the page's
  * sections are the ladder's rungs, in ladder order, then the audience.
- * Renders on /foundation (locally, uncommitted); /foundation-preview redirects there.
+ * Renders on /foundation; /foundation-preview redirects there.
  *
  * Each section is a designed module in the spirit of the Typography plate on
  * Home: the content demonstrates itself (the category set as a specimen, the
@@ -55,7 +55,7 @@ function SectionHead({ id, title, lede, badge }: { id: string; title: string; le
   return (
     <div>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <h2 id={id} className="text-[28px] font-bold leading-tight">{title}</h2>
+        <h2 id={id} className="reference-section-title">{title}</h2>
         {badge && <DraftBadge>{badge}</DraftBadge>}
       </div>
       {lede && <p className={cn("measure mt-3 leading-7", SOFT)}>{lede}</p>}
@@ -75,46 +75,13 @@ const RUNGS = [
 /** The ladder as the page's map: each rung shows its real words and jumps to its section. */
 function LadderStrip() {
   return (
-    <nav aria-label="Message ladder" className="overflow-hidden rounded-lg border border-border bg-white">
-      {/* 1px gaps over a border-colored ground draw the dividers for every column count: 1, 2, or 4. */}
-      <ol className="grid gap-px bg-border [@container(min-width:36rem)]:grid-cols-2 [@container(min-width:54rem)]:grid-cols-4">
-        {RUNGS.map((item, index) => {
-          const body = (
-            <>
-              <div className="flex items-center gap-3">
-                <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-primary bg-white text-sm font-extrabold tabular-nums text-og-midnight">
-                  {index + 1}
-                </span>
-                {/* Narrow: the rung name sits beside its circle to keep the stack short. */}
-                <span className={cn("text-sm font-semibold [@container(min-width:54rem)]:hidden", SOFT)}>{item.rung}</span>
-                {/* Wide: a rule runs from this circle toward the next rung, so the strip reads as one ladder. */}
-                {index < RUNGS.length - 1 && <span aria-hidden="true" className="hidden h-px flex-1 bg-primary/40 [@container(min-width:54rem)]:block" />}
-              </div>
-              <p className={cn("mt-3 hidden text-sm font-semibold [@container(min-width:54rem)]:block", SOFT)}>{item.rung}</p>
-              <ul className="mt-1 space-y-0.5 pl-11 text-[15px] font-bold leading-6 text-og-midnight [@container(min-width:54rem)]:mt-1.5 [@container(min-width:54rem)]:pl-0">
-                {item.words.map((word) => <li key={word}>{word}</li>)}
-              </ul>
-              {item.note && <p className={cn("mt-1 pl-11 text-sm leading-6 [@container(min-width:54rem)]:pl-0", SOFT)}>{item.note}</p>}
-            </>
-          );
-          return (
-            <li
-              key={item.rung}
-              className="relative bg-white"
-            >
-              {item.href ? (
-                <a href={item.href} className="group block h-full p-4 transition-colors hover:bg-og-midnight/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-og-midnight [@container(min-width:54rem)]:p-6">
-                  {body}
-                  <span className="mt-3 hidden text-sm font-semibold text-primary underline-offset-4 group-hover:underline [@container(min-width:54rem)]:inline-block">Jump to section</span>
-                </a>
-              ) : (
-                <div className="h-full p-4 [@container(min-width:54rem)]:p-6">{body}</div>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+    <div aria-label="Message ladder" className="foundation-ladder grid gap-0 overflow-hidden rounded-lg border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
+      {RUNGS.map((item) => <div key={item.rung} className="border-b border-border p-5 last:border-b-0">
+        <p className="text-sm font-semibold text-og-midnight/70">{item.rung}</p>
+        <ul className="mt-2 space-y-1 text-[15px] leading-6">{item.words.map((word) => <li key={word}>{word}</li>)}</ul>
+        {item.note && <p className="mt-2 text-sm leading-6 text-og-midnight/70">{item.note}</p>}
+      </div>)}
+    </div>
   );
 }
 
@@ -136,13 +103,13 @@ function CategoryPlate() {
           <CopyButton tone="dark" value="Autonomous Subscriptions" label="category name" />
         </div>
         <dl className="divide-y divide-border bg-white">
-          <div className="grid gap-2 p-6 md:px-8 [@container(min-width:30rem)]:grid-cols-[7rem_minmax(0,1fr)] [@container(min-width:30rem)]:gap-6">
+          <div className="grid gap-2 p-6 md:px-8">
             <dt className={cn("pt-0.5 text-sm font-semibold", SOFT)}>Definition</dt>
-            <dd className="text-lg font-semibold leading-snug tracking-tight text-og-midnight">
+            <dd className="measure text-base leading-7 text-og-midnight">
               Subscription infrastructure that runs itself. Built for every channel, trained on the largest enterprise subscription network, and able to test and grow faster than any team could alone.
             </dd>
           </div>
-          <div className="grid gap-2 p-6 md:px-8 [@container(min-width:30rem)]:grid-cols-[7rem_minmax(0,1fr)] [@container(min-width:30rem)]:gap-6">
+          <div className="grid gap-2 p-6 md:px-8">
             <dt className={cn("pt-0.5 text-sm font-semibold", SOFT)}>Lead with</dt>
             <dd className="leading-7">The category and the outcome. The technology supports.</dd>
           </div>
@@ -167,9 +134,9 @@ const BOILERPLATE =
   "Ordergroove is the enterprise standard for subscriptions and recurring revenue in the autonomous commerce era. Agent-friendly by architecture and trained on the largest subscription data set in enterprise commerce, Ordergroove powers the world’s most iconic brands, including L’Oréal, PetSmart, Keurig, Manscaped, Liquid I.V., Mattel, and Fiji Water. Across every channel, from storefront to retail to the next AI interface, Ordergroove turns one-time buyers into lasting relationships. Learn more at ordergroove.com.";
 
 const SAY_IT = [
-  { id: "pitch-10", name: "10-second pitch", use: "Event intros and booth conversations", draft: true, paragraphs: [PITCH_10], size: "text-xl font-semibold leading-snug tracking-tight md:text-[22px]" },
-  { id: "pitch-30", name: "30-second pitch", use: "Calls, meetings, and panels", draft: true, paragraphs: PITCH_30, size: "text-lg leading-[1.6]" },
-  { id: "boilerplate", name: "Company boilerplate", use: "Press releases, event listings, and speaker bios", draft: false, paragraphs: [BOILERPLATE], size: "text-base leading-7" },
+  { id: "pitch-10", name: "10-second pitch", use: "Event intros and booth conversations", paragraphs: [PITCH_10], size: "text-base leading-7" },
+  { id: "pitch-30", name: "30-second pitch", use: "Calls, meetings, and panels", paragraphs: PITCH_30, size: "text-base leading-7" },
+  { id: "boilerplate", name: "Company boilerplate", use: "Press releases, event listings, and speaker bios", paragraphs: [BOILERPLATE], size: "text-base leading-7" },
 ];
 
 /** Twin of the Web hierarchy table: spec on the left, the words at their real length on the right. */
@@ -182,16 +149,15 @@ function SayItShelf() {
           <li key={item.id} id={item.id} className="scroll-mt-24 grid gap-5 border-b border-border p-6 last:border-b-0 md:p-8 [@container(min-width:44rem)]:grid-cols-[13rem_minmax(0,1fr)] [@container(min-width:44rem)]:gap-10">
             <div className="flex flex-col gap-3">
               <div>
-                <h3 className="text-base font-bold leading-6">{item.name}</h3>
+                <h3 className="reference-item-title">{item.name}</h3>
                 <p className={cn("mt-1 text-sm leading-6", SOFT)}>{item.use}</p>
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <CopyButton value={item.paragraphs.join("\n\n")} label={item.name} />
-                {item.draft ? <DraftBadge>Draft</DraftBadge> : <span className="text-xs font-semibold text-primary">Approved</span>}
               </div>
             </div>
             <div className={cn("measure space-y-3 text-og-midnight", item.size)}>
-              {item.paragraphs.map((paragraph) => <p key={paragraph}>{item.id === "pitch-10" ? <>Ordergroove is the subscription platform that <strong>helps you grow autonomously</strong>. Built for every channel, trained on the largest enterprise subscription network, and always testing, so results never wait on your team.</> : paragraph}</p>)}
+              {item.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             </div>
           </li>
         ))}
@@ -237,7 +203,7 @@ function RightsTable() {
                   {/* The ol already numbers the rows for screen readers. 24px keeps #009A50 above 3:1. */}
                   <span aria-hidden="true" className="w-6 shrink-0 text-2xl font-extrabold leading-7 tabular-nums text-primary">{item.n}</span>
                   <div>
-                    <h3 className="text-lg font-bold leading-7">{item.title}</h3>
+                    <h3 className="reference-item-title">{item.title}</h3>
                     <p className="mt-1 text-[15px] font-semibold leading-6 text-og-midnight">{item.tagline}</p>
                   </div>
                 </div>
@@ -265,20 +231,20 @@ function ProductStack() {
     <section id="products" aria-labelledby="products-title" className="scroll-mt-24">
       <SectionHead id="products-title" title="Products" lede="Talk about the platform in layers, not as a feature list." badge="Check against marketecture slide" />
       <ol className="mt-6 overflow-hidden rounded-lg border border-border">
-        <li className="grid gap-1 bg-og-midnight p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-baseline [@container(min-width:40rem)]:gap-8">
-          <h3 className="text-[22px] font-bold leading-tight text-white">Agents</h3>
-          <p className="text-lg font-semibold text-og-green">The autonomous layer</p>
+        <li className="grid gap-1 bg-white border-b border-border p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-baseline [@container(min-width:40rem)]:gap-8">
+          <h3 className="reference-item-title text-og-midnight">Agents</h3>
+          <p className="text-base text-og-midnight">The autonomous layer</p>
         </li>
         {/* Midnight, then gray 300 (#4F4A6A, 8:1 with white), then white: a clear step down per layer. */}
-        <li className="grid gap-1 bg-og-gray-300 p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-baseline [@container(min-width:40rem)]:gap-8">
-          <h3 className="text-[22px] font-bold leading-tight text-white">Workflows</h3>
-          <p className="text-lg font-semibold text-white/85">Orchestration</p>
+        <li className="grid gap-1 bg-white border-b border-border p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-baseline [@container(min-width:40rem)]:gap-8">
+          <h3 className="reference-item-title text-og-midnight">Workflows</h3>
+          <p className="text-base text-og-midnight">Orchestration</p>
         </li>
         <li className="grid gap-3 bg-white p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-center [@container(min-width:40rem)]:gap-8">
-          <h3 className="text-[22px] font-bold leading-tight text-og-midnight">Open Platform</h3>
-          <ul className="flex flex-wrap gap-2" aria-label="Open Platform components">
+          <h3 className="reference-item-title text-og-midnight">Open Platform</h3>
+          <ul className="space-y-1.5" aria-label="Open Platform components">
             {["GraphQL API", "Ordergroove MCP server"].map((part) => (
-              <li key={part} className="rounded-md border border-og-midnight/25 px-3 py-1.5 text-[15px] font-semibold text-og-midnight">{part}</li>
+              <li key={part} className="text-base leading-7 text-og-midnight">{part}</li>
             ))}
           </ul>
         </li>
@@ -357,11 +323,11 @@ const ICPS: Icp[] = [
   },
 ];
 
-/* Tier color is carried by the tag, the card's top edge, and icons; text stays Midnight on every tint. */
+/* Tier labels share the same neutral treatment; the written tier carries priority. */
 const ICP_TONE: Record<IcpTone, { card: string; tag: string; dot: string }> = {
-  primary: { card: "bg-white border-t-[3px] border-t-primary", tag: "bg-primary/10", dot: "bg-primary" },
+  primary: { card: "bg-white", tag: "bg-og-midnight/[0.06]", dot: "bg-og-midnight/50" },
   selective: { card: "bg-white", tag: "bg-og-midnight/[0.06]", dot: "bg-og-midnight/50" },
-  opportunistic: { card: "bg-[#FAFAFC]", tag: "bg-og-radish/10", dot: "bg-og-radish" },
+  opportunistic: { card: "bg-white", tag: "bg-og-midnight/[0.06]", dot: "bg-og-midnight/50" },
 };
 
 const FOOTER_ICON = {
@@ -376,14 +342,14 @@ const FOOTER_ICON = {
  */
 function IcpCards() {
   return (
-    <ol className="mt-6 grid gap-4 [@container(min-width:44rem)]:grid-cols-2">
+    <ol className="foundation-icps mt-6 divide-y divide-border overflow-hidden rounded-lg border border-border bg-white">
       {ICPS.map((icp) => {
         const tone = ICP_TONE[icp.tone];
         const footer = icp.footer ? FOOTER_ICON[icp.footer.icon] : null;
         // Strategic value trends up; a fit rule targets; the ICP 4 rule blocks.
         const CalloutIcon = icp.callout.tone === "rule" ? Ban : icp.callout.label === "Fit rule" ? Target : TrendingUp;
         return (
-          <li key={icp.n} className={cn("flex flex-col rounded-lg border border-border p-6", tone.card)}>
+          <li key={icp.n} className={cn("flex flex-col p-6 md:p-8", tone.card)}>
             <div className="flex min-h-7 flex-wrap items-center justify-between gap-x-3 gap-y-2">
               <span className={cn("inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs font-bold text-og-midnight", tone.tag)}>
                 <span aria-hidden="true" className={cn("h-1.5 w-1.5 rounded-full", tone.dot)} />
@@ -391,7 +357,7 @@ function IcpCards() {
               </span>
               {icp.share && <span className="text-sm font-semibold text-primary">{icp.share}</span>}
             </div>
-            <h3 className={cn("mt-4 text-[22px] font-bold leading-tight", icp.tone === "opportunistic" && "text-og-midnight/80")}>{icp.name}</h3>
+            <h3 className={cn("mt-4 reference-item-title", icp.tone === "opportunistic" && "text-og-midnight/80")}>{icp.name}</h3>
             <p className={cn("mt-1.5 leading-7", SOFT)}>{icp.description}</p>
             <dl className="mt-5 divide-y divide-border border-y border-border">
               {icp.rows.map((row) => (
@@ -402,7 +368,7 @@ function IcpCards() {
                 </div>
               ))}
             </dl>
-            <div className={cn("mt-4 flex gap-3 rounded-md px-4 py-3", icp.callout.tone === "rule" ? "bg-og-radish/[0.08]" : "bg-primary/[0.08]")}>
+            <div className="mt-5 flex gap-3 border-t border-border pt-4">
               <CalloutIcon size={18} aria-hidden="true" className={cn("mt-0.5 shrink-0", icp.callout.tone === "rule" ? "text-og-radish" : "text-primary")} />
               <div>
                 <p className={cn("text-xs font-bold", SOFT)}>{icp.callout.label}</p>
@@ -411,7 +377,7 @@ function IcpCards() {
             </div>
             {icp.footer && footer && (
               <div className="mt-auto pt-4">
-                <p className="flex items-start gap-2.5 rounded-md bg-og-midnight/[0.04] px-3.5 py-2.5 text-sm leading-6 text-og-midnight">
+                <p className="flex items-start gap-2.5 text-sm leading-6 text-og-midnight/70">
                   <footer.Icon size={17} aria-hidden="true" className={cn("mt-[3px] shrink-0", footer.color)} />
                   <span><span className="font-bold">{icp.footer.label}:</span> {icp.footer.text}</span>
                 </p>
@@ -452,7 +418,7 @@ const GROUPS = [
 function BuyingGroups() {
   return (
     <div className="mt-12">
-      <h3 className="text-xl font-bold">Buying groups</h3>
+      <h3 className="reference-item-title">Buying groups</h3>
       <p className={cn("measure mt-2 leading-7", SOFT)}>Across these segments, we sell to two buying groups.</p>
       <div className="mt-5 grid overflow-hidden rounded-lg border border-border bg-white [@container(min-width:44rem)]:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:44rem)]:grid-rows-[auto_auto_auto]">
         <div aria-hidden="true" className={cn("hidden text-sm font-semibold [@container(min-width:44rem)]:row-span-3 [@container(min-width:44rem)]:grid [@container(min-width:44rem)]:grid-rows-subgrid", SOFT)}>
@@ -462,8 +428,8 @@ function BuyingGroups() {
         </div>
         {GROUPS.map((group) => (
           <section key={group.name} aria-label={group.name} className="border-t border-border first-of-type:border-t-0 [@container(min-width:44rem)]:row-span-3 [@container(min-width:44rem)]:grid [@container(min-width:44rem)]:grid-rows-subgrid [@container(min-width:44rem)]:border-l [@container(min-width:44rem)]:border-t-0">
-            <h4 className="flex items-center gap-3 border-b border-border px-6 py-4 text-lg font-bold" style={{ backgroundColor: group.color.tint }}>
-              <TintedIcon name={group.icon} color={group.color} size={40} />
+            <h4 className="flex items-center gap-3 border-b border-border px-6 py-4 text-lg font-semibold">
+              <TintedIcon name={group.icon} color={group.color} size={24} />
               {group.name}
             </h4>
             <div className="border-b border-border px-6 py-5">
@@ -474,9 +440,9 @@ function BuyingGroups() {
             </div>
             <div className="px-6 py-5">
               <p className={cn("mb-2 text-sm font-semibold [@container(min-width:44rem)]:sr-only", SOFT)}>Cares about</p>
-              <ul className="flex flex-wrap gap-2">
+              <ul className="space-y-1.5">
                 {group.cares.map((item) => (
-                  <li key={item} className="rounded-md px-2.5 py-1 text-[15px] font-semibold text-og-midnight" style={{ backgroundColor: group.color.tint }}>{item}</li>
+                  <li key={item} className="text-base leading-6 text-og-midnight">{item}</li>
                 ))}
               </ul>
             </div>
@@ -506,9 +472,9 @@ function WhoWeServe() {
 
 export function FoundationLadderPreview() {
   return (
-    <div className="flex flex-col gap-16 [--measure:60ch] [container-type:inline-size] md:gap-20">
-      <LadderStrip />
+    <div className="foundation-reference flex flex-col gap-12 [container-type:inline-size]">
       <CategoryPlate />
+      <LadderStrip />
       <SayItShelf />
       <RightsTable />
       <ProductStack />

@@ -64,7 +64,7 @@ export default function NewEmployeeResources() {
         primaryAction={<HeroAction href="#announce">Announce your new role</HeroAction>}
       >
         <section id="announce" aria-labelledby="announce-heading" className="scroll-mt-24">
-          <h2 id="announce-heading" className="text-2xl font-extrabold md:text-3xl">Announce your new role</h2>
+          <h2 id="announce-heading" className="reference-section-title">Announce your new role</h2>
           <p className="measure mt-3 leading-7 text-muted-foreground">
             Pick a design, add your photo and job title, then download a PNG to post on LinkedIn.
           </p>
@@ -81,7 +81,7 @@ export default function NewEmployeeResources() {
                   />
                 )}
                 <div className="flex flex-1 flex-col p-6">
-                  <h3 className="flex-1 text-lg font-bold">{template.title}</h3>
+                  <h3 className="flex-1 reference-item-title">{template.title}</h3>
                   <Link to={designCanvasTemplatePath(template.id)} className={cn(buttonVariants(), "mt-5 self-start")}>
                     Customize graphic <ArrowRight size={15} aria-hidden="true" />
                   </Link>
@@ -92,13 +92,13 @@ export default function NewEmployeeResources() {
         </section>
 
         <section aria-labelledby="first-week-heading" className="mt-16">
-          <h2 id="first-week-heading" className="text-2xl font-extrabold md:text-3xl">Your first week</h2>
+          <h2 id="first-week-heading" className="reference-section-title">Your first week</h2>
           <ol className="mt-8 divide-y divide-border overflow-hidden rounded-lg border border-border bg-white">
             {FIRST_WEEK.map((step, index) => (
               <li key={step.title} className="grid gap-4 p-6 md:grid-cols-[32px_minmax(0,1fr)_auto] md:items-center md:gap-6">
                 <span aria-hidden="true" className="grid size-8 place-items-center rounded-full bg-og-midnight text-sm font-bold tabular-nums text-white">{index + 1}</span>
                 <div>
-                  <h3 className="text-base font-bold">{step.title}</h3>
+                  <h3 className="reference-item-title">{step.title}</h3>
                   <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{step.body}</p>
                 </div>
                 <Link to={step.to} className="action-focus inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold underline underline-offset-4">
