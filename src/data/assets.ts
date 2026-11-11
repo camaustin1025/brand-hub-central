@@ -89,11 +89,11 @@ const RECORDS: AssetRecord[] = [
     files: [{ format: "PNG", href: "/zoom-backgrounds/office-workspace.png" }],
   },
   {
-    id: "zoom-midnight-loop", title: "Midnight loop",
-    description: "Midnight with a Groovy Green loop in the upper right.",
-    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "loop", "rings"],
-    preview: "/zoom-backgrounds/midnight-loop.png", section: "downloads",
-    files: [{ format: "PNG", href: "/zoom-backgrounds/midnight-loop.png" }],
+    id: "zoom-midnight-loop", title: "Midnight",
+    description: "Plain Midnight with the Ordergroove logo in the upper left.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "plain", "logo"],
+    preview: "/zoom-backgrounds/midnight-logo.png", section: "downloads",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/midnight-logo.png" }],
   },
   {
     id: "zoom-gradient", title: "Cyan to Lemon gradient",
