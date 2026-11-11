@@ -155,10 +155,10 @@ function CategoryPlate() {
 /* ------------------------------------------------------------ 3. say it */
 
 const PITCH_10 =
-  "Ordergroove is the subscription platform that grows itself. Built for every channel, trained on the largest enterprise subscription network, and always testing, so results never wait on your team.";
+  "Ordergroove is the subscription platform that helps you grow autonomously. Built for every channel, trained on the largest enterprise subscription network, and always testing, so results never wait on your team.";
 
 const PITCH_30 = [
-  "Ordergroove is the subscription platform that grows itself.",
+  "Ordergroove is the subscription platform that helps you grow autonomously.",
   "Most brands launch subscriptions strong and then stall. They’re stuck on one channel, they run on guesswork, and every improvement waits in a dev queue.",
   "Ordergroove works across every channel, online, in-store, or LLMs. It learns from the largest enterprise subscription network, and it’s always testing. So your subscriber base keeps compounding, and results never wait on your team.",
 ];
@@ -191,7 +191,7 @@ function SayItShelf() {
               </div>
             </div>
             <div className={cn("measure space-y-3 text-og-midnight", item.size)}>
-              {item.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              {item.paragraphs.map((paragraph) => <p key={paragraph}>{item.id === "pitch-10" ? <>Ordergroove is the subscription platform that <strong>helps you grow autonomously</strong>. Built for every channel, trained on the largest enterprise subscription network, and always testing, so results never wait on your team.</> : paragraph}</p>)}
             </div>
           </li>
         ))}

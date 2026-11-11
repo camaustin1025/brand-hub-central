@@ -78,7 +78,12 @@ export function Sidebar({
               <ul className="ml-3 mt-1.5 space-y-0.5 border-l border-og-midnight/10 pl-2">
                 {group.items.map((item) => (
                   <li key={item.id}>
-                    {item.path ? (
+                    {item.disabled ? (
+                      <span aria-disabled="true" className={cn(NAV_ITEM_CLASS, "flex items-center gap-2 text-og-midnight/55 cursor-default")}>
+                        <span className="flex-1">{item.label}</span>
+                        {item.wip && <WipTag />}
+                      </span>
+                    ) : item.path ? (
                       <Link
                         to={item.path}
                         onClick={onClose}

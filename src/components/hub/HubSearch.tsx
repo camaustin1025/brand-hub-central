@@ -1,3 +1,4 @@
+import { useAccess } from "@/hooks/use-access";
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
@@ -13,7 +14,8 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
   const resultRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const navigate = useNavigate();
   const id = useId();
-  const results = useMemo(() => searchHub(query), [query]);
+  const access = useAccess();
+  const results = useMemo(() => searchHub(query).filter((item) => access !== "guest" || !["/employee-resources", "/team-culture", "/new-employee-resources"].includes(item.path ?? "")), [query, access]);
   const open = focused && query.trim().length > 0;
 
   useEffect(() => {

@@ -187,7 +187,9 @@ html[data-guest] a[href^="/design-canvas"],
 html[data-guest] a[href^="/icon-library"],
 html[data-guest] a[href^="/zoom-backgrounds"],
 html[data-guest] a[href^="/ai-resources"],
-html[data-guest] a[href^="/ai-skills"] {
+html[data-guest] a[href^="/ai-skills"],
+html[data-guest] section[aria-labelledby="nav-employee-resources"] {
+
   display: none !important;
 }
 

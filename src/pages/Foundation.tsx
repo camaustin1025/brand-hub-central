@@ -25,7 +25,7 @@ export default function Foundation() {
       <ChapterPage
         navId="messaging"
         wip={isWipSection("messaging")}
-        updated="2026-11-10"
+        updated="2026-11-11"
         title="Foundation & Messaging"
         intro="The approved positioning, message ladder, ready-to-use lines, and ICPs. Start here before you write anything about Ordergroove."
         primaryAction={<HeroAction href="#boilerplate">Get the boilerplate</HeroAction>}

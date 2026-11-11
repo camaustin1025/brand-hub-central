@@ -11,6 +11,8 @@ export type HubNavItem = {
   path?: string;
   /** Still being written: tagged WIP in the nav, in search, and at the top of the section. */
   wip?: boolean;
+  /** Visible announcement only; no navigation or search result until released. */
+  disabled?: boolean;
 };
 
 export type HubNavGroup = {
@@ -166,10 +168,35 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         description: "Claude skills, training, Slack channels, and what you can share with AI tools.",
         keywords: "ai claude skills slides presentations prompt guidance resources security guidelines pii training claude 101 slack og-ai mcp connectors salesforce gong plugins",
       },
+    ],
+  },
+  {
+    label: "Working at OG",
+    items: [
+      {
+        id: "employee-resources",
+        wip: true,
+        disabled: true,
+        path: "/employee-resources",
+        label: "Employee resources",
+        description: "People tools, benefits, time off, learning and growth.",
+        keywords: "rippling benefits payroll holidays time off learning growth reviews training insperity",
+      },
+      {
+        id: "team-culture",
+        wip: true,
+        disabled: true,
+        path: "/team-culture",
+        label: "Team & culture",
+        description: "Meet your teammates and find company updates and community resources.",
+        keywords: "team culture people directory org chart community recognition values all hands",
+      },
       {
         id: NEW_EMPLOYEE_NAV_ID,
+        wip: true,
+        disabled: true,
         path: NEW_EMPLOYEE_PATH,
-        label: "New employee resources",
+        label: "New employees",
         description: "Your first-week brand kit: announce your new role, set up calls, and learn how we sound.",
         keywords: "new employee new hire onboarding first week start joined linkedin announcement zoom background welcome",
       },

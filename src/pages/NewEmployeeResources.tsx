@@ -59,7 +59,7 @@ export default function NewEmployeeResources() {
         navId={NEW_EMPLOYEE_NAV_ID}
         wip={isWipSection(NEW_EMPLOYEE_NAV_ID)}
         updated="2026-11-11"
-        title="New employee resources"
+        title="New employees"
         intro="Welcome to Ordergroove. Start here to announce your new role, set up your calls, and learn how we look and sound."
         primaryAction={<HeroAction href="#announce">Announce your new role</HeroAction>}
       >

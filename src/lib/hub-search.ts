@@ -29,7 +29,7 @@ function assetPath(asset: Asset): string | undefined {
 }
 
 export const HUB_SEARCH_ITEMS: HubSearchItem[] = [
-  ...HUB_NAV.flatMap((group) => group.items).filter((item) => !ASSET_PAGE_IDS.includes(item.id)).map((item) => ({ ...item, kind: "Guide" as const })),
+  ...HUB_NAV.flatMap((group) => group.items).filter((item) => !item.disabled && !ASSET_PAGE_IDS.includes(item.id)).map((item) => ({ ...item, kind: "Guide" as const })),
   ICON_LIBRARY_ITEM,
   ...(ZOOM_ITEM ? [{ ...ZOOM_ITEM, kind: "Asset" as const }] : []),
   ...availableAssets().map((asset) => ({
