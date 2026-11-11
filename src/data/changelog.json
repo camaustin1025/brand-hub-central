@@ -1,5 +1,24 @@
 [
   {
+    "date": "2026-11-10",
+    "changes": [
+      "Replace Midnight loop background with logo-only version",
+      "Enlarge logo previews and keep mobile format buttons together",
+      "Remove remaining grab-and-go usage guide links",
+      "Simplify Zoom cards and trim usage guide links",
+      "Fix homepage startup after Zoom background replacement",
+      "Replace backgrounds with six Zoom backgrounds",
+      "Refine AI resource typography and hierarchy",
+      "Compact AI resource rows and add pagination and mobile filters",
+      "Turn AI resources into a searchable directory with platform icons",
+      "Distill AI resources: one Start here, fewer tags, boxes, and arrows",
+      "Rebuild AI resources from the Nov 10 compile, and add on-this-page links",
+      "Rebuild Foundation on the message ladder and add a chapter hero",
+      "Add ICP overview and approved company boilerplate",
+      "Rework Foundation & Messaging copy, layout, and line lengths"
+    ]
+  },
+  {
     "date": "2026-11-05",
     "changes": [
       "Combine light and dark icon panels into one stacked table",
