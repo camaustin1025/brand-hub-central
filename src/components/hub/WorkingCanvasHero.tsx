@@ -138,19 +138,6 @@ export function WorkingCanvasHero() {
         <p className={styles.subhead}>Approved logos, fonts, colors, and templates, plus the rules for using them</p>
       </div>
 
-      {/* Search first: it is the fastest path to every rule and file on the hub. */}
-      <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
-        <h2 className={styles.searchTitle}>Find what you need</h2>
-        <div className={styles.searchBox}><SearchBox hero /></div>
-        <div className={styles.samples}>
-          <button className="action-focus" onClick={() => jumpTo("color")}>Which green goes on white? <ArrowRight size={16} /></button>
-          <button className="action-focus" onClick={() => jumpTo(assetAnchor("logo-dark"))}>Which logo goes on dark backgrounds? <ArrowRight size={16} /></button>
-          <button className="action-focus" onClick={() => jumpTo(assetAnchor("font-kit"))}>Where do I get Figtree? <ArrowRight size={16} /></button>
-        </div>
-      </section>
-
-      <HomeTasks className={styles.tasks} />
-
       <div ref={artworkRef} className={styles.artwork} data-spotlight={spotlight ? "" : undefined} onPointerEnter={keepSpotlight} onPointerLeave={leaveArtwork} onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) clearSpotlight();
       }} onKeyDown={(event) => { if (event.key === "Escape") clearSpotlight(); }}>
@@ -182,6 +169,18 @@ export function WorkingCanvasHero() {
         <button type="button" onClick={() => guidance(spotlight.id)}>Guidance <ArrowRight size={14} /></button>
       </div>}
       </div>
+
+      <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
+        <h2 className={styles.searchTitle}>Find what you need</h2>
+        <div className={styles.searchBox}><SearchBox hero /></div>
+        <div className={styles.samples}>
+          <button className="action-focus" onClick={() => jumpTo("color")}>Which green goes on white? <ArrowRight size={16} /></button>
+          <button className="action-focus" onClick={() => jumpTo(assetAnchor("logo-dark"))}>Which logo goes on dark backgrounds? <ArrowRight size={16} /></button>
+          <button className="action-focus" onClick={() => jumpTo(assetAnchor("font-kit"))}>Where do I get Figtree? <ArrowRight size={16} /></button>
+        </div>
+      </section>
+
+      <HomeTasks className={styles.tasks} />
 
       <Dialog.Root open={selected !== null} onOpenChange={(open) => { if (!open) setSelected(null); }}>
         <Dialog.Portal>

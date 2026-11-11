@@ -12,7 +12,7 @@
 .subhead { max-width: 740px; margin: 26px auto 0; color: #17132f; font-size: 18px; line-height: 1.4; }
 .tasks { padding: 28px max(24px, calc((100% - 1060px) / 2)) 0; }
 
-.artwork { position: relative; width: 100%; max-width: 1100px; margin: 44px auto 0; }
+.artwork { position: relative; width: 100%; max-width: 1100px; margin: 32px auto 0; }
 .worktable { height: 280px; position: relative; overflow: clip; user-select: none; background: #fff; }
 .worktable img { pointer-events: none; }
 .worktable button { cursor: pointer; }
@@ -48,7 +48,7 @@
 .palette i:nth-child(5) { background: #ff61d3; }
 .palette:hover, .palette:focus-visible { z-index: 2; outline: 2px solid #17132f; outline-offset: 4px; }
 
-.searchDock { position: relative; margin-top: 36px; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)) 27px; }
+.searchDock { position: relative; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)) 27px; }
 .searchTitle { margin-bottom: 16px; font-size: 22px; font-weight: 700; }
 /* Style only this use of the existing SearchBox; masthead/mobile search stay intact. */
 .searchBox > div > svg { left: 25px; width: 28px; height: 28px; color: #17132f; stroke-width: 1.8; }
@@ -105,7 +105,7 @@
   .title span { display: inline; }
   .subhead { font-size: 17px; line-height: 1.45; max-width: 348px; margin-top: 20px; }
   .tasks { padding: 20px 16px 0; }
-  .artwork { margin-top: 28px; }
+  .artwork { margin-top: 22px; }
   .worktable { height: 350px; }
   .logoCard { left: 24px; top: 34px; width: 190px; height: 90px; padding: 18px; }
   .gradient { left: auto; right: 26px; top: 151px; width: 140px; }
@@ -118,7 +118,7 @@
   .heartIcon { left: auto; right: 102px; top: 90px; }
   .chartIcon { right: 45px; top: 293px; }
   .palette { left: 31px; top: 122px; width: 160px; height: 44px; padding-block: 15px; transform: rotate(-9deg); }
-  .searchDock { margin-top: 28px; padding: 22px 16px 23px; }
+  .searchDock { padding: 22px 16px 23px; }
   .searchBox > div > svg { left: 15px; width: 22px; height: 22px; }
   .searchBox input { height: 56px; padding: 0 64px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
   /* WIP tag: same inset as the search icon on the left. */
