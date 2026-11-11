@@ -94,7 +94,7 @@ export function ChapterHero({
   );
 }
 
-const PRIMARY_ACTION =
+export const PRIMARY_ACTION =
   "inline-flex min-h-11 items-center gap-2 rounded-md bg-og-green px-4 text-sm font-bold text-og-midnight transition-colors hover:bg-[#33FF9D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-og-midnight";
 
 /**

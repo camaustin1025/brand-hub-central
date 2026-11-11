@@ -1,5 +1,5 @@
-import { availableAssets, assetAnchor } from "../data/assets";
-import { designCanvasTemplatePath, HUB_NAV, ICON_LIBRARY_NAV_ID, ICON_LIBRARY_PATH, isWipSection, type HubNavItem } from "../data/hub";
+import { availableAssets, assetAnchor, HOME_TILE_TYPES, type Asset } from "../data/assets";
+import { designCanvasTemplatePath, HUB_NAV, ICON_LIBRARY_NAV_ID, ICON_LIBRARY_PATH, isWipSection, sectionPagePath, ZOOM_BACKGROUNDS_NAV_ID, type HubNavItem } from "../data/hub";
 import { ICON_ALIASES, ICON_CATEGORY_NAMES, ICON_COUNT } from "../data/icon-library";
 import { publishedSocialTemplates } from "../data/social-templates";
 
@@ -14,12 +14,28 @@ const ICON_LIBRARY_ITEM: HubSearchItem = {
   kind: "Asset", wip: isWipSection(ICON_LIBRARY_NAV_ID),
 };
 
+// Download pages are listed once, as assets, not also as guides.
+const ASSET_PAGE_IDS: string[] = [ICON_LIBRARY_NAV_ID, ZOOM_BACKGROUNDS_NAV_ID];
+const ZOOM_ITEM = HUB_NAV.flatMap((group) => group.items).find((item) => item.id === ZOOM_BACKGROUNDS_NAV_ID);
+
+/**
+ * Where an asset result opens: its tile on a standalone page (Zoom backgrounds), its tile
+ * in the homepage Logos & fonts block, or else the homepage section that explains it.
+ */
+function assetPath(asset: Asset): string | undefined {
+  const page = sectionPagePath(asset.section);
+  if (page) return page + "#" + assetAnchor(asset.id);
+  return HOME_TILE_TYPES.includes(asset.type) ? undefined : "/#" + asset.section;
+}
+
 export const HUB_SEARCH_ITEMS: HubSearchItem[] = [
-  ...HUB_NAV.flatMap((group) => group.items).filter((item) => item.id !== ICON_LIBRARY_NAV_ID).map((item) => ({ ...item, kind: "Guide" as const })),
+  ...HUB_NAV.flatMap((group) => group.items).filter((item) => !ASSET_PAGE_IDS.includes(item.id)).map((item) => ({ ...item, kind: "Guide" as const })),
   ICON_LIBRARY_ITEM,
+  ...(ZOOM_ITEM ? [{ ...ZOOM_ITEM, kind: "Asset" as const }] : []),
   ...availableAssets().map((asset) => ({
     id: assetAnchor(asset.id), label: asset.title, description: asset.description,
     keywords: [...asset.tags, ...asset.formats, asset.type, "download", ...(["logo", "background"].includes(asset.type) ? ["backgrounds"] : [])].join(" "),
+    path: assetPath(asset),
     kind: "Asset" as const, wip: isWipSection(asset.section),
   })),
   ...publishedSocialTemplates().map((template) => ({

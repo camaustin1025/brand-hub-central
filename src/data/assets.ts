@@ -78,42 +78,42 @@ const RECORDS: AssetRecord[] = [
     id: "zoom-bg", title: "Office lounge",
     description: "Green wall and glass meeting room.",
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "lounge", "green wall"],
-    preview: "/zoom-backgrounds/office-lounge.png", section: "downloads",
+    preview: "/zoom-backgrounds/previews/office-lounge.jpg", section: "zoom-backgrounds",
     files: [{ format: "PNG", href: "/zoom-backgrounds/office-lounge.png" }],
   },
   {
     id: "zoom-office-workspace", title: "Office workspace",
     description: "Open office with a green wall and meeting pod.",
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "desks", "green wall"],
-    preview: "/zoom-backgrounds/office-workspace.png", section: "downloads",
+    preview: "/zoom-backgrounds/previews/office-workspace.jpg", section: "zoom-backgrounds",
     files: [{ format: "PNG", href: "/zoom-backgrounds/office-workspace.png" }],
   },
   {
     id: "zoom-midnight-loop", title: "Midnight",
     description: "Plain Midnight with the Ordergroove logo in the upper left.",
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "plain", "logo"],
-    preview: "/zoom-backgrounds/midnight-logo.png", section: "downloads",
+    preview: "/zoom-backgrounds/previews/midnight-logo.jpg", section: "zoom-backgrounds",
     files: [{ format: "PNG", href: "/zoom-backgrounds/midnight-logo.png" }],
   },
   {
     id: "zoom-gradient", title: "Cyan to Lemon gradient",
     description: "Bright brand gradient with a Midnight logo.",
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "gradient", "cyan", "lemon"],
-    preview: "/zoom-backgrounds/gradient.png", section: "downloads",
+    preview: "/zoom-backgrounds/previews/gradient.jpg", section: "zoom-backgrounds",
     files: [{ format: "PNG", href: "/zoom-backgrounds/gradient.png" }],
   },
   {
     id: "zoom-midnight-glow", title: "Midnight glow",
     description: "Midnight with a soft green and cyan glow.",
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "glow", "gradient"],
-    preview: "/zoom-backgrounds/midnight-glow.png", section: "downloads",
+    preview: "/zoom-backgrounds/previews/midnight-glow.jpg", section: "zoom-backgrounds",
     files: [{ format: "PNG", href: "/zoom-backgrounds/midnight-glow.png" }],
   },
   {
     id: "zoom-office-reception", title: "Office reception",
     description: "Warm wood reception with a Midnight logo wall.",
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "reception", "wood"],
-    preview: "/zoom-backgrounds/office-reception.png", section: "downloads",
+    preview: "/zoom-backgrounds/previews/office-reception.jpg", section: "zoom-backgrounds",
     files: [{ format: "PNG", href: "/zoom-backgrounds/office-reception.png" }],
   },
   {
@@ -146,6 +146,9 @@ export function isAssetAvailable(asset: Asset) {
 }
 
 export function availableAssets() { return ASSETS.filter(isAssetAvailable); }
+
+/** Asset types shown as tiles in the homepage Logos & fonts block. */
+export const HOME_TILE_TYPES: AssetType[] = ["logo", "font"];
 export function assetAnchor(id: string) { return "asset-" + id; }
 
 export function getAsset(id: string): Asset {

@@ -174,11 +174,12 @@
   }
 }
 
-/* Guests are view-only: hide download controls and links to the staff-only pages (Design canvas, icon library, AI resources). */
+/* Guests are view-only: hide download controls and links to the staff-only pages (LinkedIn graphics, icon library, Zoom backgrounds, AI resources). */
 html[data-guest] a[download],
 html[data-guest] [data-download],
 html[data-guest] a[href^="/design-canvas"],
 html[data-guest] a[href^="/icon-library"],
+html[data-guest] a[href^="/zoom-backgrounds"],
 html[data-guest] a[href^="/ai-resources"],
 html[data-guest] a[href^="/ai-skills"] {
   display: none !important;

@@ -13,15 +13,15 @@ for (const value of ["/", "/design-canvas/new-hire", "/voice?find=two%20words#ru
 for (const value of [undefined, null, "", "https://evil.example", "https://hub.example/voice", "//evil.example", "///evil.example", "\\evil.example", "/\\evil.example", "/%5cevil.example", "/%2f%2fevil.example", "/.%2f/evil.example", "/x/..//evil.example", "/bad%", "/%00", "/\n/evil.example"]) assert.equal(safeReturnPath(value, origin), "/", String(value));
 console.log("PASS: internal return paths and adversarial redirect inputs");
 
-const canvasGroup = HUB_NAV.find((group) => group.label === "Design canvas");
-assert.deepEqual(canvasGroup?.items.map((item) => [item.label, item.path]), [["Design canvas", "/design-canvas"]]);
-assert.equal(canvasGroup?.linkTitle, true);
+const grabGroup = HUB_NAV.find((group) => group.label === "Grab-and-go");
+assert.deepEqual(grabGroup?.items.filter((item) => item.path === DESIGN_CANVAS_PATH).map((item) => item.label), ["LinkedIn graphics"]);
+assert.equal(HUB_NAV.flatMap((group) => group.items).filter((item) => item.path === DESIGN_CANVAS_PATH).length, 1);
 assert.equal(HUB_NAV.flatMap((group) => group.items).filter((item) => item.path?.startsWith("/toolkit")).length, 0);
 assert.equal(new Set(HUB_NAV.flatMap((group) => group.items).map((item) => item.id)).size, HUB_NAV.flatMap((group) => group.items).length);
 assert.equal(RESOURCE_PAGE_PATHS.toolkit, DESIGN_CANVAS_PATH);
 assert.equal(designCanvasTemplatePath("event-lets-meet"), "/design-canvas/event-lets-meet");
 assert.equal(designCanvasCategoryId(" Event  Attendance! "), "event-attendance");
-console.log("PASS: Design canvas nav is one link to the page, and toolkit anchors point to it");
+console.log("PASS: LinkedIn graphics is one Grab-and-go link to the Design canvas page, and toolkit anchors point to it");
 
 const fixture = () => structuredClone(SOCIAL_TEMPLATE_FIXTURE);
 assert.deepEqual(validateSocialTemplates([fixture()], SOCIAL_ASSETS, true), []);

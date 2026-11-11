@@ -35,7 +35,7 @@ export default function DesignCanvas() {
   }, [requestedId]);
   return (
     <HubShell activeId={DESIGN_CANVAS_NAV_ID}>
-      <ChapterPage navId={DESIGN_CANVAS_NAV_ID} updated="2026-10-29" title="Design canvas" intro="Pick a design, add your photo and details, then download a PNG for LinkedIn.">
+      <ChapterPage navId={DESIGN_CANVAS_NAV_ID} updated="2026-10-29" title="LinkedIn graphics" intro="Pick a design, add your photo and details, then download a PNG for LinkedIn.">
         <div className="space-y-12">
           {DESIGN_CANVAS_CATEGORIES.map(({ id, category, templates: entries }) => (
             <section key={id} id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-24">

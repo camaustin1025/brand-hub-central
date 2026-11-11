@@ -3,18 +3,16 @@
   color: #17132f;
   scroll-margin-top: 80px;
   container-type: inline-size;
+  padding-bottom: 28px;
 }
 
-.intro { padding: 58px 40px 0; text-align: center; }
-.eyebrow { margin: 0 0 22px; color: #17132f; font-size: 14px; font-weight: 500; line-height: normal; }
+.intro { padding: 52px 40px 0; text-align: center; }
 .title { max-width: 890px; margin: 0 auto; font-size: 52px; font-weight: 800; letter-spacing: -2.35px; line-height: 1.06; text-wrap: initial; }
 .title span { display: block; }
 .subhead { max-width: 740px; margin: 26px auto 0; color: #17132f; font-size: 18px; line-height: 1.4; }
-.actions { display: flex; justify-content: center; gap: 14px; margin-top: 30px; }
-.actions .action { height: auto; min-height: 58px; padding: 0 37px; border-width: 1.5px; border-radius: 32px; font-size: 16px; font-weight: 700; }
-.action:last-child { min-width: 226px; }
+.tasks { padding: 28px max(24px, calc((100% - 1060px) / 2)) 0; }
 
-.artwork { position: relative; width: 100%; max-width: 1100px; margin: 21px auto 0; }
+.artwork { position: relative; width: 100%; max-width: 1100px; margin: 44px auto 0; }
 .worktable { height: 280px; position: relative; overflow: clip; user-select: none; background: #fff; }
 .worktable img { pointer-events: none; }
 .worktable button { cursor: pointer; }
@@ -50,7 +48,7 @@
 .palette i:nth-child(5) { background: #ff61d3; }
 .palette:hover, .palette:focus-visible { z-index: 2; outline: 2px solid #17132f; outline-offset: 4px; }
 
-.searchDock { position: relative; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)) 27px; }
+.searchDock { position: relative; margin-top: 36px; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)) 27px; }
 .searchTitle { margin-bottom: 16px; font-size: 22px; font-weight: 700; }
 /* Style only this use of the existing SearchBox; masthead/mobile search stay intact. */
 .searchBox > div > svg { left: 25px; width: 28px; height: 28px; color: #17132f; stroke-width: 1.8; }
@@ -87,12 +85,6 @@
 .dialogContent { position: fixed; z-index: 61; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(380px, calc(100% - 32px)); }
 .dialogClose { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 8px; }
 
-@media (min-width: 768px) {
-  @container (max-width: 1240px) {
-    .artwork { margin-top: 64px; }
-  }
-}
-
 /* Preserve the specimens' proportions in the narrower content column beside the sidebar. */
 @media (min-width: 768px) and (max-width: 1279px) {
   .logoCard { left: 4%; width: 200px; height: 96px; padding: 16px; }
@@ -108,15 +100,12 @@
 }
 
 @media (max-width: 767px) {
-  .intro { padding: 38px 20px 0; }
-  .eyebrow { font-size: 15px; margin-bottom: 16px; }
+  .intro { padding: 34px 20px 0; }
   .title { font-size: 38px; line-height: 1.08; letter-spacing: -1.25px; max-width: 350px; }
   .title span { display: inline; }
   .subhead { font-size: 17px; line-height: 1.45; max-width: 348px; margin-top: 20px; }
-  .actions { flex-direction: column; gap: 12px; margin-top: 26px; }
-  .actions .action { min-height: 54px; width: 100%; font-size: 17px; padding: 0 16px; }
-  .action:last-child { min-width: 0; }
-  .artwork { margin-top: 22px; }
+  .tasks { padding: 20px 16px 0; }
+  .artwork { margin-top: 28px; }
   .worktable { height: 350px; }
   .logoCard { left: 24px; top: 34px; width: 190px; height: 90px; padding: 18px; }
   .gradient { left: auto; right: 26px; top: 151px; width: 140px; }
@@ -129,7 +118,7 @@
   .heartIcon { left: auto; right: 102px; top: 90px; }
   .chartIcon { right: 45px; top: 293px; }
   .palette { left: 31px; top: 122px; width: 160px; height: 44px; padding-block: 15px; transform: rotate(-9deg); }
-  .searchDock { padding: 22px 16px 23px; }
+  .searchDock { margin-top: 28px; padding: 22px 16px 23px; }
   .searchBox > div > svg { left: 15px; width: 22px; height: 22px; }
   .searchBox input { height: 56px; padding: 0 64px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
   /* WIP tag: same inset as the search icon on the left. */

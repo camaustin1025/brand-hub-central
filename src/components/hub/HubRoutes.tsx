@@ -9,10 +9,12 @@ import DesignCanvas from "@/pages/DesignCanvas";
 import IconLibraryPage from "@/pages/IconLibrary";
 import HeroLab from "@/pages/HeroLab";
 import LayoutLab from "@/pages/LayoutLab";
+import ZoomBackgrounds from "@/pages/ZoomBackgrounds";
 import { employeeSectionId } from "@/data/employee-launch";
 import AdminGuests from "@/pages/AdminGuests";
 import { useAccess } from "@/hooks/use-access";
-import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, ICON_LIBRARY_PATH, RESOURCE_PAGE_PATHS } from "@/data/hub";
+import { ASSETS, assetAnchor } from "@/data/assets";
+import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, ICON_LIBRARY_PATH, RESOURCE_PAGE_PATHS, sectionPagePath, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
 
 const SocialCustomizer = lazy(() => import("@/pages/SocialCustomizer"));
 
@@ -23,10 +25,18 @@ const LEGACY_ROUTES: [string, string][] = [
   ["/tokens", "tokens"],
 ];
 
+/** Old homepage anchors for assets that now live on their own page (Zoom backgrounds). */
+function movedAssetPage(hash: string) {
+  const asset = ASSETS.find((entry) => hash === `#${assetAnchor(entry.id)}`);
+  return asset && sectionPagePath(asset.section);
+}
+
 function HomeRoute() {
   const { hash, search } = useLocation();
   const movedPage = Object.entries(RESOURCE_PAGE_PATHS).find(([id]) => hash === `#${id}`)?.[1];
-  return movedPage ? <Navigate to={{ pathname: movedPage, search }} replace /> : <BrandHub />;
+  if (movedPage) return <Navigate to={{ pathname: movedPage, search }} replace />;
+  const assetPage = movedAssetPage(hash);
+  return assetPage ? <Navigate to={{ pathname: assetPage, search, hash }} replace /> : <BrandHub />;
 }
 
 /** Editor links from before the toolkit became Design canvas. */
@@ -54,6 +64,8 @@ export function HubRoutes() {
         </Suspense>
       } />}
       {!isGuest && <Route path={ICON_LIBRARY_PATH} element={<IconLibraryPage />} />}
+      {/* Downloads only, and guests can't download, so staff-only like the icon library. */}
+      {!isGuest && <Route path={ZOOM_BACKGROUNDS_PATH} element={<ZoomBackgrounds />} />}
       <Route path="/toolkit" element={<Navigate to={DESIGN_CANVAS_PATH} replace />} />
       <Route path="/toolkit/social/:templateId" element={<ToolkitGraphicRoute />} />
       {/* Internal links (Slack, Confluence, security policy), so staff-only like Design canvas. */}

@@ -361,7 +361,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
     <HubShell activeId={DESIGN_CANVAS_NAV_ID} focused>
       <div className="sticky top-16 z-30 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-border bg-white px-4 py-3 lg:px-6">
         <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-          <Link to={DESIGN_CANVAS_PATH} className="action-focus text-muted-foreground hover:underline">Design canvas</Link>
+          <Link to={DESIGN_CANVAS_PATH} className="action-focus text-muted-foreground hover:underline">LinkedIn graphics</Link>
           <span aria-hidden="true" className="text-og-midnight/30">/</span>
           <Link to={`${DESIGN_CANVAS_PATH}#${designCanvasCategoryId(definition.category)}`} className="action-focus text-muted-foreground hover:underline">{definition.category}</Link>
           <span aria-hidden="true" className="text-og-midnight/30">/</span>

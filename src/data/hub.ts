@@ -40,28 +40,55 @@ export const DESIGN_CANVAS_CATEGORIES = [...publishedSocialTemplates().reduce((g
 export const ICON_LIBRARY_PATH = "/icon-library";
 export const ICON_LIBRARY_NAV_ID = "icon-library";
 
+export const ZOOM_BACKGROUNDS_PATH = "/zoom-backgrounds";
+export const ZOOM_BACKGROUNDS_NAV_ID = "zoom-backgrounds";
+
 /** Standalone resources, also used to redirect the former homepage anchors. The toolkit became Design canvas. */
 export const RESOURCE_PAGE_PATHS = {
   toolkit: DESIGN_CANVAS_PATH,
   "ai-skills": "/ai-resources",
   [ICON_LIBRARY_NAV_ID]: ICON_LIBRARY_PATH,
+  [ZOOM_BACKGROUNDS_NAV_ID]: ZOOM_BACKGROUNDS_PATH,
 } as const;
 
+/** The standalone page that holds a section's assets, if the section moved off the homepage. */
+export function sectionPagePath(section: string): string | undefined {
+  return (RESOURCE_PAGE_PATHS as Record<string, string>)[section];
+}
+
+// The homepage itself is reached from the masthead logo and every breadcrumb, so it has no nav item.
 const DRAFT_HUB_NAV: HubNavGroup[] = [
   {
-    label: "Start here",
+    label: "Grab-and-go",
     items: [
       {
-        id: "overview",
-        label: "Overview",
-        description: "The fastest path to the right rule or resource.",
-        keywords: "home intro start brand hub",
+        id: "downloads",
+        label: "Logos & fonts",
+        description: "The logo kit and the Figtree font kit.",
+        keywords: "assets files logo logomark wordmark font figtree typeface download kit",
       },
       {
-        id: "downloads",
-        label: "Downloads",
-        description: "Available logos, fonts, Zoom backgrounds, and icon examples.",
-        keywords: "assets files png logo logomark background download zoom",
+        // Search lists this page once, as an asset (see hub-search.ts).
+        id: ZOOM_BACKGROUNDS_NAV_ID,
+        path: ZOOM_BACKGROUNDS_PATH,
+        label: "Zoom backgrounds",
+        description: "Six backgrounds for video calls, with setup steps for Zoom, Google Meet, and Teams.",
+        keywords: "zoom backgrounds background video call meeting virtual teams google meet download",
+      },
+      {
+        // Search lists this page once, as an asset (see hub-search.ts).
+        id: ICON_LIBRARY_NAV_ID,
+        path: ICON_LIBRARY_PATH,
+        label: "Icon library",
+        description: "Every brand icon as PNG or SVG, in each icon color and treatment.",
+        keywords: "icon library download png svg zip",
+      },
+      {
+        id: DESIGN_CANVAS_NAV_ID,
+        path: DESIGN_CANVAS_PATH,
+        label: "LinkedIn graphics",
+        description: `Add your photo and details to a ready-made LinkedIn graphic: ${DESIGN_CANVAS_CATEGORIES.flatMap(({ templates }) => templates.map((template) => template.title)).join(", ")}.`,
+        keywords: `linkedin graphics design canvas social graphic customize photo toolkit template ${DESIGN_CANVAS_CATEGORIES.map(({ category }) => category.toLowerCase()).join(" ")}`,
       },
     ],
   },
@@ -91,28 +118,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         label: "Icons",
         description: "Material Symbols Rounded, icon colors, and tile treatments.",
         keywords: "icons iconography material symbols rounded plain tinted solid figma teal",
-      },
-      {
-        // Search lists this page once, as an asset (see hub-search.ts).
-        id: ICON_LIBRARY_NAV_ID,
-        path: ICON_LIBRARY_PATH,
-        label: "Icon library",
-        description: "Every brand icon as PNG or SVG, in each icon color and treatment.",
-        keywords: "icon library download png svg zip",
-      },
-    ],
-  },
-  {
-    // One link, not a list: the page itself sorts the graphics by category.
-    label: "Design canvas",
-    linkTitle: true,
-    items: [
-      {
-        id: DESIGN_CANVAS_NAV_ID,
-        path: DESIGN_CANVAS_PATH,
-        label: "Design canvas",
-        description: `LinkedIn graphics: ${DESIGN_CANVAS_CATEGORIES.flatMap(({ templates }) => templates.map((template) => template.title)).join(", ")}.`,
-        keywords: `design canvas social linkedin graphic customize photo toolkit ${DESIGN_CANVAS_CATEGORIES.map(({ category }) => category.toLowerCase()).join(" ")}`,
       },
     ],
   },

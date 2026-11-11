@@ -36,7 +36,11 @@ console.log("PASS: every released asset is indexed and every format has a real f
 
 assert.equal(searchHub("logo for white background")[0]?.id, "asset-logo-light");
 assert.equal(searchHub("Figtree")[0]?.id, "asset-font-kit");
-assert.equal(searchHub("Zoom")[0]?.id, "asset-zoom-bg");
+assert.equal(searchHub("Zoom")[0]?.id, "zoom-backgrounds");
+assert.equal(searchHub("Zoom")[0]?.path, "/zoom-backgrounds");
+assert.equal(HUB_SEARCH_ITEMS.find((item) => item.id === "asset-zoom-bg")?.path, "/zoom-backgrounds#asset-zoom-bg");
+assert.equal(HUB_SEARCH_ITEMS.find((item) => item.id === "asset-font-kit")?.path, undefined);
+assert.equal(HUB_SEARCH_ITEMS.find((item) => item.id === "asset-brand-gradient")?.path, "/#logo-gradients");
 const vectors = searchHub("SVG");
 assert(vectors.some((item) => item.id === "asset-logo-dark"));
 assert(vectors.some((item) => item.id === "asset-logo-light"));

@@ -1,10 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, Download, X } from "lucide-react";
 import { SearchBox, jumpTo } from "@/components/hub/HubShell";
-import { Button } from "@/components/ui/button";
-import { getAsset, findAssetFile } from "@/data/assets";
+import { HomeTasks } from "@/components/hub/HomeTasks";
+import { assetAnchor, getAsset, findAssetFile } from "@/data/assets";
 import { BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
 import styles from "./WorkingCanvasHero.module.css";
 
@@ -133,15 +132,24 @@ export function WorkingCanvasHero() {
   return (
     <section id="overview" data-hub-section className={styles.hero}>
       <div className={styles.intro}>
-        <p className={styles.eyebrow}>Ordergroove Brand Hub</p>
         <h1 className={styles.title}>
           <span>Make your work look</span>{" "}<span>and sound like Ordergroove</span>
         </h1>
         <p className={styles.subhead}>Approved logos, fonts, colors, and templates, plus the rules for using them</p>
-        <div className={styles.actions}>
-          <Button className={styles.action} onClick={() => jumpTo("downloads")}>Browse assets</Button>
-        </div>
       </div>
+
+      {/* Search first: it is the fastest path to every rule and file on the hub. */}
+      <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
+        <h2 className={styles.searchTitle}>Find what you need</h2>
+        <div className={styles.searchBox}><SearchBox hero /></div>
+        <div className={styles.samples}>
+          <button className="action-focus" onClick={() => jumpTo("color")}>Which green goes on white? <ArrowRight size={16} /></button>
+          <button className="action-focus" onClick={() => jumpTo(assetAnchor("logo-dark"))}>Which logo goes on dark backgrounds? <ArrowRight size={16} /></button>
+          <button className="action-focus" onClick={() => jumpTo(assetAnchor("font-kit"))}>Where do I get Figtree? <ArrowRight size={16} /></button>
+        </div>
+      </section>
+
+      <HomeTasks className={styles.tasks} />
 
       <div ref={artworkRef} className={styles.artwork} data-spotlight={spotlight ? "" : undefined} onPointerEnter={keepSpotlight} onPointerLeave={leaveArtwork} onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) clearSpotlight();
@@ -175,15 +183,6 @@ export function WorkingCanvasHero() {
       </div>}
       </div>
 
-      <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
-        <h2 className={styles.searchTitle}>Find what you need</h2>
-        <div className={styles.searchBox}><SearchBox hero /></div>
-        <div className={styles.samples}>
-          <button className="action-focus" onClick={() => jumpTo("color")}>Which green goes on white? <ArrowRight size={16} /></button>
-          <Link className="action-focus" to="/voice">What words should I avoid? <ArrowRight size={16} /></Link>
-          <button className="action-focus" onClick={() => jumpTo("downloads")}>Find the logo kit <ArrowRight size={16} /></button>
-        </div>
-      </section>
       <Dialog.Root open={selected !== null} onOpenChange={(open) => { if (!open) setSelected(null); }}>
         <Dialog.Portal>
           <Dialog.Overlay className={styles.dialogOverlay} />

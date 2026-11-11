@@ -1,20 +1,23 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { Download } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
 import { HubShell } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
 import { WipNotice } from "@/components/brand/WorkInProgress";
 import { ColorTiers } from "@/components/brand/ColorTiers";
 import { AssetTiles } from "@/components/brand/AssetTiles";
+import { AssetDownloads } from "@/components/brand/AssetDownloads";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { GradientDetails } from "@/components/brand/GradientDetails";
 import { ColorExamples, LayoutExample, LogoExamples } from "@/components/brand/BrandExamples";
 import { IconGuidance } from "@/components/brand/IconGuidance";
 import { buttonVariants } from "@/components/ui/button";
-import { availableAssets, ASSET_CATEGORIES, findAssetFile } from "@/data/assets";
+import { assetAnchor, availableAssets, findAssetFile, type Asset } from "@/data/assets";
+import { MARKETING_CONTACT } from "@/data/brand-resources";
 import { isWipSection } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
 import { CORE } from "@/data/tokens";
+import { useAccess } from "@/hooks/use-access";
 import { cn } from "@/lib/utils";
 
 
@@ -90,9 +93,44 @@ function HubSection({
           {isWipSection(id) && <WipNotice />}
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
-          {intro && <p className="mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
+          {intro && <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
         </div>
         {children}
+      </div>
+    </section>
+  );
+}
+
+/** The font kit as one compact row: a single download doesn't need a gallery tile. */
+function FontKitRow({ asset }: { asset: Asset }) {
+  return (
+    <article id={assetAnchor(asset.id)} tabIndex={-1} aria-labelledby="font-kit-title"
+      className="action-focus visual-container mt-10 flex scroll-mt-24 flex-col gap-5 border border-border bg-white p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+      <span aria-hidden="true" className="grid size-16 shrink-0 place-items-center rounded-lg bg-og-midnight text-[34px] font-extrabold leading-none tracking-[-0.04em] text-og-green">Aa</span>
+      <div className="min-w-0 flex-1">
+        <h3 id="font-kit-title" className="text-xl font-bold">Font kit</h3>
+        <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{asset.description}</p>
+      </div>
+      <AssetDownloads asset={asset} />
+    </article>
+  );
+}
+
+/** The page's ending: where to go when the hub doesn't have it. Slack is staff-only. */
+function HubHelp() {
+  if (useAccess() === "guest") return null;
+  return (
+    <section aria-labelledby="hub-help-heading" className="border-t border-border bg-[#F8F8FA] px-6 py-14 md:px-10 md:py-16">
+      <div className="mx-auto flex max-w-[1060px] flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 id="hub-help-heading" className="text-2xl font-extrabold md:text-3xl">Can't find what you need?</h2>
+          <p className="measure mt-2 text-base leading-7 text-muted-foreground">Ask for a file, a rule, or a template that isn't here yet.</p>
+        </div>
+        <a href={MARKETING_CONTACT.url} target="_blank" rel="noopener noreferrer"
+          className={cn(buttonVariants({ size: "lg" }), "shrink-0 self-start md:self-auto")}>
+          Ping {MARKETING_CONTACT.label} in Slack <ArrowUpRight size={16} aria-hidden="true" />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
       </div>
     </section>
   );
@@ -101,6 +139,7 @@ function HubSection({
 export default function BrandHub() {
   const { hash } = useLocation();
   const fontKit = findAssetFile("font-kit", "ZIP");
+  const fontKitAsset = availableAssets().find((asset) => asset.id === "font-kit");
   const [activeId, setActiveId] = useState(() => employeeSectionId(window.location.hash.slice(1) || "overview"));
 
   useEffect(() => {
@@ -138,27 +177,18 @@ export default function BrandHub() {
   }, [hash]);
 
   return (
-    <HubShell activeId={activeId}>
+    <HubShell activeId={activeId} heroSearch>
         <WorkingCanvasHero />
 
         <HubSection
           id="downloads"
-          eyebrow="Downloads"
-          title="Grab-and-go assets"
-          intro="Original logo, font, background, and icon files. Download them here instead of copying from old decks or screenshots."
+          eyebrow="Grab-and-go"
+          title="Logos & fonts"
+          intro="Original logo and font files. Download them here instead of copying from old decks or screenshots."
         >
-          <div className="space-y-12">
-            {ASSET_CATEGORIES.map((category) => {
-              const assets = availableAssets().filter((asset) => asset.type === category.type);
-              if (!assets.length) return null;
-              return (
-                <div key={category.type}>
-                  <h3 className="mb-5 text-xl font-bold">{category.label}</h3>
-                  <AssetTiles assets={assets} />
-                </div>
-              );
-            })}
-          </div>
+          <h3 className="mb-5 text-xl font-bold">Logo kit</h3>
+          <AssetTiles assets={availableAssets().filter((asset) => asset.type === "logo")} />
+          {fontKitAsset && <FontKitRow asset={fontKitAsset} />}
         </HubSection>
 
         <HubSection
@@ -332,7 +362,7 @@ export default function BrandHub() {
           </div>
         </HubSection>}
 
-
+        <HubHelp />
     </HubShell>
   );
 }

@@ -88,14 +88,23 @@ export function Sidebar({
                 {group.items.map((item) => (
                   <li key={item.id}>
                     {item.path ? (
+                      // An arrow marks every link that opens its own page; in-page jumps have none.
                       <Link
                         to={item.path}
                         onClick={onClose}
                         aria-current={activeId === item.id ? "page" : undefined}
-                        className={cn(NAV_ITEM_CLASS, "flex items-center justify-between gap-2", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                        className={cn(NAV_ITEM_CLASS, "group flex items-center gap-2", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
                       >
-                        {item.label}
+                        <span className="flex-1">{item.label}</span>
                         {item.wip && <WipTag />}
+                        <ArrowRight
+                          size={14}
+                          aria-hidden="true"
+                          className={cn(
+                            "shrink-0 transition-[transform,opacity] duration-200 group-hover:translate-x-0.5 group-hover:opacity-100",
+                            activeId === item.id ? "opacity-100" : "opacity-45"
+                          )}
+                        />
                       </Link>
                     ) : (
                       <button
@@ -134,7 +143,13 @@ function LastUpdated() {
 
 /** The hub chrome: fixed masthead, section sidebar, and search. Shared by the
  *  single-page hub and the standalone chapter pages so navigation never changes shape. */
-export function HubShell({ activeId, children, focused = false }: { activeId: string; children: ReactNode; focused?: boolean }) {
+export function HubShell({ activeId, children, focused = false, heroSearch = false }: {
+  activeId: string;
+  children: ReactNode;
+  focused?: boolean;
+  /** The page opens on its own search (the homepage), so the phone search bar above it would be a duplicate. */
+  heroSearch?: boolean;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -164,7 +179,7 @@ export function HubShell({ activeId, children, focused = false }: { activeId: st
       {!focused && <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />}
 
       <main className={cn(!focused && "lg:ml-[284px]")}>
-        {!focused && <div className="bg-og-midnight px-4 py-3 md:hidden">
+        {!focused && !heroSearch && <div className="bg-og-midnight px-4 py-3 md:hidden">
           <SearchBox compact />
         </div>}
         {children}
