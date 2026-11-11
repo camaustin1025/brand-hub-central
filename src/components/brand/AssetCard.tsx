@@ -35,7 +35,7 @@ export function AssetCard({ asset, showDescription = true }: { asset: Asset; sho
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex-1 space-y-1">
           <h3 className="font-semibold leading-tight">{asset.title}</h3>
-          {showDescription && <p className="measure text-sm leading-6 text-muted-foreground">{asset.description}</p>}
+          {showDescription && asset.type !== "background" && <p className="measure text-sm leading-6 text-muted-foreground">{asset.description}</p>}
         </div>
 
         <div className="flex flex-wrap gap-1.5">
