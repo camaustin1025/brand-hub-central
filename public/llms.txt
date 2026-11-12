@@ -12,7 +12,6 @@
 
 ## Pages
 - [Foundation & Messaging](/foundation): who we are, the category, the message ladder
-- [Voice & Language Rules](/voice): how we sound, plus the pass/fail language rules
 - [Visual Identity](/visual-identity): color, logo, gradients, signature shapes
 - [Icons](/#icons): Material Symbols Rounded, icon colors, and Plain, Tinted, and Solid treatments
 - [Icon library](/icon-library): all 293 brand icons as PNG (512 px) or SVG, in every icon color and Plain, Tinted, or Solid, one at a time or as a ZIP

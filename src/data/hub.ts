@@ -141,6 +141,8 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         id: "voice",
         path: "/voice",
         wip: true,
+        // Temporarily hidden on the live site while the page is rewritten; still reachable in local dev.
+        disabled: true,
         label: "Voice & language",
         description: "Personality, pass/fail rules, and preferred terms.",
         keywords: "tone words copy writing language rules use avoid ai em dash",
@@ -208,6 +210,10 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
 export const HUB_NAV = DRAFT_HUB_NAV
   .map((group) => ({ ...group, items: group.items.filter((item) => isEmployeeSectionVisible(item.id)) }))
   .filter((group) => group.items.length > 0);
+
+export function isDisabledSection(id: string) {
+  return HUB_NAV.some((group) => group.items.some((item) => item.id === id && item.disabled));
+}
 
 export function isWipSection(id: string) {
   return HUB_NAV.some((group) => group.items.some((item) => item.id === id && item.wip));

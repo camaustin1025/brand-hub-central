@@ -1,7 +1,6 @@
 import { HubShell } from "@/components/hub/HubShell";
 import { FoundationLadderPreview } from "@/components/brand/FoundationLadderPreview";
 import { ChapterPage } from "@/components/layout/ChapterPage";
-import { OnThisPage } from "@/components/layout/OnThisPage";
 import { isWipSection } from "@/data/hub";
 
 /** Section ids from FoundationLadderPreview, in page order. Rename one there, rename it here. */
@@ -11,6 +10,7 @@ const SECTIONS = [
   { id: "rights", label: "Rights to Win" },
   { id: "products", label: "Products" },
   { id: "audience", label: "Who we serve" },
+  { id: "personas", label: "Personas" },
 ];
 
 /**
@@ -29,7 +29,12 @@ export default function Foundation() {
         title="Foundation & Messaging"
         intro="The approved positioning, message ladder, ready-to-use lines, and ICPs. Start here before you write anything about Ordergroove."
       >
-        <div className="foundation-jumps mb-10 border-b border-border pb-5"><OnThisPage tone="light" sections={SECTIONS} /></div>
+        {/* Same jump-link style as the AI Resources page header. */}
+        <nav aria-label="On this page" className="mb-10 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+          {SECTIONS.map((section) => (
+            <a key={section.id} className="action-focus underline underline-offset-4" href={`#${section.id}`}>{section.label}</a>
+          ))}
+        </nav>
         <FoundationLadderPreview />
       </ChapterPage>
     </HubShell>

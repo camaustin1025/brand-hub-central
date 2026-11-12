@@ -401,10 +401,9 @@ const GROUPS = [
 /** Two buying groups compared row by row; subgrid keeps Titles and Cares aligned across both. */
 function BuyingGroups() {
   return (
-    <div className="mt-12">
-      <Heading as="h3" id="buying-groups" className="reference-item-title">Personas</Heading>
-      <p className="measure mt-2 leading-7 text-foreground">Across these segments, we sell to two buying groups.</p>
-      <div className="mt-5 grid overflow-hidden rounded-lg border border-border bg-white [@container(min-width:44rem)]:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:44rem)]:grid-rows-[auto_auto_auto]">
+    <section id="personas" aria-labelledby="personas-title" className="scroll-mt-24">
+      <SectionHead id="personas-title" title="Personas" lede="Across these segments, we sell to two buying groups." />
+      <div className="mt-6 grid overflow-hidden rounded-lg border border-border bg-white [@container(min-width:44rem)]:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:44rem)]:grid-rows-[auto_auto_auto]">
         <div aria-hidden="true" className={cn("hidden text-sm font-semibold [@container(min-width:44rem)]:row-span-3 [@container(min-width:44rem)]:grid [@container(min-width:44rem)]:grid-rows-subgrid", SUPPORTING)}>
           <span className="border-b border-border" />
           <span className="border-b border-border px-5 py-5">Titles</span>
@@ -433,7 +432,7 @@ function BuyingGroups() {
           </section>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -446,7 +445,6 @@ function WhoWeServe() {
         lede="Our consumer brand ideal customer profiles (ICPs) are defined by commerce platform and company revenue. Non-Shopify and Shopify Enterprise are our primary focus."
       />
       <IcpCards />
-      <BuyingGroups />
     </section>
   );
 }
@@ -462,6 +460,7 @@ export function FoundationLadderPreview() {
       <RightsTable />
       <ProductStack />
       <WhoWeServe />
+      <BuyingGroups />
     </div>
   );
 }

@@ -15,7 +15,7 @@ import { employeeSectionId } from "@/data/employee-launch";
 import AdminGuests from "@/pages/AdminGuests";
 import { useAccess } from "@/hooks/use-access";
 import { ASSETS, assetAnchor } from "@/data/assets";
-import { DESIGN_CANVAS_PATH, designCanvasTemplatePath, ICON_LIBRARY_PATH, NEW_EMPLOYEE_PATH, RESOURCE_PAGE_PATHS, sectionPagePath, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
+import { DESIGN_CANVAS_PATH, isDisabledSection, designCanvasTemplatePath, ICON_LIBRARY_PATH, NEW_EMPLOYEE_PATH, RESOURCE_PAGE_PATHS, sectionPagePath, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
 
 const SocialCustomizer = lazy(() => import("@/pages/SocialCustomizer"));
 
@@ -58,7 +58,8 @@ export function HubRoutes() {
       {!isGuest && <Route path="/team-culture" element={<Navigate to="/" replace />} />}
       <Route path="/changelog" element={<Changelog />} />
       <Route path="/foundation" element={<Foundation />} />
-      <Route path="/voice" element={<Voice />} />
+      {/* Voice & language is paused on the live site; dev builds keep it for editing. */}
+      <Route path="/voice" element={import.meta.env.DEV || !isDisabledSection("voice") ? <Voice /> : <Navigate to="/" replace />} />
       {/* Guests are view-only, so the graphic editor and its downloads stay staff-only. */}
       {!isGuest && <Route path={DESIGN_CANVAS_PATH} element={<DesignCanvas />} />}
       {!isGuest && <Route path={`${DESIGN_CANVAS_PATH}/:templateId`} element={

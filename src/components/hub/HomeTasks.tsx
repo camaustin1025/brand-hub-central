@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, X } from "lucide-react";
 import { WipTag } from "@/components/brand/WorkInProgress";
-import { DESIGN_CANVAS_PATH, isWipSection, RESOURCE_PAGE_PATHS, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
+import { DESIGN_CANVAS_PATH, isDisabledSection, isWipSection, RESOURCE_PAGE_PATHS, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
 import { SOCIAL_ASSETS } from "@/data/social-templates";
 import { useAccess } from "@/hooks/use-access";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,8 @@ type Task = {
   /** Staff-only destination, so guests don't get a door that sends them back here. */
   staffOnly?: boolean;
   wip?: boolean;
+  /** Destination is paused on the live site, so the card is left out. */
+  hidden?: boolean;
   /** A real glimpse of the destination, shown when the cards have room for it. */
   preview: ReactNode;
 };
@@ -42,6 +44,7 @@ const TASKS: Task[] = [
     label: "Words to use and avoid",
     to: "/voice",
     wip: isWipSection("voice"),
+    hidden: isDisabledSection("voice"),
     preview: (
       <span className="flex h-full flex-col justify-center gap-2 bg-[#F4F3F8] px-5 text-[13px] font-semibold">
         <span className="flex items-center gap-2"><Check size={15} className="shrink-0 text-og-green-light" />Ready on day one</span>
@@ -68,13 +71,13 @@ const TASKS: Task[] = [
  */
 export function HomeTasks({ className }: { className?: string }) {
   const isGuest = useAccess() === "guest";
-  const tasks = TASKS.filter((task) => !(isGuest && task.staffOnly));
+  const tasks = TASKS.filter((task) => !task.hidden && !(isGuest && task.staffOnly));
   if (tasks.length < 2) return null;
 
   return (
     <nav aria-labelledby="home-tasks-heading" className={className}>
       <h2 id="home-tasks-heading" className="sr-only">Popular resources</h2>
-      <ul className="grid gap-2.5 [@container(min-width:40rem)]:grid-cols-2 [@container(min-width:56rem)]:grid-cols-4 [@container(min-width:56rem)]:gap-3">
+      <ul className={cn("grid gap-2.5 [@container(min-width:40rem)]:grid-cols-2 [@container(min-width:56rem)]:gap-3", tasks.length === 3 ? "[@container(min-width:56rem)]:grid-cols-3" : "[@container(min-width:56rem)]:grid-cols-4")}>
         {tasks.map((task) => (
           <li key={task.to}>
             <Link
