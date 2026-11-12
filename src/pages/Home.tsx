@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { NAV } from "@/data/nav";
@@ -24,7 +25,7 @@ export default function Home() {
 
           <div className="relative max-w-2xl">
             <p className="eyebrow mb-4">Ordergroove Brand Hub</p>
-            <h1 className="text-5xl font-extrabold md:text-6xl">The brand, in one place</h1>
+            <Heading as="h1" className="text-5xl font-extrabold md:text-6xl">The brand, in one place</Heading>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground md:text-xl">
               Everything you need to build on-brand subscriptions work: the
               guidelines, the assets, and the tools that keep it consistent.
@@ -47,7 +48,7 @@ export default function Home() {
       <section className="container py-16 md:py-24">
         <div className="mb-8">
           <p className="eyebrow mb-2">Explore</p>
-          <h2 className="text-3xl font-bold md:text-4xl">Start anywhere</h2>
+          <Heading as="h2" className="text-3xl font-bold md:text-4xl">Start anywhere</Heading>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {NAV.map((group) => (
@@ -88,7 +89,7 @@ export default function Home() {
       <section className="container grid gap-12 pb-20 md:grid-cols-2">
         <div>
           <p className="eyebrow mb-2">Core color</p>
-          <h2 className="mb-6 text-3xl font-bold md:text-4xl">Copy any value</h2>
+          <Heading as="h2" className="mb-6 text-3xl font-bold md:text-4xl">Copy any value</Heading>
           <div className="grid grid-cols-2 gap-4">
             {CORE.swatches.slice(0, 2).map((s) => (
               <Swatch key={s.hex} swatch={s} />
@@ -97,7 +98,7 @@ export default function Home() {
         </div>
         <div>
           <p className="eyebrow mb-2">Latest updates</p>
-          <h2 className="mb-6 text-3xl font-bold md:text-4xl">What changed</h2>
+          <Heading as="h2" className="mb-6 text-3xl font-bold md:text-4xl">What changed</Heading>
           <ul className="divide-y divide-border">
             {UPDATES.map((u) => (
               <li key={u.date} className="flex gap-4 py-4">

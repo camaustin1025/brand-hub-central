@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { Check, Copy } from "lucide-react";
 import { DownloadLink } from "./DownloadLink";
 import { findAssetFile } from "@/data/assets";
@@ -20,7 +21,7 @@ export function GradientDetails() {
           alt="Cyan to Lemon gradient, with cyan at the upper right and lemon at the lower left"
         />
         <div className="p-6">
-          <h4 className="text-xl font-bold">{BACKGROUND_GRADIENT.name}</h4>
+          <Heading as="h4" className="text-xl font-bold">{BACKGROUND_GRADIENT.name}</Heading>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             Download the PNG for backgrounds or copy the CSS for web.
           </p>
@@ -43,7 +44,7 @@ export function GradientDetails() {
       </div>
       <div className="space-y-4 border-t border-border p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h4 className="text-sm font-semibold">Gradient CSS</h4>
+          <Heading as="h4" className="text-sm font-semibold">Gradient CSS</Heading>
           <button type="button" onClick={copy} className={buttonVariants({ variant: "outline", size: "sm" })}>
             {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}
             {copied ? "Copied" : "Copy CSS"}

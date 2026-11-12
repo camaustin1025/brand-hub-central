@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowDown, ArrowRight, Check, ChevronRight, Clock, Link2 } from "lucide-react";
@@ -88,7 +89,7 @@ export function ChapterHero({
 
         <div className={cn("flex flex-col gap-5 [@container(min-width:56rem)]:flex-row [@container(min-width:56rem)]:items-end [@container(min-width:56rem)]:justify-between", compact ? "mt-5" : "mt-10 md:mt-12")}>
           <div>
-            <h1 className={cn("tracking-[-0.02em] text-white", compact ? "text-[32px] font-bold leading-tight md:text-4xl" : "text-[40px] font-extrabold leading-[1.02] [@container(min-width:40rem)]:text-[56px]")}>{title}</h1>
+            <Heading as="h1" className={cn("tracking-[-0.02em] text-white", compact ? "text-[32px] font-bold leading-tight md:text-4xl" : "text-[40px] font-extrabold leading-[1.02] [@container(min-width:40rem)]:text-[56px]")}>{title}</Heading>
             {intro && <p className={cn("measure text-white", compact ? "mt-2 text-base leading-7" : "mt-4 text-lg leading-[1.6]")}>{intro}</p>}
           </div>
           {actions && <div className="flex flex-wrap gap-3 [@container(min-width:56rem)]:shrink-0">{actions}</div>}

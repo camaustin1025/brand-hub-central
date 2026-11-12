@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Download, Loader2 } from "lucide-react";
@@ -95,15 +96,15 @@ export default function ZoomBackgrounds() {
         intro="Approved backgrounds for video calls. Download one, then add it in Zoom, Google Meet, or Microsoft Teams."
         primaryAction={<DownloadAllButton />}
       >
-        <h2 className="sr-only">Backgrounds</h2>
+        <Heading as="h2" className="sr-only">Backgrounds</Heading>
         <AssetTiles assets={backgrounds} />
 
         <section aria-labelledby="zoom-setup-heading" className="mt-16">
-          <h2 id="zoom-setup-heading" className="reference-section-title">Set up your background</h2>
+          <Heading as="h2" id="zoom-setup-heading" className="reference-section-title">Set up your background</Heading>
           <div className="mt-8 grid gap-x-10 gap-y-8 md:grid-cols-3">
             {SETUP.map(({ app, steps }) => (
               <div key={app}>
-                <h3 className="reference-item-title">{app}</h3>
+                <Heading as="h3" className="reference-item-title">{app}</Heading>
                 <ol className="mt-3 space-y-2.5 text-sm leading-6 text-muted-foreground">
                   {steps.map((step, index) => (
                     <li key={step} className="flex gap-3">
@@ -117,7 +118,7 @@ export default function ZoomBackgrounds() {
           </div>
 
           <div className="mt-10 border-t border-border pt-8">
-            <h3 className="reference-item-title">Does the logo look backwards?</h3>
+            <Heading as="h3" className="reference-item-title">Does the logo look backwards?</Heading>
             <p className="measure mt-2 text-sm leading-6 text-muted-foreground">
               Most video apps mirror your own preview, so the logo reads backwards to you. Everyone else on the call sees it the right way round. In Zoom, turn off Mirror my video under Settings, then Video, to check.
             </p>

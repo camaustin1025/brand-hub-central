@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BookOpen, Boxes, ChevronDown, FileText, MessageCircle, Search, ShieldCheck, Sparkles, ArrowUpRight } from 'lucide-react';
@@ -26,7 +27,7 @@ function ResourceRow({ resource: r, step = false }: { resource: AiResource; step
   return <>
     <tr className={step ? 'resource-row resource-step' : 'resource-row'}>
       <td className="resource-main">
-        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><h3 className="resource-title">{r.title}</h3><p className="resource-description text-og-gray-400">{r.body}</p></div></div>
+        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><Heading as="h3" className="resource-title">{r.title}</Heading><p className="resource-description text-og-gray-400">{r.body}</p></div></div>
       </td>
       <td className="resource-actions">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -58,7 +59,7 @@ function WorkflowRow({ entry: w, searching }: { entry: Extract<DirectoryEntry, {
   return <>
     <tr className="resource-row">
       <td className="resource-main">
-        <div className="resource-identity"><PlatformIcon resource={w.steps[0]} /><div className="min-w-0"><h3 className="resource-title">{w.title}<span className="font-normal text-og-gray-400"> · {w.total} steps</span></h3><p className="resource-description text-og-gray-400">{w.body}</p></div></div>
+        <div className="resource-identity"><PlatformIcon resource={w.steps[0]} /><div className="min-w-0"><Heading as="h3" className="resource-title">{w.title}<span className="font-normal text-og-gray-400"> · {w.total} steps</span></Heading><p className="resource-description text-og-gray-400">{w.body}</p></div></div>
       </td>
       <td className="resource-actions">
         {searching
@@ -111,28 +112,28 @@ export function AiResources() {
         <caption className="sr-only">AI resources and access links, grouped by type</caption>
         <thead><tr><th scope="col">Resource</th><th scope="col">Access</th></tr></thead>
         {sections.map(s => <tbody key={s.id}>
-          <tr className="resource-group"><th scope="rowgroup" colSpan={2}><h2>{s.label}<span className="resource-group-count">{s.count}</span></h2></th></tr>
+          <tr className="resource-group"><th scope="rowgroup" colSpan={2}><Heading as="h2">{s.label}<span className="resource-group-count">{s.count}</span></Heading></th></tr>
           {s.entries.map(e => e.kind === 'resource' ? <ResourceRow key={e.resource.id} resource={e.resource} /> : <WorkflowRow key={e.id} entry={e} searching={searching} />)}
         </tbody>)}
       </table>}
-      {!results.length && <div className="border-y border-border py-12 text-center"><h3 className="text-lg font-bold">No matching resources</h3><p className="mt-2 text-muted-foreground">Try a different search or clear your filters.</p><button onClick={clear} className={`${LINK} mt-5 min-h-11`}>Clear filters</button></div>}
+      {!results.length && <div className="border-y border-border py-12 text-center"><Heading as="h3" className="text-lg font-bold">No matching resources</Heading><p className="mt-2 text-muted-foreground">Try a different search or clear your filters.</p><button onClick={clear} className={`${LINK} mt-5 min-h-11`}>Clear filters</button></div>}
     </section>
     <section id="ai-sharing" className="sharing-panel dark scroll-mt-24">
       <span id="ai-start-here" className="scroll-mt-24" />
-      <h2><ShieldCheck aria-hidden="true" size={26} />What you can share</h2>
+      <Heading as="h2"><ShieldCheck aria-hidden="true" size={26} />What you can share</Heading>
       <p className="sharing-panel__intro">Use your OG Gmail to sign in to Team accounts (Claude, ChatGPT, Gemini). Read the <External href={SECURITY_GUIDELINES.url}>{SECURITY_GUIDELINES.label}</External>.</p>
       <div className="sharing-panel__cols">
         <div className="sharing-panel__col sharing-panel__col--never">
-          <h3><span className="sharing-panel__mark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></span>Never share</h3>
+          <Heading as="h3"><span className="sharing-panel__mark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></span>Never share</Heading>
           <ul>{SHARING_RULES.never.map(item => <li key={item}>{item}</li>)}</ul>
         </div>
         <div className="sharing-panel__col sharing-panel__col--team">
-          <h3><span className="sharing-panel__mark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>Team account only</h3>
+          <Heading as="h3"><span className="sharing-panel__mark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>Team account only</Heading>
           <ul>{SHARING_RULES.teamOnly.map(item => <li key={item}>{item}</li>)}</ul>
         </div>
       </div>
     </section>
-    <section id="ai-connectors" className="mt-12 scroll-mt-24 border-t border-border pt-8"><h2 className="reference-section-title">Get a new tool approved</h2><p className="mt-3 text-sm leading-6">Get approval before connecting a tool. Questions: <External href={SECURITY_CHANNEL.url}>{SECURITY_CHANNEL.label}</External>. Reviews: <External href={INFOSEC_CHANNEL.url}>{INFOSEC_CHANNEL.label}</External>.</p><ol className="mt-5 list-decimal space-y-4 pl-5 text-sm">{APPROVAL_STEPS.map(s => <li key={s.link.url}><External href={s.link.url}>{s.link.label}</External><p className="mt-1 leading-6 text-muted-foreground">{s.body}</p></li>)}</ol><p className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm"><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p></section>
+    <section id="ai-connectors" className="mt-12 scroll-mt-24 border-t border-border pt-8"><Heading as="h2" className="reference-section-title">Get a new tool approved</Heading><p className="mt-3 text-sm leading-6">Get approval before connecting a tool. Questions: <External href={SECURITY_CHANNEL.url}>{SECURITY_CHANNEL.label}</External>. Reviews: <External href={INFOSEC_CHANNEL.url}>{INFOSEC_CHANNEL.label}</External>.</p><ol className="mt-5 list-decimal space-y-4 pl-5 text-sm">{APPROVAL_STEPS.map(s => <li key={s.link.url}><External href={s.link.url}>{s.link.label}</External><p className="mt-1 leading-6 text-muted-foreground">{s.body}</p></li>)}</ol><p className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm"><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p></section>
 
   </div>;
 }

@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
 import { Download, Loader2, Search } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -221,9 +222,9 @@ export function IconLibrary() {
           <div className="space-y-8 p-4 md:p-6">
             {visible.map((category) => (
               <section key={category.id} aria-labelledby={`icons-${category.id}`}>
-                <h2 id={`icons-${category.id}`} className="text-sm font-semibold">
+                <Heading as="h2" id={`icons-${category.id}`} className="text-sm font-semibold">
                   {category.name} <span className={cn("font-normal", dark ? "text-white/70" : "text-og-gray-400")}>({category.icons.length})</span>
-                </h2>
+                </Heading>
                 <ul className="mt-3 grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-1">
                   {category.icons.map((icon) => (
                     <li key={icon.name}>

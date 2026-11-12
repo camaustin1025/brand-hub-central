@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { ArrowUpRight, Download } from "lucide-react";
@@ -92,7 +93,7 @@ function HubSection({
         <div className="mb-10">
           {isWipSection(id) && <WipNotice />}
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
-          <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
+          <Heading as="h2" className="text-3xl font-extrabold md:text-[42px]">{title}</Heading>
           {intro && <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
         </div>
         {children}
@@ -108,7 +109,7 @@ function FontKitRow({ asset }: { asset: Asset }) {
       className="action-focus visual-container mt-10 flex scroll-mt-24 flex-col gap-5 border border-border bg-white p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
       <span aria-hidden="true" className="grid size-16 shrink-0 place-items-center rounded-lg bg-og-midnight text-[34px] font-extrabold leading-none tracking-[-0.04em] text-og-green">Aa</span>
       <div className="min-w-0 flex-1">
-        <h3 id="font-kit-title" className="text-xl font-bold">Download our font</h3>
+        <Heading as="h3" id="font-kit-title" className="text-xl font-bold">Download our font</Heading>
         <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{asset.description}</p>
       </div>
       <AssetDownloads asset={asset} />
@@ -123,7 +124,7 @@ function HubHelp() {
     <section aria-labelledby="hub-help-heading" className="border-t border-border bg-[#F8F8FA] px-6 py-14 md:px-10 md:py-16">
       <div className="mx-auto flex max-w-[1060px] flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 id="hub-help-heading" className="text-2xl font-extrabold md:text-3xl">Can't find what you need?</h2>
+          <Heading as="h2" id="hub-help-heading" className="text-2xl font-extrabold md:text-3xl">Can't find what you need?</Heading>
         </div>
         <a href={MARKETING_CONTACT.url} target="_blank" rel="noopener noreferrer"
           className={cn(buttonVariants(), "shrink-0 self-start md:self-auto")}>
@@ -167,7 +168,7 @@ export default function BrandHub() {
       const root = document.documentElement;
       const previousBehavior = root.style.scrollBehavior;
       root.style.scrollBehavior = "auto";
-      window.scrollTo(0, Math.max(0, target.offsetTop - 64));
+      window.scrollTo(0, Math.max(0, target.getBoundingClientRect().top + window.scrollY - 80));
       window.requestAnimationFrame(() => {
         root.style.scrollBehavior = previousBehavior;
         if (id.startsWith("asset-")) target.focus({ preventScroll: true });
@@ -185,7 +186,7 @@ export default function BrandHub() {
           title="Logos & fonts"
           intro="Download original files, not screenshots or copies from old decks."
         >
-          <h3 className="mb-5 text-xl font-bold">Logo kit</h3>
+          <Heading as="h3" className="mb-5 text-xl font-bold">Logo kit</Heading>
           <AssetTiles assets={availableAssets().filter((asset) => asset.type === "logo")} />
           {fontKitAsset && <FontKitRow asset={fontKitAsset} />}
         </HubSection>
@@ -198,7 +199,7 @@ export default function BrandHub() {
         >
           <ColorTiers />
           <div className="mt-10">
-            <h3 className="mb-5 text-xl font-bold">Brand gradient</h3>
+            <Heading as="h3" className="mb-5 text-xl font-bold">Brand gradient</Heading>
             <GradientDetails />
           </div>
           <ColorExamples />
@@ -216,7 +217,7 @@ export default function BrandHub() {
                 Aa
               </p>
               <div>
-                <h3 className="text-2xl">Figtree</h3>
+                <Heading as="h3" className="text-2xl">Figtree</Heading>
                 <p className="mt-2 text-sm leading-6 tracking-[0.005em] text-white">
                   Available in Google Fonts and Google Workspace.
                 </p>
@@ -237,7 +238,7 @@ export default function BrandHub() {
             </ul>
           </div>
 
-          <h3 className="mb-5 mt-12 text-2xl font-bold">Web hierarchy</h3>
+          <Heading as="h3" className="mb-5 mt-12 text-2xl font-bold">Web hierarchy</Heading>
           <div className="overflow-hidden rounded-lg border border-border bg-card">
             {TYPE_HIERARCHY.map((level) => (
               <div
@@ -254,18 +255,18 @@ export default function BrandHub() {
             ))}
           </div>
 
-          <h3 className="mb-5 mt-12 text-2xl font-bold">Usage rules</h3>
+          <Heading as="h3" className="mb-5 mt-12 text-2xl font-bold">Usage rules</Heading>
           <div className="grid gap-x-8 gap-y-6 sm:grid-cols-3">
             <div>
-              <h4 className="text-base font-semibold">Sentence case, no trailing periods</h4>
+              <Heading as="h4" className="text-base font-semibold">Sentence case, no trailing periods</Heading>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use for headings, labels, and subtitles. Eyebrows stay ALL CAPS.</p>
             </div>
             <div>
-              <h4 className="text-base font-semibold">Use Figtree only</h4>
+              <Heading as="h4" className="text-base font-semibold">Use Figtree only</Heading>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Check for fallback fonts in exports.</p>
             </div>
             <div>
-              <h4 className="text-base font-semibold">Keep display layouts simple</h4>
+              <Heading as="h4" className="text-base font-semibold">Keep display layouts simple</Heading>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use tight headline spacing and open body spacing. Match primary and secondary headline colors. Skip emoji.</p>
             </div>
           </div>
@@ -279,7 +280,7 @@ export default function BrandHub() {
           intro="Use the full logo when space allows."
         >
           <LogoExamples />
-          <h3 className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</h3>
+          <Heading as="h3" className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</Heading>
           <div className="grid gap-6 sm:grid-cols-2">
             {availableAssets().filter((asset) => asset.tags.includes("logomark")).map((asset) => (
               <figure key={asset.id}>
@@ -292,19 +293,19 @@ export default function BrandHub() {
           </div>
           <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
-              <h3 className="text-base font-semibold">Give it room</h3>
+              <Heading as="h3" className="text-base font-semibold">Give it room</Heading>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Leave at least one logomark’s width of clear space on every side, including at page edges.</p>
             </div>
             <div>
-              <h3 className="text-base font-semibold">Keep it readable</h3>
+              <Heading as="h3" className="text-base font-semibold">Keep it readable</Heading>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use plain Midnight or white backgrounds. Keep the logo crisp at its final size.</p>
             </div>
             <div>
-              <h3 className="text-base font-semibold">Use the original file</h3>
+              <Heading as="h3" className="text-base font-semibold">Use the original file</Heading>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Don’t stretch, crop, rotate, recolor, outline, or add effects.</p>
             </div>
             <div>
-              <h3 className="text-base font-semibold">Need another version?</h3>
+              <Heading as="h3" className="text-base font-semibold">Need another version?</Heading>
               <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Ask Marketing for large-format or single-color files.</p>
             </div>
           </div>
@@ -339,7 +340,7 @@ export default function BrandHub() {
             </div>
             <div className="rounded-lg border border-border bg-white p-6">
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-lg font-bold">Token kits</h3>
+                <Heading as="h3" className="text-lg font-bold">Token kits</Heading>
                 <DraftBadge>Pending green approval</DraftBadge>
               </div>
               <p className="measure mt-3 text-sm leading-6 text-muted-foreground">Both kits publish once the remaining green values are approved.</p>

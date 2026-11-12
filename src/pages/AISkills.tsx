@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 
@@ -31,7 +32,7 @@ export default function AISkills() {
 
       <section className="container max-w-3xl space-y-10 pb-16">
         <div>
-          <h2 className="text-2xl font-bold">Available now</h2>
+          <Heading as="h2" className="text-2xl font-bold">Available now</Heading>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             {SKILLS.map((s) => (
               <div
@@ -47,7 +48,7 @@ export default function AISkills() {
 
         <div className="visual-container border border-border bg-card p-6">
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-bold">The brand assistant</h2>
+            <Heading as="h2" className="text-lg font-bold">The brand assistant</Heading>
             <DraftBadge>Pilot stretch goal</DraftBadge>
           </div>
           <p className="mt-3 text-sm text-muted-foreground">

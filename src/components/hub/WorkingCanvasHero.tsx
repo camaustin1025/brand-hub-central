@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, Download, X } from "lucide-react";
@@ -132,9 +133,9 @@ export function WorkingCanvasHero() {
   return (
     <section id="overview" data-hub-section className={styles.hero}>
       <div className={styles.intro}>
-        <h1 className={styles.title}>
+        <Heading as="h1" className={styles.title}>
           <span>Make your work look</span>{" "}<span>and sound like Ordergroove</span>
-        </h1>
+        </Heading>
         <p className={styles.subhead}>Brand assets and guidance</p>
       </div>
 
@@ -171,7 +172,7 @@ export function WorkingCanvasHero() {
       </div>
 
       <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
-        <h2 className={styles.searchTitle}>Find what you need</h2>
+        <Heading as="h2" className={styles.searchTitle}>Find what you need</Heading>
         <div className={styles.searchBox}><SearchBox hero /></div>
       </section>
 

@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { AssetCard } from "@/components/brand/AssetCard";
 import { ASSETS, ASSET_CATEGORIES } from "@/data/assets";
@@ -16,7 +17,7 @@ export default function Downloads() {
         if (items.length === 0) return null;
         return (
           <section key={cat.type} className="container py-8">
-            <h2 className="mb-6 text-2xl font-bold">{cat.label}</h2>
+            <Heading as="h2" className="mb-6 text-2xl font-bold">{cat.label}</Heading>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((asset) => (
                 <AssetCard key={asset.id} asset={asset} />

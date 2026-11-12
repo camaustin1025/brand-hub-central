@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { CORE, GRADIENTS } from "@/data/tokens";
@@ -14,7 +15,7 @@ export default function Tokens() {
       <section className="container max-w-3xl space-y-10 pb-16">
         <div className="visual-container border border-border bg-card p-6">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-lg font-bold">Downloadable token kits</h2>
+            <Heading as="h2" className="text-lg font-bold">Downloadable token kits</Heading>
             <DraftBadge>Generating after audit D1/D2</DraftBadge>
           </div>
           <p className="mt-3 text-sm text-muted-foreground">
@@ -26,7 +27,7 @@ export default function Tokens() {
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold">Core color</h2>
+          <Heading as="h2" className="text-2xl font-bold">Core color</Heading>
           <div className="mt-4 overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-card">
@@ -50,7 +51,7 @@ export default function Tokens() {
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold">Type</h2>
+          <Heading as="h2" className="text-2xl font-bold">Type</Heading>
           <div className="mt-4 space-y-2 rounded-lg border border-border bg-card p-5 text-sm">
             <p><span className="font-semibold">Family:</span> Figtree everywhere, weights 400 to 800.</p>
             <p><span className="font-semibold">Hierarchy:</span> eyebrow 12px ALL CAPS 0.16em, H1 40 to 44px, subhead 21px, body 15px.</p>
@@ -59,7 +60,7 @@ export default function Tokens() {
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold">Gradients</h2>
+          <Heading as="h2" className="text-2xl font-bold">Gradients</Heading>
           <div className="mt-4 space-y-2">
             {GRADIENTS.map((g) => (
               <div

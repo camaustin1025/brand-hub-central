@@ -307,3 +307,13 @@ html[data-guest] section[aria-labelledby="nav-employee-resources"] {
 @container (max-width: 39.99rem) {
   .sharing-panel { padding: 24px; }
 }
+
+/* Section permalinks stay quiet until hover, and remain available to touch and keyboards. */
+.linkable-heading { scroll-margin-top: 6rem; }
+.heading-copy-link { position: relative; display: inline-flex; vertical-align: middle; align-items: center; justify-content: center; width: 32px; height: 32px; margin-left: 8px; padding: 6px; border-radius: 4px; color: inherit; opacity: 0; transition: opacity 120ms; }
+.linkable-heading:hover > .heading-copy-link, .linkable-heading:focus-within > .heading-copy-link { opacity: 1; }
+.heading-copy-link:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.heading-copy-link:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+.heading-copy-status { position: absolute; bottom: 100%; right: 0; width: max-content; max-width: 200px; padding: 5px 8px; border-radius: 4px; background: #131126; color: white; font: 500 12px/1.4 sans-serif; letter-spacing: normal; }
+@media (hover: none) { .heading-copy-link { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .heading-copy-link { transition: none; } }

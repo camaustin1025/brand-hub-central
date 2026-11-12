@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { useEffect, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { CORE, SECONDARY, SUPPORTING, type Swatch, type SwatchGroup } from "@/data/tokens";
@@ -137,12 +138,12 @@ export function ColorTierRow({ tier }: { tier: Tier }) {
   return (
     <div className="mt-9 first:mt-0">
       <div className="flex items-center gap-2 border-b border-border pb-2">
-        <h3
+        <Heading as="h3"
           id={group === CORE ? "core" : slug(group.title)}
           className="scroll-mt-20 text-[15px] font-semibold leading-normal tracking-normal text-og-midnight"
         >
           {group.title}
-        </h3>
+        </Heading>
         {badge && (
           <span
             className={cn(

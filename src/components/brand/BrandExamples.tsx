@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import type { ReactNode } from "react";
 import { Check, X } from "lucide-react";
 import { findAssetFile, getAsset, isAssetAvailable } from "@/data/assets";
@@ -21,7 +22,7 @@ export function LogoExamples() {
   const lightLogo = findAssetFile("logo-light", "SVG")?.href ?? getAsset("logo-light").preview!;
   return (
     <div id="logo-examples" className="mt-10 scroll-mt-24">
-      <h3 className="mb-5 text-xl font-bold">Match the logo to its background</h3>
+      <Heading as="h3" className="mb-5 text-xl font-bold">Match the logo to its background</Heading>
 
       <div className="grid grid-cols-1 gap-5">
         <Example good coloredIcons note="White wordmark on Midnight; Midnight wordmark on white.">
@@ -38,7 +39,7 @@ export function LogoExamples() {
 export function ColorExamples() {
   return (
     <div id="color-examples" className="mt-10 scroll-mt-24">
-      <h3 className="mb-5 text-xl font-bold">Keep the message readable</h3>
+      <Heading as="h3" className="mb-5 text-xl font-bold">Keep the message readable</Heading>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Example good note="Midnight text on white; Groovy Green on Midnight. Light-background green is an accent.">
@@ -63,7 +64,7 @@ export function ColorExamples() {
 export function LayoutExample() {
   return (
     <div id="layout-example" className="mt-10 scroll-mt-24">
-      <h3 className="mb-5 text-xl font-bold">Give each element a job</h3>
+      <Heading as="h3" className="mb-5 text-xl font-bold">Give each element a job</Heading>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Example good note="Clear hierarchy, room between groups, one accent.">
@@ -90,7 +91,7 @@ export function LayoutExample() {
 export function VoiceExample() {
   return (
     <div className="mt-12">
-      <h2 className="reference-section-title">Put the rule into practice</h2>
+      <Heading as="h2" className="reference-section-title">Put the rule into practice</Heading>
       <p className="mb-5 mt-3 text-sm leading-6">Replace vague packaging language with a clear statement about adoption.</p>
       <div className="grid gap-5 sm:grid-cols-2">
         <Example good note="Direct, specific language. The reader knows what to expect."><p className="p-6 text-xl font-semibold leading-8 text-og-midnight">Ready on day one, no custom builds required.</p></Example>

@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { TintedIcon } from "@/components/brand/TintedIcon";
 import { BUYING_GROUPS, LADDER, RIGHTS } from "@/data/hub";
 import { cn } from "@/lib/utils";
@@ -66,7 +67,7 @@ export function FoundationContent() {
     // being evened out short of it.
     <div className="flex flex-col gap-14 pt-4 [--measure:54ch] [container-type:inline-size] md:gap-16 md:pt-6">
       <section aria-labelledby="foundation-category">
-        <h2 id="foundation-category" className={SECTION_HEAD}>The category we own</h2>
+        <Heading as="h2" id="foundation-category" className={SECTION_HEAD}>The category we own</Heading>
         <p className={LEDE}>
           Our lead message is a category move, not a product pitch. Autonomous Subscriptions is the category we are defining:
         </p>
@@ -82,7 +83,7 @@ export function FoundationContent() {
       </section>
 
       <section aria-labelledby="foundation-audience">
-        <h2 id="foundation-audience" className={SECTION_HEAD}>Who we serve</h2>
+        <Heading as="h2" id="foundation-audience" className={SECTION_HEAD}>Who we serve</Heading>
         <p className={LEDE}>
           Our direct-to-consumer ideal customer profiles (ICPs) are defined by commerce platform and company revenue. Non-Shopify and Shopify Enterprise are our primary focus.
         </p>
@@ -93,7 +94,7 @@ export function FoundationContent() {
                 <span className={index < 2 ? "text-og-green" : "text-muted-foreground"}>ICP {index + 1}</span>
                 <span>{segment.priority}</span>
               </div>
-              <h3 className="mt-4 text-2xl font-bold leading-tight">{segment.name}</h3>
+              <Heading as="h3" className="mt-4 text-2xl font-bold leading-tight">{segment.name}</Heading>
               <p className={cn("mt-2 font-semibold leading-7", index < 2 && "text-og-green")}>{segment.revenue}</p>
               <p className="mt-3 leading-7">{segment.description}</p>
               <p className={cn("mt-5 border-t pt-4 leading-7", index < 2 ? "border-white/20" : "border-border text-muted-foreground")}>{segment.detail}</p>
@@ -101,14 +102,14 @@ export function FoundationContent() {
           ))}
         </ol>
         <div className="mt-4 rounded-lg border border-border bg-white p-6">
-          <h3 className="text-sm font-bold">GTM focus across the two priority segments</h3>
+          <Heading as="h3" className="text-sm font-bold">GTM focus across the two priority segments</Heading>
           <div aria-hidden="true" className="mt-4 flex h-3 overflow-hidden rounded-full">
             <div className="w-2/3 bg-og-midnight" />
             <div className="w-1/3 bg-og-green" />
           </div>
           <p className="mt-3 text-sm leading-6">Approximately 2/3 ICP 1 · Non-Shopify and 1/3 ICP 2 · Shopify Enterprise.</p>
         </div>
-        <h3 className="mt-8 text-2xl font-bold">Our buying groups</h3>
+        <Heading as="h3" className="mt-8 text-2xl font-bold">Our buying groups</Heading>
         <p className={LEDE}>Across these segments, we sell to two buying groups:</p>
         <ul className="mt-6 grid gap-4 [@container(min-width:44rem)]:grid-cols-2">
           {BUYING_GROUPS.map((item) => (
@@ -116,7 +117,7 @@ export function FoundationContent() {
             // both boxes, so the divider lines up even when one list runs longer.
             <li key={item.group} className="row-span-4 grid grid-rows-subgrid gap-0 rounded-lg border border-border bg-white p-6">
               <TintedIcon name={item.icon} className="mb-4" />
-              <h3 className="text-lg font-bold leading-7">{item.group}</h3>
+              <Heading as="h3" className="text-lg font-bold leading-7">{item.group}</Heading>
               <p className="measure mb-5 mt-2 leading-7 text-muted-foreground">{item.roles}</p>
               <div className="border-t border-border pt-4">
                 <p className="measure leading-7 text-muted-foreground">{item.cares}</p>
@@ -127,14 +128,14 @@ export function FoundationContent() {
       </section>
 
       <section aria-labelledby="foundation-ladder">
-        <h2 id="foundation-ladder" className={SECTION_HEAD}>Message ladder</h2>
+        <Heading as="h2" id="foundation-ladder" className={SECTION_HEAD}>Message ladder</Heading>
         <ol className="mt-6 rounded-lg bg-og-midnight p-6 text-white md:p-8">
           {LADDER.map((item, index) => (
             <li key={item.rung} className={cn("relative pb-6 last:pb-0", ROW_GRID)}>
               {index < LADDER.length - 1 && <span aria-hidden="true" className="absolute bottom-0 left-[15px] top-8 hidden w-px bg-white/15 [@container(min-width:30rem)]:block" />}
               <div className="flex items-center gap-4 self-start">
                 <span aria-hidden="true" className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-og-green text-sm font-extrabold text-og-midnight">{index + 1}</span>
-                <h3 className="text-lg font-bold leading-7 tracking-normal">{item.rung}</h3>
+                <Heading as="h3" className="text-lg font-bold leading-7 tracking-normal">{item.rung}</Heading>
               </div>
               {/* Phones: full width under the title, connector hidden, which buys
                   ~10 characters a line. Stacked with room: indented past the circle
@@ -147,7 +148,7 @@ export function FoundationContent() {
       </section>
 
       <section aria-labelledby="foundation-rights">
-        <h2 id="foundation-rights" className={SECTION_HEAD}>Rights to Win</h2>
+        <Heading as="h2" id="foundation-rights" className={SECTION_HEAD}>Rights to Win</Heading>
         <ol className="mt-6 border-t border-border">
           {RIGHTS.map((item) => (
             <li key={item.n} className={cn("border-b border-border py-6 md:px-8", ROW_GRID)}>
@@ -155,7 +156,7 @@ export function FoundationContent() {
                 {/* Same 32px slot as the ladder's step circles, so numerals and
                     circles share a center line. 24px keeps the green above 3:1. */}
                 <span className="w-8 shrink-0 text-center text-2xl font-extrabold leading-7 tabular-nums text-primary">{item.n}</span>
-                <h3 className="text-lg font-bold leading-7">{item.title}</h3>
+                <Heading as="h3" className="text-lg font-bold leading-7">{item.title}</Heading>
               </div>
               {/* Wide: pt-1 matches the title, which sits on the 24px numeral's baseline. */}
               <div className="mt-3 [@container(min-width:48rem)]:mt-0 [@container(min-width:48rem)]:pt-1">
@@ -168,7 +169,7 @@ export function FoundationContent() {
       </section>
 
       <section aria-labelledby="foundation-boilerplate" className="rounded-lg border border-border bg-white p-6">
-        <h2 id="foundation-boilerplate" className="scroll-mt-24 text-lg font-bold">Company boilerplate</h2>
+        <Heading as="h2" id="foundation-boilerplate" className="scroll-mt-24 text-lg font-bold">Company boilerplate</Heading>
         <p className="mt-3 leading-7 text-muted-foreground">
           <a href="http://ordergroove.com/?utm_source=pr&utm_medium=press&utm_campaign=0926q3_goop_email_press_all&utm_content=demo&" className="font-bold text-foreground underline underline-offset-4">Ordergroove</a>{" "}
           is the enterprise standard for subscriptions and recurring revenue in the autonomous commerce era. Agent-friendly by architecture and trained on the largest subscription data set in enterprise commerce, Ordergroove powers the world’s most iconic brands, including L’Oréal, PetSmart, Keurig, Manscaped, Liquid I.V., Mattel, and Fiji Water. Across every channel, from storefront to retail to the next AI interface, Ordergroove turns one-time buyers into lasting relationships. Learn more at ordergroove.com.

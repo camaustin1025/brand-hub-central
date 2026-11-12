@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import type { ReactNode } from "react";
 import { Ban, Check, Copy, Filter, ShieldCheck, Target, TrendingUp } from "lucide-react";
 import { DraftBadge } from "@/components/brand/DraftBadge";
@@ -55,7 +56,7 @@ function SectionHead({ id, title, lede, badge }: { id: string; title: string; le
   return (
     <div>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <h2 id={id} className="reference-section-title">{title}</h2>
+        <Heading as="h2" id={id} className="reference-section-title">{title}</Heading>
         {badge && <DraftBadge>{badge}</DraftBadge>}
       </div>
       {lede && <p className={cn("measure mt-3 leading-7", SOFT)}>{lede}</p>}
@@ -149,7 +150,7 @@ function SayItShelf() {
           <li key={item.id} id={item.id} className="scroll-mt-24 grid gap-5 border-b border-border p-6 last:border-b-0 md:p-8 [@container(min-width:44rem)]:grid-cols-[13rem_minmax(0,1fr)] [@container(min-width:44rem)]:gap-10">
             <div className="flex flex-col gap-3">
               <div>
-                <h3 className="reference-item-title">{item.name}</h3>
+                <Heading as="h3" className="reference-item-title">{item.name}</Heading>
                 <p className={cn("mt-1 text-sm leading-6", SOFT)}>{item.use}</p>
               </div>
               <div className="flex flex-wrap items-center gap-3">
@@ -203,7 +204,7 @@ function RightsTable() {
                   {/* The ol already numbers the rows for screen readers. 24px keeps #009A50 above 3:1. */}
                   <span aria-hidden="true" className="w-6 shrink-0 text-2xl font-extrabold leading-7 tabular-nums text-primary">{item.n}</span>
                   <div>
-                    <h3 className="reference-item-title">{item.title}</h3>
+                    <Heading as="h3" className="reference-item-title">{item.title}</Heading>
                     <p className="mt-1 text-[15px] font-semibold leading-6 text-og-midnight">{item.tagline}</p>
                   </div>
                 </div>
@@ -232,16 +233,16 @@ function ProductStack() {
       <SectionHead id="products-title" title="Products" lede="Talk about the platform in layers, not as a feature list." badge="Check against marketecture slide" />
       <ol className="mt-6 overflow-hidden rounded-lg border border-border">
         <li className="grid gap-1 bg-white border-b border-border p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-baseline [@container(min-width:40rem)]:gap-8">
-          <h3 className="reference-item-title text-og-midnight">Agents</h3>
+          <Heading as="h3" className="reference-item-title text-og-midnight">Agents</Heading>
           <p className="text-base text-og-midnight">The autonomous layer</p>
         </li>
         {/* Midnight, then gray 300 (#4F4A6A, 8:1 with white), then white: a clear step down per layer. */}
         <li className="grid gap-1 bg-white border-b border-border p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-baseline [@container(min-width:40rem)]:gap-8">
-          <h3 className="reference-item-title text-og-midnight">Workflows</h3>
+          <Heading as="h3" className="reference-item-title text-og-midnight">Workflows</Heading>
           <p className="text-base text-og-midnight">Orchestration</p>
         </li>
         <li className="grid gap-3 bg-white p-6 md:px-8 [@container(min-width:40rem)]:grid-cols-[15rem_minmax(0,1fr)] [@container(min-width:40rem)]:items-center [@container(min-width:40rem)]:gap-8">
-          <h3 className="reference-item-title text-og-midnight">Open Platform</h3>
+          <Heading as="h3" className="reference-item-title text-og-midnight">Open Platform</Heading>
           <ul className="space-y-1.5" aria-label="Open Platform components">
             {["GraphQL API", "Ordergroove MCP server"].map((part) => (
               <li key={part} className="text-base leading-7 text-og-midnight">{part}</li>
@@ -357,7 +358,7 @@ function IcpCards() {
               </span>
               {icp.share && <span className="text-sm font-semibold text-primary">{icp.share}</span>}
             </div>
-            <h3 className={cn("mt-4 reference-item-title", icp.tone === "opportunistic" && "text-og-midnight/80")}>{icp.name}</h3>
+            <Heading as="h3" className={cn("mt-4 reference-item-title", icp.tone === "opportunistic" && "text-og-midnight/80")}>{icp.name}</Heading>
             <p className={cn("mt-1.5 leading-7", SOFT)}>{icp.description}</p>
             <dl className="mt-5 divide-y divide-border border-y border-border">
               {icp.rows.map((row) => (
@@ -418,7 +419,7 @@ const GROUPS = [
 function BuyingGroups() {
   return (
     <div className="mt-12">
-      <h3 className="reference-item-title">Buying groups</h3>
+      <Heading as="h3" className="reference-item-title">Buying groups</Heading>
       <p className={cn("measure mt-2 leading-7", SOFT)}>Across these segments, we sell to two buying groups.</p>
       <div className="mt-5 grid overflow-hidden rounded-lg border border-border bg-white [@container(min-width:44rem)]:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:44rem)]:grid-rows-[auto_auto_auto]">
         <div aria-hidden="true" className={cn("hidden text-sm font-semibold [@container(min-width:44rem)]:row-span-3 [@container(min-width:44rem)]:grid [@container(min-width:44rem)]:grid-rows-subgrid", SOFT)}>
@@ -428,10 +429,10 @@ function BuyingGroups() {
         </div>
         {GROUPS.map((group) => (
           <section key={group.name} aria-label={group.name} className="border-t border-border first-of-type:border-t-0 [@container(min-width:44rem)]:row-span-3 [@container(min-width:44rem)]:grid [@container(min-width:44rem)]:grid-rows-subgrid [@container(min-width:44rem)]:border-l [@container(min-width:44rem)]:border-t-0">
-            <h4 className="flex items-center gap-3 border-b border-border px-6 py-4 text-lg font-semibold">
+            <Heading as="h4" className="flex items-center gap-3 border-b border-border px-6 py-4 text-lg font-semibold">
               <TintedIcon name={group.icon} color={group.color} size={24} />
               {group.name}
-            </h4>
+            </Heading>
             <div className="border-b border-border px-6 py-5">
               <p className={cn("mb-2 text-sm font-semibold [@container(min-width:44rem)]:sr-only", SOFT)}>Titles</p>
               <ul className="space-y-1.5 leading-6">

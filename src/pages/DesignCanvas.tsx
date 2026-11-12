@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -39,14 +40,14 @@ export default function DesignCanvas() {
         <div className="space-y-12">
           {DESIGN_CANVAS_CATEGORIES.map(({ id, category, templates: entries }) => (
             <section key={id} id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-24">
-              <h2 id={`${id}-heading`} className="mb-5 reference-section-title">{category}</h2>
+              <Heading as="h2" id={`${id}-heading`} className="mb-5 reference-section-title">{category}</Heading>
               <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {entries.map((template) => (
                   <div key={template.id} className="flex flex-col overflow-hidden rounded-lg border border-border bg-white">
                     {template.previewAssetId && <img src={SOCIAL_ASSETS[template.previewAssetId]} alt={`${template.title} design preview`} width={template.width} height={template.height} className="h-auto w-full" />}
                     <div className="flex flex-1 flex-col p-6">
                       <div className="flex-1">
-                        <h3 className="reference-item-title">{template.title}</h3>
+                        <Heading as="h3" className="reference-item-title">{template.title}</Heading>
                       </div>
                       <Link to={designCanvasTemplatePath(template.id)} className={cn(buttonVariants(), "mt-5 self-start")}>
                         {draftTemplates.has(template.id) ? "Continue draft" : "Customize graphic"} <ArrowRight size={15} aria-hidden="true" />

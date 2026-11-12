@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { assetAnchor, type Asset } from "@/data/assets";
 import { AssetDownloads } from "./AssetDownloads";
 import { cn } from "@/lib/utils";
@@ -22,7 +23,7 @@ export function AssetTiles({ assets }: { assets: Asset[] }) {
             </div>
             <div className={cn("space-y-3 p-3 sm:p-4", single && "sm:p-6")}>
               <div>
-                <h4 className="text-sm font-semibold leading-snug">{logo ? asset.tags.includes("logomark") ? "Logomark" : "Full logo" : asset.title}</h4>
+                <Heading as="h4" className="text-sm font-semibold leading-snug">{logo ? asset.tags.includes("logomark") ? "Logomark" : "Full logo" : asset.title}</Heading>
                 <p className="mt-1 text-xs leading-5 text-muted-foreground">{logo ? light ? "Light backgrounds" : "Dark backgrounds" : asset.description}</p>
               </div>
               <AssetDownloads asset={asset} />

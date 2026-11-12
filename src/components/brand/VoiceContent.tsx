@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { VoiceExample } from "./BrandExamples";
 import { TERMS, VOICE_RULES } from "@/data/hub";
 
@@ -20,7 +21,7 @@ export function VoiceContent() {
       <VoiceExample />
 
       <div className="mt-14">
-        <h2 id="pass-fail-rules" className="scroll-mt-24 reference-section-title">The pass/fail rules</h2>
+        <Heading as="h2" id="pass-fail-rules" className="scroll-mt-24 reference-section-title">The pass/fail rules</Heading>
         <p className="measure mt-2 text-sm leading-6 text-muted-foreground">These are binary checks. If a draft violates any of them, it fails review.</p>
         <ol className="mt-6 grid gap-x-10 border-t border-border lg:grid-cols-2">
           {VOICE_RULES.map((rule, index) => (
@@ -33,7 +34,7 @@ export function VoiceContent() {
       </div>
 
       <div className="mt-14">
-        <h2 className="reference-section-title">Use this, not that</h2>
+        <Heading as="h2" className="reference-section-title">Use this, not that</Heading>
         <div className="mt-5 overflow-hidden rounded-lg border border-border bg-white">
           <div className="grid grid-cols-2 bg-og-midnight px-5 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white">
             <span className="text-og-green">Use</span>

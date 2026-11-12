@@ -1,3 +1,4 @@
+import { Heading } from "@/components/layout/Heading";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Swatch } from "@/components/brand/Swatch";
 import { COLOR_GROUPS, GRADIENTS } from "@/data/tokens";
@@ -15,7 +16,7 @@ export default function VisualIdentity() {
       {COLOR_GROUPS.map((group) => (
         <section key={group.title} className="container py-8">
           <div className="mb-6 max-w-2xl">
-            <h2 className="text-2xl font-bold">{group.title}</h2>
+            <Heading as="h2" className="text-2xl font-bold">{group.title}</Heading>
             {group.note && (
               <p className="mt-2 text-sm text-muted-foreground">{group.note}</p>
             )}
@@ -31,7 +32,7 @@ export default function VisualIdentity() {
       {/* Gradients */}
       <section className="container py-8">
         <div className="mb-6 max-w-2xl">
-          <h2 className="text-2xl font-bold">Gradients</h2>
+          <Heading as="h2" className="text-2xl font-bold">Gradients</Heading>
           <p className="mt-2 text-sm text-muted-foreground">
             The signature is Green to Cyan on dark. Reserve gradients for the
             payoff line, one per section.
@@ -65,7 +66,7 @@ export default function VisualIdentity() {
       {/* Logo */}
       <section className="container py-8">
         <div className="mb-6 max-w-2xl">
-          <h2 className="text-2xl font-bold">Logo</h2>
+          <Heading as="h2" className="text-2xl font-bold">Logo</Heading>
           <p className="mt-2 text-sm text-muted-foreground">
             White wordmark with Groovy Green rings on Midnight. On white, the
             wordmark is Midnight (ring green pending an open audit decision).
