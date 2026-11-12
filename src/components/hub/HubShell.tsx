@@ -1,11 +1,12 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { HUB_NAV } from "@/data/hub";
 import { SearchBox } from "./HubSearch";
 import { jumpTo } from "@/lib/hub-navigation";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { cn } from "@/lib/utils";
+import { useAccess } from "@/hooks/use-access";
 
 export { SearchBox } from "./HubSearch";
 export { jumpTo } from "@/lib/hub-navigation";
@@ -33,6 +34,8 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const navigate = useNavigate();
+  // External internal sites (Product Hub) are staff-only; guests can't sign in to them.
+  const isGuest = useAccess() === "guest";
 
   function chooseSection(id: string) {
     if (document.getElementById(id)) {
@@ -76,6 +79,22 @@ export function Sidebar({
                 {group.label}
               </h2>
               <ul className="ml-3 mt-1.5 space-y-0.5 border-l border-og-midnight/10 pl-2">
+                {group.externalLink && !isGuest && (
+                  <li>
+                    <a
+                      href={group.externalLink.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(NAV_ITEM_CLASS, NAV_ITEM_IDLE, "group flex items-center justify-between gap-2 font-semibold")}
+                    >
+                      {group.externalLink.label}
+                      <span aria-hidden="true" className="grid h-5 w-5 place-items-center rounded bg-og-midnight transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px">
+                        <ArrowUpRight size={12} strokeWidth={2.5} className="text-og-green" />
+                      </span>
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </li>
+                )}
                 {group.items.map((item) => (
                   <li key={item.id}>
                     {item.disabled ? (

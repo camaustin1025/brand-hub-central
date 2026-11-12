@@ -20,6 +20,8 @@ export type HubNavGroup = {
   items: HubNavItem[];
   /** The group title is itself the link to its single item, with no list under it. */
   linkTitle?: boolean;
+  /** An emphasized row at the top of the group's list that opens another internal site in a new tab. */
+  externalLink?: { label: string; href: string };
 };
 
 export const DESIGN_CANVAS_PATH = "/design-canvas";
@@ -162,6 +164,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
   },
   {
     label: "Resources",
+    externalLink: { label: "Product Hub", href: "https://product.ordergroove.com/" },
     items: [
       {
         id: "ai-skills",
