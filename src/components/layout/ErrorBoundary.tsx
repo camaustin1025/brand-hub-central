@@ -25,7 +25,7 @@ export class ErrorBoundary extends Component<
         <div className="container flex min-h-[60vh] flex-col items-center justify-center text-center">
           <p className="eyebrow mb-3">Something broke</p>
           <h1 className="text-3xl font-extrabold">This section hit a snag</h1>
-          <p className="mt-3 max-w-md text-muted-foreground">
+          <p className="mt-3 max-w-md text-foreground">
             Try reloading the page. If it keeps happening, flag it to Brand &amp;
             Content.
           </p>

@@ -215,7 +215,7 @@ function Panel({ title, note, children }: { title: string; note?: string; childr
     <section className="mt-10 first:mt-0">
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <h2 className="text-lg font-bold text-og-midnight">{title}</h2>
-        {note && <p className="text-sm text-muted-foreground">{note}</p>}
+        {note && <p className="text-sm text-foreground">{note}</p>}
       </div>
       {children}
     </section>

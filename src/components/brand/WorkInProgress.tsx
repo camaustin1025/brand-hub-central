@@ -21,7 +21,7 @@ export function WipTag({ id, className }: { id?: string; className?: string }) {
 /** Banner at the top of a page or section head. */
 export function WipNotice() {
   return (
-    <p className="mb-8 flex items-start gap-3 rounded-lg bg-og-midnight px-4 py-3 text-sm leading-5 text-white/85">
+    <p className="mb-8 flex items-start gap-3 rounded-lg bg-og-midnight px-4 py-3 text-sm leading-5 text-white">
       <span aria-hidden="true" className={cn(TAG_CLASS, "mt-px px-2 py-1 text-[11px]")}>WIP</span>
       <span>
         <strong className="font-bold text-white">Work in progress.</strong> This guidance is still being finalized and may change.

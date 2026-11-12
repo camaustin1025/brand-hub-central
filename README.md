@@ -49,6 +49,7 @@ npm run lint
 - **Light by default.** The page canvas is a soft off-white (`#F5F5F8`) with white cards. Midnight (`#17132F`) is used for accent islands (hero, footer, preview tiles), each wrapped in a `.dark` class so shadcn tokens flip correctly.
 - **The green contrast rule is structural.** `.dark` islands resolve green to `#00FF85`; light surfaces resolve it to `#009A50`. The `<Swatch>` component also renders a live WCAG contrast badge. Never green text on white.
 - **Type:** Figtree everywhere, self-hosted. Headings run tight (negative tracking, ~1.08 leading), green ALL-CAPS tracked eyebrows.
+- **Text color:** Paragraphs, descriptions, instructions and explanatory list copy use `text-foreground`: Midnight (`#17132F`) on light surfaces, the light foreground on `.dark` surfaces. Reserve `text-muted-foreground` for small supporting labels, counts, dates, captions and metadata. Small font size alone does not make a paragraph supporting text. Use these shared semantic tokens instead of page-specific gray values or opacity for reading copy.
 - **Modules:** uniform 20px radius, fully-rounded pill buttons, matching the live ordergroove.com site and the Carta brand hub. The asymmetric "Visual Container" brand shape is available as an opt-in accent (`.notch-br`).
 - **Nav:** simplified to Guidelines (dropdown) / Downloads / More (dropdown) + search.
 

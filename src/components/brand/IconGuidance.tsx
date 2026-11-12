@@ -107,14 +107,14 @@ export function IconGuidance() {
       <dl className="grid gap-5 border-y border-border py-5 sm:grid-cols-3">
         <div>
           <dt className="text-sm font-semibold">Family</dt>
-          <dd className="mt-1 text-sm leading-6 text-muted-foreground">
+          <dd className="mt-1 text-sm leading-6 text-foreground">
             <a href={MATERIAL_SYMBOLS_LIBRARY_URL} target="_blank" rel="noopener noreferrer" className="action-focus inline-flex items-center gap-1 underline underline-offset-4">
               Material Symbols Rounded <ArrowUpRight size={15} aria-hidden="true" />
             </a>
           </dd>
         </div>
         {[["Icon size", "48 × 48 in the source library"], ["Tile proportions", "80px circle, 48px icon (60%)"]].map(([label, value]) => (
-          <div key={label}><dt className="text-sm font-semibold">{label}</dt><dd className="mt-1 text-sm leading-6 text-muted-foreground">{value}</dd></div>
+          <div key={label}><dt className="text-sm font-semibold">{label}</dt><dd className="mt-1 text-sm leading-6 text-foreground">{value}</dd></div>
         ))}
       </dl>
 

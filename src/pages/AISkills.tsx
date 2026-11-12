@@ -40,7 +40,7 @@ export default function AISkills() {
                 className="visual-container border border-border bg-card p-5"
               >
                 <code className="text-sm font-semibold text-primary">{s.name}</code>
-                <p className="mt-2 text-sm text-muted-foreground">{s.body}</p>
+                <p className="mt-2 text-sm text-foreground">{s.body}</p>
               </div>
             ))}
           </div>
@@ -51,7 +51,7 @@ export default function AISkills() {
             <Heading as="h2" className="text-lg font-bold">The brand assistant</Heading>
             <DraftBadge>Pilot stretch goal</DraftBadge>
           </div>
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-3 text-sm text-foreground">
             A hub assistant that answers brand questions from the full canon,
             lives on the homepage, and logs every question and answer so the
             guide keeps improving. Planned as an edge function once the core

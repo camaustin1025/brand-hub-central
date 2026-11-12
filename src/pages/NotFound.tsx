@@ -7,7 +7,7 @@ export default function NotFound() {
     <div className="container flex min-h-[60vh] flex-col items-center justify-center text-center">
       <p className="eyebrow mb-3">404</p>
       <Heading as="h1" className="text-4xl font-extrabold">This page isn't on the hub</Heading>
-      <p className="mt-3 max-w-md text-muted-foreground">
+      <p className="mt-3 max-w-md text-foreground">
         The link may be from the old Frontify site. Everything is being re-homed
         here.
       </p>

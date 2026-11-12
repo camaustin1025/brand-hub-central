@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
  * head to lede, 24px lede to module. Padding: 24px boxes, 32px panels and rows.
  */
 const SECTION_HEAD = "text-[28px] font-bold leading-tight";
-const LEDE = "measure mt-3 leading-7 text-muted-foreground";
+const LEDE = "measure mt-3 leading-7 text-foreground";
 const ROW_GRID =
   "[@container(min-width:48rem)]:grid [@container(min-width:48rem)]:grid-cols-[16rem_minmax(0,1fr)] [@container(min-width:48rem)]:gap-x-8";
 
@@ -97,7 +97,7 @@ export function FoundationContent() {
               <Heading as="h3" className="mt-4 text-2xl font-bold leading-tight">{segment.name}</Heading>
               <p className={cn("mt-2 font-semibold leading-7", index < 2 && "text-og-green")}>{segment.revenue}</p>
               <p className="mt-3 leading-7">{segment.description}</p>
-              <p className={cn("mt-5 border-t pt-4 leading-7", index < 2 ? "border-white/20" : "border-border text-muted-foreground")}>{segment.detail}</p>
+              <p className={cn("mt-5 border-t pt-4 leading-7", index < 2 ? "border-white/20" : "border-border text-foreground")}>{segment.detail}</p>
             </li>
           ))}
         </ol>
@@ -118,9 +118,9 @@ export function FoundationContent() {
             <li key={item.group} className="row-span-4 grid grid-rows-subgrid gap-0 rounded-lg border border-border bg-white p-6">
               <TintedIcon name={item.icon} className="mb-4" />
               <Heading as="h3" className="text-lg font-bold leading-7">{item.group}</Heading>
-              <p className="measure mb-5 mt-2 leading-7 text-muted-foreground">{item.roles}</p>
+              <p className="measure mb-5 mt-2 leading-7 text-foreground">{item.roles}</p>
               <div className="border-t border-border pt-4">
-                <p className="measure leading-7 text-muted-foreground">{item.cares}</p>
+                <p className="measure leading-7 text-foreground">{item.cares}</p>
               </div>
             </li>
           ))}
@@ -161,7 +161,7 @@ export function FoundationContent() {
               {/* Wide: pt-1 matches the title, which sits on the 24px numeral's baseline. */}
               <div className="mt-3 [@container(min-width:48rem)]:mt-0 [@container(min-width:48rem)]:pt-1">
                 <p className="measure font-semibold leading-7 text-foreground">{item.tagline}</p>
-                <p className="measure mt-1 leading-7 text-muted-foreground">{item.body}</p>
+                <p className="measure mt-1 leading-7 text-foreground">{item.body}</p>
               </div>
             </li>
           ))}
@@ -170,7 +170,7 @@ export function FoundationContent() {
 
       <section aria-labelledby="foundation-boilerplate" className="rounded-lg border border-border bg-white p-6">
         <Heading as="h2" id="foundation-boilerplate" className="scroll-mt-24 text-lg font-bold">Company boilerplate</Heading>
-        <p className="mt-3 leading-7 text-muted-foreground">
+        <p className="mt-3 leading-7 text-foreground">
           <a href="http://ordergroove.com/?utm_source=pr&utm_medium=press&utm_campaign=0926q3_goop_email_press_all&utm_content=demo&" className="font-bold text-foreground underline underline-offset-4">Ordergroove</a>{" "}
           is the enterprise standard for subscriptions and recurring revenue in the autonomous commerce era. Agent-friendly by architecture and trained on the largest subscription data set in enterprise commerce, Ordergroove powers the world’s most iconic brands, including L’Oréal, PetSmart, Keurig, Manscaped, Liquid I.V., Mattel, and Fiji Water. Across every channel, from storefront to retail to the next AI interface, Ordergroove turns one-time buyers into lasting relationships. Learn more at ordergroove.com.
         </p>

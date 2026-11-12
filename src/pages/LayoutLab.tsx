@@ -51,7 +51,7 @@ function Group({ id, title, problem, children }: { id: string; title: string; pr
     <section id={id} className="scroll-mt-20 border-t border-border py-16">
       <Wrap>
         <h2 className="text-3xl font-extrabold md:text-[42px]">{title}</h2>
-        <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{problem}</p>
+        <p className="measure mt-4 text-lg leading-[1.6] text-foreground">{problem}</p>
       </Wrap>
       {children}
     </section>
@@ -74,8 +74,8 @@ function Option({ code, name, why, cost, bleed = false, children }: {
           <h3 className="text-2xl font-bold">{name}</h3>
         </div>
         <dl className="mt-3 grid gap-x-10 gap-y-1 text-sm leading-6 sm:grid-cols-2">
-          <div><dt className="inline font-semibold">Gains: </dt><dd className="inline text-muted-foreground">{why}</dd></div>
-          <div><dt className="inline font-semibold">Costs: </dt><dd className="inline text-muted-foreground">{cost}</dd></div>
+          <div><dt className="inline font-semibold">Gains: </dt><dd className="inline text-foreground">{why}</dd></div>
+          <div><dt className="inline font-semibold">Costs: </dt><dd className="inline text-foreground">{cost}</dd></div>
         </dl>
       </Wrap>
       {bleed ? children : <Wrap>{children}</Wrap>}
@@ -391,7 +391,7 @@ function PairedTiles() {
           <div className="flex flex-wrap items-center justify-between gap-3 p-4">
             <div>
               <p className="font-semibold">{pair.name}</p>
-              <p className="text-sm text-muted-foreground">{pair.note}</p>
+              <p className="text-sm text-foreground">{pair.note}</p>
             </div>
             <div className="flex gap-2">
               {pair.items.map((asset) => (
@@ -413,7 +413,7 @@ function DownloadList() {
           <Preview asset={asset} className={cn("h-14 rounded-md", surface(asset) === "light" && "ring-1 ring-inset ring-border")} logoWidth="w-[86%]" markHeight="h-10" />
           <div className="min-w-0">
             <p className="text-sm font-semibold">{asset.title}</p>
-            <p className="truncate text-sm text-muted-foreground">{asset.description}</p>
+            <p className="truncate text-sm text-foreground">{asset.description}</p>
           </div>
           <DownloadChip href={asset.href!} label={asset.formats[0]} title={asset.title} />
         </div>
@@ -506,10 +506,10 @@ function ColorBand() {
           {SECONDARY.swatches.map((item) => <CopyChip key={item.hex} item={item} size="sm" className="h-20 rounded-none" />)}
         </div>
       </div>
-      <div className="mt-4 grid gap-x-4 gap-y-3 text-sm leading-6 text-muted-foreground md:grid-cols-4">
+      <div className="mt-4 grid gap-x-4 gap-y-3 text-sm leading-6 text-foreground md:grid-cols-4">
         {CORE.swatches.map((item) => <p key={item.hex}><strong className="text-foreground">{item.name}:</strong> {item.usage}</p>)}
       </div>
-      <p className="mt-3 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">Secondary:</strong> {SECONDARY.note}</p>
+      <p className="mt-3 text-sm leading-6 text-foreground"><strong className="text-foreground">Secondary:</strong> {SECONDARY.note}</p>
     </div>
   );
 }
@@ -552,7 +552,7 @@ function PickerDetail() {
               </button>
             ))}
           </div>
-          <p className="text-sm leading-6 text-muted-foreground">{selected.usage}</p>
+          <p className="text-sm leading-6 text-foreground">{selected.usage}</p>
           <div className="flex gap-2 text-xs font-semibold">
             <span className={cn("rounded-full px-2.5 py-1", selected.onDark ? "bg-og-midnight text-og-green" : "bg-og-gray-950 text-og-gray-400 line-through")}>On dark</span>
             <span className={cn("rounded-full border px-2.5 py-1", selected.onLight ? "border-og-midnight" : "border-border text-og-gray-400 line-through")}>On light</span>
@@ -570,7 +570,7 @@ export default function LayoutLab() {
     <HubShell activeId="">
       <Wrap className="pb-12 pt-14">
         <h1 className="text-4xl font-extrabold md:text-5xl">Home page layout lab</h1>
-        <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">
+        <p className="measure mt-4 text-lg leading-[1.6] text-foreground">
           Three options for each element, built with the hub's real assets and data. Hover, click, and copy to try them.
         </p>
         <nav className="mt-6 flex flex-wrap gap-2" aria-label="Lab sections">
@@ -646,7 +646,7 @@ export default function LayoutLab() {
           </div>
           <div className="mt-10 rounded-lg border border-border bg-white p-6">
             <h3 className="text-lg font-bold">{SECONDARY.title}</h3>
-            <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{SECONDARY.note}</p>
+            <p className="measure mt-1 text-sm leading-6 text-foreground">{SECONDARY.note}</p>
             <div className="mt-3 grid gap-x-8 sm:grid-cols-2 lg:max-w-[680px]">
               {SECONDARY.swatches.map((item) => <MiniSwatch key={item.hex} name={item.name} hex={item.hex} />)}
             </div>

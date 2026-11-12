@@ -101,19 +101,19 @@ export function ColorTile({ swatch, hideUsage }: { swatch: Swatch; hideUsage?: b
           {copied ? (
             <Check size={12} aria-hidden />
           ) : (
-            <Copy size={12} aria-hidden className="text-og-gray-400 group-hover:text-og-midnight" />
+            <Copy size={12} aria-hidden className="text-muted-foreground group-hover:text-og-midnight" />
           )}
         </span>
-        <span className="mt-1 block font-mono text-[11px] leading-snug text-og-gray-400">
+        <span className="mt-1 block font-mono text-[11px] leading-snug text-muted-foreground">
           RGB: {swatch.rgb.replace(/,/g, "")}
         </span>
         {swatch.cmyk && (
-          <span className="mt-0.5 block font-mono text-[11px] leading-snug text-og-gray-400">
+          <span className="mt-0.5 block font-mono text-[11px] leading-snug text-muted-foreground">
             CMYK: {swatch.cmyk.replace(/,/g, "")}
           </span>
         )}
         {swatch.pantone && (
-          <span className="mt-0.5 block font-mono text-[11px] leading-snug text-og-gray-400">
+          <span className="mt-0.5 block font-mono text-[11px] leading-snug text-muted-foreground">
             Pantone: {swatch.pantone}
           </span>
         )}

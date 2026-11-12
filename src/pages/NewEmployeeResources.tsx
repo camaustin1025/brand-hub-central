@@ -66,7 +66,7 @@ export default function NewEmployeeResources() {
       >
         <section id="announce" aria-labelledby="announce-heading" className="scroll-mt-24">
           <Heading as="h2" id="announce-heading" className="reference-section-title">Announce your new role</Heading>
-          <p className="measure mt-3 leading-7 text-muted-foreground">
+          <p className="measure mt-3 leading-7 text-foreground">
             Pick a design, add your photo and job title, then download a PNG to post on LinkedIn.
           </p>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -100,7 +100,7 @@ export default function NewEmployeeResources() {
                 <span aria-hidden="true" className="grid size-8 place-items-center rounded-full bg-og-midnight text-sm font-bold tabular-nums text-white">{index + 1}</span>
                 <div>
                   <Heading as="h3" className="reference-item-title">{step.title}</Heading>
-                  <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{step.body}</p>
+                  <p className="measure mt-1 text-sm leading-6 text-foreground">{step.body}</p>
                 </div>
                 <Link to={step.to} className="action-focus inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold underline underline-offset-4">
                   {step.action}

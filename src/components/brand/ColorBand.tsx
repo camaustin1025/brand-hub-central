@@ -59,13 +59,13 @@ export function ColorBand({ core, secondary }: { core: SwatchGroup; secondary: S
           {secondary.swatches.map((swatch) => <BandBlock key={swatch.hex} swatch={swatch} small />)}
         </div>
       </div>
-      <div className="mt-4 grid gap-x-4 gap-y-3 text-sm leading-6 text-muted-foreground sm:grid-cols-2 md:grid-cols-4">
+      <div className="mt-4 grid gap-x-4 gap-y-3 text-sm leading-6 text-foreground sm:grid-cols-2 md:grid-cols-4">
         {core.swatches.map((swatch) => (
           <p key={swatch.hex}><strong className="text-foreground">{swatch.name}:</strong> {swatch.usage}</p>
         ))}
       </div>
       {secondary.note && (
-        <p className="mt-3 text-sm leading-6 text-muted-foreground"><strong className="text-foreground">{secondary.title}:</strong> {secondary.note}</p>
+        <p className="mt-3 text-sm leading-6 text-foreground"><strong className="text-foreground">{secondary.title}:</strong> {secondary.note}</p>
       )}
     </div>
   );

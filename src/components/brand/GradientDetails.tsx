@@ -22,7 +22,7 @@ export function GradientDetails() {
         />
         <div className="p-6">
           <Heading as="h4" className="text-xl font-bold">{BACKGROUND_GRADIENT.name}</Heading>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          <p className="mt-2 text-sm leading-6 text-foreground">
             Download the PNG for backgrounds or copy the CSS for web.
           </p>
           <dl className="mt-5 space-y-4">

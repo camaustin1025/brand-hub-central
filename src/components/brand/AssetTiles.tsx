@@ -24,7 +24,7 @@ export function AssetTiles({ assets }: { assets: Asset[] }) {
             <div className={cn("space-y-3 p-3 sm:p-4", single && "sm:p-6")}>
               <div>
                 <Heading as="h4" className="text-sm font-semibold leading-snug">{logo ? asset.tags.includes("logomark") ? "Logomark" : "Full logo" : asset.title}</Heading>
-                <p className="mt-1 text-xs leading-5 text-muted-foreground">{logo ? light ? "Light backgrounds" : "Dark backgrounds" : asset.description}</p>
+                <p className={cn("mt-1 text-xs leading-5", logo ? "text-muted-foreground" : "text-foreground")}>{logo ? light ? "Light backgrounds" : "Dark backgrounds" : asset.description}</p>
               </div>
               <AssetDownloads asset={asset} />
             </div>

@@ -27,7 +27,7 @@ function ResourceRow({ resource: r, step = false }: { resource: AiResource; step
   return <>
     <tr className={step ? 'resource-row resource-step' : 'resource-row'}>
       <td className="resource-main">
-        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><Heading as="h3" className="resource-title">{r.title}</Heading><p className="resource-description text-og-gray-400">{r.body}</p></div></div>
+        <div className="resource-identity"><PlatformIcon resource={r} /><div className="min-w-0"><Heading as="h3" className="resource-title">{r.title}</Heading><p className="resource-description text-foreground">{r.body}</p></div></div>
       </td>
       <td className="resource-actions">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -59,11 +59,11 @@ function WorkflowRow({ entry: w, searching }: { entry: Extract<DirectoryEntry, {
   return <>
     <tr className="resource-row">
       <td className="resource-main">
-        <div className="resource-identity"><PlatformIcon resource={w.steps[0]} /><div className="min-w-0"><Heading as="h3" className="resource-title">{w.title}<span className="font-normal text-og-gray-400"> · {w.total} steps</span></Heading><p className="resource-description text-og-gray-400">{w.body}</p></div></div>
+        <div className="resource-identity"><PlatformIcon resource={w.steps[0]} /><div className="min-w-0"><Heading as="h3" className="resource-title">{w.title}<span className="font-normal text-muted-foreground"> · {w.total} steps</span></Heading><p className="resource-description text-foreground">{w.body}</p></div></div>
       </td>
       <td className="resource-actions">
         {searching
-          ? <p className="text-[13px] text-og-gray-400">{w.steps.length === w.total ? 'All steps match' : `${w.steps.length} of ${w.total} steps match`}</p>
+          ? <p className="text-[13px] text-muted-foreground">{w.steps.length === w.total ? 'All steps match' : `${w.steps.length} of ${w.total} steps match`}</p>
           : <button type="button" className="action-focus inline-flex min-h-11 items-center gap-1 rounded-sm text-[13px] font-semibold underline decoration-og-midnight/25 underline-offset-4 transition-colors hover:decoration-og-midnight" aria-expanded={expanded} onClick={() => setOpen(!open)}>
               {expanded ? 'Hide steps' : `Show ${w.total} steps`}<ChevronDown size={15} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} aria-hidden="true" /><span className="sr-only">: {w.title}</span>
             </button>}
@@ -108,7 +108,7 @@ export function AiResources() {
         </div>
       </div>
       <div className="my-3 flex min-h-6 items-center justify-between gap-4 text-sm"><p role="status" aria-live="polite">{results.length} {results.length === 1 ? 'resource' : 'resources'}{type && ` · ${type}`}{team && ` · Skills for ${team}`}</p>{(query || type || team) && <button className={`${LINK} min-h-11`} onClick={clear}>Clear filters</button>}</div>
-      {results.length > 0 && <table className="resource-table w-full border-collapse text-left text-sm">
+      {results.length > 0 && <table className="resource-table w-full border-collapse border border-border text-left text-sm">
         <caption className="sr-only">AI resources and access links, grouped by type</caption>
         <thead><tr><th scope="col">Resource</th><th scope="col">Access</th></tr></thead>
         {sections.map(s => <tbody key={s.id}>
@@ -116,7 +116,7 @@ export function AiResources() {
           {s.entries.map(e => e.kind === 'resource' ? <ResourceRow key={e.resource.id} resource={e.resource} /> : <WorkflowRow key={e.id} entry={e} searching={searching} />)}
         </tbody>)}
       </table>}
-      {!results.length && <div className="border-y border-border py-12 text-center"><Heading as="h3" className="text-lg font-bold">No matching resources</Heading><p className="mt-2 text-muted-foreground">Try a different search or clear your filters.</p><button onClick={clear} className={`${LINK} mt-5 min-h-11`}>Clear filters</button></div>}
+      {!results.length && <div className="border-y border-border py-12 text-center"><Heading as="h3" className="text-lg font-bold">No matching resources</Heading><p className="mt-2 text-foreground">Try a different search or clear your filters.</p><button onClick={clear} className={`${LINK} mt-5 min-h-11`}>Clear filters</button></div>}
     </section>
     <section id="ai-sharing" className="sharing-panel dark scroll-mt-24">
       <span id="ai-start-here" className="scroll-mt-24" />
@@ -133,7 +133,7 @@ export function AiResources() {
         </div>
       </div>
     </section>
-    <section id="ai-connectors" className="mt-12 scroll-mt-24 border-t border-border pt-8"><Heading as="h2" className="reference-section-title">Get a new tool approved</Heading><p className="mt-3 text-sm leading-6">Get approval before connecting a tool. Questions: <External href={SECURITY_CHANNEL.url}>{SECURITY_CHANNEL.label}</External>. Reviews: <External href={INFOSEC_CHANNEL.url}>{INFOSEC_CHANNEL.label}</External>.</p><ol className="mt-5 list-decimal space-y-4 pl-5 text-sm">{APPROVAL_STEPS.map(s => <li key={s.link.url}><External href={s.link.url}>{s.link.label}</External><p className="mt-1 leading-6 text-muted-foreground">{s.body}</p></li>)}</ol><p className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm"><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p></section>
+    <section id="ai-connectors" className="mt-12 scroll-mt-24 border-t border-border pt-8"><Heading as="h2" className="reference-section-title">Get a new tool approved</Heading><p className="mt-3 text-sm leading-6">Get approval before connecting a tool. Questions: <External href={SECURITY_CHANNEL.url}>{SECURITY_CHANNEL.label}</External>. Reviews: <External href={INFOSEC_CHANNEL.url}>{INFOSEC_CHANNEL.label}</External>.</p><ol className="mt-5 list-decimal space-y-4 pl-5 text-sm">{APPROVAL_STEPS.map(s => <li key={s.link.url}><External href={s.link.url}>{s.link.label}</External><p className="mt-1 leading-6 text-foreground">{s.body}</p></li>)}</ol><p className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm"><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p></section>
 
   </div>;
 }

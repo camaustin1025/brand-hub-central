@@ -45,7 +45,7 @@ const TASKS: Task[] = [
     preview: (
       <span className="flex h-full flex-col justify-center gap-2 bg-[#F4F3F8] px-5 text-[13px] font-semibold">
         <span className="flex items-center gap-2"><Check size={15} className="shrink-0 text-og-green-light" />Ready on day one</span>
-        <span className="flex items-center gap-2 text-og-midnight/70 line-through decoration-og-midnight/50"><X size={15} className="shrink-0" />Out of the box</span>
+        <span className="flex items-center gap-2 text-muted-foreground line-through decoration-og-midnight/50"><X size={15} className="shrink-0" />Out of the box</span>
       </span>
     ),
   },

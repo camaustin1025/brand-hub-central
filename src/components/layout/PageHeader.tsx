@@ -13,7 +13,7 @@ export function PageHeader({
       <p className="eyebrow mb-3">{eyebrow}</p>
       <Heading as="h1" className="text-4xl font-extrabold leading-tight md:text-5xl">{title}</Heading>
       {subhead && (
-        <p className="mt-4 text-lg text-muted-foreground md:text-xl">{subhead}</p>
+        <p className="mt-4 text-lg text-foreground md:text-xl">{subhead}</p>
       )}
     </div>
   );

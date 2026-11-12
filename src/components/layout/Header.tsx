@@ -22,7 +22,7 @@ function NavGroup({ label, items }: { label: string; items: NavItem[] }) {
               className="block rounded-lg px-3 py-2.5 transition-colors hover:bg-secondary"
             >
               <span className="block text-sm font-semibold">{item.label}</span>
-              <span className="block text-xs text-muted-foreground">{item.blurb}</span>
+              <span className="block text-xs text-foreground">{item.blurb}</span>
             </NavLink>
           ))}
         </div>

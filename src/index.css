@@ -61,7 +61,7 @@
     --secondary: 240 20% 97%;
     --secondary-foreground: 249 42% 13%;
     --muted: 240 20% 97%;
-    --muted-foreground: 248.571 42.424% 12.941%;
+    --muted-foreground: 250.435 10.502% 42.941%; /* Slate #666279: small supporting labels only */
     --accent: 240 20% 97%;
     --accent-foreground: 249 42% 13%;
     --destructive: 346 65% 50%;
@@ -125,6 +125,11 @@
 }
 
 @layer components {
+  /* Text roles across the hub: paragraph and explanatory copy use text-foreground
+     (Midnight on light surfaces, light on .dark surfaces). Only small labels,
+     counts, dates, captions and metadata use text-muted-foreground. Do not mute
+     paragraph copy or its parent container, even when the font size is small. */
+
   /* Shared reference hierarchy. Use these roles on guides, galleries and updates;
      compact directory group labels and editor controls retain their task-specific scale. */
   .reference-section-title {
@@ -251,7 +256,7 @@ html[data-guest] section[aria-labelledby="nav-employee-resources"] {
 .resource-group th { padding: 2rem 1rem .625rem; border-bottom: 1px solid hsl(var(--border)); }
 .resource-table tbody:first-of-type .resource-group th { padding-top: 1.25rem; }
 .resource-group h2 { display: flex; align-items: baseline; gap: .5rem; font-size: 1.125rem; line-height: 1.5rem; font-weight: 700; color: hsl(var(--foreground)); letter-spacing: -.01em; }
-.resource-group-count { font-size: .8125rem; font-weight: 500; color: theme('colors.og.gray.400'); font-variant-numeric: tabular-nums; }
+.resource-group-count { margin-inline-start: .75rem; font-size: .8125rem; font-weight: 500; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; }
 /* Workflow steps sit indented under their parent row. */
 .resource-step.resource-row { background: #fcfcfd; }
 .resource-step .resource-main, .resource-step.resource-expanded td { padding-left: 3.25rem; }
@@ -275,7 +280,7 @@ html[data-guest] section[aria-labelledby="nav-employee-resources"] {
    group headings below them lead; thead only, so group headings keep their own style.
    The result count steps back to Slate (#666279, 5.9:1 on white). */
 .ai-directory .resource-table thead th { font-size: .6875rem; line-height: 1rem; color: theme('colors.og.midnight'); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
-.ai-directory [role="status"] { font-size: .8125rem; color: theme('colors.og.gray.400'); font-variant-numeric: tabular-nums; }
+.ai-directory [role="status"] { font-size: .8125rem; color: hsl(var(--muted-foreground)); font-variant-numeric: tabular-nums; }
 .ai-directory #ai-connectors h2 { font-size: 1.5rem; line-height: 1.875rem; font-weight: 600; letter-spacing: -.015em; }
 .ai-directory #ai-connectors p, .ai-directory #ai-connectors li { font-size: 1rem; line-height: 1.625; text-wrap: pretty; }
 /* The site measure (50ch renders 68-75 Figtree characters); 70ch ran past 100. */

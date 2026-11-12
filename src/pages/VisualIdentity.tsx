@@ -18,7 +18,7 @@ export default function VisualIdentity() {
           <div className="mb-6 max-w-2xl">
             <Heading as="h2" className="text-2xl font-bold">{group.title}</Heading>
             {group.note && (
-              <p className="mt-2 text-sm text-muted-foreground">{group.note}</p>
+              <p className="mt-2 text-sm text-foreground">{group.note}</p>
             )}
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -33,7 +33,7 @@ export default function VisualIdentity() {
       <section className="container py-8">
         <div className="mb-6 max-w-2xl">
           <Heading as="h2" className="text-2xl font-bold">Gradients</Heading>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-foreground">
             The signature is Green to Cyan on dark. Reserve gradients for the
             payoff line, one per section.
           </p>
@@ -67,7 +67,7 @@ export default function VisualIdentity() {
       <section className="container py-8">
         <div className="mb-6 max-w-2xl">
           <Heading as="h2" className="text-2xl font-bold">Logo</Heading>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-foreground">
             White wordmark with Groovy Green rings on Midnight. On white, the
             wordmark is Midnight (ring green pending an open audit decision).
           </p>

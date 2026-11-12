@@ -43,7 +43,7 @@ function ControlGroup({ label, hint, children }: { label: string; hint?: string;
     <div>
       <p id={id} className="text-sm font-semibold">{label}</p>
       <div role="group" aria-labelledby={id} className="mt-2 flex flex-wrap gap-2">{children}</div>
-      {hint && <p className="mt-2 max-w-[60ch] text-xs leading-5 text-muted-foreground">{hint}</p>}
+      {hint && <p className="mt-2 max-w-[60ch] text-xs leading-5 text-foreground">{hint}</p>}
     </div>
   );
 }
@@ -198,7 +198,7 @@ export function IconLibrary() {
           {zipLabel}
         </button>
       </div>
-      <p className="mt-3 text-xs leading-5 text-muted-foreground">
+      <p className="mt-3 text-xs leading-5 text-foreground">
         Every ZIP has a folder per category, plus the Material Symbols license (Apache 2.0) and a notice. Icons not in this library? Use Material Symbols Rounded at weight 400, or ask Marketing.
       </p>
       <div className="mt-2 min-h-5 text-sm">

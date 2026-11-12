@@ -49,7 +49,7 @@ function Copy({ compact = false }: { compact?: boolean }) {
         <br />
         {HEADLINE[1]}
       </h1>
-      <p className="mt-6 max-w-lg text-lg leading-8 text-white/68">{SUBHEAD}</p>
+      <p className="mt-6 max-w-lg text-lg leading-8 text-white">{SUBHEAD}</p>
       <div className="relative z-20 mt-7 max-w-lg">
         <SearchBox hero />
         <Prompts />
@@ -277,7 +277,7 @@ function VariantE() {
           <br />
           {HEADLINE[1]}
         </h1>
-        <p className="mt-6 max-w-xl text-lg leading-8 text-white/68">{SUBHEAD}</p>
+        <p className="mt-6 max-w-xl text-lg leading-8 text-white">{SUBHEAD}</p>
         <div className="relative z-20 mt-8 w-full max-w-2xl">
           <SearchBox hero />
           <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
@@ -364,7 +364,7 @@ export default function HeroLab() {
       <header className="border-b border-border bg-white px-6 py-8 md:px-12">
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-og-green-light">Hero exploration</p>
         <h1 className="mt-2 text-3xl font-extrabold md:text-4xl">Five directions for the hub hero</h1>
-        <p className="mt-3 max-w-2xl text-base leading-7 text-og-gray-400">
+        <p className="mt-3 max-w-2xl text-base leading-7 text-foreground">
           Same copy in every frame so only the visual system is being compared. The current hero is the baseline
           problem: two blurred single circles, which breaks the pairs rule and reads as generic gradient glow.
         </p>
@@ -376,7 +376,7 @@ export default function HeroLab() {
             <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
               <div className="max-w-2xl">
                 <h2 className="text-2xl font-extrabold">{variant.name}</h2>
-                <p className="mt-2 text-[15px] leading-7 text-og-gray-300">{variant.idea}</p>
+                <p className="mt-2 text-[15px] leading-7 text-foreground">{variant.idea}</p>
               </div>
               <a
                 href={`#hero-${variant.id}`}
@@ -389,11 +389,11 @@ export default function HeroLab() {
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               <div className="rounded-lg border border-border bg-white p-4">
                 <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-og-green-light">Why it holds up</p>
-                <p className="mt-2 text-sm leading-6 text-og-gray-300">{variant.onBrand}</p>
+                <p className="mt-2 text-sm leading-6 text-foreground">{variant.onBrand}</p>
               </div>
               <div className="rounded-lg border border-border bg-white p-4">
                 <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-og-gray-400">Watch out</p>
-                <p className="mt-2 text-sm leading-6 text-og-gray-300">{variant.risk}</p>
+                <p className="mt-2 text-sm leading-6 text-foreground">{variant.risk}</p>
               </div>
             </div>
           </section>

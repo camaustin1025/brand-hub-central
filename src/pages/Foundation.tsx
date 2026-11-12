@@ -7,7 +7,7 @@ import { isWipSection } from "@/data/hub";
 /** Section ids from FoundationLadderPreview, in page order. Rename one there, rename it here. */
 const SECTIONS = [
   { id: "category", label: "The category we own" },
-  { id: "say-it", label: "Say it" },
+  { id: "say-it", label: "Pitches & boilerplate" },
   { id: "rights", label: "Rights to Win" },
   { id: "products", label: "Products" },
   { id: "audience", label: "Who we serve" },
@@ -15,7 +15,7 @@ const SECTIONS = [
 
 /**
  * Foundation & Messaging, built on the message ladder (ladder strip, category plate,
- * Say it shelf, Rights to Win, products, ICPs). The previous layout is
+ * Pitches & boilerplate, Rights to Win, products, ICPs). The previous layout is
  * components/brand/FoundationContent.tsx, kept until this one is committed.
  */
 export default function Foundation() {

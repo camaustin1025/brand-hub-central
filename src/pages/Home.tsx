@@ -26,7 +26,7 @@ export default function Home() {
           <div className="relative max-w-2xl">
             <p className="eyebrow mb-4">Ordergroove Brand Hub</p>
             <Heading as="h1" className="text-5xl font-extrabold md:text-6xl">The brand, in one place</Heading>
-            <p className="mt-5 max-w-xl text-lg text-muted-foreground md:text-xl">
+            <p className="mt-5 max-w-xl text-lg text-foreground md:text-xl">
               Everything you need to build on-brand subscriptions work: the
               guidelines, the assets, and the tools that keep it consistent.
             </p>
@@ -68,7 +68,7 @@ export default function Home() {
                         <span className="block font-semibold text-foreground transition-colors group-hover:text-primary">
                           {item.label}
                         </span>
-                        <span className="mt-0.5 block text-sm text-muted-foreground">
+                        <span className="mt-0.5 block text-sm text-foreground">
                           {item.blurb}
                         </span>
                       </span>

@@ -36,7 +36,7 @@ export function Swatch({ swatch }: { swatch: SwatchData }) {
             {swatch.hex}
           </button>
         </div>
-        <p className="measure text-sm text-muted-foreground">{swatch.usage}</p>
+        <p className="measure text-sm text-foreground">{swatch.usage}</p>
         <p role="status" className={error ? "text-xs text-muted-foreground" : "sr-only"}>
           {error ? `Copy unavailable. Select ${swatch.hex} to copy manually.` : copied ? `${swatch.name} hex copied` : ""}
         </p>

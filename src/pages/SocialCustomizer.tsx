@@ -480,7 +480,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
               <span>Saved in this browser</span>
               <Button type="button" variant="ghost" size="icon" aria-label="About browser storage" aria-expanded={storageInfoOpen} aria-controls="social-storage-info" onClick={() => setStorageInfoOpen((open) => !open)} className="h-8 w-8"><Info size={14} aria-hidden="true" /></Button>
             </div>
-            {storageInfoOpen && <div id="social-storage-info" className="space-y-2 text-xs leading-5 text-muted-foreground">
+            {storageInfoOpen && <div id="social-storage-info" className="space-y-2 text-xs leading-5 text-foreground">
               <p>Your draft and saved versions stay in this browser. They won’t appear on another device, so download anything you want to keep.</p>
               <p>Someone with access to this browser profile can access its stored data.</p>
             </div>}

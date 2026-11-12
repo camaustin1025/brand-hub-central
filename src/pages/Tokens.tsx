@@ -18,7 +18,7 @@ export default function Tokens() {
             <Heading as="h2" className="text-lg font-bold">Downloadable token kits</Heading>
             <DraftBadge>Generating after audit D1/D2</DraftBadge>
           </div>
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-3 text-sm text-foreground">
             tokens.json and tokens.css will publish here once the two open green
             decisions land (the logo-on-white ring green, and the Green-300 ramp
             value). Building them now would bake in a value we're about to

@@ -94,7 +94,7 @@ function HubSection({
           {isWipSection(id) && <WipNotice />}
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <Heading as="h2" className="text-3xl font-extrabold md:text-[42px]">{title}</Heading>
-          {intro && <p className="measure mt-4 text-lg leading-[1.6] text-muted-foreground">{intro}</p>}
+          {intro && <p className="measure mt-4 text-lg leading-[1.6] text-foreground">{intro}</p>}
         </div>
         {children}
       </div>
@@ -110,7 +110,7 @@ function FontKitRow({ asset }: { asset: Asset }) {
       <span aria-hidden="true" className="grid size-16 shrink-0 place-items-center rounded-lg bg-og-midnight text-[34px] font-extrabold leading-none tracking-[-0.04em] text-og-green">Aa</span>
       <div className="min-w-0 flex-1">
         <Heading as="h3" id="font-kit-title" className="text-xl font-bold">Download our font</Heading>
-        <p className="measure mt-1 text-sm leading-6 text-muted-foreground">{asset.description}</p>
+        <p className="measure mt-1 text-sm leading-6 text-foreground">{asset.description}</p>
       </div>
       <AssetDownloads asset={asset} />
     </article>
@@ -259,15 +259,15 @@ export default function BrandHub() {
           <div className="grid gap-x-8 gap-y-6 sm:grid-cols-3">
             <div>
               <Heading as="h4" className="text-base font-semibold">Sentence case, no trailing periods</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use for headings, labels, and subtitles. Eyebrows stay ALL CAPS.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Use for headings, labels, and subtitles. Eyebrows stay ALL CAPS.</p>
             </div>
             <div>
               <Heading as="h4" className="text-base font-semibold">Use Figtree only</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Check for fallback fonts in exports.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Check for fallback fonts in exports.</p>
             </div>
             <div>
               <Heading as="h4" className="text-base font-semibold">Keep display layouts simple</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use tight headline spacing and open body spacing. Match primary and secondary headline colors. Skip emoji.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Use tight headline spacing and open body spacing. Match primary and secondary headline colors. Skip emoji.</p>
             </div>
           </div>
           <LayoutExample />
@@ -294,19 +294,19 @@ export default function BrandHub() {
           <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
               <Heading as="h3" className="text-base font-semibold">Give it room</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Leave at least one logomark’s width of clear space on every side, including at page edges.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Leave at least one logomark’s width of clear space on every side, including at page edges.</p>
             </div>
             <div>
               <Heading as="h3" className="text-base font-semibold">Keep it readable</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Use plain Midnight or white backgrounds. Keep the logo crisp at its final size.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Use plain Midnight or white backgrounds. Keep the logo crisp at its final size.</p>
             </div>
             <div>
               <Heading as="h3" className="text-base font-semibold">Use the original file</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Scale proportionally. Don’t stretch, crop, rotate, recolor, outline, or add effects.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Scale proportionally. Don’t stretch, crop, rotate, recolor, outline, or add effects.</p>
             </div>
             <div>
               <Heading as="h3" className="text-base font-semibold">Need another version?</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-muted-foreground">Ask Marketing for large-format or single-color files.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Ask Marketing for large-format or single-color files.</p>
             </div>
           </div>
 
@@ -343,7 +343,7 @@ export default function BrandHub() {
                 <Heading as="h3" className="text-lg font-bold">Token kits</Heading>
                 <DraftBadge>Pending green approval</DraftBadge>
               </div>
-              <p className="measure mt-3 text-sm leading-6 text-muted-foreground">Both kits publish once the remaining green values are approved.</p>
+              <p className="measure mt-3 text-sm leading-6 text-foreground">Both kits publish once the remaining green values are approved.</p>
               <div className="mt-5 space-y-2">
                 {["tokens.json", "tokens.css"].map((file) => (
                   <div key={file} className="flex items-center justify-between rounded-lg bg-og-gray-950 px-3 py-2.5">
