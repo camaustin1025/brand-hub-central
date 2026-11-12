@@ -1,5 +1,22 @@
 [
   {
+    "date": "2026-11-11",
+    "changes": [
+      "Standardize reference page headers and typography across the hub",
+      "Add Working at OG WIP navigation and revise elevator pitches",
+      "Tighten homepage copy and simplify brand guidance",
+      "Move gradients into Color, drop nav arrows, add New employee resources",
+      "Add CMYK and Pantone codes to the color palette",
+      "Separate AI directory group headings from rows and column headers",
+      "Fit the AI directory filters on one line under the search",
+      "Put AI sharing rules in a Midnight panel and sharpen the directory hierarchy",
+      "Shrink hub buttons to two pill sizes and turn file downloads into links",
+      "Remove the sample questions under the homepage search",
+      "Put the homepage worktable back above the search band",
+      "Move Zoom backgrounds to their own page and put search first on the homepage"
+    ]
+  },
+  {
     "date": "2026-11-10",
     "changes": [
       "Replace Midnight loop background with logo-only version",
