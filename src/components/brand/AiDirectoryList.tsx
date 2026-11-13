@@ -6,7 +6,7 @@
 import { Heading } from "@/components/layout/Heading";
 import { useEffect, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { BookOpen, Boxes, ChevronDown, FileText, MessageCircle, Search, Sparkles, ArrowUpRight } from 'lucide-react';
+import { BookOpen, Boxes, ChevronDown, FileText, MessageCircle, Search, Sparkles } from 'lucide-react';
 import { AI_DIRECTORY, RESOURCE_TYPES, countByType, filterResources, groupResources, type AiResource, type DirectoryEntry, type DirectorySection } from '@/data/ai-directory';
 import { cn } from '@/lib/utils';
 import s from './AiResources.module.css';
@@ -86,9 +86,8 @@ function ResourceItem({ resource: r, placement, step, folded = false, rowStyle }
         <p className={cn(s.description, rowStyle?.description)}>{r.body}{inlineDetails && <> {detailsToggle}</>}</p>
       </div>
       <div className={s.actions}>
-        {r.url && !r.catalog && (r.type === 'Skills'
-          ? <a href={r.url} target="_blank" rel="noopener noreferrer" className={cn(s.openSkill, 'action-focus')}>Open skill<span className="sr-only">: {r.title} (opens in a new tab)</span></a>
-          : <External href={r.url} className={cn(s.textAction, s.textActionStrong, 'action-focus')}>{action}<ArrowUpRight size={13} aria-hidden="true" /><span className="sr-only">: {r.title}</span></External>)}
+        {/* Every direct link is the same 32px outline pill (Open skill, Open file, Open channel, Open). */}
+        {r.url && !r.catalog && <a href={r.url} target="_blank" rel="noopener noreferrer" className={cn(s.openPill, 'action-focus')}>{action}<span className="sr-only">: {r.title} (opens in a new tab)</span></a>}
         {!inlineDetails && detailsToggle}
       </div>
       {open && hasDetails && <div id={detailId} className={s.details}>

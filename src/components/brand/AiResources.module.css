@@ -27,12 +27,11 @@
 .description { margin-top: 2px; max-width: 70ch; font-size: 0.875rem; line-height: 1.25rem; text-wrap: pretty; color: hsl(var(--foreground)); }
 .actions { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
 
-.openSkill { display: inline-flex; height: 32px; align-items: center; justify-content: center; padding: 0 12px; white-space: nowrap; border: 1px solid theme('colors.og.midnight'); border-radius: 9999px; background: #fff; color: theme('colors.og.midnight'); font-size: 13px; font-weight: 600; transition: background-color .2s, color .2s; }
-.openSkill:hover { background: theme('colors.og.midnight'); color: #fff; }
+.openPill { display: inline-flex; height: 32px; align-items: center; justify-content: center; padding: 0 12px; white-space: nowrap; border: 1px solid theme('colors.og.midnight'); border-radius: 9999px; background: #fff; color: theme('colors.og.midnight'); font-size: 13px; font-weight: 600; transition: background-color .2s, color .2s; }
+.openPill:hover { background: theme('colors.og.midnight'); color: #fff; }
 .textAction { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; border-radius: 4px; font-size: 13px; line-height: 20px; font-weight: 600; color: theme('colors.og.midnight'); text-decoration: underline; text-decoration-color: rgb(23 19 47 / 0.25); text-underline-offset: 4px; transition: text-decoration-color .2s; }
 .textAction:hover { text-decoration-color: theme('colors.og.midnight'); }
 .textAction svg { flex-shrink: 0; transition: transform .2s; }
-.textActionStrong { text-decoration-color: currentColor; }
 
 /* Details: the same facts as before (full description, skill or plugin name, catalog note,
    team, owner, related link), indented under the title. */
@@ -56,8 +55,8 @@
 
 @media (pointer: coarse) {
   /* 44px touch targets without making the controls look bigger. */
-  .openSkill, .textAction { position: relative; }
-  .openSkill::after { content: ""; position: absolute; inset: -6px -4px; }
+  .openPill, .textAction { position: relative; }
+  .openPill::after { content: ""; position: absolute; inset: -6px -4px; }
   .textAction::after { content: ""; position: absolute; inset: -12px -6px; }
 }
 
@@ -127,5 +126,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .item, .openSkill, .textAction, .textAction svg { transition: none; }
+  .item, .openPill, .textAction, .textAction svg { transition: none; }
 }

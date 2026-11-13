@@ -149,6 +149,10 @@ export const SKILL_GROUPS: { id: string; label: string; skills: Skill[] }[] = [
       { name: "sow-generator-type-options", url: skill("plugin_01YPffAehRDeL1GN39DVtZmf"), status: "shared", body: "An SOW variant covering 3 types: Migration, Custom Report, and General." },
       { name: "account-signal-tracker", url: skill("plugin_01Y6YDwCvD3y57ieVux9EAiK"), status: "shared", body: "Turns news about an account (earnings, new hires, launches) into outreach messaging." },
       { name: "e100-account-brief-generator", url: skill("plugin_01V2WeuDmiwVEDUfjXJMv1sG"), status: "catalog", body: "Drafts the E100 account strategy and mutual action plan brief." },
+      { name: "ae-deal-brief", url: skill("plugin_01VwhWUfkjoB43e3ZrcqWnYH"), status: "catalog", body: "Deal help for every opportunity, before and after the first call, starting from the SDR’s handoff notes." },
+      { name: "ae-deal-revival", url: skill("plugin_01Tn2uddTf15ohH4EqUFo2dE"), status: "catalog", body: "Reads one stalled or unclear deal’s full history and helps decide whether to advance, revive, or close it." },
+      { name: "sdr-handoff", url: skill("plugin_01XRi85KH8fdnLGyS3UzXS97"), status: "catalog", body: "Turns a booked demo into an SQL, collects discovery notes, opens the prospect Slack channel, and notifies the AE. Also writes the post-demo recap." },
+      { name: "Groove standard", url: skill("plugin_01ETHocUXqGZue9RMPPnXLRf"), status: "catalog", body: "Keeps an opportunity’s Groove Standard fields current from Gong, Salesforce, Gmail, and Slack, and drafts the follow-up email." },
     ],
   },
   {
@@ -163,6 +167,10 @@ export const SKILL_GROUPS: { id: string; label: string; skills: Skill[] }[] = [
       { name: "dormant-customer", url: skill("plugin_01GJv6rudjSuu3TcRSVhDMYz"), status: "shared", body: "A prep pack for re-engaging a customer that’s gone quiet." },
       { name: "merchant-retention-agent", url: skill("plugin_01AoCpVfmRBNUeSZ3wtmvce2"), status: "shared", body: "Analyzes a merchant’s cancel flow using BigQuery and ranks save tactics." },
       { name: "customer-master-sheet", url: skill("plugin_01XpFBuya1BiBCx5F4VvAmSd"), status: "shared", body: "Builds and updates the hypercare master sheet and success plan." },
+      { name: "cs-renewal-proposals", url: skill("plugin_01Uj3NavoQLqyMLQxbqAo461"), status: "catalog", body: "A renewal or pricing proposal (deck, PDF, and internal summary) from one set of deal terms, posted to #cs-deal-desk." },
+      { name: "merchant-360", url: skill("plugin_017cVL7UfTqi6PLcDhhSScUn"), status: "catalog", body: "Answers “what’s going on with this merchant?” in Slack with a briefing from the platform, Salesforce, Zendesk, Jira, and Drive." },
+      { name: "Retention forecast", url: skill("plugin_01Qe2Rc2f31WJgr8Mo5iwBiq"), status: "catalog", body: "The weekly CS retention forecast: refreshes the Build sheet from Salesforce, then writes the pipeline briefing, summary slide, and CS manager briefs." },
+      { name: "Account management agent", url: skill("plugin_01Ai8C5aqDcghssDzxMVyyhF"), status: "catalog", body: "Renewal and expansion offers, account briefs, customer outreach, and tier-trip notices for the install base." },
     ],
   },
   {
