@@ -33,14 +33,14 @@ function canSharePng(png: Blob, filename: string): boolean {
   } catch { return false; }
 }
 
-function VersionThumbnail({ blob }: { blob: Blob }) {
+function VersionThumbnail({ blob, width, height }: { blob: Blob; width: number; height: number }) {
   const [url, setUrl] = useState("");
   useEffect(() => {
     const next = URL.createObjectURL(blob);
     setUrl(next);
     return () => URL.revokeObjectURL(next);
   }, [blob]);
-  return url ? <img src={url} alt="" className="aspect-[1200/627] w-full object-contain" /> : null;
+  return url ? <img src={url} alt="" className="w-full object-contain" style={{ aspectRatio: `${width} / ${height}` }} /> : null;
 }
 
 async function thumbnailFor(png: Blob): Promise<Blob> {
@@ -176,7 +176,8 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
   useEffect(() => {
     if (!resources || !canvasRef.current || unavailable) return;
     try {
-      setFieldErrors(drawSocialGraphic(canvasRef.current, definition, inputs, resources, photo));
+      // The preview may show the template's fictional sample; the PNG export never does.
+      setFieldErrors(drawSocialGraphic(canvasRef.current, definition, inputs, resources, photo, { sample: true }));
       setPreviewReady(true); setTemplateError("");
     } catch { setPreviewReady(false); setTemplateError("We couldn't load the template. Try again."); }
   }, [definition, inputs, resources, photo, unavailable]);
@@ -355,6 +356,11 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
   };
 
   const variant = definition.variants.find((item) => item.id === inputs.variantId) ?? definition.variants[0];
+  const sampleFields = definition.sample?.fields ?? {};
+  const samplePhotoShown = !photo && !!definition.sample?.photoAssetId;
+  const sampleParts = [...(samplePhotoShown ? ["photo"] : []), ...definition.fields.filter((field) => !!sampleFields[field.key] && !inputs.fields[field.key]?.trim()).map((field) => field.label.toLowerCase())];
+  const sampleShown = sampleParts.length > 0;
+  const sampleList = sampleParts.length > 1 ? `${sampleParts.slice(0, -1).join(", ")} and ${sampleParts.at(-1)}` : sampleParts[0];
   const canAct = localReady && !exporting && !photoBusy && !switching;
   const designs = publishedSocialTemplates().filter((template) => template.category === definition.category);
   return (
@@ -381,11 +387,16 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
             {import.meta.env.DEV && definition.developmentOnly && <p className="text-sm">Development fixture. These shapes are for testing and are not approved artwork.</p>}
             {designUpdated && <p role="status" className="text-sm">The design was updated.</p>}
             {unavailable && <p role="status" className="text-sm">This graphic is no longer available. Your inputs stay in this browser until you delete them.</p>}
-            {!unavailable && <div className="relative bg-white shadow-sm ring-1 ring-border">
+            {!unavailable && sampleShown && <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+              <span className="rounded bg-og-midnight px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">Sample</span>
+              <span>The {sampleList} shown {sampleParts.length > 1 ? "are a fictional sample. Replace them" : "is a fictional sample. Replace it"} to download.</span>
+            </p>}
+            {/* Tall designs (800 × 800) shrink to fit the viewport, so the design picker stays in view. */}
+            {!unavailable && <div className="relative mx-auto bg-white shadow-sm ring-1 ring-border" style={{ maxWidth: `max(280px, min(100%, calc((100svh - 260px) * ${definition.width / definition.height})))` }}>
               <canvas ref={canvasRef} width={definition.width} height={definition.height} role="img"
-                aria-label={`${definition.title} preview. ${definition.fields.map((field) => `${field.label}: ${formatSocialField(field, inputs.fields[field.key] ?? "") || "empty"}`).join(". ")}. ${variant.label} design.`}
+                aria-label={`${definition.title} preview. ${definition.fields.map((field) => `${field.label}: ${formatSocialField(field, inputs.fields[field.key] ?? "") || (sampleFields[field.key] ? `sample, ${sampleFields[field.key]}` : "empty")}`).join(". ")}. ${variant.label} design.${samplePhotoShown ? " Sample photo." : ""}`}
                 className="block h-auto w-full" style={{ aspectRatio: `${definition.width} / ${definition.height}` }} />
-              <PhotoPosition template={definition} photo={photo} crop={inputs.crop} canvasRef={canvasRef} disabled={!canAct}
+              <PhotoPosition template={definition} photo={photo} sample={samplePhotoShown} crop={inputs.crop} canvasRef={canvasRef} disabled={!canAct}
                 onChange={(crop) => updateInputs({ ...inputs, crop })} onChoose={() => fileRef.current?.click()} onFile={(file) => void choosePhoto(file)} />
             </div>}
             {photo && definition.photo && <div className="mx-auto flex max-w-[280px] items-center gap-3">
@@ -397,11 +408,12 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
             </div>}
             {designs.length > 1 && <div className="flex flex-wrap items-center gap-3">
               <span className="mr-1 text-sm font-semibold">Design</span>
-              <div className="flex min-w-0 flex-1 gap-3">
+              <div className="flex min-w-0 flex-1 flex-wrap gap-3">
+                {/* Equal heights, so square and landscape designs read as one row. */}
                 {designs.map((design) => <button key={design.id} type="button" aria-label={`Switch to ${design.title}`} aria-current={design.id === definition.id ? "true" : undefined}
                   disabled={!canAct || storageError || unavailable} onClick={() => void switchDesign(design)}
-                  className={cn("action-focus min-w-0 max-w-[120px] flex-1 overflow-hidden rounded border border-border bg-white transition-shadow hover:ring-2 hover:ring-og-midnight/30", design.id === definition.id && "ring-2 ring-og-midnight ring-offset-2 ring-offset-background")}>
-                  <img src={SOCIAL_ASSETS[design.previewAssetId!]} alt="" width={design.width} height={design.height} className="h-auto w-full" />
+                  className={cn("action-focus h-16 shrink-0 overflow-hidden rounded border border-border bg-white transition-shadow hover:ring-2 hover:ring-og-midnight/30", design.id === definition.id && "ring-2 ring-og-midnight ring-offset-2 ring-offset-background")}>
+                  <img src={SOCIAL_ASSETS[design.previewAssetId!]} alt="" width={design.width} height={design.height} className="h-full w-auto" />
                 </button>)}
               </div>
             </div>}
@@ -413,7 +425,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
               <ul className="mt-3 flex flex-wrap gap-4">
                 {versions.map((version) => <li key={version.id} className="relative w-[120px] min-w-0 rounded border border-border bg-white">
                   <button type="button" disabled={!canAct} onClick={() => void selectVersion(version)} aria-label={`Load version for ${socialPrimaryValue(definition, version.fields)}`} className="action-focus block w-full rounded p-1 text-left">
-                    <VersionThumbnail blob={version.thumbnail} />
+                    <VersionThumbnail blob={version.thumbnail} width={definition.width} height={definition.height} />
                     <span className="mt-1 block truncate px-1 text-xs font-semibold">{socialPrimaryValue(definition, version.fields) || "Untitled graphic"}</span>
                     <time dateTime={version.createdAt} className="block px-1 pb-1 text-[10px] text-muted-foreground">{new Date(version.createdAt).toLocaleDateString()}</time>
                     {version.downloaded && <span className="mx-1 mb-1 inline-block rounded bg-muted px-1.5 py-0.5 text-[10px]">Downloaded</span>}
@@ -462,6 +474,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
                 const file = event.currentTarget.files?.[0]; event.currentTarget.value = "";
                 if (file) void choosePhoto(file);
               }} />
+              {definition.photo.opaqueClip && <p className="text-xs leading-5 text-muted-foreground">A PNG with the background removed sits right on the design. Other photos fill a rounded panel.</p>}
               {photoError && <p role="alert" className="text-sm text-destructive">{photoError}</p>}
               {attempted && !photo && definition.photo.required && !photoError && <p role="alert" className="text-sm text-destructive">Add a photo to download.</p>}
             </div>}

@@ -1,5 +1,7 @@
 # Social templates
 
+Four Groovy Awards pilot templates follow the New Employee and Event Attendance sets: `groovy-award-gradient-landscape` and `groovy-award-midnight-tag-landscape` (1200 × 627), and `groovy-award-gradient-square` and `groovy-award-midnight-tag-square` (800 × 800), from the Figma "Groovy Award" section (node 80:580). Their artwork is rebuilt from the Figma logo, trophy and sparkle vectors and card geometry, as a `belowPhoto` gradient backdrop plus foreground artwork, with no photo or text baked in. Each has required Name, Job title, Quarter (default `Q4 2026`, drawn uppercase) and Award (default `Groovy Award Winner`) fields, no Google-name prefill, and a cut-out photo frame. The editor preview shows a fictional sample: a stock model (see `public/social/groovy-award-sample-portrait-CREDIT.md`) named Jordan Avery, Senior Account Manager. The model is not an Ordergroove employee or winner, and the sample is never exported.
+
 Three approved New Employee pilot templates are registered in `PUBLISHED_SOCIAL_TEMPLATES`: `new-employee-badge` (Proud to join), `new-employee-split-light` (I've joined), and `new-employee-split-dark` (Excited to share). Each exports at 1200 × 627, has one fixed variant and one full-canvas artwork layer, and allows a required circular photo, name and optional job title. Cameron Austin reviewed these on 2026-10-28, with review due 2027-01-28. Artwork and card thumbnails live in `public/social/`. The three Figma comparison renders live only in `docs/social-references/new-employee/` and are excluded from the shipped site.
 
 Design canvas (`/design-canvas`) groups published templates under an `h2` for each category, in first-category appearance order from `PUBLISHED_SOCIAL_TEMPLATES`; cards within each group retain that array's order and use `h3` titles. The sidebar shows Design canvas as one title link to `/design-canvas`; categories are not listed there, but each keeps its `#<category-slug>` anchor for the editor breadcrumb. Optional preview images appear at the top of cards with alt text `<title> design preview`. Search labels use `<category>: <title>`. The editor eyebrow uses the category, and the Design picker appears only when a template has more than one variant.
@@ -38,8 +40,10 @@ Definitions are plain JSON-compatible data. Add approved distributable asset pat
 | `previewAssetId` | Optional ID that must exist as an own entry in `SOCIAL_ASSETS`. Used for the card thumbnail, independent of composition `assetIds`. The build guard also verifies the registered file exists. |
 | `variants` | At least 1 `{ id, label, background, foreground }`. IDs are unique/nonempty, colors are exact token hex values. Foreground is the default color for editable and locked text. A single variant hides the Design picker. |
 | `lockedLayers` | Ordered array of locked rectangles, ellipses, artwork or text. Empty is allowed. See below. |
-| `photo` | Optional single frame: bounds plus `required` boolean, `shape` (`rect` or `ellipse`) and `maxZoom` from 1 to 5. Omit for no upload/crop controls, stored photo or placeholder. |
+| `photo` | Optional single frame: bounds plus `required` boolean, `shape` (`rect` or `ellipse`) and `maxZoom` from 1 to 5. Omit for no upload/crop controls, stored photo or placeholder. Optional `opaqueClip` (bounds plus `radii: [topLeft, topRight, bottomRight, bottomLeft]`, each at most half the shorter side) makes it a cut-out frame: photos with transparency fill the whole frame and can overlap the design, while opaque photos and the empty placeholder are placed in that rounded rectangle, so a photo background never covers the composition. Crop, drag and zoom use whichever frame applies. |
 | `fields` | At least 1 editable field, in form order. See below. |
+| `textStacks` | Optional `{ id, x, y, width, height, gap, verticalAlign }` boxes (`top`, `center` or `bottom`). Fields that name a stack draw one after another with `gap` between them, aligned in the box, so a value that wraps moves its neighbours instead of overlapping them. Each stacked field's `y` must equal the stack's `y` and its box must stay within the stack's width. The stack must be at least as tall as its fields' heights plus gaps, so values that fit their own field always fit the stack. Empty fields take no space. |
+| `sample` | Optional `{ photoAssetId?, fields }` for the editor preview only. Empty fields named in `fields` and a missing photo draw the sample, with a "Sample" notice. Sample fields must be required text fields, so download stays blocked until each one is replaced. Sample values are nonempty, at most 120 characters. `photoAssetId` must be a registered asset and the template must have a photo frame. Use only fictional names and licensed stock photos, with a credit note next to the file. |
 
 Every box uses `x`, `y`, `width`, `height` in output pixels. Text fields and locked text share these properties:
 
@@ -53,12 +57,15 @@ Every box uses `x`, `y`, `width`, `height` in output pixels. Text fields and loc
 | `align` | Optional `left`, `center` or `right`, default `left`. Horizontal alignment only; text stays top-aligned. |
 | `color` | Optional exact approved hex token from `src/data/tokens.ts`. Defaults to the selected variant's `foreground`. Applies to editable and locked text. |
 | `opacity` | Optional finite number from 0.1 to 1 inclusive. Defaults to 1. Applies only while drawing that text, so later text and artwork keep their own opacity. |
+| `letterSpacing` | Optional tracking in em from -0.1 to 0.5, e.g. `-0.01` for Figma's -1%. Used for measuring and drawing alike. A browser without canvas `letterSpacing` draws default tracking, so leave a little spare width. |
+| `textTransform` | Optional `uppercase`. The value is drawn uppercase; the input keeps what was typed. |
 
 Every editable field also has:
 
 | Field property | Contract |
 | --- | --- |
 | `key` | Unique camelCase key matching `^[a-z][a-zA-Z0-9]*$`. Stable keys allow carry-over. |
+| `stack` | Optional ID of a `textStacks` entry. The stack sets the field's top. |
 | `label` | Nonempty visible input label. |
 | `required` | Boolean. Required blank fields block export. |
 | `type` | `text`, `date`, `time` or `choice`. Uses a native input/select. |
@@ -76,6 +83,7 @@ Locked layers each have a unique `id` plus bounds:
 
 | Layer type | Additional properties |
 | --- | --- |
+| Any type | Optional `belowPhoto: true` paints the layer before the photo instead of after it, e.g. a gradient backdrop behind a cut-out photo. |
 | `rect`, `ellipse` | `color`, an exact token hex value. |
 | `asset` | Either `assetId` for all variants or `assetIdByVariant: { [variantId]: assetId }`. The map must cover every variant exactly, without unknown variant IDs. All assets must be declared in `assetIds`. Never provide both properties. |
 | `text` | Nonempty `text`, plus all shared text rules including optional `align`, `color` and `opacity`. Defaults to the selected variant's foreground at full opacity. |
@@ -121,7 +129,7 @@ This is illustrative data, not an approved or published template. The example as
 
 ### Draw order, approval and updates
 
-The shared preview/export renderer paints the variant background, then the clipped photo (or the editor's empty photo region if a frame exists), then locked layers in array order, then editable fields in array order. Artwork transparency exposes lower layers. An absent photo definition paints no placeholder. Text color and opacity belong to template rules; employees cannot change them. There are no vertical-alignment or text-transform controls.
+The shared preview/export renderer paints the variant background, then `belowPhoto` locked layers, then the clipped photo (or the template's sample photo in the editor preview, or the editor's empty photo region if a frame exists), then the other locked layers in array order, then editable fields in array order, with stacked fields placed by their stack. Artwork transparency exposes lower layers. An absent photo definition paints no placeholder. Text color and opacity belong to template rules; employees cannot change them. There are no vertical-alignment or text-transform controls.
 
 Run `npm run test:social` in `TZ=America/Los_Angeles` and `TZ=Pacific/Auckland`, then `npm run build` and `npm run lint`. The build rejects invalid definitions and missing/unsafe production assets. Compare preview and PNG with the Figma master, check long/short/accented values, every variant, crop edges where relevant, and mobile sharing. Obtain Cameron's visual approval before adding an entry as `pilot` or `current`. Publishing code and applying database migrations are separate approvals.
 
@@ -131,9 +139,9 @@ For each approved design change, replace the artwork/rules and bump `version`. B
 
 ## Renderer and photo contract
 
-`SocialInputs` contains serializable fields, variant ID and normalized crop coordinates. `ProcessedPhoto` holds a normalized JPEG Blob (quality 0.9) for opaque photos, or a PNG Blob when processed pixels contain transparency, its decoded image, dimensions and object URL. Photos never leave the device. The intake accepts files up to 25,000,000 bytes and 50,000,000 pixels, rejects SVG, applies EXIF orientation, freezes the first animation frame and downsizes to crop needs. Very wide/tall sources are also limited to 8192 pixels per side and 16 megapixels after processing to keep the canvas bounded. Small originals are never enlarged during intake. JPEG, PNG, GIF, WebP and modern BMP headers are read before full decode; other formats use natural dimensions after Image load, before createImageBitmap. Browsers may decode those other formats during load. The processed canvas is checked for transparent pixels in bounded strips before choosing JPEG or PNG.
+`SocialInputs` contains serializable fields, variant ID and normalized crop coordinates. `ProcessedPhoto` holds a normalized JPEG Blob (quality 0.9) for opaque photos, or a PNG Blob when processed pixels contain transparency, its decoded image, dimensions, object URL and `hasTransparency` (true for PNG), which picks the cut-out or opaque frame. Photos never leave the device. The intake accepts files up to 25,000,000 bytes and 50,000,000 pixels, rejects SVG, applies EXIF orientation, freezes the first animation frame and downsizes to crop needs. Very wide/tall sources are also limited to 8192 pixels per side and 16 megapixels after processing to keep the canvas bounded. Small originals are never enlarged during intake. JPEG, PNG, GIF, WebP and modern BMP headers are read before full decode; other formats use natural dimensions after Image load, before createImageBitmap. Browsers may decode those other formats during load. The processed canvas is checked for transparent pixels in bounded strips before choosing JPEG or PNG.
 
-`loadSocialResources` loads the exact Figtree weights before measuring. `drawSocialGraphic` paints through one detached rendering surface for both preview and export, keeping inherited page typography out of the image. Preview scales those output pixels with CSS. Export always uses the declared width and height, regardless of device pixel ratio.
+`loadSocialResources` loads the exact Figtree weights before measuring. `drawSocialGraphic` paints through one detached rendering surface for both preview and export, keeping inherited page typography out of the image. Preview scales those output pixels with CSS. Export always uses the declared width and height, regardless of device pixel ratio. Only the editor preview passes `{ sample: true }` to `drawSocialGraphic`; `exportSocialPng` never does, so sample content cannot reach a PNG. `loadSocialResources` also loads the sample photo asset.
 
 The editor revokes processed-photo and download object URLs on replacement/unmount. An in-flight photo operation cannot restore state after sign-out. Google metadata initializes the designated prefill field once per keyed account/template mount; field edits are never overwritten by metadata updates.
 

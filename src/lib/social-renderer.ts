@@ -1,4 +1,4 @@
-import { SOCIAL_ASSETS, type SocialTemplate, type TextRules } from "../data/social-templates";
+import { SOCIAL_ASSETS, type Bounds, type PhotoFrame, type SocialField, type SocialTemplate, type TextRules } from "../data/social-templates";
 import { formatSocialField, requiredSocialFieldError, socialPrimaryValue } from "./social-fields";
 import { canvasBlob, type ProcessedPhoto } from "./social-photo";
 
@@ -14,6 +14,9 @@ export type SocialInputs = {
 export type SocialResources = { fontsLoaded: true; assets: Record<string, HTMLImageElement> };
 export type SocialFieldErrors = Record<string, string>;
 type TextLayout = { lines: string[]; fontSize: number };
+/** sample: draw the template's fictional sample for an empty field or missing photo. Editor preview only. */
+export type SocialDrawOptions = { sample?: boolean };
+type CanvasWithTracking = CanvasRenderingContext2D & { letterSpacing?: string };
 
 export async function loadSocialResources(template: SocialTemplate, assets = SOCIAL_ASSETS): Promise<SocialResources> {
   const weights = new Set([...template.fields, ...template.lockedLayers.filter((layer) => layer.type === "text")].map((rules) => rules.fontWeight));
@@ -21,7 +24,8 @@ export async function loadSocialResources(template: SocialTemplate, assets = SOC
     const faces = await document.fonts.load(`${weight} 32px Figtree`);
     if (!faces.length || faces.some((face) => face.status !== "loaded")) throw new Error("Font unavailable");
   }));
-  const entries = await Promise.all(template.assetIds.map(async (id) => {
+  const ids = [...template.assetIds, ...(template.sample?.photoAssetId ? [template.sample.photoAssetId] : [])];
+  const entries = await Promise.all(ids.map(async (id) => {
     const image = new Image();
     image.src = assets[id];
     await image.decode();
@@ -30,14 +34,21 @@ export async function loadSocialResources(template: SocialTemplate, assets = SOC
   return { fontsLoaded: true, assets: Object.fromEntries(entries) };
 }
 
+function setTextStyle(ctx: CanvasRenderingContext2D, rules: TextRules, size: number) {
+  ctx.font = `${rules.fontWeight} ${size}px Figtree`;
+  // Canvas letterSpacing is applied to measuring and painting alike, so preview and PNG stay identical.
+  (ctx as CanvasWithTracking).letterSpacing = `${(rules.letterSpacing ?? 0) * size}px`;
+}
+
 export function layoutSocialText(ctx: CanvasRenderingContext2D, value: string, rules: TextRules): TextLayout | null {
+  const text = rules.textTransform === "uppercase" ? value.toLocaleUpperCase("en-US") : value;
   // Keep the spacing typed between words, so separators like "  |  " survive. A line break drops it.
-  const parts = value.trim().split(/(\s+)/u).filter(Boolean);
+  const parts = text.trim().split(/(\s+)/u).filter(Boolean);
   const words = parts.filter((_, index) => index % 2 === 0);
   const gaps = parts.filter((_, index) => index % 2 === 1).map((gap) => gap.replace(/\s/gu, " "));
   if (!words.length) return { lines: [], fontSize: rules.maxFontSize };
   for (let size = rules.maxFontSize; ; size = Math.max(rules.minFontSize, size - 1)) {
-    ctx.font = `${rules.fontWeight} ${size}px Figtree`;
+    setTextStyle(ctx, rules, size);
     const lines: string[] = [];
     let line = "";
     let fits = true;
@@ -58,7 +69,7 @@ function paintText(ctx: CanvasRenderingContext2D, layout: TextLayout, rules: Tex
   ctx.save();
   ctx.fillStyle = rules.color ?? ctx.fillStyle;
   ctx.globalAlpha = rules.opacity ?? 1;
-  ctx.font = `${rules.fontWeight} ${layout.fontSize}px Figtree`;
+  setTextStyle(ctx, rules, layout.fontSize);
   ctx.textBaseline = "alphabetic";
   ctx.textAlign = rules.align ?? "left";
   const x = rules.x + (rules.align === "center" ? rules.width / 2 : rules.align === "right" ? rules.width : 0);
@@ -71,7 +82,17 @@ function paintText(ctx: CanvasRenderingContext2D, layout: TextLayout, rules: Tex
   ctx.restore();
 }
 
-export function photoSourceRect(photo: Pick<ProcessedPhoto, "width" | "height">, frame: NonNullable<SocialTemplate["photo"]>, crop: PhotoCropValue) {
+export type EffectivePhotoFrame = Omit<PhotoFrame, "opaqueClip"> & { radii?: [number, number, number, number] };
+
+/** Where a photo is placed. Cut-out designs keep transparent photos in the full frame and put opaque
+ * photos (or the empty placeholder) in the rounded opaqueClip, so a photo background never covers the design. */
+export function socialPhotoFrame(frame: PhotoFrame, photo: { hasTransparency: boolean } | null): EffectivePhotoFrame {
+  const { opaqueClip, ...rest } = frame;
+  if (!opaqueClip || photo?.hasTransparency) return rest;
+  return { ...rest, ...opaqueClip, shape: "rect" };
+}
+
+export function photoSourceRect(photo: Pick<ProcessedPhoto, "width" | "height">, frame: Bounds & { maxZoom: number }, crop: PhotoCropValue) {
   const zoom = Math.min(frame.maxZoom, Math.max(1, crop.zoom));
   const scale = Math.max(frame.width / photo.width, frame.height / photo.height) * zoom;
   const width = frame.width / scale;
@@ -80,7 +101,7 @@ export function photoSourceRect(photo: Pick<ProcessedPhoto, "width" | "height">,
 }
 
 /** Move the photo by logical output pixels, using the same source window as rendering. */
-export function dragSocialCrop(crop: PhotoCropValue, photoSize: Pick<ProcessedPhoto, "width" | "height">, frame: NonNullable<SocialTemplate["photo"]>, dxOutput: number, dyOutput: number): PhotoCropValue {
+export function dragSocialCrop(crop: PhotoCropValue, photoSize: Pick<ProcessedPhoto, "width" | "height">, frame: Bounds & { maxZoom: number }, dxOutput: number, dyOutput: number): PhotoCropValue {
   const source = photoSourceRect(photoSize, frame, crop);
   const scale = frame.width / source.width;
   const move = (position: number, overflow: number, delta: number) => overflow > 0
@@ -93,7 +114,14 @@ export function dragSocialCrop(crop: PhotoCropValue, photoSize: Pick<ProcessedPh
   };
 }
 
-function paintSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate, inputs: SocialInputs, resources: SocialResources, photo: ProcessedPhoto | null): SocialFieldErrors {
+function framePath(ctx: CanvasRenderingContext2D, frame: EffectivePhotoFrame) {
+  ctx.beginPath();
+  if (frame.shape === "ellipse") ctx.ellipse(frame.x + frame.width / 2, frame.y + frame.height / 2, frame.width / 2, frame.height / 2, 0, 0, Math.PI * 2);
+  else if (frame.radii && typeof ctx.roundRect === "function") ctx.roundRect(frame.x, frame.y, frame.width, frame.height, frame.radii);
+  else ctx.rect(frame.x, frame.y, frame.width, frame.height);
+}
+
+function paintSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate, inputs: SocialInputs, resources: SocialResources, photo: ProcessedPhoto | null, options: SocialDrawOptions): SocialFieldErrors {
   if (!resources.fontsLoaded) throw new Error("Fonts not loaded");
   canvas.width = template.width;
   canvas.height = template.height;
@@ -106,24 +134,7 @@ function paintSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate,
   if (!variant) throw new Error("Variant unavailable");
   ctx.fillStyle = variant.background;
   ctx.fillRect(0, 0, template.width, template.height);
-  const frame = template.photo;
-  if (frame) {
-    ctx.save();
-    ctx.beginPath();
-    if (frame.shape === "ellipse") ctx.ellipse(frame.x + frame.width / 2, frame.y + frame.height / 2, frame.width / 2, frame.height / 2, 0, 0, Math.PI * 2);
-    else ctx.rect(frame.x, frame.y, frame.width, frame.height);
-    ctx.clip();
-    if (photo) {
-      const source = photoSourceRect(photo, frame, inputs.crop);
-      ctx.drawImage(photo.image, source.x, source.y, source.width, source.height, frame.x, frame.y, frame.width, frame.height);
-    } else {
-      // Empty photo region in the editor. Required photos always block export.
-      ctx.fillStyle = "#D8D7DF";
-      ctx.fillRect(frame.x, frame.y, frame.width, frame.height);
-    }
-    ctx.restore();
-  }
-  for (const layer of template.lockedLayers) {
+  const paintLayer = (layer: SocialTemplate["lockedLayers"][number]) => {
     if (layer.type === "asset") {
       const image = resources.assets[layer.assetId ?? layer.assetIdByVariant![variant.id]];
       if (!image) throw new Error("Artwork unavailable");
@@ -138,18 +149,49 @@ function paintSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate,
       if (layer.type === "rect") ctx.fillRect(layer.x, layer.y, layer.width, layer.height);
       else { ctx.beginPath(); ctx.ellipse(layer.x + layer.width / 2, layer.y + layer.height / 2, layer.width / 2, layer.height / 2, 0, 0, Math.PI * 2); ctx.fill(); }
     }
+  };
+  template.lockedLayers.filter((layer) => layer.belowPhoto).forEach(paintLayer);
+  if (template.photo) {
+    const sampleImage = !photo && options.sample && template.sample?.photoAssetId ? resources.assets[template.sample.photoAssetId] : undefined;
+    const source = photo ?? (sampleImage ? { image: sampleImage, width: sampleImage.naturalWidth, height: sampleImage.naturalHeight, hasTransparency: true } : null);
+    const frame = socialPhotoFrame(template.photo, source);
+    ctx.save();
+    framePath(ctx, frame);
+    ctx.clip();
+    if (source) {
+      const rect = photoSourceRect(source, frame, photo ? inputs.crop : DEFAULT_PHOTO_CROP);
+      ctx.drawImage(source.image, rect.x, rect.y, rect.width, rect.height, frame.x, frame.y, frame.width, frame.height);
+    } else {
+      // Empty photo region in the editor. Required photos always block export.
+      ctx.fillStyle = "#D8D7DF";
+      ctx.fillRect(frame.x, frame.y, frame.width, frame.height);
+    }
+    ctx.restore();
   }
+  template.lockedLayers.filter((layer) => !layer.belowPhoto).forEach(paintLayer);
   const errors: SocialFieldErrors = {};
+  const placed: { field: SocialField; layout: TextLayout; y: number }[] = [];
   for (const field of template.fields) {
     const value = inputs.fields[field.key] ?? "";
+    const sampleValue = options.sample && field.type === "text" && !value.trim() ? template.sample?.fields[field.key] : undefined;
     const requiredError = requiredSocialFieldError(field, value);
-    if (requiredError) { errors[field.key] = requiredError; continue; }
-    const formatted = formatSocialField(field, value);
+    if (requiredError) { errors[field.key] = requiredError; if (!sampleValue) continue; }
+    const formatted = formatSocialField(field, sampleValue ?? value);
     if (formatted === null) { errors[field.key] = `Choose a valid ${field.label.toLowerCase()}.`; continue; }
     const layout = layoutSocialText(ctx, formatted, field);
     if (!layout) { errors[field.key] = `Too long for this design. Shorten the ${field.label.toLowerCase()}.`; continue; }
+    placed.push({ field, layout, y: field.y });
+  }
+  for (const stack of template.textStacks ?? []) {
+    const members = placed.filter((item) => item.field.stack === stack.id && item.layout.lines.length);
+    const heights = members.map((item) => item.layout.lines.length * item.layout.fontSize * item.field.lineHeight);
+    const total = heights.reduce((sum, height) => sum + height, 0) + stack.gap * Math.max(0, members.length - 1);
+    let top = stack.y + (stack.verticalAlign === "center" ? (stack.height - total) / 2 : stack.verticalAlign === "bottom" ? stack.height - total : 0);
+    members.forEach((item, index) => { item.y = top; top += heights[index] + stack.gap; });
+  }
+  for (const { field, layout, y } of placed) {
     ctx.fillStyle = variant.foreground;
-    paintText(ctx, layout, field);
+    paintText(ctx, layout, y === field.y ? field : { ...field, y });
   }
   return errors;
 }
@@ -157,10 +199,10 @@ function paintSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate,
 /** One composition path for preview and PNG, at logical output pixels.
  * Always paint on a detached surface so page CSS cannot change text metrics
  * between a connected preview canvas and an exported canvas. */
-export function drawSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate, inputs: SocialInputs, resources: SocialResources, photo: ProcessedPhoto | null): SocialFieldErrors {
+export function drawSocialGraphic(canvas: HTMLCanvasElement, template: SocialTemplate, inputs: SocialInputs, resources: SocialResources, photo: ProcessedPhoto | null, options: SocialDrawOptions = {}): SocialFieldErrors {
   const surface = document.createElement("canvas");
   try {
-    const errors = paintSocialGraphic(surface, template, inputs, resources, photo);
+    const errors = paintSocialGraphic(surface, template, inputs, resources, photo, options);
     canvas.width = template.width;
     canvas.height = template.height;
     const ctx = canvas.getContext("2d");

@@ -3,7 +3,7 @@ import { safeReturnPath } from "../src/lib/auth-return-path";
 import { SOCIAL_TEMPLATE_FIXTURE, EVENT_TEMPLATE_FIXTURE, SOCIAL_FIXTURE_ASSETS } from "../src/data/social-template-fixture";
 import { PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS, getPublishedSocialTemplate, publishedSocialTemplates, type SocialTemplate } from "../src/data/social-templates";
 import { validateSocialTemplates } from "../src/lib/social-template-validation";
-import { dragSocialCrop, drawSocialGraphic, layoutSocialText, photoSourceRect, socialDownloadFilename } from "../src/lib/social-renderer";
+import { dragSocialCrop, drawSocialGraphic, layoutSocialText, photoSourceRect, socialDownloadFilename, socialPhotoFrame } from "../src/lib/social-renderer";
 import { socialTemplateBuildErrors } from "./validate-social-templates";
 import { DESIGN_CANVAS_PATH, HUB_NAV, RESOURCE_PAGE_PATHS, designCanvasCategoryId, designCanvasTemplatePath } from "../src/data/hub";
 import path from "node:path";
@@ -93,7 +93,8 @@ for (const template of PUBLISHED_SOCIAL_TEMPLATES) {
   assert.deepEqual(dragSocialCrop(start, square, frame, 1e6, -1e6), { x: 0, y: 1, zoom: 2 });
   assert.deepEqual(dragSocialCrop(start, square, frame, -1e6, 1e6), { x: 1, y: 0, zoom: 2 });
   const atOne = { x: 0.3, y: 0.6, zoom: 1 };
-  assert.deepEqual(dragSocialCrop(atOne, square, frame, 50, -50), atOne, "square at 1× has no overflow on either axis");
+  // A square photo only has no overflow in a square frame; Groovy Award frames are slightly wider than tall.
+  if (frame.width === frame.height) assert.deepEqual(dragSocialCrop(atOne, square, frame, 50, -50), atOne, "square at 1× has no overflow on either axis");
   const portraitMoved = dragSocialCrop(atOne, portrait, frame, 50, -10);
   assert.equal(portraitMoved.x, atOne.x, "portrait at 1× has no horizontal overflow");
   assert.ok(portraitMoved.y > atOne.y, "portrait at 1× moves vertically");
@@ -290,8 +291,8 @@ console.log("PASS: one-time forward/rollback draft migration, current field type
 
 // Session 4: new schema rules apply to editable fields and locked text alike.
 assert.deepEqual(validateSocialTemplates(PUBLISHED_SOCIAL_TEMPLATES, SOCIAL_ASSETS), []);
-assert.deepEqual(PUBLISHED_SOCIAL_TEMPLATES.map(template => template.id), ["new-employee-badge", "new-employee-split-light", "new-employee-split-dark", "event-shoptalk-2027", "event-lets-meet"]);
-for (const template of PUBLISHED_SOCIAL_TEMPLATES) {
+assert.deepEqual(PUBLISHED_SOCIAL_TEMPLATES.map(template => template.id), ["new-employee-badge", "new-employee-split-light", "new-employee-split-dark", "event-shoptalk-2027", "event-lets-meet", "groovy-award-gradient-landscape", "groovy-award-midnight-tag-landscape", "groovy-award-gradient-square", "groovy-award-midnight-tag-square"]);
+for (const template of PUBLISHED_SOCIAL_TEMPLATES.filter(template => template.category !== "Groovy Awards")) {
   assert.equal(template.category, template.id.startsWith("event-") ? "Event Attendance" : "New Employee");
   assert.equal(template.width, 1200);
   assert.equal(template.height, 627);
@@ -410,3 +411,104 @@ console.log("PASS: Event Attendance templates, text defaults, placeholders and a
   assert.deepEqual(layoutSocialText(measure, "a   |   b", { ...rules, width: 3 })?.lines, ["a", "|", "b"], "a line break drops the spacing");
 }
 console.log("PASS: text layout keeps typed spacing between words and drops it at line breaks");
+
+// Groovy Awards: four Figma options with cut-out photos, text stacks, tracking, uppercase and a preview-only sample.
+{
+  const groovy = PUBLISHED_SOCIAL_TEMPLATES.filter(template => template.category === "Groovy Awards");
+  assert.deepEqual(groovy.map(template => [template.id, template.width, template.height]), [
+    ["groovy-award-gradient-landscape", 1200, 627], ["groovy-award-midnight-tag-landscape", 1200, 627],
+    ["groovy-award-gradient-square", 800, 800], ["groovy-award-midnight-tag-square", 800, 800],
+  ]);
+  for (const template of groovy) {
+    assert.deepEqual(validateSocialTemplates([template], SOCIAL_ASSETS), [], template.id);
+    assert.deepEqual(template.fields.map(field => [field.key, field.required]), [["name", true], ["jobTitle", true], ["quarter", true], ["award", true]]);
+    assert.deepEqual(emptySocialFields(template, "Local Preview"), { name: "", jobTitle: "", quarter: "Q4 2026", award: "Groovy Award Winner" }, "no Google prefill: the winner may not be the editor");
+    assert.deepEqual(template.sample, { photoAssetId: "groovy-award-sample-portrait", fields: { name: "Jordan Avery", jobTitle: "Senior Account Manager" } }, "fictional sample only");
+    assert.ok(template.lockedLayers[0].belowPhoto && !template.lockedLayers[1].belowPhoto, "gradient backdrop under the photo, artwork over it");
+    assert.ok(template.photo?.required && template.photo.opaqueClip, "photo required, with a panel for opaque photos");
+    assert.ok(/node-id=80-(617|837|1055|1122)$/.test(template.sourceUrl));
+    assert.equal(socialDownloadFilename(template, { name: "Jordan Avery", quarter: "Q4 2026" }), `ordergroove-${template.id}-Jordan-Avery.png`, "file name uses the winner's name");
+  }
+  const [landscape] = groovy;
+  const cutout = socialPhotoFrame(landscape.photo!, { hasTransparency: true });
+  const opaque = socialPhotoFrame(landscape.photo!, { hasTransparency: false });
+  assert.deepEqual([cutout.x, cutout.y, cutout.width, cutout.height, cutout.radii], [525.03, 0, 674.97, 627, undefined], "transparent photos use the full cut-out frame");
+  assert.deepEqual([opaque.x, opaque.y, opaque.width, opaque.height, opaque.radii, opaque.shape], [600, 97.3, 600, 529.7, [30, 0, 0, 0], "rect"], "opaque photos fill the rounded panel");
+  assert.deepEqual(socialPhotoFrame(landscape.photo!, null).radii, [30, 0, 0, 0], "the empty placeholder uses the panel");
+  assert.equal(socialPhotoFrame(getPublishedSocialTemplate("new-employee-badge")!.photo!, null).shape, "ellipse", "frames without opaqueClip are unchanged");
+  const moved = dragSocialCrop({ x: 0.5, y: 0.5, zoom: 2 }, { width: 1600, height: 1200 }, opaque, 30, 0);
+  assert.ok(moved.x < 0.5, "dragging an opaque photo uses the panel geometry");
+}
+const invalidGroovyCases: [string, (template: SocialTemplate) => void][] = [
+  ["letterSpacing", t => { t.fields[0].letterSpacing = 0.6; }],
+  ["letterSpacing", t => { Object.assign(t.fields[0], { letterSpacing: "-1%" }); }],
+  ["textTransform", t => { Object.assign(t.fields[0], { textTransform: "capitalize" }); }],
+  ["belowPhoto", t => { Object.assign(t.lockedLayers[0], { belowPhoto: "yes" }); }],
+  ["opaqueClip", t => { t.photo!.opaqueClip = { x: 0, y: 0, width: 100, height: 100, radii: [60, 0, 0, 0] }; }],
+  ["opaqueClip", t => { t.photo!.opaqueClip = { x: 1100, y: 0, width: 200, height: 100, radii: [0, 0, 0, 0] }; }],
+  ["unknown text stack", t => { t.fields[0].stack = "missing"; }],
+  ["shorter than its fields", t => { t.textStacks = [{ id: "card", x: 620, y: 350, width: 500, height: 300, gap: 10, verticalAlign: "center" }]; t.fields.forEach(field => { field.stack = "card"; field.y = 350; }); }],
+  ["start at its text stack's top", t => { t.textStacks = [{ id: "card", x: 620, y: 300, width: 500, height: 600, gap: 10, verticalAlign: "top" }]; t.fields[0].stack = "card"; }],
+  ["has no fields", t => { t.textStacks = [{ id: "card", x: 620, y: 300, width: 500, height: 600, gap: 10, verticalAlign: "top" }]; }],
+  ["top, center or bottom", t => { t.textStacks = [{ id: "card", x: 620, y: 350, width: 500, height: 600, gap: -1, verticalAlign: "top" }]; t.fields[0].stack = "card"; }],
+  ["sample jobTitle must match a required text field", t => { t.sample = { fields: { jobTitle: "Engineer" } }; }],
+  ["sample name must be nonempty", t => { t.sample = { fields: { name: " " } }; }],
+  ["sample photo", t => { t.sample = { photoAssetId: "missing", fields: {} }; }],
+  ["sample photo", t => { delete t.photo; t.sample = { photoAssetId: "groovy-award-sample-portrait", fields: {} }; }],
+];
+for (const [message, mutate] of invalidGroovyCases) {
+  const template = fixture(); mutate(template);
+  assert.ok(validateSocialTemplates([template], SOCIAL_ASSETS, true).some(error => error.includes(message)), message);
+  template.developmentOnly = false; template.sourceUrl = "https://figma.com/design/example";
+  PUBLISHED_SOCIAL_TEMPLATES.push(template);
+  assert.ok(runBuildGuard().some(error => error.includes(message)), `build guard: ${message}`);
+  PUBLISHED_SOCIAL_TEMPLATES.pop();
+}
+console.log("PASS: 4 Groovy Award designs with fictional samples, cut-out and opaque photo frames, and stack, tracking, uppercase, backdrop and sample guards, including build guard");
+{
+  // Rendering: stacks move neighbours, uppercase applies, samples draw only in the editor preview, backdrops paint first.
+  const ops: string[] = [];
+  const texts: { text: string; y: number; spacing: string }[] = [];
+  const ctx2 = {
+    font: "", fillStyle: "", globalAlpha: 1, letterSpacing: "0px", textAlign: "left", textBaseline: "alphabetic",
+    save() {}, restore() {}, beginPath() {}, rect() {}, roundRect() { ops.push("roundRect"); }, ellipse() {}, clip() {}, fill() {},
+    fillRect() { ops.push("fillRect"); },
+    drawImage(image: { id: string }) { ops.push(`image:${image.id}`); },
+    fillText(text: string, _x: number, y: number) { texts.push({ text, y, spacing: this.letterSpacing }); },
+    measureText(value: string) { return { width: value.length * Number(this.font.split(" ")[1].replace("px", "")) * 0.5, actualBoundingBoxAscent: 10, actualBoundingBoxDescent: 2 }; },
+  };
+  const canvas = () => ({ width: 0, height: 0, getContext: () => ctx2 }) as unknown as HTMLCanvasElement;
+  const prior = Object.getOwnPropertyDescriptor(globalThis, "document");
+  Object.defineProperty(globalThis, "document", { configurable: true, value: { createElement: canvas } });
+  try {
+    const template = getPublishedSocialTemplate("groovy-award-midnight-tag-landscape")!;
+    const assets = Object.fromEntries([...template.assetIds, "groovy-award-sample-portrait"].map(id => [id, { id, naturalWidth: 1350, naturalHeight: 1254 }])) as unknown as Record<string, HTMLImageElement>;
+    const resources = { fontsLoaded: true as const, assets };
+    const inputs = (fields: Record<string, string>) => ({ fields: { name: "", jobTitle: "", quarter: "q4 2026", award: "Groovy Award Winner", ...fields }, variantId: template.variants[0].id, crop: { x: 0.5, y: 0.5, zoom: 1 } });
+    const errors = drawSocialGraphic(canvas(), template, inputs({}), resources, null, { sample: true });
+    assert.deepEqual(Object.keys(errors).sort(), ["jobTitle", "name"], "sample values still block download");
+    // The last drawImage copies the detached surface to the target canvas.
+    assert.deepEqual(ops.filter(op => op.startsWith("image:groovy")), ["image:groovy-award-midnight-tag-landscape-backdrop", "image:groovy-award-sample-portrait", "image:groovy-award-midnight-tag-landscape"]);
+    assert.deepEqual(texts.slice(0, 3).map(item => item.text), ["Jordan Avery", "Senior Account Manager", "Q4 2026"], "sample text drawn, quarter uppercased");
+    assert.equal(texts.slice(3).map(item => item.text).join(" "), "Groovy Award Winner");
+    assert.equal(texts[0].spacing, `${-0.01 * 35}px`, "name tracking follows Figma's -1%");
+    ops.length = 0; texts.length = 0;
+    drawSocialGraphic(canvas(), template, inputs({}), resources, null);
+    assert.ok(!ops.includes("image:groovy-award-sample-portrait") && !texts.some(item => item.text === "Jordan Avery"), "export path never draws the sample");
+    assert.ok(ops.includes("roundRect"), "the empty placeholder takes the rounded panel");
+    texts.length = 0;
+    drawSocialGraphic(canvas(), template, inputs({ name: "Sam Lee", jobTitle: "Engineer" }), resources, null);
+    const shortName = texts.find(item => item.text === "Sam Lee")!.y;
+    texts.length = 0;
+    drawSocialGraphic(canvas(), template, inputs({ name: "Alexandra Montgomery Fitzgerald Okonkwo", jobTitle: "Engineer" }), resources, null);
+    const names = texts.slice(0, texts.findIndex(item => item.text === "Engineer"));
+    const title = texts.find(item => item.text === "Engineer")!.y;
+    assert.equal(names.length, 2, "a long name wraps to 2 lines");
+    assert.ok(names[0].y < shortName, "the centered stack moves up for a 2-line name");
+    assert.ok(title > names[1].y, "the job title moves below the second name line instead of overlapping it");
+  } finally {
+    if (prior) Object.defineProperty(globalThis, "document", prior);
+    else Reflect.deleteProperty(globalThis, "document");
+  }
+}
+console.log("PASS: Groovy Award rendering keeps samples out of export, paints the backdrop under the photo, stacks wrapped text without overlap and applies tracking and uppercase");
