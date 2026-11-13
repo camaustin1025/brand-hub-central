@@ -1,10 +1,11 @@
 import { Heading } from "@/components/layout/Heading";
-import { useEffect, useState, type ReactNode } from 'react';
+import { Suspense, lazy, useEffect, useState, type ComponentType, type LazyExoticComponent, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { BookOpen, Boxes, ChevronDown, FileText, MessageCircle, Search, ShieldCheck, Sparkles, ArrowUpRight } from 'lucide-react';
 import { AI_DIRECTORY, RESOURCE_TYPES, countByType, filterResources, groupResources, type AiResource, type DirectoryEntry, type DirectorySection } from '@/data/ai-directory';
 import { APPROVAL_STEPS, APPROVAL_CRITERIA, APPROVAL_DECISIONS, SECURITY_GUIDELINES, SECURITY_CHANNEL, INFOSEC_CHANNEL, SHARING_RULES } from '@/data/ai-resources';
 import { cn } from '@/lib/utils';
+import { DIRECTORY_LAYOUT, DIRECTORY_LAYOUTS, type DirectoryLayout } from './ai-directory-layout';
 import s from './AiResources.module.css';
 
 const ICONS = { 'Skills': Sparkles, 'Guides & training': BookOpen, 'Tools & plugins': Boxes, 'Assets': FileText, 'Help & channels': MessageCircle };
@@ -141,7 +142,35 @@ function GroupSection({ section, searching, filtered }: { section: DirectorySect
   </section>;
 }
 
+/*
+ * Layout review (2026-11-13): Options A (library) and B (filtered table) load only in dev, or once
+ * DIRECTORY_LAYOUT promotes one, so production ships the current directory and nothing else.
+ */
+const OPTIONS_ENABLED = import.meta.env.DEV || DIRECTORY_LAYOUT !== 'current';
+const OPTION_DIRECTORIES: Partial<Record<DirectoryLayout, LazyExoticComponent<ComponentType>>> = OPTIONS_ENABLED
+  ? { library: lazy(() => import('./ai-directory-options/LibraryDirectory')), table: lazy(() => import('./ai-directory-options/TableDirectory')) }
+  : {};
+const LayoutSwitcher = import.meta.env.DEV ? lazy(() => import('./ai-directory-options/LayoutSwitcher')) : null;
+
+function useDirectoryLayout(): DirectoryLayout {
+  const [params] = useSearchParams();
+  if (!import.meta.env.DEV) return DIRECTORY_LAYOUT;
+  const requested = params.get('layout') as DirectoryLayout | null;
+  return requested && DIRECTORY_LAYOUTS.includes(requested) ? requested : DIRECTORY_LAYOUT;
+}
+
 export function AiResources() {
+  const layout = useDirectoryLayout();
+  const Option = OPTION_DIRECTORIES[layout];
+  return <div className="ai-directory [container-type:inline-size]">
+    {Option ? <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}><Option /></Suspense> : <CurrentDirectory />}
+    <AiPolicySections />
+    {LayoutSwitcher && <Suspense fallback={null}><LayoutSwitcher layout={layout} /></Suspense>}
+  </div>;
+}
+
+/** The shipped directory: grouped lists with type chips and the team filter. */
+function CurrentDirectory() {
   const [params, setParams] = useSearchParams();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const query = params.get('q') ?? '';
@@ -162,8 +191,7 @@ export function AiResources() {
     else if (window.location.hash === '#ai-skills-library') document.getElementById('ai-skills-library')?.scrollIntoView();
   }, []);
   const teams = [...new Set(AI_DIRECTORY.flatMap(r => r.team ? [r.team] : []))];
-  return <div className="ai-directory [container-type:inline-size]">
-    <section aria-label="AI resource directory" id="ai-skills-library" className="scroll-mt-24">
+  return <section aria-label="AI resource directory" id="ai-skills-library" className="scroll-mt-24">
       <div className="directory-toolbar">
         <div className="directory-search-row">
           <label className="relative flex-1"><span className="sr-only">Search AI resources</span><Search size={19} className="pointer-events-none absolute left-4 top-4 text-muted-foreground" aria-hidden="true" /><input type="search" value={query} onChange={e => update('q', e.target.value)} placeholder="Search AI resources" className="action-focus min-h-12 w-full rounded-md border border-border bg-white pl-12 pr-4 text-base placeholder:text-muted-foreground" /></label>
@@ -180,7 +208,12 @@ export function AiResources() {
       <div className="my-3 flex min-h-6 items-center justify-between gap-4 text-sm"><p role="status" aria-live="polite">{results.length} {results.length === 1 ? 'resource' : 'resources'}{type && ` · ${type}`}{team && ` · Skills for ${team}`}</p>{(query || type || team) && <button className={`${LINK} min-h-11`} onClick={clear}>Clear filters</button>}</div>
       {sections.map(section => <GroupSection key={section.id} section={section} searching={searching} filtered={Boolean(searching || type || team)} />)}
       {!results.length && <div className="border-y border-border py-12 text-center"><Heading as="h3" className="text-lg font-bold">No matching resources</Heading><p className="mt-2 text-foreground">Try a different search or clear your filters.</p><button onClick={clear} className={`${LINK} mt-5 min-h-11`}>Clear filters</button></div>}
-    </section>
+    </section>;
+}
+
+/** What you can share and Get a new tool approved: the same under every directory layout. */
+function AiPolicySections() {
+  return <>
     <section id="ai-sharing" className={cn('dark', s.panel)} aria-labelledby="what-you-can-share">
       <span id="ai-start-here" className="scroll-mt-24" />
       <Heading as="h2" id="what-you-can-share"><ShieldCheck aria-hidden="true" size={26} />What you can share</Heading>
@@ -202,5 +235,5 @@ export function AiResources() {
       <ol className={s.approvalSteps}>{APPROVAL_STEPS.map((step, index) => <li key={step.link.url} className={s.approvalStep}><span aria-hidden="true" className={s.approvalNumber}>{index + 1}</span><div><External href={step.link.url}>{step.link.label}</External><p>{step.body}</p></div></li>)}</ol>
       <p className={s.approvalLinks}><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p>
     </section>
-  </div>;
+  </>;
 }
