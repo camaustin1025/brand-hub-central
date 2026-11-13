@@ -3,13 +3,16 @@ import { Check, Link as LinkIcon } from "lucide-react";
 import { writeClipboard } from "@/lib/clipboard";
 
 /** Content headings own stable, readable anchors without changing existing IDs. */
-export function Heading({ as: Tag, children, className = "", ...props }: HTMLAttributes<HTMLHeadingElement> & {
+export function Heading({ as: Tag, children, className = "", copyLink: showCopyLink = true, ...props }: HTMLAttributes<HTMLHeadingElement> & {
   as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  /** Set false to drop the copy-link button (the Home hero headline doesn't need one). */
+  copyLink?: boolean;
 }) {
   const ref = useRef<HTMLHeadingElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const [message, setMessage] = useState("");
   const hidden = className.split(/\s+/).includes("sr-only");
+  const plain = hidden || !showCopyLink;
 
   useLayoutEffect(() => {
     const heading = ref.current;
@@ -36,8 +39,8 @@ export function Heading({ as: Tag, children, className = "", ...props }: HTMLAtt
   }
 
   return (
-    <Tag ref={ref} className={`${className}${hidden ? "" : " linkable-heading"}`} {...props}>
-      {hidden ? children : <><span data-heading-label="">{children}</span><button
+    <Tag ref={ref} className={`${className}${plain ? "" : " linkable-heading"}`} {...props}>
+      {plain ? children : <><span data-heading-label="">{children}</span><button
         type="button"
         className="heading-copy-link"
         aria-label="Copy link to this section"

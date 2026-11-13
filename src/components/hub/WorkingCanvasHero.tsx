@@ -133,7 +133,7 @@ export function WorkingCanvasHero() {
   return (
     <section id="overview" data-hub-section className={styles.hero}>
       <div className={styles.intro}>
-        <Heading as="h1" className={styles.title}>
+        <Heading as="h1" copyLink={false} className={styles.title}>
           <span>Make your work look</span>{" "}<span>and sound like Ordergroove</span>
         </Heading>
         <p className={styles.subhead}>Brand assets and guidance</p>
