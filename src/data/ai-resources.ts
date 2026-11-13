@@ -128,7 +128,11 @@ export const TRAINING = [
   },
 ];
 
-/** org: published to the org library. shared: its creator shared it org-wide. catalog: findable in search, not shared org-wide. */
+/**
+ * org: published to the org library. shared: its creator shared it org-wide. catalog: findable in search, not shared org-wide.
+ * Every org-library skill links straight to its page (claude.ai/customize/skills/id/...), which opens with an Add button for
+ * anyone in the org (checked 2026-11-13), so none of today's skills needs the catalog route.
+ */
 export type SkillStatus = "org" | "shared" | "catalog";
 
 /** Only "catalog" skills get a visible tag: org and shared skills both work for everyone. */
@@ -143,34 +147,34 @@ export const SKILL_GROUPS: { id: string; label: string; skills: Skill[] }[] = [
     id: "sales",
     label: "Sales and AEs",
     skills: [
-      { name: "og-sales-deck", url: skill("plugin_01Evpbd3rbgLHaKLYVBdzg47"), status: "catalog", body: "Builds a tailored sales deck in Google Slides from the official template and the 2026 slide bank." },
+      { name: "og-sales-deck", url: skill("plugin_01Evpbd3rbgLHaKLYVBdzg47"), status: "org", body: "Builds a tailored sales deck in Google Slides from the official template and the 2026 slide bank." },
       { name: "negotiation-pricing-model", url: skill("plugin_011vyJ3RhWdirLwmdA8wjr6V"), status: "shared", body: "A branded Excel model with List, Proposal, Counter, and Floor prices, 3-year ARR, and GMV sensitivity." },
       { name: "sow-generator", url: skill("plugin_012QnT8rJhSiXFWNntSNe6a4"), status: "shared", body: "Writes an SOW in Ordergroove’s standard legal language and uploads it to Drive." },
       { name: "sow-generator-type-options", url: skill("plugin_01YPffAehRDeL1GN39DVtZmf"), status: "shared", body: "An SOW variant covering 3 types: Migration, Custom Report, and General." },
       { name: "account-signal-tracker", url: skill("plugin_01Y6YDwCvD3y57ieVux9EAiK"), status: "shared", body: "Turns news about an account (earnings, new hires, launches) into outreach messaging." },
-      { name: "e100-account-brief-generator", url: skill("plugin_01V2WeuDmiwVEDUfjXJMv1sG"), status: "catalog", body: "Drafts the E100 account strategy and mutual action plan brief." },
-      { name: "ae-deal-brief", url: skill("plugin_01VwhWUfkjoB43e3ZrcqWnYH"), status: "catalog", body: "Deal help for every opportunity, before and after the first call, starting from the SDR’s handoff notes." },
-      { name: "ae-deal-revival", url: skill("plugin_01Tn2uddTf15ohH4EqUFo2dE"), status: "catalog", body: "Reads one stalled or unclear deal’s full history and helps decide whether to advance, revive, or close it." },
-      { name: "sdr-handoff", url: skill("plugin_01XRi85KH8fdnLGyS3UzXS97"), status: "catalog", body: "Turns a booked demo into an SQL, collects discovery notes, opens the prospect Slack channel, and notifies the AE. Also writes the post-demo recap." },
-      { name: "Groove standard", url: skill("plugin_01ETHocUXqGZue9RMPPnXLRf"), status: "catalog", body: "Keeps an opportunity’s Groove Standard fields current from Gong, Salesforce, Gmail, and Slack, and drafts the follow-up email." },
+      { name: "e100-account-brief-generator", url: skill("plugin_01V2WeuDmiwVEDUfjXJMv1sG"), status: "org", body: "Drafts the E100 account strategy and mutual action plan brief." },
+      { name: "ae-deal-brief", url: skill("plugin_01VwhWUfkjoB43e3ZrcqWnYH"), status: "org", body: "Deal help for every opportunity, before and after the first call, starting from the SDR’s handoff notes." },
+      { name: "ae-deal-revival", url: skill("plugin_01Tn2uddTf15ohH4EqUFo2dE"), status: "org", body: "Reads one stalled or unclear deal’s full history and helps decide whether to advance, revive, or close it." },
+      { name: "sdr-handoff", url: skill("plugin_01XRi85KH8fdnLGyS3UzXS97"), status: "org", body: "Turns a booked demo into an SQL, collects discovery notes, opens the prospect Slack channel, and notifies the AE. Also writes the post-demo recap." },
+      { name: "Groove standard", url: skill("plugin_01ETHocUXqGZue9RMPPnXLRf"), status: "org", body: "Keeps an opportunity’s Groove Standard fields current from Gong, Salesforce, Gmail, and Slack, and drafts the follow-up email." },
     ],
   },
   {
     id: "cs",
     label: "CS and account management",
     skills: [
-      { name: "account-status-update", url: skill("plugin_01RkXcDEvYqvDEQqfK1ik19F"), status: "catalog", body: "Graded, Slack-ready status updates for a CSM’s accounts." },
-      { name: "sbr-scan", url: skill("plugin_011aJQ5cYfY8NNDV8iqupRtG"), status: "catalog", body: "SBR step 1: scans every source for a merchant and suggests the problem to solve." },
-      { name: "sbr-prep", url: skill("plugin_01PRupGqSreSHKjS8jaND78u"), status: "catalog", body: "SBR step 2: researches, sizes the opportunity, and builds the story." },
-      { name: "sbr-practice", url: skill("plugin_01C4K9Ndxdr4F3VmxJRBdChP"), status: "catalog", body: "SBR step 3: a critique from a skeptical executive, plus a meeting role-play." },
-      { name: "sbr-recap", url: skill("plugin_01QKiFte7qRhQetd4n1jYo6z"), status: "catalog", body: "SBR step 4: a recap email, an internal summary, and a #strategic-business-reviews post." },
+      { name: "account-status-update", url: skill("plugin_01RkXcDEvYqvDEQqfK1ik19F"), status: "org", body: "Graded, Slack-ready status updates for a CSM’s accounts." },
+      { name: "sbr-scan", url: skill("plugin_011aJQ5cYfY8NNDV8iqupRtG"), status: "org", body: "SBR step 1: scans every source for a merchant and suggests the problem to solve." },
+      { name: "sbr-prep", url: skill("plugin_01PRupGqSreSHKjS8jaND78u"), status: "org", body: "SBR step 2: researches, sizes the opportunity, and builds the story." },
+      { name: "sbr-practice", url: skill("plugin_01C4K9Ndxdr4F3VmxJRBdChP"), status: "org", body: "SBR step 3: a critique from a skeptical executive, plus a meeting role-play." },
+      { name: "sbr-recap", url: skill("plugin_01QKiFte7qRhQetd4n1jYo6z"), status: "org", body: "SBR step 4: a recap email, an internal summary, and a #strategic-business-reviews post." },
       { name: "dormant-customer", url: skill("plugin_01GJv6rudjSuu3TcRSVhDMYz"), status: "shared", body: "A prep pack for re-engaging a customer that’s gone quiet." },
       { name: "merchant-retention-agent", url: skill("plugin_01AoCpVfmRBNUeSZ3wtmvce2"), status: "shared", body: "Analyzes a merchant’s cancel flow using BigQuery and ranks save tactics." },
       { name: "customer-master-sheet", url: skill("plugin_01XpFBuya1BiBCx5F4VvAmSd"), status: "shared", body: "Builds and updates the hypercare master sheet and success plan." },
-      { name: "cs-renewal-proposals", url: skill("plugin_01Uj3NavoQLqyMLQxbqAo461"), status: "catalog", body: "A renewal or pricing proposal (deck, PDF, and internal summary) from one set of deal terms, posted to #cs-deal-desk." },
-      { name: "merchant-360", url: skill("plugin_017cVL7UfTqi6PLcDhhSScUn"), status: "catalog", body: "Answers “what’s going on with this merchant?” in Slack with a briefing from the platform, Salesforce, Zendesk, Jira, and Drive." },
-      { name: "Retention forecast", url: skill("plugin_01Qe2Rc2f31WJgr8Mo5iwBiq"), status: "catalog", body: "The weekly CS retention forecast: refreshes the Build sheet from Salesforce, then writes the pipeline briefing, summary slide, and CS manager briefs." },
-      { name: "Account management agent", url: skill("plugin_01Ai8C5aqDcghssDzxMVyyhF"), status: "catalog", body: "Renewal and expansion offers, account briefs, customer outreach, and tier-trip notices for the install base." },
+      { name: "cs-renewal-proposals", url: skill("plugin_01Uj3NavoQLqyMLQxbqAo461"), status: "org", body: "A renewal or pricing proposal (deck, PDF, and internal summary) from one set of deal terms, posted to #cs-deal-desk." },
+      { name: "merchant-360", url: skill("plugin_017cVL7UfTqi6PLcDhhSScUn"), status: "org", body: "Answers “what’s going on with this merchant?” in Slack with a briefing from the platform, Salesforce, Zendesk, Jira, and Drive." },
+      { name: "Retention forecast", url: skill("plugin_01Qe2Rc2f31WJgr8Mo5iwBiq"), status: "org", body: "The weekly CS retention forecast: refreshes the Build sheet from Salesforce, then writes the pipeline briefing, summary slide, and CS manager briefs." },
+      { name: "Account management agent", url: skill("plugin_01Ai8C5aqDcghssDzxMVyyhF"), status: "org", body: "Renewal and expansion offers, account briefs, customer outreach, and tier-trip notices for the install base." },
     ],
   },
   {
@@ -183,7 +187,7 @@ export const SKILL_GROUPS: { id: string; label: string; skills: Skill[] }[] = [
       {
         name: "web-video",
         url: skill("plugin_016q9TPZNDY8QZjZxSteUY2o"),
-        status: "catalog",
+        status: "org",
         body: "Editable web videos rendered to MP4.",
         extra: { label: "How-to", url: "https://claude.ai/artifact/9T5wDXvcCRAqK7oe8hSzb5?sk=xQ90Br2WZ-n3cci05ovZqQ" },
       },
@@ -191,7 +195,7 @@ export const SKILL_GROUPS: { id: string; label: string; skills: Skill[] }[] = [
       {
         name: "ordergroove-shopify-bundles",
         url: skill("plugin_01A118VxwcGzvLFU4xo8k1Kv"),
-        status: "catalog",
+        status: "org",
         body: "Build-your-own-box bundle subscriptions on Shopify.",
         extra: { label: "One-pager", url: "https://docs.google.com/presentation/d/1GGjmrHXBkB0EZ_ztrgZw2-ni4uUlOD5ARLZ2Of29Oz0/edit" },
       },
