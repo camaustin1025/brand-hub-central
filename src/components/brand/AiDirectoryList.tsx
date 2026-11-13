@@ -33,6 +33,15 @@ function PlatformIcon({ resource: r }: { resource: AiResource }) {
   </span>;
 }
 
+/**
+ * Optional row styling for a review layout. The shipped list passes none and renders exactly as before.
+ * description: a class added to each description. inlineDetails: a class for a Details toggle that sits
+ * at the end of the description instead of under the row's link. markLinked: the row a #link points at
+ * carries the rail's highlighter on its title.
+ */
+export type RowStyle = { description?: string; inlineDetails?: string; markLinked?: boolean };
+const isLinked = (label: string) => typeof window !== 'undefined' && window.location.hash === `#${anchorFor(label)}`;
+
 /** Sources that only name the platform, which the row icon already shows. */
 const HIDDEN_SOURCES = ['Claude', 'Org plugin', 'Tool / connector', 'Slack', 'Shared drive', 'Anthropic'];
 
@@ -55,28 +64,32 @@ function place(entries: DirectoryEntry[]): Placement[] {
   return out;
 }
 
-function ResourceItem({ resource: r, placement, step, folded = false }: { resource: AiResource; placement?: Placement; step?: number; folded?: boolean }) {
+function ResourceItem({ resource: r, placement, step, folded = false, rowStyle }: { resource: AiResource; placement?: Placement; step?: number; folded?: boolean; rowStyle?: RowStyle }) {
   const [open, setOpen] = useState(false);
+  const [linked] = useState(() => Boolean(rowStyle?.markLinked) && isLinked(r.title));
   const detailId = `resource-${r.id.replace(/[^a-z0-9-]/gi, '')}`;
   const action = r.type === 'Skills' ? 'Open skill' : r.type === 'Assets' ? 'Open file' : r.type === 'Help & channels' ? 'Open channel' : 'Open';
   const owner = HIDDEN_SOURCES.includes(r.source) ? '' : r.source.startsWith('Slack · ') ? r.source.slice(8) : r.source;
   // The description is always shown in full, so Details only appears when it adds a fact the row doesn't show.
   const hasDetails = Boolean(r.identifier || r.catalog || !r.url || r.team || owner || r.related);
+  // Inline only for a plain Details toggle; Catalog access and Access details stay as the row's way in.
+  const inlineDetails = Boolean(rowStyle?.inlineDetails && hasDetails && r.url && !r.catalog);
+  const detailsToggle = hasDetails && <button type="button" className={cn(s.textAction, inlineDetails && rowStyle?.inlineDetails, 'action-focus')} aria-expanded={open} aria-controls={detailId} onClick={() => setOpen(!open)}>
+    {r.catalog ? 'Catalog access' : !r.url ? 'Access details' : open ? 'Less' : 'Details'}<span className="sr-only">: {r.title}</span>
+    <ChevronDown size={14} aria-hidden="true" className={open ? 'rotate-180' : undefined} />
+  </button>;
   return <li className={cn(step ? s.step : s.item, open && s.itemOpen, folded && s.folded)} data-row={placement?.row} data-col={placement?.paired ? 0 : undefined}>
     <div className={s.row}>
       {step ? <span className={s.stepNumber} aria-hidden="true">{step}</span> : <PlatformIcon resource={r} />}
       <div className="min-w-0">
-        <Heading as="h3" id={anchorFor(r.title)} copyLink={false} className={cn(s.title, 'scroll-mt-40')}>{step ? <span className="sr-only">Step {step}: </span> : null}{r.title}</Heading>
-        <p className={s.description}>{r.body}</p>
+        <Heading as="h3" id={anchorFor(r.title)} copyLink={false} className={cn(s.title, 'scroll-mt-40')}>{step ? <span className="sr-only">Step {step}: </span> : null}{linked ? <span className="nav-highlight">{r.title}</span> : r.title}</Heading>
+        <p className={cn(s.description, rowStyle?.description)}>{r.body}{inlineDetails && <> {detailsToggle}</>}</p>
       </div>
       <div className={s.actions}>
         {r.url && !r.catalog && (r.type === 'Skills'
           ? <a href={r.url} target="_blank" rel="noopener noreferrer" className={cn(s.openSkill, 'action-focus')}>Open skill<span className="sr-only">: {r.title} (opens in a new tab)</span></a>
           : <External href={r.url} className={cn(s.textAction, s.textActionStrong, 'action-focus')}>{action}<ArrowUpRight size={13} aria-hidden="true" /><span className="sr-only">: {r.title}</span></External>)}
-        {hasDetails && <button type="button" className={cn(s.textAction, 'action-focus')} aria-expanded={open} aria-controls={detailId} onClick={() => setOpen(!open)}>
-          {r.catalog ? 'Catalog access' : !r.url ? 'Access details' : open ? 'Less' : 'Details'}<span className="sr-only">: {r.title}</span>
-          <ChevronDown size={14} aria-hidden="true" className={open ? 'rotate-180' : undefined} />
-        </button>}
+        {!inlineDetails && detailsToggle}
       </div>
       {open && hasDetails && <div id={detailId} className={s.details}>
         {r.identifier && <p><strong>{r.source === 'Org plugin' ? 'Plugin' : 'Skill'} name:</strong> <code className="select-all break-all">{r.identifier}</code></p>}
@@ -91,16 +104,17 @@ function ResourceItem({ resource: r, placement, step, folded = false }: { resour
 }
 
 /** A workflow collapses its steps into one row. A search that matches a step opens it, so matches are never hidden; so does a shared link to a step. */
-function WorkflowItem({ entry: w, searching, placement, folded = false }: { entry: Extract<DirectoryEntry, { kind: 'workflow' }>; searching: boolean; placement: Placement; folded?: boolean }) {
-  const [open, setOpen] = useState(() => typeof window !== 'undefined' && w.steps.some(r => window.location.hash === `#${anchorFor(r.title)}`));
+function WorkflowItem({ entry: w, searching, placement, folded = false, rowStyle }: { entry: Extract<DirectoryEntry, { kind: 'workflow' }>; searching: boolean; placement: Placement; folded?: boolean; rowStyle?: RowStyle }) {
+  const [open, setOpen] = useState(() => w.steps.some(r => isLinked(r.title)));
+  const [linked] = useState(() => Boolean(rowStyle?.markLinked) && isLinked(`${w.title} · ${w.total} steps`));
   const expanded = searching || open;
   const stepsId = `workflow-${w.id}-steps`;
   return <li className={cn(s.item, s.workflow, folded && s.folded)} data-row={placement.row}>
     <div className={s.row}>
       <PlatformIcon resource={w.steps[0]} />
       <div className="min-w-0">
-        <Heading as="h3" id={anchorFor(`${w.title} · ${w.total} steps`)} copyLink={false} className={cn(s.title, 'scroll-mt-40')}>{w.title}<span className={s.titleMeta}> · {w.total} steps</span></Heading>
-        <p className={s.description}>{w.body}</p>
+        <Heading as="h3" id={anchorFor(`${w.title} · ${w.total} steps`)} copyLink={false} className={cn(s.title, 'scroll-mt-40')}>{linked ? <span className="nav-highlight">{w.title}</span> : w.title}<span className={s.titleMeta}> · {w.total} steps</span></Heading>
+        <p className={cn(s.description, rowStyle?.description)}>{w.body}</p>
       </div>
       <div className={s.actions}>
         {searching
@@ -111,7 +125,7 @@ function WorkflowItem({ entry: w, searching, placement, folded = false }: { entr
       </div>
     </div>
     {expanded && <ol id={stepsId} className={s.steps} aria-label={`${w.title} steps`}>
-      {w.steps.map(r => <ResourceItem key={r.id} resource={r} step={w.steps.length === w.total ? w.steps.indexOf(r) + 1 : undefined} />)}
+      {w.steps.map(r => <ResourceItem key={r.id} resource={r} step={w.steps.length === w.total ? w.steps.indexOf(r) + 1 : undefined} rowStyle={rowStyle} />)}
     </ol>}
   </li>;
 }
@@ -121,10 +135,10 @@ const stepTitles = (e: DirectoryEntry) => (e.kind === 'workflow' ? e.steps.map(r
 /** On phones a group opens on its first few rows; the rest are one tap away. Wider screens show every row. */
 const PHONE_FOLD = 3;
 
-function GroupSection({ section, searching, filtered }: { section: DirectorySection; searching: boolean; filtered: boolean }) {
+function GroupSection({ section, searching, filtered, rowStyle }: { section: DirectorySection; searching: boolean; filtered: boolean; rowStyle?: RowStyle }) {
   const anchor = anchorFor(section.label);
   // A shared link to a row (or a workflow step) inside the fold opens the group, so the link still lands.
-  const [expanded, setExpanded] = useState(() => typeof window !== 'undefined' && section.entries.some(e => [entryTitle(e), ...stepTitles(e)].some(t => window.location.hash === `#${anchorFor(t)}`)));
+  const [expanded, setExpanded] = useState(() => section.entries.some(e => [entryTitle(e), ...stepTitles(e)].some(isLinked)));
   const folds = !filtered && !expanded && section.entries.length > PHONE_FOLD;
   const canFold = !filtered && section.entries.length > PHONE_FOLD;
   const placements = place(section.entries);
@@ -135,8 +149,8 @@ function GroupSection({ section, searching, filtered }: { section: DirectorySect
       {section.entries.map((e, i) => {
         const folded = folds && i >= PHONE_FOLD;
         return e.kind === 'resource'
-          ? <ResourceItem key={e.resource.id} resource={e.resource} placement={placements[i]} folded={folded} />
-          : <WorkflowItem key={e.id} entry={e} searching={searching} placement={placements[i]} folded={folded} />;
+          ? <ResourceItem key={e.resource.id} resource={e.resource} placement={placements[i]} folded={folded} rowStyle={rowStyle} />
+          : <WorkflowItem key={e.id} entry={e} searching={searching} placement={placements[i]} folded={folded} rowStyle={rowStyle} />;
       })}
     </ul>
     {canFold && <button type="button" className={cn(s.textAction, s.foldToggle, 'action-focus')} aria-expanded={!folds} aria-controls={listId} onClick={() => setExpanded(!expanded)}>
@@ -201,10 +215,10 @@ export function DirectoryStatus({ f }: { f: DirectoryFilters }) {
 }
 
 /** One white surface per group, then the empty state when nothing matches. */
-export function DirectoryGroups({ f }: { f: DirectoryFilters }) {
+export function DirectoryGroups({ f, rowStyle }: { f: DirectoryFilters; rowStyle?: RowStyle }) {
   const { sections, searching, type, team, results, clear } = f;
   return <>
-    {sections.map(section => <GroupSection key={section.id} section={section} searching={searching} filtered={Boolean(searching || type || team)} />)}
+    {sections.map(section => <GroupSection key={section.id} section={section} searching={searching} filtered={Boolean(searching || type || team)} rowStyle={rowStyle} />)}
     {!results.length && <div className="border-y border-border py-12 text-center"><Heading as="h3" className="text-lg font-bold">No matching resources</Heading><p className="mt-2 text-foreground">Try a different search or clear your filters.</p><button onClick={clear} className={`${LINK} mt-5 min-h-11`}>Clear filters</button></div>}
   </>;
 }
