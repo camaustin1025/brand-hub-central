@@ -7,7 +7,7 @@ import { jumpTo } from "@/lib/hub-navigation";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { cn } from "@/lib/utils";
 import { useAccess } from "@/hooks/use-access";
-import { isNavOption, PROMOTED_NAV, type NavOption } from "./nav/options";
+import { isNavOption, isNavTheme, PROMOTED_NAV, PROMOTED_NAV_THEME, resolveNavTheme, type NavOption, type NavTheme } from "./nav/options";
 
 /* Nav options under review (src/components/hub/nav). Local dev switches with ?nav= and a floating switcher;
    production renders PROMOTED_NAV, and while that is "rail" both loaders below compile away. */
@@ -36,6 +36,29 @@ function useDevNavOption(): NavOption {
 }
 const usePromotedNav = (): NavOption => PROMOTED_NAV;
 const useNavOption = import.meta.env.DEV ? useDevNavOption : usePromotedNav;
+
+const NAV_THEME_KEY = "hub-nav-theme";
+/** Local dev: ?navTheme=light|dark picks the theme for options that come in both; the tab remembers it. */
+function useDevNavTheme(): NavTheme | undefined {
+  const requested = new URLSearchParams(useLocation().search).get("navTheme");
+  if (isNavTheme(requested)) {
+    try {
+      window.sessionStorage.setItem(NAV_THEME_KEY, requested);
+    } catch {
+      // Storage blocked: the theme holds only while ?navTheme= is in the address.
+    }
+    return requested;
+  }
+  try {
+    const saved = window.sessionStorage.getItem(NAV_THEME_KEY);
+    if (isNavTheme(saved)) return saved;
+  } catch {
+    // Storage blocked.
+  }
+  return undefined;
+}
+const usePromotedNavTheme = (): NavTheme | undefined => PROMOTED_NAV_THEME;
+const useNavTheme = import.meta.env.DEV ? useDevNavTheme : usePromotedNavTheme;
 
 export { SearchBox } from "./HubSearch";
 export { jumpTo } from "@/lib/hub-navigation";
@@ -347,6 +370,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
   const isGuest = useAccess() === "guest";
   const heroSearchVisible = useHeroSearchVisible(heroSearch);
   const navOption = useNavOption();
+  const navTheme = resolveNavTheme(navOption, useNavTheme());
 
   // Escape closes the phone menu and hands focus back to the button that opened it.
   useEffect(() => {
@@ -391,13 +415,14 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
           >
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>}
-          {/* The launch video's lockup: "Brand Hub" in Figtree Bold at about a quarter of the wordmark's width.
-              The logo PNG carries ~21px of transparent padding on the right, so the negative margin pulls the divider in. */}
+          {/* Lockup: "Brand Hub" in Figtree ExtraBold, sized so it runs exactly as wide as the wordmark beside it
+              (107px at md, 92px at sm). The logo PNG carries ~21px of transparent padding on the right, so the
+              negative margin pulls the divider in. */}
           <Link to="/" className="flex shrink-0 items-center sm:-mr-[22px] md:-mr-6" aria-label="Ordergroove brand hub home">
             <img src="/logo-dark.png" alt="Ordergroove" className="h-12 w-auto md:h-14" />
           </Link>
-          <span className="hidden h-[22px] w-px bg-white/30 sm:block md:h-[26px]" />
-          <span className="-ml-1.5 hidden truncate text-[24px] font-bold leading-none tracking-[-0.025em] text-white sm:block md:text-[28px]">Brand Hub</span>
+          <span className="hidden h-[20px] w-px bg-white/30 sm:block md:h-[24px]" />
+          <span className="-ml-1.5 hidden whitespace-nowrap text-[19.5px] font-extrabold leading-none tracking-[-0.025em] text-white sm:block md:text-[22.75px]">Brand Hub</span>
           {/* One search on screen at a time: hide this one while the Home hero search is visible. */}
           <div className={cn("ml-auto hidden transition-opacity duration-200 md:block", heroSearchVisible && "invisible opacity-0")}>
             <SearchBox />
@@ -409,8 +434,8 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
       <div className="h-16" />
       {!focused && (navOption === "rail" || !NavOptionHost
         ? <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />
-        : <Suspense fallback={null}><NavOptionHost option={navOption} activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} /></Suspense>)}
-      {NavSwitcher && <Suspense fallback={null}><NavSwitcher current={navOption} /></Suspense>}
+        : <Suspense fallback={null}><NavOptionHost option={navOption} theme={navTheme} activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} /></Suspense>)}
+      {NavSwitcher && <Suspense fallback={null}><NavSwitcher current={navOption} theme={navTheme} /></Suspense>}
 
       {/* Options publish their docked width as --hub-nav-w (the sidebar option narrows to an icon rail). */}
       <main ref={mainRef} className={cn(!focused && (navOption === "rail" ? "lg:ml-[284px]" : "lg:ml-[var(--hub-nav-w,284px)] lg:transition-[margin] lg:duration-200 motion-reduce:transition-none"))}>

@@ -1,5 +1,5 @@
 /**
- * Option 2 (?nav=sidebar): a shadcn-style app sidebar in Midnight. Group labels split the hub into Brand and
+ * Option 2 (?nav=sidebar): a shadcn-style app sidebar, in Midnight (dark) or the hub's off-white (light, ?navTheme=light). Group labels split the hub into Brand and
  * Company; each hub group is a collapsible menu item with a line icon, and its pages hang off a left rail line
  * as sub-items. The current page sits in a darker pill with a Groovy Green tick on the rail. A trigger (or
  * Cmd/Ctrl+B) collapses the sidebar to a 64px icon rail with tooltips; the signed-in user sits in the footer.
@@ -41,17 +41,59 @@ const GROUP_ICONS: Record<string, ComponentType<LucideProps>> = {
 /** Sidebar group labels. Anything not listed falls under Company. */
 const BRAND_GROUPS = new Set(["Grab-and-go", "Visual identity", "Verbal identity", "Brand systems"]);
 
-const FOCUS = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green";
-const PARENT = cn(
-  "group/parent flex h-10 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium text-white/80 transition-colors hover:bg-white/[0.07] hover:text-white [@media(pointer:coarse)]:h-11",
-  FOCUS
-);
-const SUB = cn(
-  "relative flex h-8 w-full items-center gap-2 rounded-lg px-3 text-left text-[13px] text-white/70 transition-colors hover:bg-white/[0.07] hover:text-white [@media(pointer:coarse)]:h-11",
-  FOCUS
-);
-const SUB_ACTIVE =
-  "bg-[#0B0919] font-semibold text-white ring-1 ring-white/[0.08] hover:bg-[#0B0919] before:absolute before:-left-[13px] before:top-1/2 before:h-5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-og-green";
+const PARENT_BASE = "group/parent flex h-10 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium transition-colors [@media(pointer:coarse)]:h-11";
+const SUB_BASE = "relative flex h-8 w-full items-center gap-2 rounded-lg px-3 text-left text-[13px] transition-colors [@media(pointer:coarse)]:h-11";
+const TICK = "before:absolute before:-left-[13px] before:top-1/2 before:h-5 before:w-0.5 before:-translate-y-1/2 before:rounded-full";
+
+/** Dark is Midnight with Groovy Green accents; light is the hub's off-white rail with #009A50, since #00FF85 fails on white. */
+const THEMES = {
+  dark: {
+    focus: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green",
+    aside: "border-white/10 bg-og-midnight text-white",
+    line: "border-white/10",
+    rule: "bg-white/10",
+    eyebrow: "text-white/55",
+    groupLabel: "text-white/45",
+    iconButton: "text-white/70 hover:bg-white/10 hover:text-white",
+    parent: "text-white/80 hover:bg-white/[0.07] hover:text-white",
+    parentActive: "text-white",
+    icon: "text-white/60 group-hover/parent:text-white",
+    accent: "text-og-green",
+    chevron: "text-white/45",
+    subList: "border-white/15",
+    sub: "text-white/70 hover:bg-white/[0.07] hover:text-white",
+    subActive: cn("bg-[#0B0919] font-semibold text-white ring-1 ring-white/[0.08] hover:bg-[#0B0919] before:bg-og-green", TICK),
+    subDisabled: "cursor-default text-white/40 hover:bg-transparent hover:text-white/40",
+    railButton: "text-white/70 hover:bg-white/[0.07] hover:text-white",
+    railActive: "bg-[#0B0919] text-og-green ring-1 ring-white/[0.08]",
+    name: "text-white",
+    email: "text-white/55",
+    avatar: "bg-og-green text-og-midnight",
+  },
+  light: {
+    focus: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+    aside: "border-border bg-[#F8F8FA] text-og-midnight",
+    line: "border-og-midnight/10",
+    rule: "bg-og-midnight/10",
+    eyebrow: "text-og-midnight/55",
+    groupLabel: "text-og-midnight/50",
+    iconButton: "text-og-midnight/60 hover:bg-og-midnight/[0.06] hover:text-og-midnight",
+    parent: "text-og-midnight/80 hover:bg-og-midnight/[0.05] hover:text-og-midnight",
+    parentActive: "text-og-midnight",
+    icon: "text-og-midnight/50 group-hover/parent:text-og-midnight",
+    accent: "text-primary",
+    chevron: "text-og-midnight/40",
+    subList: "border-og-midnight/15",
+    sub: "text-og-midnight/70 hover:bg-og-midnight/[0.05] hover:text-og-midnight",
+    subActive: cn("bg-white font-semibold text-og-midnight shadow-sm ring-1 ring-og-midnight/10 hover:bg-white before:bg-primary", TICK),
+    subDisabled: "cursor-default text-og-midnight/35 hover:bg-transparent hover:text-og-midnight/35",
+    railButton: "text-og-midnight/60 hover:bg-og-midnight/[0.05] hover:text-og-midnight",
+    railActive: "bg-white text-primary shadow-sm ring-1 ring-og-midnight/10",
+    name: "text-og-midnight",
+    email: "text-og-midnight/55",
+    avatar: "bg-og-midnight text-og-green",
+  },
+} as const;
 
 function readIconRail() {
   try {
@@ -80,7 +122,12 @@ function Tip({ label, enabled, children }: { label: string; enabled: boolean; ch
   );
 }
 
-export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) {
+export default function SidebarNav({ activeId, open, onClose, theme }: NavOptionProps) {
+  const t = THEMES[theme];
+  const FOCUS = t.focus;
+  const PARENT = cn(PARENT_BASE, t.parent, FOCUS);
+  const SUB = cn(SUB_BASE, t.sub, FOCUS);
+  const SUB_ACTIVE = t.subActive;
   const navRef = useRef<HTMLElement>(null);
   const asideRef = useRef<HTMLElement>(null);
   const { nav, isGuest, activeGroup } = useVisibleNav(activeId);
@@ -136,14 +183,15 @@ export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) 
         id="hub-section-menu"
         data-state={rail ? "collapsed" : "expanded"}
         className={cn(
-          "fixed bottom-0 left-0 top-16 z-40 flex w-[284px] max-w-[85vw] flex-col border-r border-white/10 bg-og-midnight text-white transition-[transform,width] duration-200 motion-reduce:transition-none lg:translate-x-0",
+          "fixed bottom-0 left-0 top-16 z-40 flex w-[284px] max-w-[85vw] flex-col border-r transition-[transform,width] duration-200 motion-reduce:transition-none lg:translate-x-0",
+          t.aside,
           rail ? "lg:w-[64px]" : "lg:w-[272px]",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Header: the section label and the collapse trigger. */}
-        <div className={cn("flex h-14 shrink-0 items-center border-b border-white/10", rail ? "justify-center px-2" : "justify-between pl-5 pr-3")}>
-          {!rail && <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-white/55">Sections</span>}
+        <div className={cn("flex h-14 shrink-0 items-center border-b", t.line, rail ? "justify-center px-2" : "justify-between pl-5 pr-3")}>
+          {!rail && <span className={cn("text-[11px] font-bold uppercase tracking-[0.12em]", t.eyebrow)}>Sections</span>}
           <Tip label="Expand sidebar" enabled={rail}>
             <button
               type="button"
@@ -151,7 +199,7 @@ export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) 
               aria-label={rail ? "Expand sidebar" : "Collapse sidebar to icons"}
               aria-expanded={!rail}
               aria-controls="hub-section-menu"
-              className={cn("hidden size-9 place-items-center rounded-lg text-white/70 transition-colors hover:bg-white/10 hover:text-white lg:grid", FOCUS)}
+              className={cn("hidden size-9 place-items-center rounded-lg transition-colors lg:grid", t.iconButton, FOCUS)}
             >
               {rail ? <PanelLeftOpen size={18} aria-hidden="true" /> : <PanelLeftClose size={18} aria-hidden="true" />}
             </button>
@@ -162,9 +210,9 @@ export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) 
           {sections.map((section, sectionIndex) => (
             <div key={section.label} className={cn(sectionIndex > 0 && "mt-4")}>
               {rail ? (
-                sectionIndex > 0 && <div className="mx-3 mb-3 h-px bg-white/10" aria-hidden="true" />
+                sectionIndex > 0 && <div className={cn("mx-3 mb-3 h-px", t.rule)} aria-hidden="true" />
               ) : (
-                <h2 className="px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/45">{section.label}</h2>
+                <h2 className={cn("px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em]", t.groupLabel)}>{section.label}</h2>
               )}
               <ul className="space-y-0.5">
                 {section.groups.map((group) => {
@@ -185,9 +233,10 @@ export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) 
                             }}
                             aria-label={holdsActive ? `${group.label}, contains the current page` : group.label}
                             className={cn(
-                              "mx-auto grid size-10 place-items-center rounded-lg text-white/70 transition-colors hover:bg-white/[0.07] hover:text-white",
+                              "mx-auto grid size-10 place-items-center rounded-lg transition-colors",
+                              t.railButton,
                               FOCUS,
-                              holdsActive && "bg-[#0B0919] text-og-green ring-1 ring-white/[0.08]"
+                              holdsActive && t.railActive
                             )}
                           >
                             <Icon size={18} strokeWidth={1.75} aria-hidden="true" />
@@ -204,23 +253,23 @@ export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) 
                         aria-expanded={isOpen}
                         aria-controls={listId}
                         onClick={() => toggleGroup(group.label)}
-                        className={cn(PARENT, holdsActive && "text-white")}
+                        className={cn(PARENT, holdsActive && t.parentActive)}
                       >
-                        <Icon size={18} strokeWidth={1.75} aria-hidden="true" className={cn("shrink-0", holdsActive ? "text-og-green" : "text-white/60 group-hover/parent:text-white")} />
+                        <Icon size={18} strokeWidth={1.75} aria-hidden="true" className={cn("shrink-0", holdsActive ? t.accent : t.icon)} />
                         <span className="flex-1 truncate">{group.label}</span>
                         <ChevronRight
                           size={16}
                           aria-hidden="true"
-                          className={cn("shrink-0 text-white/45 transition-transform duration-200 motion-reduce:transition-none", isOpen && "rotate-90")}
+                          className={cn("shrink-0 transition-transform duration-200 motion-reduce:transition-none", t.chevron, isOpen && "rotate-90")}
                         />
                         {holdsActive && !isOpen && <span className="sr-only">, contains the current page</span>}
                       </button>
-                      <ul id={listId} hidden={!isOpen} className="mb-1 ml-[21px] mt-0.5 space-y-0.5 border-l border-white/15 pl-3">
+                      <ul id={listId} hidden={!isOpen} className={cn("mb-1 ml-[21px] mt-0.5 space-y-0.5 border-l pl-3", t.subList)}>
                         {external && (
                           <li>
                             <a href={external.href} target="_blank" rel="noopener noreferrer" className={cn(SUB, "group justify-between")}>
                               {external.label}
-                              <ArrowUpRight size={14} aria-hidden="true" className="text-og-green transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px" />
+                              <ArrowUpRight size={14} aria-hidden="true" className={cn("transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px", t.accent)} />
                               <span className="sr-only"> (opens in a new tab)</span>
                             </a>
                           </li>
@@ -230,7 +279,7 @@ export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) 
                           return (
                             <li key={item.id}>
                               {item.disabled ? (
-                                <span aria-disabled="true" className={cn(SUB, "cursor-default text-white/40 hover:bg-transparent hover:text-white/40")}>
+                                <span aria-disabled="true" className={cn(SUB, t.subDisabled)}>
                                   <span className="flex-1 truncate">{item.label}</span>
                                   {item.wip && <WipTag />}
                                 </span>
@@ -258,16 +307,16 @@ export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) 
         </nav>
 
         {/* Footer: who is signed in. The admin "Manage guests" pill floats bottom-left, so admins get room under it. */}
-        <div className={cn("shrink-0 border-t border-white/10", rail ? "px-2 py-3" : "px-3 py-3", isAdmin && "pb-16")}>
+        <div className={cn("shrink-0 border-t", t.line, rail ? "px-2 py-3" : "px-3 py-3", isAdmin && "pb-16")}>
           <Tip label={name} enabled={rail}>
             <div className={cn("flex items-center gap-3 rounded-lg", rail ? "justify-center" : "px-2 py-1.5")} tabIndex={rail ? 0 : undefined}>
-              <span aria-hidden="true" className="grid size-8 shrink-0 place-items-center rounded-full bg-og-green text-xs font-bold text-og-midnight">
+              <span aria-hidden="true" className={cn("grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold", t.avatar)}>
                 {initials(name)}
               </span>
               {!rail && (
                 <span className="min-w-0 leading-tight">
-                  <span className="block truncate text-sm font-semibold text-white">{name}</span>
-                  {user?.email && <span className="block truncate text-xs text-white/55">{user.email}</span>}
+                  <span className={cn("block truncate text-sm font-semibold", t.name)}>{name}</span>
+                  {user?.email && <span className={cn("block truncate text-xs", t.email)}>{user.email}</span>}
                 </span>
               )}
               {rail && <span className="sr-only">Signed in as {name}</span>}

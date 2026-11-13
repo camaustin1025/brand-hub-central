@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { HUB_NAV, isGuestPath, type HubNavGroup } from "@/data/hub";
 import { jumpTo } from "@/lib/hub-navigation";
 import { useAccess } from "@/hooks/use-access";
+import type { NavTheme } from "./options";
 
-export type NavOptionProps = { activeId: string; open: boolean; onClose: () => void };
+export type NavOptionProps = { activeId: string; open: boolean; onClose: () => void; theme: NavTheme };
 
 /** The visible nav: guests see Home sections only; disabled and hidden (WIP) items never show. */
 export function useVisibleNav(activeId: string) {
