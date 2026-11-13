@@ -70,10 +70,13 @@ const NAV_ITEM_IDLE = "text-og-midnight hover:bg-og-midnight/[0.06]";
 /** Nav option "highlight": no chip; the label itself carries the download highlighter (.nav-highlight in index.css). */
 const NAV_ITEM_HIGHLIGHTED = "font-semibold text-og-midnight hover:bg-og-midnight/[0.06]";
 
-/* Group headers are disclosure buttons: 11px caps in Midnight with a chevron, set apart from the
-   14px links below them by weight, case and a hairline above each group (not by a tinted block). */
-const NAV_GROUP_BUTTON =
-  "group/header flex min-h-9 w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-midnight transition-colors hover:bg-og-midnight/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
+/* Group headers are two controls on one row: the 11px Midnight caps title is a link to where the group
+   starts (its first page or Home section), and a compact chevron button beside it folds the group.
+   They stay set apart from the 14px links below by weight, case and a hairline above each group. */
+const NAV_GROUP_LINK =
+  "flex min-h-9 min-w-0 flex-1 items-center gap-2 rounded-lg px-3 py-2 text-left text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-midnight transition-colors hover:bg-og-midnight/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
+const NAV_FOLD_BUTTON =
+  "flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-2 text-og-midnight/60 transition-colors hover:bg-og-midnight/[0.06] hover:text-og-midnight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:h-11 [@media(pointer:coarse)]:min-w-11 [@media(pointer:coarse)]:justify-center";
 const NAV_TITLE_LINK =
   "flex min-h-9 items-center rounded-lg px-3 py-2 text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-midnight transition-colors hover:bg-og-midnight/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
 
@@ -96,8 +99,16 @@ function writeCollapsed(labels: string[]) {
 }
 
 /** Every control a keyboard user can reach in the rail, in order, skipping folded groups. */
+/** What the arrow keys step through. Fold buttons sit out (Left and Right on a group title fold it), so each group is one stop. */
 function railControls(nav: HTMLElement) {
-  return [...nav.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")].filter((element) => element.getClientRects().length > 0);
+  return [...nav.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")].filter((element) => !element.hasAttribute("data-nav-fold") && element.getClientRects().length > 0);
+}
+
+/** Where a group starts: its first page, or its first Home section as a /#anchor. */
+function groupStart(group: { items: { id: string; path?: string; disabled?: boolean }[] }) {
+  const first = group.items.find((item) => !item.disabled);
+  if (!first) return null;
+  return first.path ? { to: first.path, section: null } : { to: `/#${first.id}`, section: first.id };
 }
 
 export function Sidebar({
@@ -217,6 +228,7 @@ export function Sidebar({
               const isOpen = !collapsed.includes(group.label);
               const listId = `nav-list-${group.items[0].id}`;
               const holdsActive = group.label === activeGroup;
+              const start = groupStart(group);
               const divider = groupIndex > 0 && "mt-3 border-t border-og-midnight/10 pt-3";
               if (group.linkTitle) {
                 return (
@@ -235,32 +247,37 @@ export function Sidebar({
               return (
                 <li key={group.label} className={cn(divider)}>
                   <section aria-labelledby={`nav-${group.items[0].id}`} data-nav-section="">
-                    <h2 id={`nav-${group.items[0].id}`}>
+                    <h2 id={`nav-${group.items[0].id}`} className="flex items-center gap-0.5">
+                      {/* The title jumps to where the group starts; Left and Right on it still fold the group. */}
+                      <Link
+                        to={start?.to ?? "/"}
+                        data-nav-group={group.label}
+                        onClick={(event) => (start?.section ? onSectionLinkClick(event, start.section, onClose) : onClose())}
+                        className={NAV_GROUP_LINK}
+                      >
+                        <span className="truncate">{group.label}</span>
+                        {/* Folded, the group still says it holds the page you are on. */}
+                        {holdsActive && !isOpen && (
+                          <span className="size-1.5 shrink-0 rounded-full bg-og-green-light" aria-hidden="true" />
+                        )}
+                        {holdsActive && !isOpen && <span className="sr-only">, contains the current page</span>}
+                      </Link>
                       <button
                         type="button"
-                        data-nav-group={group.label}
+                        data-nav-fold=""
                         aria-expanded={isOpen}
                         aria-controls={listId}
+                        aria-label={`${isOpen ? "Hide" : "Show"} ${group.label} pages`}
                         onClick={() => toggleGroup(group.label)}
-                        className={NAV_GROUP_BUTTON}
+                        className={NAV_FOLD_BUTTON}
                       >
-                        <span className="flex items-center gap-2">
-                          {group.label}
-                          {/* Folded, the group still says it holds the page you are on. */}
-                          {holdsActive && !isOpen && (
-                            <span className="size-1.5 rounded-full bg-og-green-light" aria-hidden="true" />
-                          )}
-                        </span>
-                        <span className="flex items-center gap-1.5 text-og-midnight/60">
-                          {!isOpen && <span className="text-[11px] font-semibold tracking-normal tabular-nums">{group.items.length + (group.externalLink && !isGuest ? 1 : 0)}</span>}
-                          <ChevronDown
-                            size={16}
-                            strokeWidth={2.25}
-                            aria-hidden="true"
-                            className={cn("shrink-0 text-og-midnight transition-transform duration-200 motion-reduce:transition-none", !isOpen && "-rotate-90")}
-                          />
-                        </span>
-                        {holdsActive && !isOpen && <span className="sr-only">, contains the current page</span>}
+                        {!isOpen && <span className="text-[11px] font-semibold tabular-nums">{group.items.length + (group.externalLink && !isGuest ? 1 : 0)}</span>}
+                        <ChevronDown
+                          size={16}
+                          strokeWidth={2.25}
+                          aria-hidden="true"
+                          className={cn("shrink-0 text-og-midnight transition-transform duration-200 motion-reduce:transition-none", !isOpen && "-rotate-90")}
+                        />
                       </button>
                     </h2>
                     <ul id={listId} hidden={!isOpen} className="ml-3 mt-1 space-y-0.5 border-l border-og-midnight/10 pl-2">

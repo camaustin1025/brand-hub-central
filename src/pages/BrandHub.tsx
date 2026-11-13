@@ -140,19 +140,36 @@ export default function BrandHub() {
   const fontKitAsset = availableAssets().find((asset) => asset.id === "font-kit");
   const [activeId, setActiveId] = useState(() => employeeSectionId(window.location.hash.slice(1) || "overview"));
 
+  // Scroll-spy for the rail: the current section is the last one whose top has passed 30% of the viewport,
+  // or the last section once the page bottoms out. (An IntersectionObserver band missed tall sections such
+  // as Color, so the rail kept marking Logos & fonts while you read about color.)
   useEffect(() => {
-    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-hub-section]"));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveId(visible.target.id);
-      },
-      { rootMargin: "-18% 0px -66% 0px", threshold: [0, 0.1, 0.3] }
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-hub-section]"));
+      if (sections.length === 0) return;
+      const line = window.innerHeight * 0.3;
+      let current = sections[0].id;
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= line) current = section.id;
+        else break;
+      }
+      const root = document.documentElement;
+      if (window.innerHeight + window.scrollY >= root.scrollHeight - 2) current = sections[sections.length - 1].id;
+      setActiveId(current);
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {
