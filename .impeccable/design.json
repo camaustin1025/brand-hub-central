@@ -5,8 +5,8 @@
   "extensions": {
     "colorMeta": {
       "midnight": { "role": "primary", "displayName": "Midnight", "canonical": "#17132F", "tonalRamp": ["#17132F", "#2E2A47", "#4F4A6A", "#666279", "#787688", "#9896A7", "#ABA9BA", "#EBEAF0"] },
-      "groovy-green": { "role": "primary", "displayName": "Groovy Green (dark backgrounds)", "canonical": "#00FF85", "tonalRamp": ["#003D20", "#00592F", "#00753D", "#009A50", "#00C766", "#00FF85", "#66FFB6", "#CCFFE7"] },
-      "green-on-light": { "role": "primary", "displayName": "Green on Light", "canonical": "#009A50", "tonalRamp": ["#003D20", "#00592F", "#00753D", "#009A50", "#00C766", "#00FF85", "#66FFB6", "#CCFFE7"] },
+      "groovy-green": { "role": "primary", "displayName": "Groovy Green (dark backgrounds)", "canonical": "#00FF85", "tonalRamp": ["#003D20", "#00592F", "#00753D", "#008847", "#00C766", "#00FF85", "#66FFB6", "#CCFFE7"] },
+      "green-on-light": { "role": "primary", "displayName": "Green on Light", "canonical": "#008847", "tonalRamp": ["#003D20", "#00592F", "#00753D", "#008847", "#00C766", "#00FF85", "#66FFB6", "#CCFFE7"] },
       "dark-indigo": { "role": "secondary", "displayName": "Dark Indigo", "canonical": "#2E2A47", "tonalRamp": ["#17132F", "#2E2A47", "#4F4A6A", "#666279", "#787688", "#9896A7", "#ABA9BA", "#EBEAF0"] },
       "lemon": { "role": "tertiary", "displayName": "Lemon (WIP and draft tags)", "canonical": "#EAFF00", "tonalRamp": ["#3D4200", "#5E6600", "#8A9600", "#B8C700", "#EAFF00", "#F0FF4D", "#F6FF99", "#FBFFD6"] },
       "cyan": { "role": "tertiary", "displayName": "Cyan", "canonical": "#00FAFF", "tonalRamp": ["#003F40", "#005E60", "#008A8C", "#00B8BB", "#00FAFF", "#4DFCFF", "#99FDFF", "#D6FEFF"] },
@@ -104,7 +104,7 @@
       "refersTo": "nav-item-active",
       "description": "Left rail: uppercase group label, items on a guide line, active item as a white chip with a green bar.",
       "html": "<nav class=\"ds-rail\"><p class=\"ds-rail-label\">Resources</p><ul><li><a class=\"ds-rail-item ds-rail-active\" href=\"#\">AI resources &amp; guidance</a></li><li><a class=\"ds-rail-item\" href=\"#\">Changelog</a></li></ul></nav>",
-      "css": ".ds-rail { width: 252px; padding: 20px 16px; background: #F8F8FA; font-family: Figtree, system-ui, sans-serif; } .ds-rail-label { margin: 0; padding: 8px 12px; border-radius: 8px; background: rgba(46, 42, 71, 0.06); color: #2E2A47; font-size: 11px; font-weight: 700; line-height: 16px; letter-spacing: 0.12em; text-transform: uppercase; } .ds-rail ul { list-style: none; margin: 6px 0 0 12px; padding: 0 0 0 8px; border-left: 1px solid rgba(23, 19, 47, 0.1); } .ds-rail-item { position: relative; display: block; padding: 8px 12px; border-radius: 8px; color: #17132F; font-size: 14px; font-weight: 500; text-decoration: none; transition: background-color 200ms; } .ds-rail-item:hover { background: rgba(255, 255, 255, 0.7); } .ds-rail-active { background: #FFFFFF; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(23, 19, 47, 0.05); } .ds-rail-active::before { content: \"\"; position: absolute; left: -11px; top: 50%; width: 2px; height: 24px; transform: translateY(-50%); background: #009A50; }"
+      "css": ".ds-rail { width: 252px; padding: 20px 16px; background: #F8F8FA; font-family: Figtree, system-ui, sans-serif; } .ds-rail-label { margin: 0; padding: 8px 12px; border-radius: 8px; background: rgba(46, 42, 71, 0.06); color: #2E2A47; font-size: 11px; font-weight: 700; line-height: 16px; letter-spacing: 0.12em; text-transform: uppercase; } .ds-rail ul { list-style: none; margin: 6px 0 0 12px; padding: 0 0 0 8px; border-left: 1px solid rgba(23, 19, 47, 0.1); } .ds-rail-item { position: relative; display: block; padding: 8px 12px; border-radius: 8px; color: #17132F; font-size: 14px; font-weight: 500; text-decoration: none; transition: background-color 200ms; } .ds-rail-item:hover { background: rgba(255, 255, 255, 0.7); } .ds-rail-active { background: #FFFFFF; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(23, 19, 47, 0.05); } .ds-rail-active::before { content: \"\"; position: absolute; left: -11px; top: 50%; width: 2px; height: 24px; transform: translateY(-50%); background: #008847; }"
     },
     {
       "name": "WIP Tag",
@@ -135,7 +135,7 @@
       "Compact, scannable directories with search and filters first"
     ],
     "rules": [
-      { "name": "The Two Greens Rule", "body": "Groovy Green (#00FF85) lives on dark backgrounds only. On light, green is #009A50. Never set #00FF85 as text or a fill on white, and never put white text on either green: labels on green are Midnight.", "section": "colors" },
+      { "name": "The Two Greens Rule", "body": "Groovy Green (#00FF85) lives on dark backgrounds only. On light, green is #008847. Never set #00FF85 as text or a fill on white, and label each green for contrast: Midnight on Groovy Green, white on #008847.", "section": "colors" },
       { "name": "The Spark Rule", "body": "On a light page, green marks position and possession (active item, focus, download, saved) and covers a small fraction of the screen. Large green fields belong to brand specimens, not to UI.", "section": "colors" },
       { "name": "The Statement Rule", "body": "Display and headline type are statements: no trailing periods, text-wrap: balance. Paragraphs use text-wrap: pretty and fill the measure.", "section": "typography" },
       { "name": "The Measure-Is-Rendered Rule", "body": "Figtree's ch overstates line length by about 30%. Verify line length from rendered line boxes before changing --measure.", "section": "typography" },
@@ -144,7 +144,7 @@
       { "name": "The One Radius Rule", "body": "Surfaces are 8px, actions are pills. A third radius needs a reason.", "section": "shapes" }
     ],
     "dos": [
-      "Do use #009A50 for any green on light surfaces and #00FF85 only on Midnight.",
+      "Do use #008847 for any green on light surfaces and #00FF85 only on Midnight.",
       "Do put Midnight labels on green fills.",
       "Do keep buttons to two sizes: 40px for the main action, 32px for repeated controls.",
       "Do present file downloads as links with the green highlighter, not as buttons.",

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowDown, Download } from "lucide-react";
 import { SearchBox } from "@/components/hub/HubShell";
-import { CORE } from "@/data/tokens";
+import { BACKGROUND_GRADIENT_CSS, CORE } from "@/data/tokens";
 
 /* ------------------------------------------------------------------ *
  * Hero exploration deck. Not a shipping route — a side-by-side so we
@@ -140,7 +140,7 @@ function VariantA() {
 
 const WALL = [
   "#00FF85", "#00FAFF", "#0BFE5F", "#EAFF00", "#FF61D3", "#8500FF",
-  "#FF8500", "#009A50", "#D32E55", "#4F4A6A", "#787688", "#D8D7DF",
+  "#FF8500", "#008847", "#D32E55", "#4F4A6A", "#787688", "#D8D7DF",
 ];
 
 function VariantB() {
@@ -224,7 +224,7 @@ function VariantD() {
         <div aria-hidden className="relative hidden h-[400px] md:block">
           <div
             className="absolute right-0 top-0 h-[176px] w-[56%] rounded-lg rounded-br-none"
-            style={{ background: "linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)" }}
+            style={{ background: BACKGROUND_GRADIENT_CSS }}
           />
           <div className="absolute left-0 top-[124px] w-[62%] rounded-lg rounded-br-none border border-white/12 bg-og-indigo p-6 shadow-2xl shadow-black/40">
             <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-og-green">Voice</p>
@@ -257,7 +257,7 @@ function VariantD() {
 const FACTS: [string, string, string][] = [
   ["Category", "Autonomous Subscriptions", ""],
   ["Green on dark", "#00FF85", "#00FF85"],
-  ["Green on light", "#009A50", "#009A50"],
+  ["Green on light", "#008847", "#008847"],
   ["Typeface", "Figtree 400–800", ""],
 ];
 
@@ -268,7 +268,7 @@ function VariantE() {
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, #0BFE5F, #00FEFE, transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, #00FAFF, #EAFF00, transparent)" }}
       />
       <div className="relative mx-auto flex min-h-[560px] max-w-3xl flex-col items-center justify-center px-8 py-14 text-center">
         <p className="eyebrow mb-5">{EYEBROW}</p>

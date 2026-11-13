@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
+import { BACKGROUND_GRADIENT_CSS } from "./src/data/tokens";
 
 /**
  * Ordergroove Brand Hub — Tailwind theme.
@@ -7,11 +8,11 @@ import animate from "tailwindcss-animate";
  * The `og` palette holds canonical brand values verified against brand.md
  * (see docs/Phase 0 - Old Hub Content Audit.md). The green contrast rule is
  * encoded as two tokens: `og.green.DEFAULT` (#00FF85) for dark backgrounds,
- * `og.green.light` (#009A50) for light backgrounds. Never use the dark-bg
+ * `og.green.light` (#008847) for light backgrounds. Never use the dark-bg
  * green as text on white.
  *
  * D1 resolved 2026-10-26: supplied logo-on-white keeps #00CC6A as a logo-only
- * exception, not a UI token. D2 remains open; the ramp uses canon #009A50.
+ * exception, not a UI token. D2 resolved 2026-11-12: green on light is #008847.
  */
 export default {
   darkMode: ["class"],
@@ -30,7 +31,7 @@ export default {
           indigo: "#2E2A47",
           green: {
             DEFAULT: "#00FF85", // Groovy Green — DARK backgrounds only
-            light: "#009A50", // green for LIGHT backgrounds
+            light: "#008847", // green for LIGHT backgrounds
           },
           cyan: "#00FAFF",
           lemon: "#EAFF00",
@@ -103,16 +104,9 @@ export default {
         sm: "var(--radius)",
       },
       backgroundImage: {
-        // Signature gradient (Green -> Cyan, on dark)
-        "og-signature": "linear-gradient(135deg, #00FF85, #00FAFF)",
-        // Web brand gradient (canon brand.md — deliberate, distinct from marketing stops)
-        "og-web": "linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)",
-        // Purple -> Blue -> Green (Gradient 1, hexes from old hub)
-        "og-purple": "linear-gradient(135deg, #7821F5, #71ACFF, #00FF85)",
-        // Orange -> Yellow (approved, generated at conversion)
-        "og-warm": "linear-gradient(135deg, #FF8500, #EAFF00)",
-      },
-      keyframes: {
+        // Cyan to Lemon, the only brand gradient (from src/data/tokens.ts)
+        "og-gradient": BACKGROUND_GRADIENT_CSS,
+      },      keyframes: {
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },

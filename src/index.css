@@ -44,7 +44,7 @@
 
 /* ------------------------------------------------------------------ */
 /* shadcn/ui semantic tokens, mapped to Ordergroove canon.             */
-/* :root = LIGHT surface (green #009A50).                              */
+/* :root = LIGHT surface (green #008847).                              */
 /* .dark = MIDNIGHT surface (green #00FF85). App defaults to .dark.    */
 /* This split is how the green contrast rule is enforced structurally. */
 /* ------------------------------------------------------------------ */
@@ -56,8 +56,8 @@
     --card-foreground: 249 42% 13%;
     --popover: 0 0% 100%;
     --popover-foreground: 249 42% 13%;
-    --primary: 151.169 100% 30.196%; /* #009A50: accent on light surfaces */
-    --primary-foreground: 248.571 42.424% 12.941%; /* Midnight #17132F; white fails on this green */
+    --primary: 151.324 100% 26.667%; /* #008847: accent on light surfaces */
+    --primary-foreground: 0 0% 100%; /* white on #008847 (4.55:1); Midnight fails on this green */
     --secondary: 240 20% 97%;
     --secondary-foreground: 249 42% 13%;
     --muted: 240 20% 97%;
@@ -68,7 +68,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 247 11% 86%;
     --input: 247 11% 86%;
-    --ring: 151.169 100% 30.196%;
+    --ring: 151.324 100% 26.667%;
     /* Reading measure. The CSS `ch` unit measures Figtree's zero glyph at
        0.571em, but its average character runs 0.43-0.44em, so `ch` overstates
        the real measure by ~30%. 50ch renders 68-75 characters across the copy
@@ -113,7 +113,7 @@
     scroll-behavior: smooth;
   }
   ::selection {
-    background: rgba(0, 154, 80, 0.18);
+    background: rgba(0, 136, 71, 0.18);
   }
   /* Statements, not sentences: no trailing periods on display type (canon 5.3) */
   /* Figtree headings on the live site run tight: negative tracking, close leading. */

@@ -44,7 +44,7 @@
 .logoCard img { display: block; width: 100%; height: auto; }
 .swatches { position: absolute; left: 483px; top: 60px; display: flex; gap: 6px; padding: 8px 10px; border: 1px solid #d8d7df; border-radius: 999px; background: #fff; box-shadow: 0 6px 14px #17132f14; transform: rotate(-3deg); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
 .swatches i { width: 18px; height: 18px; border-radius: 50%; background: #17132f; }
-.swatches i:nth-child(2) { background: #009a50; }
+.swatches i:nth-child(2) { background: #008847; }
 .swatches i:nth-child(3) { background: #00ff85; }
 .swatches i:nth-child(4) { background: #eaff00; box-shadow: inset 0 0 0 1px #17132f14; }
 .swatches i:nth-child(5) { background: #ff61d3; }

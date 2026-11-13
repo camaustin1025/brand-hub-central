@@ -1,7 +1,7 @@
 import { Heading } from "@/components/layout/Heading";
 import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
 import { Download, Loader2, Search } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants, chipClasses } from "@/components/ui/button";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { recordAssetDownload } from "@/lib/asset-downloads";
 import { buildIconSvg, buildIconZip, iconBlob, saveBlob } from "@/lib/icon-render";
@@ -31,7 +31,7 @@ function svgDataUrl(svg: string) {
 function Toggle({ pressed, onClick, children }: { pressed: boolean; onClick: () => void; children: ReactNode }) {
   return (
     <button type="button" aria-pressed={pressed} onClick={onClick}
-      className={cn("action-focus tap-target inline-flex h-8 items-center gap-1.5 rounded-full border border-og-midnight px-3 text-[13px] font-semibold transition-colors", pressed ? "bg-og-midnight text-white" : "bg-white text-og-midnight hover:bg-og-gray-950")}>
+      className={chipClasses(pressed)}>
       {children}
     </button>
   );

@@ -43,7 +43,7 @@ Bonus for leadership: each system is strong exactly where the other is weak. The
 
 ### 4. Color — there are ~four green families in play
 
-- Brand primaries alone carry **two** greens: **Green `#009A50`** and **Groovy Green `#00FF85`**.
+- Brand primaries alone carry **two** greens: **Green `#008847`** and **Groovy Green `#00FF85`**.
 - GDS adds a **muted "secondary" ramp** (`#DCF9E8 → #157A3F`) used in the UI…
 - …and a separate **"success" ramp** (`#F2FFF9 → #0D1813`).
 
