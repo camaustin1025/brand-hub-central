@@ -1,0 +1,280 @@
+/**
+ * Option 2 (?nav=sidebar): a shadcn-style app sidebar in Midnight. Group labels split the hub into Brand and
+ * Company; each hub group is a collapsible menu item with a line icon, and its pages hang off a left rail line
+ * as sub-items. The current page sits in a darker pill with a Groovy Green tick on the rail. A trigger (or
+ * Cmd/Ctrl+B) collapses the sidebar to a 64px icon rail with tooltips; the signed-in user sits in the footer.
+ */
+import { useEffect, useRef, useState, type ComponentType } from "react";
+import { Link } from "react-router-dom";
+import * as Tooltip from "@radix-ui/react-tooltip";
+import {
+  ArrowUpRight,
+  Blocks,
+  Building2,
+  ChevronRight,
+  Library,
+  MessageSquareText,
+  PackageOpen,
+  Palette,
+  PanelLeftClose,
+  PanelLeftOpen,
+  type LucideProps,
+} from "lucide-react";
+import { WipTag } from "@/components/brand/WorkInProgress";
+import { useAccess } from "@/hooks/use-access";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { cn } from "@/lib/utils";
+import { DrawerScrim, useChooseSection, useCollapsedGroups, useDockedWidth, useDrawerFocus, useIsDrawer, useNavKeys, useVisibleNav, type NavOptionProps } from "./shared";
+
+const EXPANDED = 272;
+const ICON_RAIL = 64;
+const ICON_KEY = "hub-nav-sidebar-icon-rail";
+
+const GROUP_ICONS: Record<string, ComponentType<LucideProps>> = {
+  "Grab-and-go": PackageOpen,
+  "Visual identity": Palette,
+  "Verbal identity": MessageSquareText,
+  "Brand systems": Blocks,
+  Resources: Library,
+  "Working at OG": Building2,
+};
+/** Sidebar group labels. Anything not listed falls under Company. */
+const BRAND_GROUPS = new Set(["Grab-and-go", "Visual identity", "Verbal identity", "Brand systems"]);
+
+const FOCUS = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green";
+const PARENT = cn(
+  "group/parent flex h-10 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium text-white/80 transition-colors hover:bg-white/[0.07] hover:text-white [@media(pointer:coarse)]:h-11",
+  FOCUS
+);
+const SUB = cn(
+  "relative flex h-8 w-full items-center gap-2 rounded-lg px-3 text-left text-[13px] text-white/70 transition-colors hover:bg-white/[0.07] hover:text-white [@media(pointer:coarse)]:h-11",
+  FOCUS
+);
+const SUB_ACTIVE =
+  "bg-[#0B0919] font-semibold text-white ring-1 ring-white/[0.08] hover:bg-[#0B0919] before:absolute before:-left-[13px] before:top-1/2 before:h-5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-og-green";
+
+function readIconRail() {
+  try {
+    return window.localStorage.getItem(ICON_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function initials(name: string) {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join("") || "OG";
+}
+
+/** Tooltips only speak when the sidebar is an icon rail; expanded, the label is already on screen. */
+function Tip({ label, enabled, children }: { label: string; enabled: boolean; children: React.ReactElement }) {
+  if (!enabled) return children;
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
+      <Tooltip.Portal>
+        <Tooltip.Content side="right" sideOffset={10} className="z-[70] rounded-md bg-og-midnight px-2.5 py-1.5 text-xs font-semibold text-white shadow-lg ring-1 ring-white/15">
+          {label}
+        </Tooltip.Content>
+      </Tooltip.Portal>
+    </Tooltip.Root>
+  );
+}
+
+export default function SidebarNav({ activeId, open, onClose }: NavOptionProps) {
+  const navRef = useRef<HTMLElement>(null);
+  const asideRef = useRef<HTMLElement>(null);
+  const { nav, isGuest, activeGroup } = useVisibleNav(activeId);
+  const { collapsed, toggleGroup } = useCollapsedGroups(activeGroup);
+  const chooseSection = useChooseSection(onClose);
+  const onKeyDown = useNavKeys(navRef, toggleGroup);
+  const isDrawer = useIsDrawer();
+  useDrawerFocus(asideRef, navRef, open);
+  const user = useAuthUser();
+  const isAdmin = useAccess() === "admin";
+
+  // The phone drawer is always the full sidebar; the icon rail is a desktop mode.
+  const [iconRail, setIconRail] = useState(readIconRail);
+  const rail = iconRail && !isDrawer;
+  useDockedWidth(rail ? ICON_RAIL : EXPANDED);
+  function setRail(next: boolean) {
+    setIconRail(next);
+    try {
+      window.localStorage.setItem(ICON_KEY, next ? "1" : "0");
+    } catch {
+      // Storage blocked: the choice lasts for this page view.
+    }
+  }
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.key.toLowerCase() !== "b" || !(event.metaKey || event.ctrlKey) || event.altKey || event.shiftKey) return;
+      event.preventDefault();
+      setIconRail((value) => {
+        try {
+          window.localStorage.setItem(ICON_KEY, value ? "0" : "1");
+        } catch {
+          // Storage blocked.
+        }
+        return !value;
+      });
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const sections = [
+    { label: "Brand", groups: nav.filter((group) => BRAND_GROUPS.has(group.label)) },
+    { label: "Company", groups: nav.filter((group) => !BRAND_GROUPS.has(group.label)) },
+  ].filter((section) => section.groups.length > 0);
+
+  const name = (user?.user_metadata?.full_name as string | undefined) ?? user?.email?.split("@")[0] ?? "Ordergroove";
+
+  return (
+    <Tooltip.Provider delayDuration={0} skipDelayDuration={0}>
+      <DrawerScrim open={open} onClose={onClose} />
+      <aside
+        ref={asideRef}
+        id="hub-section-menu"
+        data-state={rail ? "collapsed" : "expanded"}
+        className={cn(
+          "fixed bottom-0 left-0 top-16 z-40 flex w-[284px] max-w-[85vw] flex-col border-r border-white/10 bg-og-midnight text-white transition-[transform,width] duration-200 motion-reduce:transition-none lg:translate-x-0",
+          rail ? "lg:w-[64px]" : "lg:w-[272px]",
+          open ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        {/* Header: the section label and the collapse trigger. */}
+        <div className={cn("flex h-14 shrink-0 items-center border-b border-white/10", rail ? "justify-center px-2" : "justify-between pl-5 pr-3")}>
+          {!rail && <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-white/55">Sections</span>}
+          <Tip label="Expand sidebar" enabled={rail}>
+            <button
+              type="button"
+              onClick={() => setRail(!rail)}
+              aria-label={rail ? "Expand sidebar" : "Collapse sidebar to icons"}
+              aria-expanded={!rail}
+              aria-controls="hub-section-menu"
+              className={cn("hidden size-9 place-items-center rounded-lg text-white/70 transition-colors hover:bg-white/10 hover:text-white lg:grid", FOCUS)}
+            >
+              {rail ? <PanelLeftOpen size={18} aria-hidden="true" /> : <PanelLeftClose size={18} aria-hidden="true" />}
+            </button>
+          </Tip>
+        </div>
+
+        <nav ref={navRef} aria-label="Brand hub sections" onKeyDown={onKeyDown} className={cn("flex-1 overflow-y-auto overscroll-contain py-3", rail ? "px-2" : "px-3")}>
+          {sections.map((section, sectionIndex) => (
+            <div key={section.label} className={cn(sectionIndex > 0 && "mt-4")}>
+              {rail ? (
+                sectionIndex > 0 && <div className="mx-3 mb-3 h-px bg-white/10" aria-hidden="true" />
+              ) : (
+                <h2 className="px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/45">{section.label}</h2>
+              )}
+              <ul className="space-y-0.5">
+                {section.groups.map((group) => {
+                  const Icon = GROUP_ICONS[group.label] ?? Library;
+                  const isOpen = !collapsed.includes(group.label);
+                  const holdsActive = group.label === activeGroup;
+                  const listId = `sidebar-list-${group.items[0].id}`;
+                  const external = group.externalLink && !isGuest ? group.externalLink : undefined;
+                  if (rail) {
+                    return (
+                      <li key={group.label}>
+                        <Tip label={group.label} enabled>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setRail(false);
+                              toggleGroup(group.label, true);
+                            }}
+                            aria-label={holdsActive ? `${group.label}, contains the current page` : group.label}
+                            className={cn(
+                              "mx-auto grid size-10 place-items-center rounded-lg text-white/70 transition-colors hover:bg-white/[0.07] hover:text-white",
+                              FOCUS,
+                              holdsActive && "bg-[#0B0919] text-og-green ring-1 ring-white/[0.08]"
+                            )}
+                          >
+                            <Icon size={18} strokeWidth={1.75} aria-hidden="true" />
+                          </button>
+                        </Tip>
+                      </li>
+                    );
+                  }
+                  return (
+                    <li key={group.label} data-nav-section="">
+                      <button
+                        type="button"
+                        data-nav-group={group.label}
+                        aria-expanded={isOpen}
+                        aria-controls={listId}
+                        onClick={() => toggleGroup(group.label)}
+                        className={cn(PARENT, holdsActive && "text-white")}
+                      >
+                        <Icon size={18} strokeWidth={1.75} aria-hidden="true" className={cn("shrink-0", holdsActive ? "text-og-green" : "text-white/60 group-hover/parent:text-white")} />
+                        <span className="flex-1 truncate">{group.label}</span>
+                        <ChevronRight
+                          size={16}
+                          aria-hidden="true"
+                          className={cn("shrink-0 text-white/45 transition-transform duration-200 motion-reduce:transition-none", isOpen && "rotate-90")}
+                        />
+                        {holdsActive && !isOpen && <span className="sr-only">, contains the current page</span>}
+                      </button>
+                      <ul id={listId} hidden={!isOpen} className="mb-1 ml-[21px] mt-0.5 space-y-0.5 border-l border-white/15 pl-3">
+                        {external && (
+                          <li>
+                            <a href={external.href} target="_blank" rel="noopener noreferrer" className={cn(SUB, "group justify-between")}>
+                              {external.label}
+                              <ArrowUpRight size={14} aria-hidden="true" className="text-og-green transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px" />
+                              <span className="sr-only"> (opens in a new tab)</span>
+                            </a>
+                          </li>
+                        )}
+                        {group.items.map((item) => {
+                          const isActive = activeId === item.id;
+                          return (
+                            <li key={item.id}>
+                              {item.disabled ? (
+                                <span aria-disabled="true" className={cn(SUB, "cursor-default text-white/40 hover:bg-transparent hover:text-white/40")}>
+                                  <span className="flex-1 truncate">{item.label}</span>
+                                  {item.wip && <WipTag />}
+                                </span>
+                              ) : item.path ? (
+                                <Link to={item.path} onClick={onClose} aria-current={isActive ? "page" : undefined} className={cn(SUB, isActive && SUB_ACTIVE)}>
+                                  <span className="flex-1 truncate">{item.label}</span>
+                                  {item.wip && <WipTag />}
+                                </Link>
+                              ) : (
+                                <button type="button" onClick={() => chooseSection(item.id)} aria-current={isActive ? "location" : undefined} className={cn(SUB, isActive && SUB_ACTIVE)}>
+                                  <span className="flex-1 truncate">{item.label}</span>
+                                  {item.wip && <WipTag />}
+                                </button>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </nav>
+
+        {/* Footer: who is signed in. The admin "Manage guests" pill floats bottom-left, so admins get room under it. */}
+        <div className={cn("shrink-0 border-t border-white/10", rail ? "px-2 py-3" : "px-3 py-3", isAdmin && "pb-16")}>
+          <Tip label={name} enabled={rail}>
+            <div className={cn("flex items-center gap-3 rounded-lg", rail ? "justify-center" : "px-2 py-1.5")} tabIndex={rail ? 0 : undefined}>
+              <span aria-hidden="true" className="grid size-8 shrink-0 place-items-center rounded-full bg-og-green text-xs font-bold text-og-midnight">
+                {initials(name)}
+              </span>
+              {!rail && (
+                <span className="min-w-0 leading-tight">
+                  <span className="block truncate text-sm font-semibold text-white">{name}</span>
+                  {user?.email && <span className="block truncate text-xs text-white/55">{user.email}</span>}
+                </span>
+              )}
+              {rail && <span className="sr-only">Signed in as {name}</span>}
+            </div>
+          </Tip>
+        </div>
+      </aside>
+    </Tooltip.Provider>
+  );
+}

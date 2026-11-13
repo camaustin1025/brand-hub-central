@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { lazy, Suspense, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { HUB_NAV, isGuestPath } from "@/data/hub";
 import { SearchBox } from "./HubSearch";
@@ -7,6 +7,35 @@ import { jumpTo } from "@/lib/hub-navigation";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { cn } from "@/lib/utils";
 import { useAccess } from "@/hooks/use-access";
+import { isNavOption, PROMOTED_NAV, type NavOption } from "./nav/options";
+
+/* Nav options under review (src/components/hub/nav). Local dev switches with ?nav= and a floating switcher;
+   production renders PROMOTED_NAV, and while that is "rail" both loaders below compile away. */
+const NavOptionHost = import.meta.env.DEV || PROMOTED_NAV !== "rail" ? lazy(() => import("./nav/NavOptionHost")) : null;
+const NavSwitcher = import.meta.env.DEV ? lazy(() => import("./nav/NavSwitcher")) : null;
+const NAV_OPTION_KEY = "hub-nav-option";
+
+/** Local dev: ?nav= picks an option and the tab remembers it while you click around. */
+function useDevNavOption(): NavOption {
+  const requested = new URLSearchParams(useLocation().search).get("nav");
+  if (isNavOption(requested)) {
+    try {
+      window.sessionStorage.setItem(NAV_OPTION_KEY, requested);
+    } catch {
+      // Storage blocked: the option holds only while ?nav= is in the address.
+    }
+    return requested;
+  }
+  try {
+    const saved = window.sessionStorage.getItem(NAV_OPTION_KEY);
+    if (isNavOption(saved)) return saved;
+  } catch {
+    // Storage blocked.
+  }
+  return PROMOTED_NAV;
+}
+const usePromotedNav = (): NavOption => PROMOTED_NAV;
+const useNavOption = import.meta.env.DEV ? useDevNavOption : usePromotedNav;
 
 export { SearchBox } from "./HubSearch";
 export { jumpTo } from "@/lib/hub-navigation";
@@ -317,6 +346,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const isGuest = useAccess() === "guest";
   const heroSearchVisible = useHeroSearchVisible(heroSearch);
+  const navOption = useNavOption();
 
   // Escape closes the phone menu and hands focus back to the button that opened it.
   useEffect(() => {
@@ -375,9 +405,13 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
       </header>
 
       <div className="h-16" />
-      {!focused && <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />}
+      {!focused && (navOption === "rail" || !NavOptionHost
+        ? <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />
+        : <Suspense fallback={null}><NavOptionHost option={navOption} activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} /></Suspense>)}
+      {NavSwitcher && <Suspense fallback={null}><NavSwitcher current={navOption} /></Suspense>}
 
-      <main ref={mainRef} className={cn(!focused && "lg:ml-[284px]")}>
+      {/* Options publish their docked width as --hub-nav-w (the sidebar option narrows to an icon rail). */}
+      <main ref={mainRef} className={cn(!focused && (navOption === "rail" ? "lg:ml-[284px]" : "lg:ml-[var(--hub-nav-w,284px)] lg:transition-[margin] lg:duration-200 motion-reduce:transition-none"))}>
         {!focused && !heroSearch && <div className="bg-og-midnight px-4 py-3 md:hidden">
           <SearchBox compact />
         </div>}
