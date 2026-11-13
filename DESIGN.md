@@ -212,7 +212,7 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 - **Green on Light** (#009A50): The same spark on light surfaces. Focus rings, the active rail indicator bar, saved-download checks, any green text on white.
 
 ### Secondary
-- **Dark Indigo** (#2E2A47): Cards and secondary surfaces in dark mode; the rail's group-label text and its 6% tint background on light.
+- **Dark Indigo** (#2E2A47): Cards and secondary surfaces in dark mode; the footer's "What's changed" link.
 
 ### Tertiary
 - **Lemon** (#EAFF00): Work-in-progress and draft tags only (border plus a 20% tint, Midnight text).
@@ -242,7 +242,7 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 - **Display** (800, 40px rising to 56px by container width, 1.02, -0.03em): Chapter hero titles on Midnight.
 - **Headline** (700, 32px on phones, 36px from md, 1.1, -0.02em): Page titles in the Midnight page header.
 - **Title** (600, 24px, 1.25, -0.015em): Section headings inside a page.
-- **Group Heading** (700, 18px, 1.33, -0.01em): Section headings inside a directory table (e.g. "Skills · Sales and AEs"). One clear step above Item Title so a group never reads as another row.
+- **Group Heading** (700, 18px, 1.33, -0.01em): Group headings in a directory (e.g. "Skills · Sales and AEs"). One clear step above Item Title so a group never reads as another row.
 - **Item Title** (600, 15px, 1.47): Row and card titles in directories.
 - **Body** (400, 16px, 1.625): Explanatory copy. Paragraphs cap at the site measure (50ch, which renders 68 to 75 Figtree characters); directory descriptions at 70ch. One-sentence section ledes under a section title cap at 72ch (about 100 characters) with `text-wrap: balance`, so they stay on one line on a laptop. They sit 2px under the section title at 16px with a 28px line height, on every page including Home.
 - **Body Small** (400, 14px, 1.43): Row descriptions, nav items, meta.
@@ -257,9 +257,9 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 
 ## Layout
 
-A fixed 64px Midnight masthead (logo, "Brand Hub · Internal reference", search, last-updated stamp) sits above a 284px section rail that docks from 1024px and slides in as a drawer below that. Content sits in a single column capped at 1060px, with 24px gutters on phones and 40px from 768px. Each standalone page opens with a Midnight header band (breadcrumb, headline, one-line purpose, page actions) before returning to the light canvas.
+A fixed 64px Midnight masthead (logo, "Brand Hub", search, last-updated stamp) sits above a 284px section rail that docks from 1024px and slides in as a drawer below that. Content sits in a single column capped at 1060px, with 24px gutters on phones and 40px from 768px. Each standalone page opens with a Midnight header band (breadcrumb, headline, one-line purpose, page actions) before returning to the light canvas.
 
-Directories put search and filters first, then results as compact table rows with metadata folded into one disclosure per row. The directory toolbar is sticky under the masthead. Tables collapse to stacked rows through a container query at 44rem, so the layout responds to the content pane, not the viewport. Phones get a Midnight search strip under the masthead unless the page opens on its own search.
+Directories put search and filters first, then results as grouped lists: one white surface per group, compact rows split by hairlines, and extra metadata folded into one disclosure per row (only where it adds something the row doesn't show). The directory toolbar is sticky under the masthead. Container queries key the layout to the content pane, not the viewport: from 36rem each row's actions stack in their own right-hand column, and from 52rem each group runs two rows across. Below 36rem a group shows its first rows with a "Show N more" toggle; search and filters always show every match. Phones get a Midnight search strip under the masthead unless the page opens on its own search.
 
 **The Search-First Rule.** On any page whose job is finding, the search field and filters come before the content they filter.
 
@@ -312,15 +312,15 @@ The hub's signature control. A file is a link, not a button: the format name and
 - **Focus:** 2px foreground ring with a 2px offset.
 
 ### Navigation
-- **Masthead:** Midnight, 64px, white logo; search sits right as a translucent field with a ⌘K hint.
-- **Rail:** #F8F8FA with a hairline right edge. Group titles are 11px uppercase Dark Indigo labels on a 6% Dark Indigo tint. Items are 14px medium Midnight with an arrow on links that open their own page. The active item is a white, softly lifted chip with a 2px #009A50 bar on the rail's guide line.
-- **Mobile:** The rail becomes a drawer over a blurred Midnight scrim.
+- **Masthead:** Midnight, 64px, white logo; search sits right as a translucent field. No visible shortcut hint; Cmd or Ctrl+K still focuses it.
+- **Rail:** #F8F8FA with a hairline right edge. Each group title is a disclosure button: 11px bold uppercase Midnight with a chevron, a hairline divider above every group after the first, open by default and remembered per browser. The group holding the current page always reopens; folded, it shows a green dot and its item count. Arrow keys move through the rail, Home and End jump, Left and Right fold and unfold. Items are 14px medium Midnight with an arrow on links that open their own page. The active item is a white, softly lifted chip with a 2px #009A50 bar on the rail's guide line.
+- **Mobile:** The rail becomes a drawer over a blurred Midnight scrim. Opening it moves focus to the current page; while it is open the page behind is inert, so Tab stays in the masthead and the drawer. Escape closes it and returns focus to the menu button. Touch targets are 44px.
 
 ### Status Tags
 - **WIP / Draft:** Small pill, Lemon border, 20% Lemon tint, Midnight label. Unresolved canon shows this tag rather than being hidden.
 
 ### Resource Rows
-Directory rows on white with a hairline bottom border: a 32px icon, a 15px semibold Midnight title, a 14px Slate description (up to 2 lines at the site measure), and right-aligned actions (a 32px outline pill plus a 13px semibold underlined Details disclosure). Rows are grouped under 18px bold Midnight Group Headings with a 13px Slate count and 32px of space above; a multi-step workflow collapses into one row with a "Show N steps" disclosure in the same underlined style. Column headers are 11px uppercase Midnight, the smallest label on the table; the result count is 13px Slate. Titles, headings and actions are Midnight; descriptions and counts recede to Slate, so the eye lands on the titles first. Hover tints the row to #FAFAFC; expanded details sit on #F7F7FA.
+Directory rows sit inside one white, 8px-radius surface per group, split by hairlines: a 28px icon, a 15px semibold Midnight title, the full 14px description in Midnight (body text, per the text hierarchy rule), and actions (a 32px outline pill plus a 13px semibold underlined Details disclosure) stacked in a right-hand column once the pane is wide enough. Groups sit under 18px bold Midnight Group Headings with a 13px Slate count and 32px of space above, and run two rows across from 52rem. A multi-step workflow is one full-width row with a "Show N steps" disclosure that opens its steps as a numbered list. The result count is 13px Slate. Hover tints the row to #FAFAFC; expanded details sit on #F7F7FA.
 
 ### Policy Panel
 Rules people must follow (what you can share with AI tools) sit in a Midnight block instead of loose text at the end of a page. 8px radius, 40px padding (24px under a 40rem container), with `.dark` on the section so focus rings and link hovers use the dark-surface tokens. All text in the panel is pure white (not Ink on Dark). A 24px bold title with a Groovy Green icon, an intro, then two columns split by a 12% white hairline: a 24px Radish circle with a white X heads what is never allowed, a 24px Groovy Green circle with a Midnight check heads what is allowed with conditions. Items are 16px ruled rows (10% white top border). The lists end the panel; no closing line. Columns stack below 40rem.

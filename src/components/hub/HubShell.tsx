@@ -330,6 +330,22 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
     return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
+  // While the phone menu is open, the page behind the overlay leaves the tab order,
+  // so Tab stays in the masthead and the menu. Widening to the desktop rail closes the menu.
+  const mainRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main || !menuOpen) return;
+    main.setAttribute("inert", "");
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const close = () => { if (desktop.matches) setMenuOpen(false); };
+    desktop.addEventListener("change", close);
+    return () => {
+      main.removeAttribute("inert");
+      desktop.removeEventListener("change", close);
+    };
+  }, [menuOpen]);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-white/10 bg-og-midnight text-white">
@@ -361,7 +377,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
       <div className="h-16" />
       {!focused && <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />}
 
-      <main className={cn(!focused && "lg:ml-[284px]")}>
+      <main ref={mainRef} className={cn(!focused && "lg:ml-[284px]")}>
         {!focused && !heroSearch && <div className="bg-og-midnight px-4 py-3 md:hidden">
           <SearchBox compact />
         </div>}
