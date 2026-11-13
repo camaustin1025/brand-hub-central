@@ -244,7 +244,7 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 - **Title** (600, 24px, 1.25, -0.015em): Section headings inside a page.
 - **Group Heading** (700, 18px, 1.33, -0.01em): Section headings inside a directory table (e.g. "Skills · Sales and AEs"). One clear step above Item Title so a group never reads as another row.
 - **Item Title** (600, 15px, 1.47): Row and card titles in directories.
-- **Body** (400, 16px, 1.625): Explanatory copy. Paragraphs cap at the site measure (50ch, which renders 68 to 75 Figtree characters); directory descriptions at 70ch.
+- **Body** (400, 16px, 1.625): Explanatory copy. Paragraphs cap at the site measure (50ch, which renders 68 to 75 Figtree characters); directory descriptions at 70ch. One-sentence section ledes under a section title cap at 72ch (about 100 characters) with `text-wrap: balance`, so they stay on one line on a laptop. They sit 2px under a 24px section title (6px under the 42px Home section titles).
 - **Body Small** (400, 14px, 1.43): Row descriptions, nav items, meta.
 - **Control** (600, 13px): Compact buttons, filter chips, download links.
 - **Eyebrow** (600, 12px, 0.16em, uppercase): Labels above headings. Midnight on light, Groovy Green on dark.

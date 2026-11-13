@@ -121,7 +121,7 @@ export function AiResources() {
     <section id="ai-sharing" className="sharing-panel dark scroll-mt-24">
       <span id="ai-start-here" className="scroll-mt-24" />
       <Heading as="h2"><ShieldCheck aria-hidden="true" size={26} />What you can share</Heading>
-      <p className="sharing-panel__intro">Use your OG Gmail to sign in to Team accounts (Claude, ChatGPT, Gemini). Read the <External href={SECURITY_GUIDELINES.url}>{SECURITY_GUIDELINES.label}</External>.</p>
+      <p className="sharing-panel__intro section-lede">Use your OG Gmail to sign in to Team accounts (Claude, ChatGPT, Gemini). Read the <External href={SECURITY_GUIDELINES.url}>{SECURITY_GUIDELINES.label}</External>.</p>
       <div className="sharing-panel__cols">
         <div className="sharing-panel__col sharing-panel__col--never">
           <Heading as="h3"><span className="sharing-panel__mark"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></span>Never share</Heading>
@@ -133,7 +133,7 @@ export function AiResources() {
         </div>
       </div>
     </section>
-    <section id="ai-connectors" className="mt-12 scroll-mt-24 border-t border-border pt-8"><Heading as="h2" className="reference-section-title">Get a new tool approved</Heading><p className="mt-3 text-sm leading-6">Get approval before connecting a tool. Questions: <External href={SECURITY_CHANNEL.url}>{SECURITY_CHANNEL.label}</External>. Reviews: <External href={INFOSEC_CHANNEL.url}>{INFOSEC_CHANNEL.label}</External>.</p><ol className="mt-5 list-decimal space-y-4 pl-5 text-sm">{APPROVAL_STEPS.map(s => <li key={s.link.url}><External href={s.link.url}>{s.link.label}</External><p className="mt-1 leading-6 text-foreground">{s.body}</p></li>)}</ol><p className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm"><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p></section>
+    <section id="ai-connectors" className="mt-12 scroll-mt-24 border-t border-border pt-8"><Heading as="h2" className="reference-section-title">Get a new tool approved</Heading><p className="section-lede mt-0.5 text-sm leading-6">Get approval before connecting a tool. Questions: <External href={SECURITY_CHANNEL.url}>{SECURITY_CHANNEL.label}</External>. Reviews: <External href={INFOSEC_CHANNEL.url}>{INFOSEC_CHANNEL.label}</External>.</p><ol className="mt-5 list-decimal space-y-4 pl-5 text-sm">{APPROVAL_STEPS.map(s => <li key={s.link.url}><External href={s.link.url}>{s.link.label}</External><p className="mt-1 leading-6 text-foreground">{s.body}</p></li>)}</ol><p className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm"><External href={APPROVAL_CRITERIA.url}>{APPROVAL_CRITERIA.label}</External><External href={APPROVAL_DECISIONS.url}>{APPROVAL_DECISIONS.label}</External></p></section>
 
   </div>;
 }

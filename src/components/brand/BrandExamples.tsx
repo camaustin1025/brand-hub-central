@@ -92,7 +92,7 @@ export function VoiceExample() {
   return (
     <div className="mt-12">
       <Heading as="h2" className="reference-section-title">Put the rule into practice</Heading>
-      <p className="mb-5 mt-3 text-sm leading-6">Replace vague packaging language with a clear statement about adoption.</p>
+      <p className="section-lede mb-5 mt-0.5 text-sm leading-6">Replace vague packaging language with a clear statement about adoption.</p>
       <div className="grid gap-5 sm:grid-cols-2">
         <Example good note="Direct, specific language. The reader knows what to expect."><p className="p-6 text-xl font-semibold leading-8 text-og-midnight">Ready on day one, no custom builds required.</p></Example>
         <Example good={false} note="“Out of the box” reads as lightweight and is on the avoid list."><p className="p-6 text-xl font-semibold leading-8 text-og-midnight">Out-of-the-box enterprise capability.</p></Example>

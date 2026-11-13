@@ -94,7 +94,7 @@ function HubSection({
           {isWipSection(id) && <WipNotice />}
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <Heading as="h2" className="text-3xl font-extrabold md:text-[42px]">{title}</Heading>
-          {intro && <p className="measure mt-4 text-lg leading-[1.6] text-foreground">{intro}</p>}
+          {intro && <p className="section-lede mt-1.5 text-lg leading-[1.6] text-foreground">{intro}</p>}
         </div>
         {children}
       </div>

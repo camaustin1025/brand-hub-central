@@ -60,7 +60,7 @@ function SectionHead({ id, title, lede, badge }: { id: string; title: string; le
         <Heading as="h2" id={id} className="reference-section-title">{title}</Heading>
         {badge && <DraftBadge>{badge}</DraftBadge>}
       </div>
-      {lede && <p className="measure mt-3 leading-7 text-foreground">{lede}</p>}
+      {lede && <p className="section-lede mt-0.5 leading-7 text-foreground">{lede}</p>}
     </div>
   );
 }
@@ -93,7 +93,7 @@ function LadderStrip() {
 function CategoryPlate() {
   return (
     <section id="category" aria-labelledby="category-title" className="scroll-mt-24">
-      <SectionHead id="category-title" title="The category we own" lede="Our lead message is a category move, not a product pitch." />
+      <SectionHead id="category-title" title="The category we own" lede="Autonomous Subscriptions is a new category, and we’re the ones defining it." />
       <div className="mt-6 grid overflow-hidden rounded-lg border border-border [@container(min-width:44rem)]:grid-cols-2">
         <div className="flex flex-col justify-between gap-10 bg-og-midnight p-6 md:p-8">
           {/* Sized so "Subscriptions" (about 7.5em wide in Figtree ExtraBold) fills its half of the plate. */}
@@ -145,7 +145,7 @@ const SAY_IT = [
 function SayItShelf() {
   return (
     <section id="say-it" aria-labelledby="say-it-title" className="scroll-mt-24">
-      <SectionHead id="say-it-title" title="Pitches & boilerplate" lede="Use these descriptions in conversations, presentations, and written materials." />
+      <SectionHead id="say-it-title" title="Pitches & boilerplate" lede="Three approved ways to describe Ordergroove, from a 10-second intro to the full boilerplate." />
       <ol className="mt-6 overflow-hidden rounded-lg border border-border bg-white">
         {SAY_IT.map((item) => (
           <li key={item.id} id={item.id} className="scroll-mt-24 grid gap-5 border-b border-border p-6 last:border-b-0 md:p-8 [@container(min-width:44rem)]:grid-cols-[13rem_minmax(0,1fr)] [@container(min-width:44rem)]:gap-10">
@@ -189,7 +189,7 @@ const RIGHTS_FRAME: Record<string, { what: string; why: string }> = {
 function RightsTable() {
   return (
     <section id="rights" aria-labelledby="rights-title" className="scroll-mt-24">
-      <SectionHead id="rights-title" title="Rights to Win" lede="Each one pairs what it is with why a buyer should care." />
+      <SectionHead id="rights-title" title="Rights to Win" lede="The three reasons brands choose Ordergroove, and why each one matters to a buyer." />
       <div className="mt-6 overflow-hidden rounded-lg border border-border bg-white">
         <div aria-hidden="true" className={cn("hidden border-b border-border bg-og-midnight/[0.03] px-8 py-3 text-sm font-semibold [@container(min-width:52rem)]:grid [@container(min-width:52rem)]:grid-cols-[15rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:52rem)]:gap-8", SUPPORTING)}>
           <span>Right to win</span>
@@ -402,7 +402,7 @@ const GROUPS = [
 function BuyingGroups() {
   return (
     <section id="personas" aria-labelledby="personas-title" className="scroll-mt-24">
-      <SectionHead id="personas-title" title="Personas" lede="Across these segments, we sell to two buying groups." />
+      <SectionHead id="personas-title" title="Personas" lede="In every ICP, we focus on two key personas: business leaders and technology leaders." />
       <div className="mt-6 grid overflow-hidden rounded-lg border border-border bg-white [@container(min-width:44rem)]:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:44rem)]:grid-rows-[auto_auto_auto]">
         <div aria-hidden="true" className={cn("hidden text-sm font-semibold [@container(min-width:44rem)]:row-span-3 [@container(min-width:44rem)]:grid [@container(min-width:44rem)]:grid-rows-subgrid", SUPPORTING)}>
           <span className="border-b border-border" />
@@ -442,7 +442,7 @@ function WhoWeServe() {
       <SectionHead
         id="audience-title"
         title="Who we serve"
-        lede="Our consumer brand ideal customer profiles (ICPs) are defined by commerce platform and company revenue. Non-Shopify and Shopify Enterprise are our primary focus."
+        lede="Our core audience: four ideal customer profiles (ICPs), led by Non-Shopify and Shopify Enterprise."
       />
       <IcpCards />
     </section>

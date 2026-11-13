@@ -27,7 +27,7 @@ export default function Foundation() {
         wip={isWipSection("messaging")}
         updated="2026-11-11"
         title="Foundation & Messaging"
-        intro="The approved positioning, message ladder, ready-to-use lines, and ICPs. Start here before you write anything about Ordergroove."
+        intro="Our positioning, pitches, and audience, ready to use."
       >
         {/* Same jump-link style as the AI Resources page header. */}
         <nav aria-label="On this page" className="mb-10 flex flex-wrap gap-x-6 gap-y-3 text-sm">

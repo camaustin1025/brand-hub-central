@@ -179,6 +179,15 @@
     text-wrap: pretty;
   }
 
+  /* Section lede: the one-sentence line under a section title. It reads as  */
+  /* a subhead, not a paragraph, so it gets a wider cap (72ch renders about  */
+  /* 100 Figtree characters) to stay on one line on a laptop, and `balance`  */
+  /* so it splits evenly when a narrow screen does wrap it.                  */
+  .section-lede {
+    max-width: 72ch;
+    text-wrap: balance;
+  }
+
   /* ----------------------------------------------------------------- */
   /* Card modules — one radius, 8px, on every surface. The asymmetric    */
   /* "Visual Container" shape from the 2022 guide is kept as an opt-in   */
@@ -284,7 +293,7 @@ html[data-guest] section[aria-labelledby="nav-employee-resources"] {
 .ai-directory #ai-connectors h2 { font-size: 1.5rem; line-height: 1.875rem; font-weight: 600; letter-spacing: -.015em; }
 .ai-directory #ai-connectors p, .ai-directory #ai-connectors li { font-size: 1rem; line-height: 1.625; text-wrap: pretty; }
 /* The site measure (50ch renders 68-75 Figtree characters); 70ch ran past 100. */
-.ai-directory #ai-connectors p { max-width: var(--measure); }
+.ai-directory #ai-connectors p:not(.section-lede) { max-width: var(--measure); }
 .ai-directory .resource-expanded p { text-wrap: pretty; }
 
 /* Safe-sharing panel: a Midnight block so the sharing rules read as policy, not as a footnote.
@@ -292,10 +301,13 @@ html[data-guest] section[aria-labelledby="nav-employee-resources"] {
 .sharing-panel { margin-top: 4rem; padding: 40px; border-radius: 8px; background: theme('colors.og.midnight'); color: #fff; }
 .sharing-panel h2 { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 1.5rem; line-height: 1.875rem; font-weight: 600; letter-spacing: -.015em; }
 .sharing-panel h2 svg { flex-shrink: 0; color: theme('colors.og.green.DEFAULT'); }
-.sharing-panel p { max-width: var(--measure); font-size: 1rem; line-height: 1.625; text-wrap: pretty; }
+.sharing-panel p { font-size: 1rem; line-height: 1.625; text-wrap: pretty; }
+.sharing-panel p:not(.section-lede) { max-width: var(--measure); }
+/* Unlayered rules above override the layered .section-lede wrap; restore it for ledes. */
+.sharing-panel p.section-lede, .ai-directory #ai-connectors p.section-lede { text-wrap: balance; }
 .sharing-panel a { color: #fff; }
 .sharing-panel a:hover { color: theme('colors.og.green.DEFAULT'); }
-.sharing-panel__intro { margin-top: 12px; }
+.sharing-panel__intro { margin-top: 2px; }
 .sharing-panel__cols { display: grid; gap: 32px; margin-top: 32px; }
 .sharing-panel h3 { display: flex; align-items: center; gap: 10px; color: #fff; font-size: 1rem; line-height: 1.5rem; font-weight: 700; letter-spacing: -.01em; }
 .sharing-panel__mark { display: inline-grid; place-items: center; flex-shrink: 0; width: 24px; height: 24px; border-radius: 9999px; }

@@ -66,7 +66,7 @@ export default function NewEmployeeResources() {
       >
         <section id="announce" aria-labelledby="announce-heading" className="scroll-mt-24">
           <Heading as="h2" id="announce-heading" className="reference-section-title">Announce your new role</Heading>
-          <p className="measure mt-3 leading-7 text-foreground">
+          <p className="section-lede mt-0.5 leading-7 text-foreground">
             Pick a design, add your photo and job title, then download a PNG to post on LinkedIn.
           </p>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
