@@ -94,7 +94,7 @@ function HubSection({
           {isWipSection(id) && <WipNotice />}
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
           <Heading as="h2" className="text-3xl font-extrabold md:text-[42px]">{title}</Heading>
-          {intro && <p className="section-lede mt-1.5 text-lg leading-[1.6] text-foreground">{intro}</p>}
+          {intro && <p className="section-lede mt-0.5 leading-7 text-foreground">{intro}</p>}
         </div>
         {children}
       </div>
@@ -277,7 +277,6 @@ export default function BrandHub() {
           id="logo"
           eyebrow="Visual identity"
           title="Logo"
-          intro="Use the full logo when space allows."
         >
           <LogoExamples />
           <Heading as="h3" className="mb-5 mt-8 text-2xl font-bold">Standalone logomarks</Heading>
