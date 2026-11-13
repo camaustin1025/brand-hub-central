@@ -176,7 +176,7 @@ export default function BrandHub() {
 
         <HubSection
           id="color"
-          eyebrow="Visual identity"
+          eyebrow="Brand systems"
           title="Color and gradients"
           intro="Lead with Midnight, white, and Groovy Green. Select a color to copy its hex."
         >
@@ -189,9 +189,18 @@ export default function BrandHub() {
           <TokensLink>Copy these colors as code or an AI brief</TokensLink>
         </HubSection>
 
+        {isEmployeeSectionVisible("tokens") && <HubSection
+          id="tokens"
+          eyebrow="Brand systems"
+          title="Design tokens"
+          intro="Copy brand colors, type, and the gradient into code or an AI tool."
+        >
+          <TokenKits />
+        </HubSection>}
+
         <HubSection
           id="typography"
-          eyebrow="Visual identity"
+          eyebrow="Brand systems"
           title="Typography"
         >
           {/* The family plate: the face on Midnight, every weight beside it. */}
@@ -260,7 +269,7 @@ export default function BrandHub() {
 
         <HubSection
           id="logo"
-          eyebrow="Visual identity"
+          eyebrow="Brand systems"
           title="Logo"
         >
           <LogoExamples />
@@ -302,15 +311,6 @@ export default function BrandHub() {
         >
           <IconGuidance />
         </HubSection>
-
-        {isEmployeeSectionVisible("tokens") && <HubSection
-          id="tokens"
-          eyebrow="Brand systems"
-          title="Design tokens"
-          intro="Copy brand colors, type, and the gradient into code or an AI tool."
-        >
-          <TokenKits />
-        </HubSection>}
 
         <HubHelp />
     </HubShell>

@@ -107,13 +107,19 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
     ],
   },
   {
-    label: "Visual identity",
+    label: "Brand systems",
     items: [
       {
         id: "color",
         label: "Color & gradients",
         description: "Canonical color values, contrast guidance, and the brand gradient.",
         keywords: "midnight groovy green cyan lemon hex rgb cmyk pantone swatches palette gradient",
+      },
+      {
+        id: "tokens",
+        label: "Design tokens",
+        description: "Copy colors, type, and the gradient as CSS, Tailwind, JSON, or an AI brief.",
+        keywords: "developer css json tailwind code variables design system tokens ai brief claude prompt",
       },
       {
         id: "typography",
@@ -155,17 +161,6 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         label: "Voice & language",
         description: "Personality, pass/fail rules, and preferred terms.",
         keywords: "tone words copy writing language rules use avoid ai em dash",
-      },
-    ],
-  },
-  {
-    label: "Brand systems",
-    items: [
-      {
-        id: "tokens",
-        label: "Design tokens",
-        description: "Copy colors, type, and the gradient as CSS, Tailwind, JSON, or an AI brief.",
-        keywords: "developer css json tailwind code variables design system tokens ai brief claude prompt",
       },
     ],
   },

@@ -16,7 +16,6 @@ import {
   Library,
   MessageSquareText,
   PackageOpen,
-  Palette,
   PanelLeftClose,
   PanelLeftOpen,
   type LucideProps,
@@ -33,7 +32,6 @@ const ICON_KEY = "hub-nav-sidebar-icon-rail";
 
 const GROUP_ICONS: Record<string, ComponentType<LucideProps>> = {
   "Grab-and-go": PackageOpen,
-  "Visual identity": Palette,
   "Verbal identity": MessageSquareText,
   "Brand systems": Blocks,
   Resources: Library,
