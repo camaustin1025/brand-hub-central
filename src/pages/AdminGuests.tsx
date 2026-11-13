@@ -48,7 +48,7 @@ export default function AdminGuests() {
     <main className="container max-w-4xl space-y-10 py-12">
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">Guests</h1>
-        <p className="text-foreground">Invite vendors and partners to view the hub. Guests can look but not download, and their pass ends on the date you set.</p>
+        <p className="text-foreground">Invite vendors and partners to the hub. Guests can see the Home page and download its assets, but no other pages. Their pass ends on the date you set.</p>
       </header>
 
       <form

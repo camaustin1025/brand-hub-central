@@ -214,6 +214,11 @@ export const HUB_NAV = DRAFT_HUB_NAV
   .map((group) => ({ ...group, items: group.items.filter((item) => isEmployeeSectionVisible(item.id)) }))
   .filter((group) => group.items.length > 0);
 
+/** Guests only get the homepage: a path is theirs when it stays on Home (no path, "/", or a "/#section" anchor). */
+export function isGuestPath(path?: string) {
+  return !path || path === "/" || path.startsWith("/#");
+}
+
 export function isDisabledSection(id: string) {
   return HUB_NAV.some((group) => group.items.some((item) => item.id === id && item.disabled));
 }

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { searchHub, type HubSearchItem } from "@/lib/hub-search";
+import { isGuestPath } from "@/data/hub";
 import { jumpTo } from "@/lib/hub-navigation";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +16,7 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
   const navigate = useNavigate();
   const id = useId();
   const access = useAccess();
-  const results = useMemo(() => searchHub(query).filter((item) => access !== "guest" || !["/employee-resources", "/team-culture", "/new-employee-resources"].includes(item.path ?? "")), [query, access]);
+  const results = useMemo(() => searchHub(query).filter((item) => access !== "guest" || isGuestPath(item.path)), [query, access]);
   const open = focused && query.trim().length > 0;
 
   useEffect(() => {

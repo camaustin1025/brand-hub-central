@@ -44,6 +44,7 @@ function SignInGate({ children }: { children: ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [guestEmail, setGuestEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [showGuest, setShowGuest] = useState(false);
 
   useEffect(() => {
     const accept = async (s: Session | null) => {
@@ -130,26 +131,38 @@ function SignInGate({ children }: { children: ReactNode }) {
         <h1 className="text-2xl font-semibold text-white">Brand Hub</h1>
         <p className="text-sm text-white">Sign in with your Ordergroove Google account.</p>
       </div>
-      <Button onClick={signIn} disabled={busy} className="w-full">
+      <Button variant="inverse" onClick={signIn} disabled={busy} className="w-full">
         {busy ? "Opening Google..." : "Continue with Google"}
       </Button>
-      <div className="border-t border-white/20 pt-6 text-left">
+      {/* Guests are the exception, so their sign-in is a quiet text link that opens a small form. */}
+      <div className="text-sm text-white">
         {sent ? (
-          <p className="text-sm text-white">If that email has a guest invite, a sign-in link is on its way. Check your inbox.</p>
-        ) : (
-          <form onSubmit={sendGuestLink} className="space-y-3">
-            <label htmlFor="guest-email" className="block text-sm font-medium text-white">Guest? Email me a sign-in link</label>
-            <input
-              id="guest-email"
-              type="email"
-              required
-              value={guestEmail}
-              onChange={(e) => setGuestEmail(e.target.value)}
-              placeholder="you@company.com"
-              className="w-full rounded-md border border-white/30 bg-transparent px-3 py-2 text-sm text-white placeholder:text-white/60"
-            />
-            <Button type="submit" variant="secondary" disabled={busy} className="w-full">Send sign-in link</Button>
+          <p>If that email has a guest invite, a sign-in link is on its way. Check your inbox.</p>
+        ) : showGuest ? (
+          <form onSubmit={sendGuestLink} className="space-y-2 text-left">
+            <label htmlFor="guest-email" className="block font-medium">Guest email</label>
+            <div className="flex gap-2">
+              <input
+                id="guest-email"
+                type="email"
+                required
+                autoFocus
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                placeholder="you@company.com"
+                className="h-8 min-w-0 flex-1 rounded-full border border-white/30 bg-transparent px-4 text-sm text-white placeholder:text-white/60"
+              />
+              <Button type="submit" size="sm" variant="outline" disabled={busy}>Send link</Button>
+            </div>
           </form>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowGuest(true)}
+            className="underline underline-offset-4 hover:text-og-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            Invited guest? Sign in with email
+          </button>
         )}
       </div>
       {error && <p className="text-sm text-white">{error}</p>}

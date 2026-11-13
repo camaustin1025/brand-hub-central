@@ -50,6 +50,15 @@ function ToolkitGraphicRoute() {
 export function HubRoutes() {
   const access = useAccess();
   const isGuest = access === "guest";
+  // Guests only get the homepage and its assets; every other URL sends them back to Home.
+  if (isGuest) {
+    return (
+      <Routes>
+        <Route path="/" element={<HomeRoute />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    );
+  }
   return (
     <Routes>
       {access === "admin" && <Route path="/admin/guests" element={<AdminGuests />} />}

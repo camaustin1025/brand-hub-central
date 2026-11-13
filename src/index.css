@@ -207,9 +207,11 @@
   }
 }
 
-/* Guests are view-only: hide download controls and links to the staff-only pages (LinkedIn graphics, icon library, Zoom backgrounds, AI resources). */
-html[data-guest] a[download],
-html[data-guest] [data-download],
+/* Guests only get the homepage, downloads included: hide in-page links that lead to any other page. */
+html[data-guest] a[href^="/foundation"],
+html[data-guest] a[href^="/voice"],
+html[data-guest] a[href^="/changelog"],
+html[data-guest] a[href^="/toolkit"],
 html[data-guest] a[href^="/design-canvas"],
 html[data-guest] a[href^="/icon-library"],
 html[data-guest] a[href^="/zoom-backgrounds"],

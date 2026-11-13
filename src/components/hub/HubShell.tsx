@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { HUB_NAV } from "@/data/hub";
+import { HUB_NAV, isGuestPath } from "@/data/hub";
 import { SearchBox } from "./HubSearch";
 import { jumpTo } from "@/lib/hub-navigation";
 import { WipTag } from "@/components/brand/WorkInProgress";
@@ -36,6 +36,10 @@ export function Sidebar({
   const navigate = useNavigate();
   // External internal sites (Product Hub) are staff-only; guests can't sign in to them.
   const isGuest = useAccess() === "guest";
+  // Guests only see the sections that live on Home.
+  const nav = isGuest
+    ? HUB_NAV.map((group) => ({ ...group, items: group.linkTitle ? [] : group.items.filter((item) => !item.disabled && isGuestPath(item.path)) })).filter((group) => group.items.length > 0)
+    : HUB_NAV;
 
   function chooseSection(id: string) {
     if (document.getElementById(id)) {
@@ -62,7 +66,7 @@ export function Sidebar({
         )}
       >
         <nav className="px-4 py-5" aria-label="Brand hub sections">
-          {HUB_NAV.map((group) => group.linkTitle ? (
+          {nav.map((group) => group.linkTitle ? (
             <div key={group.label} className="mb-6 last:mb-0">
               <Link
                 to={group.items[0].path!}
@@ -157,6 +161,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
   heroSearch?: boolean;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const isGuest = useAccess() === "guest";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -192,7 +197,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
         {!focused && <footer className="border-t border-border px-6 py-8 md:px-10">
           <div className="mx-auto flex max-w-[1060px] flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">
             <p>Internal use only · Maintained by Brand &amp; Content</p>
-            <Link to="/changelog" className="font-medium text-og-indigo underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-indigo">What’s changed</Link>
+            {!isGuest && <Link to="/changelog" className="font-medium text-og-indigo underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-indigo">What’s changed</Link>}
           </div>
         </footer>}
       </main>
