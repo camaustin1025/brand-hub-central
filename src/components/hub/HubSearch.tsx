@@ -21,7 +21,7 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
 
   useEffect(() => {
     function shortcut(event: globalThis.KeyboardEvent) {
-      // Only the visible masthead/mobile search owns the global shortcut.
+      // Only the visible masthead/mobile search owns the global shortcut. Cmd/Ctrl+K still works; the hint is no longer drawn.
       if (!hero && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k" && inputRef.current?.getClientRects().length) {
         event.preventDefault();
         // On Home the masthead search hides while the hero search is on screen; send the shortcut there.
@@ -86,9 +86,8 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
         aria-describedby={id + "-hint"}
         className={cn("w-full outline-none transition-colors", hero
           ? "h-14 rounded-lg border border-white bg-white pl-11 pr-4 text-base font-medium text-og-midnight shadow-xl shadow-black/15 placeholder:font-normal placeholder:text-og-midnight focus:border-og-green focus:ring-4 focus:ring-og-green/15"
-          : "h-9 rounded-lg border border-white/30 bg-white/10 pl-9 pr-12 text-sm text-white placeholder:text-white/70 focus:border-og-green/60 focus:bg-white/15 focus:ring-2 focus:ring-og-green/40")} />
+          : "h-9 rounded-lg border border-white/30 bg-white/10 pl-9 pr-3 text-sm text-white placeholder:text-white/70 focus:border-og-green/60 focus:bg-white/15 focus:ring-2 focus:ring-og-green/40")} />
       <span id={id + "-hint"} className="sr-only">Search guides, downloadable assets, and templates. Use Tab or the arrow keys to reach a result. Escape closes the results.</span>
-      {!compact && !hero && <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded border border-white/30 px-1.5 py-0.5 text-[10px] text-white/70" aria-hidden="true">⌘K</span>}
       <span role="status" className="sr-only">{open ? results.length ? results.length + " matching resources" : "No matching resources" : ""}</span>
       {open && (
         <div id={id + "-results"} role="region" aria-label="Search results"

@@ -13,7 +13,8 @@ export type HubNavItem = {
   wip?: boolean;
   /** Visible announcement only; no navigation or search result until released. */
   disabled?: boolean;
-  /** Left out of the sidebar entirely (disabled items otherwise show greyed out). */
+  /** Left out of every discovery surface: the sidebar, hub search, and Home. The page itself
+   *  and its content stay in the codebase (and its route keeps its current behavior). */
   hiddenInNav?: boolean;
 };
 
@@ -195,6 +196,8 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         id: "team-culture",
         wip: true,
         disabled: true,
+        // Hidden from the sidebar and search until the page is written (2026-11-13).
+        hiddenInNav: true,
         path: "/team-culture",
         label: "Team & culture",
         description: "Meet your teammates and find company updates and community resources.",
@@ -204,6 +207,8 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         id: NEW_EMPLOYEE_NAV_ID,
         wip: true,
         disabled: true,
+        // Hidden from the sidebar and search while the page is finished; content lives in pages/NewEmployeeResources.tsx.
+        hiddenInNav: true,
         path: NEW_EMPLOYEE_PATH,
         label: "New employees",
         description: "Your first-week brand kit: announce your new role, set up calls, and learn how we sound.",

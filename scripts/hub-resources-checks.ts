@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { ASSETS, availableAssets, assetAnchor, getAsset, getAssetFile, isAssetAvailable } from "../src/data/assets";
 import { HUB_SEARCH_ITEMS, searchHub } from "../src/lib/hub-search";
+import { HUB_NAV } from "../src/data/hub";
 import { AI_DIRECTORY, RESOURCE_TYPES, WORKFLOWS, countByType, filterResources, groupResources } from "../src/data/ai-directory";
 
 const available = availableAssets();
@@ -84,3 +85,19 @@ console.log("PASS: homepage asset references resolve and Zoom collection has six
   assert(recap.some((e) => e.kind === "workflow" && e.steps.length === 1 && e.steps[0].id === "sbr-recap"), "Search for one step shows it inside its workflow");
 }
 console.log("PASS: AI resources group by type, roll SBR into one workflow row, and scope the team filter to skills");
+
+// Hidden WIP pages (Team & culture, New employees): their nav data stays, but the sidebar, search and Home never offer them.
+{
+  const items = HUB_NAV.flatMap((group) => group.items);
+  for (const id of ["team-culture", "new-employee-resources"]) {
+    const item = items.find((entry) => entry.id === id);
+    assert(item && item.wip && item.hiddenInNav && item.path, "WIP page entry kept and hidden: " + id);
+    assert(!HUB_SEARCH_ITEMS.some((result) => result.id === id), "Hidden WIP page is searchable: " + id);
+  }
+  for (const query of ["team culture", "new employees onboarding", "org chart directory", "first week"]) {
+    assert(!searchHub(query).some((result) => result.id === "team-culture" || result.id === "new-employee-resources"), "Search surfaced a hidden WIP page for: " + query);
+  }
+  assert(!HUB_SEARCH_ITEMS.some((result) => result.hiddenInNav || result.disabled), "Search lists a hidden or disabled section");
+  assert(!fs.readFileSync("src/components/hub/HubSearch.tsx", "utf8").includes("⌘K"), "The search bar no longer draws a shortcut hint");
+}
+console.log("PASS: hidden WIP pages stay out of the sidebar data and search, and the search bar has no shortcut hint");
