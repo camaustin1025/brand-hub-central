@@ -66,7 +66,7 @@ export default function ZoomBackgrounds() {
         wip={isWipSection(ZOOM_BACKGROUNDS_NAV_ID)}
         updated="2026-11-11"
         title="Zoom backgrounds"
-        intro="Approved backgrounds for video calls. Download one, then add it in Zoom."
+        intro="How about a change of scenery? Pick a background you like, download it, and set it in your video settings."
         primaryAction={<DownloadAllButton />}
       >
         <Heading as="h2" className="sr-only">Backgrounds</Heading>
