@@ -126,11 +126,8 @@ function SignInGate({ children }: { children: ReactNode }) {
   }
 
   return (
-    <Screen>
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold text-white">Brand Hub</h1>
-        <p className="text-sm text-white">Sign in with your Ordergroove Google account.</p>
-      </div>
+    <Screen heading>
+      <p className="text-base text-white">Sign in with your Ordergroove Google account.</p>
       <Button variant="inverse" onClick={signIn} disabled={busy} className="w-full">
         {busy ? "Opening Google..." : "Continue with Google"}
       </Button>
@@ -170,12 +167,25 @@ function SignInGate({ children }: { children: ReactNode }) {
   );
 }
 
-function Screen({ children }: { children: ReactNode }) {
+function Screen({ children, heading = false }: { children: ReactNode; heading?: boolean }) {
+  // On the sign-in screen the lockup is the page title; the expired screen brings its own h1.
+  const Lockup = heading ? "h1" : "div";
   return (
-    <main className="dark flex min-h-screen items-center justify-center bg-og-midnight px-6">
-      <div className="w-full max-w-sm space-y-6 text-center">
-        <img src="/logo-dark.png" alt="Ordergroove" className="mx-auto w-full max-w-xs" />
-        {children}
+    <main className="dark flex min-h-screen items-center justify-center bg-og-midnight px-6 py-16">
+      <div className="w-full max-w-[26rem] space-y-8 text-center">
+        {/* The masthead lockup at login scale: "Brand Hub" in Figtree ExtraBold. Every measure is in em off the
+            text size so the logo, divider and gaps keep the header's proportions (header text is 22.75px). */}
+        <Lockup className="flex items-center justify-center text-[26px] font-extrabold leading-none tracking-[-0.025em] text-white sm:text-[32.5px]">
+          {/* The PNG carries equal transparent padding on both sides; trimming the left one centers the lockup. */}
+          <img src="/logo-dark.png" alt="Ordergroove" className="-ml-[0.94em] -mr-[1.055em] h-[2.46em] w-auto" />
+          <span aria-hidden className="ml-[0.7em] h-[1.055em] w-px bg-white/30" />
+          <span className="ml-[0.44em] whitespace-nowrap">Brand Hub</span>
+        </Lockup>
+        {/* The card's top edge carries the Green-to-Cyan signature gradient as the page's one highlight. */}
+        <div className="relative space-y-6 overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] p-8">
+          <div aria-hidden className="absolute inset-x-0 top-0 h-1 bg-og-signature" />
+          {children}
+        </div>
       </div>
     </main>
   );
