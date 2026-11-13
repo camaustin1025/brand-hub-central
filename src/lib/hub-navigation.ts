@@ -1,3 +1,5 @@
+import type { MouseEvent } from "react";
+
 export function jumpTo(id: string, closeMenu?: () => void) {
   const target = document.getElementById(id);
   if (!target) {
@@ -36,4 +38,19 @@ export function skipToContent(event: { preventDefault: () => void }) {
   event.preventDefault();
   main.focus({ preventScroll: true });
   main.scrollIntoView({ block: "start" });
+}
+
+/**
+ * A Home section as a real link to /#id, so Cmd-click, "copy link" and screen readers all work.
+ * A plain click on a page that already shows the section scrolls there in place; anywhere else the
+ * router takes the link to Home and its anchor. Modified clicks are left to the browser.
+ */
+export function onSectionLinkClick(event: MouseEvent<HTMLAnchorElement>, id: string, closeMenu?: () => void) {
+  if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  if (document.getElementById(id)) {
+    event.preventDefault();
+    jumpTo(id, closeMenu);
+  } else {
+    closeMenu?.();
+  }
 }

@@ -1,9 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { HUB_NAV, isGuestPath } from "@/data/hub";
 import { SearchBox } from "./HubSearch";
-import { jumpTo, revealCurrent, skipToContent } from "@/lib/hub-navigation";
+import { onSectionLinkClick, revealCurrent, skipToContent } from "@/lib/hub-navigation";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { cn } from "@/lib/utils";
 import { useAccess } from "@/hooks/use-access";
@@ -114,7 +114,6 @@ export function Sidebar({
 }) {
   const activeItem = marker === "highlighter" ? NAV_ITEM_HIGHLIGHTED : NAV_ITEM_ACTIVE;
   const label = (text: string, isActive: boolean) => (marker === "highlighter" && isActive ? <span className="nav-highlight">{text}</span> : text);
-  const navigate = useNavigate();
   const navRef = useRef<HTMLElement>(null);
   const asideRef = useRef<HTMLElement>(null);
   // External internal sites (Product Hub) are staff-only; guests can't sign in to them.
@@ -190,15 +189,6 @@ export function Sidebar({
         event.preventDefault();
         owner.focus();
       }
-    }
-  }
-
-  function chooseSection(id: string) {
-    if (document.getElementById(id)) {
-      jumpTo(id, onClose);
-    } else {
-      navigate(`/#${id}`);
-      onClose();
     }
   }
 
@@ -308,15 +298,15 @@ export function Sidebar({
                               {item.wip && <WipTag />}
                             </Link>
                           ) : (
-                            <button
-                              type="button"
-                              onClick={() => chooseSection(item.id)}
+                            <Link
+                              to={`/#${item.id}`}
+                              onClick={(event) => onSectionLinkClick(event, item.id, onClose)}
                               aria-current={activeId === item.id ? "location" : undefined}
                               className={cn(NAV_ITEM_CLASS, "w-full justify-between gap-2 text-left", activeId === item.id ? activeItem : NAV_ITEM_IDLE)}
                             >
                               <span>{label(item.label, activeId === item.id)}</span>
                               {item.wip && <WipTag />}
-                            </button>
+                            </Link>
                           )}
                         </li>
                       ))}
@@ -459,7 +449,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
       {NavSwitcher && <Suspense fallback={null}><NavSwitcher current={navOption} theme={navTheme} /></Suspense>}
 
       {/* Options publish their docked width as --hub-nav-w (the sidebar option narrows to an icon rail). */}
-      <main ref={mainRef} id="content" tabIndex={-1} className={cn("outline-none", !focused && (isRailFamily(navOption) ? "lg:ml-[284px]" : "lg:ml-[var(--hub-nav-w,284px)] lg:transition-[margin] lg:duration-200 motion-reduce:transition-none"))}>
+      <main ref={mainRef} id="content" tabIndex={-1} className={cn("outline-none", !focused && (isRailFamily(navOption) ? "lg:ml-[284px]" : "lg:ml-[var(--hub-nav-w,284px)] motion-safe:lg:transition-[margin] lg:duration-200"))}>
         {!focused && !heroSearch && <div className="bg-og-midnight px-4 py-3 md:hidden">
           <SearchBox compact />
         </div>}

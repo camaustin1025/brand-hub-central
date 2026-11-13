@@ -4,9 +4,8 @@
  * and opens as the same inert-aware drawer below 1024px as the default rail in HubShell.
  */
 import { useEffect, useState, type KeyboardEvent, type RefObject } from "react";
-import { useNavigate } from "react-router-dom";
 import { HUB_NAV, isGuestPath, type HubNavGroup } from "@/data/hub";
-import { jumpTo, revealCurrent } from "@/lib/hub-navigation";
+import { revealCurrent } from "@/lib/hub-navigation";
 import { useAccess } from "@/hooks/use-access";
 import type { NavTheme } from "./options";
 
@@ -126,18 +125,6 @@ export function useNavKeys(navRef: RefObject<HTMLElement>, toggleGroup?: (label:
   };
 }
 
-/** Homepage sections scroll in place when they are on screen, otherwise route to Home with the anchor. */
-export function useChooseSection(onClose: () => void) {
-  const navigate = useNavigate();
-  return function chooseSection(id: string) {
-    if (document.getElementById(id)) {
-      jumpTo(id, onClose);
-    } else {
-      navigate(`/#${id}`);
-      onClose();
-    }
-  };
-}
 
 /** Publishes the docked nav width so <main> stays offset by exactly the nav (see HubShell). */
 export function useDockedWidth(px: number) {

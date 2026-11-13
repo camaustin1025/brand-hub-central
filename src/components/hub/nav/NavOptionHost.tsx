@@ -6,7 +6,6 @@ import type { NavOptionProps } from "./shared";
 const OPTIONS = {
   tree: lazy(() => import("./TreeNav")),
   sidebar: lazy(() => import("./SidebarNav")),
-  framer: lazy(() => import("./FramerNav")),
 };
 
 export default function NavOptionHost({ option, ...props }: NavOptionProps & { option: Exclude<NavOption, "rail" | "highlight"> }) {

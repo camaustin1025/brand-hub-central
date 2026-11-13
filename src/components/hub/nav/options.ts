@@ -4,18 +4,17 @@ export const NAV_OPTIONS = [
   { id: "highlight", label: "Highlighter", themes: ["light"] },
   { id: "tree", label: "Tree", themes: ["light"] },
   { id: "sidebar", label: "Sidebar", themes: ["dark", "light"] },
-  { id: "framer", label: "Framer", themes: ["dark", "light"] },
 ] as const;
 
 export type NavOption = (typeof NAV_OPTIONS)[number]["id"];
 export type NavTheme = "light" | "dark";
 
 /**
- * The nav that ships. Change this one value to promote an option ("tree", "sidebar" or "framer");
- * production then loads only that option. While it is "rail", no option code reaches the production bundle.
+ * The nav that ships. Change this one value to promote an option ("highlight", "tree" or "sidebar");
+ * production then loads only that option. ("framer" was dropped after the 2026-11-13 critique.) While it is "rail", no option code reaches the production bundle.
  */
 export const PROMOTED_NAV: NavOption = "rail";
-/** The promoted option's theme, for options that come in both ("sidebar", "framer"). Others ignore it. */
+/** The promoted option's theme, for options that come in both ("sidebar"). Others ignore it. */
 export const PROMOTED_NAV_THEME: NavTheme = "dark";
 
 export function isNavOption(value: string | null | undefined): value is NavOption {

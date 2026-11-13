@@ -1,24 +1,25 @@
 /**
  * Option 1 (?nav=tree): the tree rail. Each group's links hang off a thin vertical rail that ends in a dot.
  * In the group holding the current page, a #009A50 run grows down the rail to the active row and a 7px
- * diamond sits on the rail beside it. One white pill rests on the active row and glides to whichever row
- * is hovered or focused (critically damped, about 0.22s), then springs back. Only transform and opacity animate.
+ * diamond sits on the rail beside it. A white chip stays on the active row (it no longer follows the pointer,
+ * so "you are here" never moves); hover is a light tint. Links use the 14px Midnight nav-item token.
  */
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type FocusEvent, type PointerEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { WipTag } from "@/components/brand/WorkInProgress";
+import { onSectionLinkClick } from "@/lib/hub-navigation";
 import { cn } from "@/lib/utils";
-import { DrawerScrim, springEasing, useChooseSection, useCollapsedGroups, useDockedWidth, useDrawerFocus, useNavKeys, useVisibleNav, type NavOptionProps } from "./shared";
+import { DrawerScrim, springEasing, useCollapsedGroups, useDockedWidth, useDrawerFocus, useNavKeys, useVisibleNav, type NavOptionProps } from "./shared";
 
 const WIDTH = 264;
 const SPRING = springEasing(0);
 const GLIDE: CSSProperties = { transitionDuration: "220ms, 160ms", transitionTimingFunction: `${SPRING}, ease-out`, transitionProperty: "transform, opacity" };
 
 const ROW =
-  "relative z-10 flex h-8 w-full items-center gap-2 rounded-lg pl-3 pr-2 text-left text-[13px] leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:h-11";
+  "relative z-10 flex min-h-8 w-full items-center gap-2 rounded-lg py-1.5 pl-3 pr-2 text-left text-sm leading-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
 const HEADER =
-  "flex min-h-9 w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-left text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-midnight transition-colors hover:bg-og-midnight/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
+  "relative z-10 flex min-h-9 w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-left text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-midnight transition-colors hover:bg-og-midnight/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
 
 type Box = { x: number; y: number; w: number; h: number };
 
@@ -85,16 +86,13 @@ export default function TreeNav({ activeId, open, onClose }: NavOptionProps) {
   const asideRef = useRef<HTMLElement>(null);
   const { nav, isGuest, activeGroup } = useVisibleNav(activeId);
   const { collapsed, toggleGroup } = useCollapsedGroups(activeGroup);
-  const chooseSection = useChooseSection(onClose);
   const onKeyDown = useNavKeys(navRef, toggleGroup);
   useDrawerFocus(asideRef, navRef, open, activeId);
   useDockedWidth(WIDTH);
 
-  // One pill for the whole nav: it rests on the active row and follows hover or focus.
-  const [hovered, setHovered] = useState<string | null>(null);
-  const [focused, setFocused] = useState<string | null>(null);
+  // One chip for the whole nav: it stays on the active row, so "you are here" never moves.
   const [pill, setPill] = useState<(Box & { glide: boolean }) | null>(null);
-  const target = hovered ?? focused ?? activeId;
+  const target = activeId;
 
   const measurePill = useCallback(() => {
     const container = navRef.current;
@@ -119,10 +117,6 @@ export default function TreeNav({ activeId, open, onClose }: NavOptionProps) {
     return () => observer.disconnect();
   }, [measurePill]);
 
-  function rowKey(event: PointerEvent<HTMLElement> | FocusEvent<HTMLElement>) {
-    return (event.target as HTMLElement).closest<HTMLElement>("[data-tree-row]")?.dataset.treeRow ?? null;
-  }
-
   return (
     <>
       <DrawerScrim open={open} onClose={onClose} />
@@ -139,10 +133,6 @@ export default function TreeNav({ activeId, open, onClose }: NavOptionProps) {
           className="relative px-4 pb-20 pt-4"
           aria-label="Brand hub sections"
           onKeyDown={onKeyDown}
-          onPointerOver={(event) => setHovered(rowKey(event))}
-          onPointerLeave={() => setHovered(null)}
-          onFocus={(event) => setFocused(rowKey(event))}
-          onBlur={() => setFocused(null)}
         >
           {pill && (
             <span
@@ -208,7 +198,7 @@ export default function TreeNav({ activeId, open, onClose }: NavOptionProps) {
                               target="_blank"
                               rel="noopener noreferrer"
                               data-tree-row={`external-${group.label}`}
-                              className={cn(ROW, "group font-medium text-og-midnight/70 hover:text-og-midnight")}
+                              className={cn(ROW, "group font-medium text-og-midnight hover:bg-og-midnight/[0.05]")}
                             >
                               <span className="flex-1">{external.label}</span>
                               <ArrowUpRight size={14} strokeWidth={2.25} aria-hidden="true" className="text-og-midnight/50 transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px group-hover:text-og-green-light" />
@@ -218,7 +208,7 @@ export default function TreeNav({ activeId, open, onClose }: NavOptionProps) {
                         )}
                         {group.items.map((item) => {
                           const isActive = activeId === item.id;
-                          const tone = isActive ? "font-medium text-og-midnight" : "text-og-gray-400 hover:text-og-midnight";
+                          const tone = isActive ? "font-semibold text-og-midnight" : "text-og-midnight hover:bg-og-midnight/[0.05]";
                           return (
                             <li key={item.id}>
                               {item.disabled ? (
@@ -238,16 +228,16 @@ export default function TreeNav({ activeId, open, onClose }: NavOptionProps) {
                                   {item.wip && <WipTag />}
                                 </Link>
                               ) : (
-                                <button
-                                  type="button"
-                                  onClick={() => chooseSection(item.id)}
+                                <Link
+                                  to={`/#${item.id}`}
+                                  onClick={(event) => onSectionLinkClick(event, item.id, onClose)}
                                   data-tree-row={item.id}
                                   aria-current={isActive ? "location" : undefined}
                                   className={cn(ROW, tone)}
                                 >
                                   <span className="flex-1">{item.label}</span>
                                   {item.wip && <WipTag />}
-                                </button>
+                                </Link>
                               )}
                             </li>
                           );

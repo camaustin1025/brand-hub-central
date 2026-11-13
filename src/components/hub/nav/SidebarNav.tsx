@@ -1,8 +1,9 @@
 /**
- * Option 2 (?nav=sidebar): a shadcn-style app sidebar, in Midnight (dark) or the hub's off-white (light, ?navTheme=light). Group labels split the hub into Brand and
- * Company; each hub group is a collapsible menu item with a line icon, and its pages hang off a left rail line
- * as sub-items. The current page sits in a darker pill with a Groovy Green tick on the rail. A trigger (or
- * Cmd/Ctrl+B) collapses the sidebar to a 64px icon rail with tooltips; the signed-in user sits in the footer.
+ * Option 2 (?nav=sidebar): a shadcn-style app sidebar, in Midnight (dark) or the hub's off-white (light, ?navTheme=light).
+ * Each hub group is a collapsible menu item with a line icon, and its pages hang off a left rail line as sub-items.
+ * The current page sits in a darker pill with a green tick on the rail. A trigger in the footer (or Cmd/Ctrl+B)
+ * collapses the sidebar to a 64px icon rail with tooltips. Trimmed after the 2026-11-13 critique: no "Sections"
+ * strip, no Brand/Company tier and no user card, so the current page stays above the fold on a laptop.
  */
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import { Link } from "react-router-dom";
@@ -22,9 +23,9 @@ import {
 } from "lucide-react";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { useAccess } from "@/hooks/use-access";
-import { useAuthUser } from "@/hooks/use-auth-user";
+import { onSectionLinkClick } from "@/lib/hub-navigation";
 import { cn } from "@/lib/utils";
-import { DrawerScrim, useChooseSection, useCollapsedGroups, useDockedWidth, useDrawerFocus, useIsDrawer, useNavKeys, useVisibleNav, type NavOptionProps } from "./shared";
+import { DrawerScrim, useCollapsedGroups, useDockedWidth, useDrawerFocus, useIsDrawer, useNavKeys, useVisibleNav, type NavOptionProps } from "./shared";
 
 const EXPANDED = 272;
 const ICON_RAIL = 64;
@@ -38,8 +39,6 @@ const GROUP_ICONS: Record<string, ComponentType<LucideProps>> = {
   Resources: Library,
   "Working at OG": Building2,
 };
-/** Sidebar group labels. Anything not listed falls under Company. */
-const BRAND_GROUPS = new Set(["Grab-and-go", "Visual identity", "Verbal identity", "Brand systems"]);
 
 const PARENT_BASE = "group/parent flex h-10 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium transition-colors [@media(pointer:coarse)]:h-11";
 const SUB_BASE = "relative flex h-8 w-full items-center gap-2 rounded-lg px-3 text-left text-[13px] transition-colors [@media(pointer:coarse)]:h-11";
@@ -59,7 +58,7 @@ const THEMES = {
     parentActive: "text-white",
     icon: "text-white/60 group-hover/parent:text-white",
     accent: "text-og-green",
-    chevron: "text-white/45",
+    chevron: "text-white/60",
     subList: "border-white/15",
     sub: "text-white/70 hover:bg-white/[0.07] hover:text-white",
     subActive: cn("bg-[#0B0919] font-semibold text-white ring-1 ring-white/[0.08] hover:bg-[#0B0919] before:bg-og-green", TICK),
@@ -82,7 +81,7 @@ const THEMES = {
     parentActive: "text-og-midnight",
     icon: "text-og-midnight/50 group-hover/parent:text-og-midnight",
     accent: "text-primary",
-    chevron: "text-og-midnight/40",
+    chevron: "text-og-midnight/60",
     subList: "border-og-midnight/15",
     sub: "text-og-midnight/70 hover:bg-og-midnight/[0.05] hover:text-og-midnight",
     subActive: cn("bg-white font-semibold text-og-midnight shadow-sm ring-1 ring-og-midnight/10 hover:bg-white before:bg-primary", TICK),
@@ -101,10 +100,6 @@ function readIconRail() {
   } catch {
     return false;
   }
-}
-
-function initials(name: string) {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join("") || "OG";
 }
 
 /** Tooltips only speak when the sidebar is an icon rail; expanded, the label is already on screen. */
@@ -132,11 +127,9 @@ export default function SidebarNav({ activeId, open, onClose, theme }: NavOption
   const asideRef = useRef<HTMLElement>(null);
   const { nav, isGuest, activeGroup } = useVisibleNav(activeId);
   const { collapsed, toggleGroup } = useCollapsedGroups(activeGroup);
-  const chooseSection = useChooseSection(onClose);
   const onKeyDown = useNavKeys(navRef, toggleGroup);
   const isDrawer = useIsDrawer();
   useDrawerFocus(asideRef, navRef, open, activeId);
-  const user = useAuthUser();
   const isAdmin = useAccess() === "admin";
 
   // The phone drawer is always the full sidebar; the icon rail is a desktop mode.
@@ -154,6 +147,9 @@ export default function SidebarNav({ activeId, open, onClose, theme }: NavOption
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key.toLowerCase() !== "b" || !(event.metaKey || event.ctrlKey) || event.altKey || event.shiftKey) return;
+      // Leave Cmd/Ctrl+B to text fields (bold in an editor, a character in search).
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
       event.preventDefault();
       setIconRail((value) => {
         try {
@@ -168,12 +164,6 @@ export default function SidebarNav({ activeId, open, onClose, theme }: NavOption
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const sections = [
-    { label: "Brand", groups: nav.filter((group) => BRAND_GROUPS.has(group.label)) },
-    { label: "Company", groups: nav.filter((group) => !BRAND_GROUPS.has(group.label)) },
-  ].filter((section) => section.groups.length > 0);
-
-  const name = (user?.user_metadata?.full_name as string | undefined) ?? user?.email?.split("@")[0] ?? "Ordergroove";
 
   return (
     <Tooltip.Provider delayDuration={0} skipDelayDuration={0}>
@@ -189,33 +179,9 @@ export default function SidebarNav({ activeId, open, onClose, theme }: NavOption
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        {/* Header: the section label and the collapse trigger. */}
-        <div className={cn("flex h-14 shrink-0 items-center border-b", t.line, rail ? "justify-center px-2" : "justify-between pl-5 pr-3")}>
-          {!rail && <span className={cn("text-[11px] font-bold uppercase tracking-[0.12em]", t.eyebrow)}>Sections</span>}
-          <Tip label="Expand sidebar" enabled={rail}>
-            <button
-              type="button"
-              onClick={() => setRail(!rail)}
-              aria-label={rail ? "Expand sidebar" : "Collapse sidebar to icons"}
-              aria-expanded={!rail}
-              aria-controls="hub-section-menu"
-              className={cn("hidden size-9 place-items-center rounded-lg transition-colors lg:grid", t.iconButton, FOCUS)}
-            >
-              {rail ? <PanelLeftOpen size={18} aria-hidden="true" /> : <PanelLeftClose size={18} aria-hidden="true" />}
-            </button>
-          </Tip>
-        </div>
-
         <nav ref={navRef} aria-label="Brand hub sections" onKeyDown={onKeyDown} className={cn("flex-1 overflow-y-auto overscroll-contain py-3", rail ? "px-2" : "px-3")}>
-          {sections.map((section, sectionIndex) => (
-            <div key={section.label} className={cn(sectionIndex > 0 && "mt-4")}>
-              {rail ? (
-                sectionIndex > 0 && <div className={cn("mx-3 mb-3 h-px", t.rule)} aria-hidden="true" />
-              ) : (
-                <h2 className={cn("px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em]", t.groupLabel)}>{section.label}</h2>
-              )}
-              <ul className="space-y-0.5">
-                {section.groups.map((group) => {
+          <ul className="space-y-0.5">
+                {nav.map((group) => {
                   const Icon = GROUP_ICONS[group.label] ?? Library;
                   const isOpen = !collapsed.includes(group.label);
                   const holdsActive = group.label === activeGroup;
@@ -289,10 +255,10 @@ export default function SidebarNav({ activeId, open, onClose, theme }: NavOption
                                   {item.wip && <WipTag />}
                                 </Link>
                               ) : (
-                                <button type="button" onClick={() => chooseSection(item.id)} aria-current={isActive ? "location" : undefined} className={cn(SUB, isActive && SUB_ACTIVE)}>
+                                <Link to={`/#${item.id}`} onClick={(event) => onSectionLinkClick(event, item.id, onClose)} aria-current={isActive ? "location" : undefined} className={cn(SUB, isActive && SUB_ACTIVE)}>
                                   <span className="flex-1 truncate">{item.label}</span>
                                   {item.wip && <WipTag />}
-                                </button>
+                                </Link>
                               )}
                             </li>
                           );
@@ -301,26 +267,22 @@ export default function SidebarNav({ activeId, open, onClose, theme }: NavOption
                     </li>
                   );
                 })}
-              </ul>
-            </div>
-          ))}
+          </ul>
         </nav>
 
-        {/* Footer: who is signed in. The admin "Manage guests" pill floats bottom-left, so admins get room under it. */}
-        <div className={cn("shrink-0 border-t", t.line, rail ? "px-2 py-3" : "px-3 py-3", isAdmin && "pb-16")}>
-          <Tip label={name} enabled={rail}>
-            <div className={cn("flex items-center gap-3 rounded-lg", rail ? "justify-center" : "px-2 py-1.5")} tabIndex={rail ? 0 : undefined}>
-              <span aria-hidden="true" className={cn("grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold", t.avatar)}>
-                {initials(name)}
-              </span>
-              {!rail && (
-                <span className="min-w-0 leading-tight">
-                  <span className={cn("block truncate text-sm font-semibold", t.name)}>{name}</span>
-                  {user?.email && <span className={cn("block truncate text-xs", t.email)}>{user.email}</span>}
-                </span>
-              )}
-              {rail && <span className="sr-only">Signed in as {name}</span>}
-            </div>
+        {/* Footer: the collapse trigger (desktop only). The admin "Manage guests" pill floats bottom-left, so admins get room under it. */}
+        <div className={cn("hidden shrink-0 border-t lg:block", t.line, rail ? "px-2 py-3" : "px-3 py-3", isAdmin && "pb-16")}>
+          <Tip label="Expand sidebar" enabled={rail}>
+            <button
+              type="button"
+              onClick={() => setRail(!rail)}
+              aria-label={rail ? "Expand sidebar" : undefined}
+              aria-expanded={!rail}
+              className={cn("flex h-9 items-center gap-3 rounded-lg text-sm font-medium transition-colors", rail ? "mx-auto w-10 justify-center" : "w-full px-3", t.iconButton, FOCUS)}
+            >
+              {rail ? <PanelLeftOpen size={18} aria-hidden="true" /> : <PanelLeftClose size={18} aria-hidden="true" />}
+              {!rail && <span>Collapse to icons</span>}
+            </button>
           </Tip>
         </div>
       </aside>
