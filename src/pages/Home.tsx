@@ -20,7 +20,7 @@ export default function Home() {
           {/* Paired-circle motif */}
           <div aria-hidden className="pointer-events-none absolute inset-0">
             <div className="absolute -right-16 top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 rounded-full bg-og-indigo/50" />
-            <div className="absolute right-24 top-1/2 h-[26rem] w-[26rem] -translate-y-1/2 rounded-full bg-og-signature opacity-80" />
+            <div className="absolute right-24 top-1/2 h-[26rem] w-[26rem] -translate-y-1/2 rounded-full bg-og-gradient opacity-80" />
           </div>
 
           <div className="relative max-w-2xl">

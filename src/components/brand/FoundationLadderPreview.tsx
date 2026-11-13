@@ -232,7 +232,7 @@ function RightsTable() {
                 <RightsLoop name={RIGHTS_VISUAL[item.n]} />
                 <div>
                   <div className="flex gap-4">
-                    {/* The ol already numbers the rows for screen readers. 24px keeps #009A50 above 3:1. */}
+                    {/* The ol already numbers the rows for screen readers. #008847 clears 4.5:1 on white at any size. */}
                     <span aria-hidden="true" className="w-6 shrink-0 text-2xl font-extrabold leading-7 tabular-nums text-primary">{item.n}</span>
                     <div>
                       <Heading as="h3" className="reference-item-title">{item.title}</Heading>

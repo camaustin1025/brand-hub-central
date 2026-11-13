@@ -9,7 +9,7 @@ export const ICON_COLORS = {
   light: [
     { name: "Flamingo Pink", hex: "#FF61D3", tint: "rgba(255,97,211,0.12)", image: "light-card-pink" },
     { name: "Tile Teal", hex: "#00BEC0", tint: "rgba(0,190,192,0.12)", image: "light-card-teal" },
-    { name: "Brand Green", hex: "#009A50", tint: "rgba(0,154,80,0.12)", image: "light-card-green" },
+    { name: "Brand Green", hex: "#008847", tint: "rgba(0,136,71,0.12)", image: "light-card-green" },
     { name: "Midnight", hex: "#17132F", tint: "rgba(23,19,47,0.12)", image: "light-card-midnight" },
   ],
   dark: [

@@ -5,7 +5,7 @@ colors:
   midnight: "#17132F"
   dark-indigo: "#2E2A47"
   groovy-green: "#00FF85"
-  green-on-light: "#009A50"
+  green-on-light: "#008847"
   cyan: "#00FAFF"
   lemon: "#EAFF00"
   carrot: "#FF8500"
@@ -213,7 +213,7 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 ### Primary
 - **Midnight** (#17132F): The desk. Masthead, page header bands, primary button fill, all body text on light surfaces, labels on green fills.
 - **Groovy Green** (#00FF85): The spark, on dark only. Eyebrows and accents on Midnight, the download highlighter fill and the rail's current-page highlighter (both with Midnight text on them), hover arrows in the masthead and rail.
-- **Green on Light** (#009A50): The same spark on light surfaces. Focus rings, the folded-group dot in the rail, saved-download checks, any green text on white.
+- **Green on Light** (#008847): The same spark on light surfaces. Focus rings, the folded-group dot in the rail, saved-download checks, any green text on white.
 
 ### Secondary
 - **Dark Indigo** (#2E2A47): Cards and secondary surfaces in dark mode; the footer's "What's changed" link.
@@ -231,7 +231,7 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 - **Ink on Dark** (#EBEAF0): Body text on Midnight surfaces.
 
 ### Named Rules
-**The Two Greens Rule.** Groovy Green (#00FF85) lives on dark backgrounds only. On light, green is #009A50. Never set #00FF85 as text or a fill on white, and never put white text on either green: labels on green are Midnight.
+**The Two Greens Rule.** Groovy Green (#00FF85) lives on dark backgrounds only. On light, green is #008847. Never set #00FF85 as text or a fill on white, and label each green for contrast: Midnight on Groovy Green, white on #008847.
 
 **The Spark Rule.** On a light page, green marks position and possession (active item, focus, download, saved) and covers a small fraction of the screen. Large green fields belong to brand specimens, not to UI.
 
@@ -296,7 +296,7 @@ Tactile pills that invert completely on hover.
 - **Motion:** 200ms color transitions.
 
 ### Download Links
-The hub's signature control. A file is a link, not a button: the format name and a download glyph in 13px semibold Midnight. On hover a Groovy Green highlighter swipes in behind the label at a -12deg skew (300ms, cubic-bezier(0.16, 1, 0.3, 1)) while the arrow dips toward the tray. On click the arrow becomes a #009A50 check that pops in. Motion drops out under reduced-motion preferences.
+The hub's signature control. A file is a link, not a button: the format name and a download glyph in 13px semibold Midnight. On hover a Groovy Green highlighter swipes in behind the label at a -12deg skew (300ms, cubic-bezier(0.16, 1, 0.3, 1)) while the arrow dips toward the tray. On click the arrow becomes a #008847 check that pops in. Motion drops out under reduced-motion preferences.
 
 ### Chips (filters)
 - **Style:** 32px pills, 4px apart with 11px sides, white with a light Midnight border (20% opacity), Midnight label, optional 14px icon, and a count in Midnight at 60%.
@@ -331,7 +331,7 @@ Rules people must follow (what you can share with AI tools) sit in a Midnight bl
 ## Do's and Don'ts
 
 ### Do:
-- **Do** use #009A50 for any green on light surfaces and #00FF85 only on Midnight.
+- **Do** use #008847 for any green on light surfaces and #00FF85 only on Midnight.
 - **Do** put Midnight labels on green fills.
 - **Do** keep buttons to two sizes: 40px for the main action, 32px for repeated controls.
 - **Do** present file downloads as links with the green highlighter, not as buttons.

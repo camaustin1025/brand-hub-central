@@ -34,8 +34,7 @@ export default function VisualIdentity() {
         <div className="mb-6 max-w-2xl">
           <Heading as="h2" className="text-2xl font-bold">Gradients</Heading>
           <p className="mt-2 text-sm text-foreground">
-            The signature is Green to Cyan on dark. Reserve gradients for the
-            payoff line, one per section.
+            Cyan to Lemon is the only brand gradient. Use one per section.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

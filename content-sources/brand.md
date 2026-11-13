@@ -4,12 +4,12 @@ Apply everything below to all Ordergroove copy and visual work without being ask
 
 ## Colors & type
 
-- Midnight `#17132F` (primary dark bg) · Groovy Green `#00FF85` (dark bg only; use `#009A50` on light backgrounds; print: Pantone 802 C, fallback 7479 C) · Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Flamingo Pink `#FF61D3` · Dark Indigo `#2E2A47`
-- Brand gradient: `linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)`
+- Midnight `#17132F` (primary dark bg) · Groovy Green `#00FF85` (dark bg only; use `#008847` on light backgrounds; print: Pantone 802 C, fallback 7479 C) · Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Flamingo Pink `#FF61D3` · Dark Indigo `#2E2A47`
+- Brand gradient: Cyan to Lemon, `linear-gradient(228.43deg, #00FAFF 8.88%, #EAFF00 87.64%)`. It is the only brand gradient (Cameron, 2026-11-12); use one per section.
 - Font: **Figtree** everywhere
 - Cross-check hexes against this file, not from memory — near-miss variants (`#0b0820`, `#0B0E22`, `#14102a`) are drift, not alternatives.
-- Logo-only exception (Cameron approved, 2026-10-26): preserve the supplied light-background logo with Midnight lettering and `#00CC6A` rings. Do not recolor it to `#009A50` or add `#00CC6A` to the general palette.
-- On light surfaces, use Midnight for small text and links. Green `#009A50` buttons need Midnight labels; white labels do not meet normal-text contrast requirements.
+- Logo-only exception (Cameron approved, 2026-10-26): preserve the supplied light-background logo with Midnight lettering and `#00CC6A` rings. Do not recolor it to `#008847` or add `#00CC6A` to the general palette.
+- On light surfaces, use Midnight for small text and links. Green `#008847` passes text contrast on white. Buttons in `#008847` take white labels; Midnight labels on it fall short of normal-text contrast. Groovy Green `#00FF85` buttons keep Midnight labels.
 - Hub buttons (Cameron approved, 2026-11-11; replaces the 2026-10-26 rule): every button is a pill with a visible border and keyboard-focus ring, in two sizes only: 40px for the one main action on a surface, 32px for repeated or in-card controls (copy, filters, row actions). On light surfaces the main action is a Midnight `#17132F` pill with white text that inverts to white with Midnight text on hover; on Midnight it is a white pill that inverts to Midnight. Secondary actions use the same pill, outlined. Compact buttons keep a 44px tap area on touch screens. Use the shared button component.
 - Hub file downloads (Cameron approved, 2026-11-11): links, not buttons. A download arrow and the format name (PNG, SVG, ZIP, TTF). On hover a Groovy Green `#00FF85` highlighter swipes in behind the Midnight label; this is a fill behind Midnight text, like a green button label, so it does not break the light-surface green rule. A check replaces the arrow after the click. Use the shared download link component.
 

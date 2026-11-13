@@ -9,7 +9,7 @@ export default function Tokens() {
       <PageHeader
         eyebrow="Design Tokens"
         title="The canonical values, ready for code"
-        subhead="Marketing canon: Figtree, Groovy Green #00FF85 on dark and #009A50 on light, Midnight #17132F. Product reconciliation is a later decision."
+        subhead="Marketing canon: Figtree, Groovy Green #00FF85 on dark and #008847 on light, Midnight #17132F. Product reconciliation is a later decision."
       />
 
       <section className="container max-w-3xl space-y-10 pb-16">

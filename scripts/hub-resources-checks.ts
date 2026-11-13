@@ -10,7 +10,7 @@ const available = availableAssets();
 assert.equal(new Set(ASSETS.map((asset) => asset.id)).size, ASSETS.length);
 assert.equal(isAssetAvailable({ ...getAsset("logo-light"), employeeHold: "Under review" }), false);
 assert.equal(isAssetAvailable({ ...getAsset("logo-light"), files: [] }), false);
-assert.equal(isAssetAvailable({ ...getAsset("logo-light"), section: "tokens" }), false);
+assert.equal(isAssetAvailable({ ...getAsset("logo-light"), section: "quick-reference" }), false);
 for (const id of ["tokens-json", "tokens-css", "social-linkedin"]) {
   assert(!available.some((asset) => asset.id === id), "Unavailable asset leaked: " + id);
   assert(!HUB_SEARCH_ITEMS.some((item) => item.id === assetAnchor(id)), "Unavailable search result: " + id);

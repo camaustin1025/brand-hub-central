@@ -44,7 +44,7 @@ const PARENT_BASE = "group/parent flex h-10 w-full items-center gap-3 rounded-lg
 const SUB_BASE = "relative flex h-8 w-full items-center gap-2 rounded-lg px-3 text-left text-[13px] transition-colors [@media(pointer:coarse)]:h-11";
 const TICK = "before:absolute before:-left-[13px] before:top-1/2 before:h-5 before:w-0.5 before:-translate-y-1/2 before:rounded-full";
 
-/** Dark is Midnight with Groovy Green accents; light is the hub's off-white rail with #009A50, since #00FF85 fails on white. */
+/** Dark is Midnight with Groovy Green accents; light is the hub's off-white rail with #008847, since #00FF85 fails on white. */
 const THEMES = {
   dark: {
     focus: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green",

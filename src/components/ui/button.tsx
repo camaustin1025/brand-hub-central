@@ -12,6 +12,17 @@ const outlineButtonColors =
   "border border-og-midnight bg-white text-og-midnight hover:bg-og-midnight hover:text-white dark:border-white/40 dark:bg-transparent dark:text-white dark:hover:border-white dark:hover:bg-white/10 dark:hover:text-white";
 
 /**
+ * Choice chips (icon library filters, token formats): a Midnight-bordered pill,
+ * filled Midnight when chosen, a light gray wash on hover when not.
+ */
+export function chipClasses(selected: boolean) {
+  return cn(
+    "action-focus tap-target inline-flex h-8 items-center gap-1.5 rounded-full border border-og-midnight px-3 text-[13px] font-semibold transition-colors",
+    selected ? "bg-og-midnight text-white" : "bg-white text-og-midnight hover:bg-og-gray-950",
+  );
+}
+
+/**
  * Two sizes only. `default` (40px) is the one main action on a surface; `sm` (32px)
  * is for repeated or in-card controls: copy, filters, row actions. `lg` is kept as an
  * alias of `default` so older calls still compile.

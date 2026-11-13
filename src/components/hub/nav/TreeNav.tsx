@@ -1,6 +1,6 @@
 /**
  * Option 1 (?nav=tree): the tree rail. Each group's links hang off a thin vertical rail that ends in a dot.
- * In the group holding the current page, a #009A50 run grows down the rail to the active row and a 7px
+ * In the group holding the current page, a #008847 run grows down the rail to the active row and a 7px
  * diamond sits on the rail beside it. A white chip stays on the active row (it no longer follows the pointer,
  * so "you are here" never moves); hover is a light tint. Links use the 14px Midnight nav-item token.
  */

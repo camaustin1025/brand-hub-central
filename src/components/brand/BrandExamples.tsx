@@ -42,16 +42,16 @@ export function ColorExamples() {
       <Heading as="h3" className="mb-5 text-xl font-bold">Keep the message readable</Heading>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Example good note="Midnight text on white, Groovy Green text on Midnight. Use Green (#009A50) on white for accents only.">
+        <Example good note="Midnight text on white, Groovy Green text on Midnight. Use Green (#008847) on white for accents only.">
           <div className="space-y-4 p-5">
-            <div className="flex min-h-20 items-center gap-3 rounded-md border border-border p-4 text-sm text-og-midnight"><span className="h-8 w-2 shrink-0 rounded-full bg-[#009A50]" aria-hidden="true" />Clear words. Consistent design.</div>
+            <div className="flex min-h-20 items-center gap-3 rounded-md border border-border p-4 text-sm text-og-midnight"><span className="h-8 w-2 shrink-0 rounded-full bg-[#008847]" aria-hidden="true" />Clear words. Consistent design.</div>
             <div className="flex min-h-20 items-center rounded-md bg-og-midnight p-4 text-sm text-[#00FF85]">Clear words. Consistent design.</div>
           </div>
         </Example>
-        <Example good={false} note="Avoid Groovy Green on white and small white text on green.">
+        <Example good={false} note="Avoid Groovy Green on white and small Midnight text on Green (#008847).">
           <div className="space-y-4 p-5" aria-label="Incorrect color combinations, shown for comparison">
             <div className="flex min-h-20 items-center rounded-md border border-border p-4 text-sm text-[#00FF85]">Clear words. Consistent design.</div>
-            <div className="flex min-h-20 items-center rounded-md bg-[#009A50] p-4 text-sm text-white">Clear words. Consistent design.</div>
+            <div className="flex min-h-20 items-center rounded-md bg-[#008847] p-4 text-sm text-og-midnight">Clear words. Consistent design.</div>
           </div>
         </Example>
       </div>

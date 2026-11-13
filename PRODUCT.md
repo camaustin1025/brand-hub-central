@@ -35,7 +35,7 @@ The hub and the AI tools read the same canon. Site content comes from the brand 
 ## Brand Commitments
 
 - Figtree everywhere. No em dashes. Never lead with "AI".
-- Groovy Green #00FF85 on dark backgrounds, #009A50 on light. Midnight #17132F. Midnight labels on green buttons.
+- Groovy Green #00FF85 on dark backgrounds, #008847 on light. Midnight #17132F. White labels on #008847 buttons, Midnight labels on #00FF85.
 - Hub buttons and downloads (approved 2026-11-11): pills in two sizes (40px main action, 32px compact controls), Midnight on light and white on Midnight for the main action, outlined for secondary. File downloads are links with a Groovy Green highlighter on hover. The full rule lives in brand.md.
 - The voice pass/fail list in brand-style-guide.md Section 3 applies to every user-facing word.
 - brand.md is canon and wins every conflict. Canon edits wait for Cameron's go-ahead.

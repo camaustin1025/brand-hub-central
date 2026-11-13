@@ -2,12 +2,12 @@
  * Ordergroove color tokens — verified against brand.md and the Phase 0 audit.
  *
  * The green contrast rule (canon 5.2, the most-missed rule in the system):
- *   light background -> #009A50   |   dark background -> #00FF85
+ *   light background -> #008847   |   dark background -> #00FF85
  * `onLight` / `onDark` flags below drive the live contrast badge on <Swatch>.
  *
  * The supplied light-background logo retains #00CC6A as a logo-only exception
  * (approved by Cameron on 2026-10-26). Do not add it to the UI palette.
- * Open audit decisions: D2 (Green-300 ramp), D10 (#FF61D3 name).
+ * Open audit decisions: D10 (#FF61D3 name). D2 resolved 2026-11-12: green on light is #008847.
  */
 
 export type Swatch = {
@@ -41,7 +41,7 @@ export type SwatchGroup = {
 
 export const CORE: SwatchGroup = {
   title: "Primary",
-  note: "Use Green (#009A50) on light backgrounds and Groovy Green (#00FF85) on dark.\nSet small text in Midnight.",
+  note: "Use Green (#008847) on light backgrounds and Groovy Green (#00FF85) on dark.\nSet small text in Midnight.",
   swatches: [
     {
       name: "Midnight",
@@ -77,11 +77,11 @@ export const CORE: SwatchGroup = {
     },
     {
       name: "Green on light",
-      hex: "#009A50",
-      rgb: "0, 154, 80",
+      hex: "#008847",
+      rgb: "0, 136, 71",
       usage: "Accent on light backgrounds only",
-      cmyk: "100, 0, 48, 40",
-      pantone: "7482 C",
+      cmyk: "100, 0, 48, 47",
+      pantone: "Match pending",
       onLight: true,
       onDark: false,
     },
@@ -164,36 +164,9 @@ export type Gradient = {
   status: "signature" | "approved" | "web";
 };
 
-export const GRADIENTS: Gradient[] = [
-  {
-    name: "Signature (Green → Cyan)",
-    css: "linear-gradient(135deg, #00FF85, #00FAFF)",
-    stops: ["#00FF85", "#00FAFF"],
-    status: "signature",
-  },
-  {
-    name: "Purple → Blue → Green",
-    css: "linear-gradient(135deg, #7821F5, #71ACFF, #00FF85)",
-    stops: ["#7821F5", "#71ACFF", "#00FF85"],
-    status: "approved",
-  },
-  {
-    name: "Orange → Yellow",
-    css: "linear-gradient(135deg, #FF8500, #EAFF00)",
-    stops: ["#FF8500", "#EAFF00"],
-    status: "approved",
-  },
-  {
-    name: "Web brand gradient",
-    css: "linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)",
-    stops: ["#E0FE00", "#0BFE5F", "#00FEFE"],
-    status: "web",
-  },
-];
-
 export const COLOR_GROUPS = [CORE, SUPPORTING, SECONDARY];
 
-// Original background artwork, separate from the legacy web CSS recipe above.
+// The brand gradient: original background artwork plus its CSS recipe.
 // Verified from Figma Background Gradient 1 (10:708), October 27, 2026.
 export const BACKGROUND_GRADIENT = {
   name: "Cyan to Lemon",
@@ -208,4 +181,12 @@ export const BACKGROUND_GRADIENT = {
   source: "https://www.figma.com/design/1LAizYM7R7QVubcHuix1KF/Slide-Skill-2.0?node-id=10-708",
 };
 
-export const BACKGROUND_GRADIENT_CSS = `linear-gradient(${BACKGROUND_GRADIENT.angle}deg, ${BACKGROUND_GRADIENT.stops.map((stop) => `${stop.hex} ${stop.position}%`).join(", ")})`;
+const round2 = (value: number) => Number(value.toFixed(2));
+
+/** The one brand gradient as CSS. Rounded to 2 decimals so canon and the kits print the same string. */
+export const BACKGROUND_GRADIENT_CSS = `linear-gradient(${round2(BACKGROUND_GRADIENT.angle)}deg, ${BACKGROUND_GRADIENT.stops.map((stop) => `${stop.hex} ${round2(stop.position)}%`).join(", ")})`;
+
+/** Cyan to Lemon is the only brand gradient (Cameron, 2026-11-12). */
+export const GRADIENTS: Gradient[] = [
+  { name: BACKGROUND_GRADIENT.name, css: BACKGROUND_GRADIENT_CSS, stops: BACKGROUND_GRADIENT.stops.map((stop) => stop.hex), status: "signature" },
+];

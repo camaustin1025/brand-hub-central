@@ -208,7 +208,7 @@ Still to source: numeric minimum-size specs and a clean standalone-mark master. 
 | Midnight | `#17132F` | Dark backgrounds; heading/body text on light. Never pure black text. |
 | Dark Indigo | `#2E2A47` | Subtitle/muted text on light; muted surfaces |
 | Groovy Green | `#00FF85` | Accent on DARK backgrounds only. Print: Pantone 802 C (neon spot ink; 7479 C if the printer can't run neon) |
-| Green (light-bg) | `#009A50` | Accent on LIGHT backgrounds |
+| Green (light-bg) | `#008847` | Accent on LIGHT backgrounds |
 | White | `#FFFFFF` | Light backgrounds |
 | Gray-900 | `#EBEAF0` | Subtitle text on dark |
 | Gray-800 | `#D8D7DF` | Borders |
@@ -216,7 +216,7 @@ Still to source: numeric minimum-size specs and a clean standalone-mark master. 
 
 **Print color:** Pantone spot colors work on solid fills such as the logo and type, never on gradients; gradients print CMYK and will look duller than on screen. Groovy Green's 802 C is the standing spec. Proposed Pantone matches and CMYK values for the rest of the palette (added 2026-11-11) live on the hub's color palette and are pending a physical swatch check; proof before any print run.
 
-**The green contrast rule (most-missed rule in the system):** light background → `#009A50` accents; dark background → `#00FF85`. Use Midnight for small text and links on light surfaces, and for labels on green buttons. White text on `#009A50` fails normal-text contrast. The supplied logo's `#00CC6A` rings are a logo-only exception, not a UI color.
+**The green contrast rule (most-missed rule in the system):** light background → `#008847` accents; dark background → `#00FF85`. Use Midnight for small text and links on light surfaces. `#008847` passes text contrast on white (4.5:1), so it can carry green text and links when a green accent is needed. Labels on `#008847` buttons are white; Midnight on `#008847` fails normal-text contrast. Labels on Groovy Green `#00FF85` buttons stay Midnight. The supplied logo's `#00CC6A` rings are a logo-only exception, not a UI color.
 
 **Hub buttons (approved 2026-11-11, replaces the 2026-10-26 rule):** Every button is a pill with a visible border and a distinct keyboard-focus ring, in two sizes only: 40px for the one main action on a surface, and 32px for repeated or in-card controls such as copy, filters, and row actions. On light surfaces the main action is Midnight fill with white text, inverting to white fill with Midnight text on hover. On Midnight it is a white pill that inverts to Midnight. Secondary actions use the same pill, outlined. Compact buttons keep a 44px tap area on touch screens without looking bigger.
 
@@ -224,7 +224,7 @@ Still to source: numeric minimum-size specs and a clean standalone-mark master. 
 
 **Secondary palette** (sparingly, decorative "pop" only, never leading/primary): Intense Cyan `#00FAFF` · Laser Lemon `#EAFF00` · Neon Carrot `#FF8500` · Radiant Radish `#D32E55` · Flamboyant Flamingo `#FF61D3` · Electric Eggplant `#8500FF`. Laser Lemon is never text on white.
 
-**Gradients:** signature is Green → Cyan (`#00FF85` → `#00FAFF`, on dark). Also approved: Orange → Yellow (`#FF8500` → `#EAFF00`) and Purple → Blue → Green. Brand gradient for web: `linear-gradient(135deg, #E0FE00, #0BFE5F, #00FEFE)`.
+**Gradient (Cameron, 2026-11-12):** Cyan to Lemon is the only brand gradient: `linear-gradient(228.43deg, #00FAFF 8.88%, #EAFF00 87.64%)` (Intense Cyan `#00FAFF` to Laser Lemon `#EAFF00`). Use one per section, on print and web. It retires Green → Cyan, Orange → Yellow, Purple → Blue → Green, and the old web gradient (`#E0FE00`, `#0BFE5F`, `#00FEFE`).
 
 **Drift warning:** near-miss hexes (`#0b0820`, `#0B0E22`, `#14102a`, `#7bfa92`) are drift from old site scrapes, not alternatives. Copy hexes from this guide, never from memory or from a screenshot.
 

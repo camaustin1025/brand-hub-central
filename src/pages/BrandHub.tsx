@@ -1,14 +1,13 @@
 import { Heading } from "@/components/layout/Heading";
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { ArrowUpRight, Download } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Download } from "lucide-react";
 import { HubShell } from "@/components/hub/HubShell";
 import { WorkingCanvasHero } from "@/components/hub/WorkingCanvasHero";
 import { WipNotice } from "@/components/brand/WorkInProgress";
 import { ColorTiers } from "@/components/brand/ColorTiers";
 import { AssetTiles } from "@/components/brand/AssetTiles";
 import { AssetDownloads } from "@/components/brand/AssetDownloads";
-import { DraftBadge } from "@/components/brand/DraftBadge";
 import { GradientDetails } from "@/components/brand/GradientDetails";
 import { ColorExamples, LayoutExample, LogoExamples } from "@/components/brand/BrandExamples";
 import { IconGuidance } from "@/components/brand/IconGuidance";
@@ -17,52 +16,21 @@ import { assetAnchor, availableAssets, findAssetFile, type Asset } from "@/data/
 import { MARKETING_CONTACT } from "@/data/brand-resources";
 import { isWipSection } from "@/data/hub";
 import { employeeSectionId, isEmployeeSectionVisible } from "@/data/employee-launch";
-import { CORE } from "@/data/tokens";
+import { TYPE_HIERARCHY, TYPE_WEIGHTS } from "@/data/typography";
+import { TokenKits } from "@/components/brand/TokenKits";
 import { useAccess } from "@/hooks/use-access";
 import { cn } from "@/lib/utils";
 
 
-/** Every bundled Figtree weight, each rendered in itself. */
-const TYPE_WEIGHTS = [
-  { name: "Regular", value: 400 },
-  { name: "Medium", value: 500 },
-  { name: "SemiBold", value: 600 },
-  { name: "Bold", value: 700 },
-  { name: "ExtraBold", value: 800 },
-];
-
-/**
- * Canon 5.3 web hierarchy, set at true size. Character limits come from the
- * hero pattern (6.4); the four-line body note is salvaged from the old hub.
- */
-const TYPE_HIERARCHY = [
-  {
-    role: "Eyebrow",
-    spec: "12px · SemiBold 600",
-    note: "ALL CAPS, 0.16em letter-spacing",
-    sample: "Brand guidelines",
-    className: "eyebrow",
-  },
-  {
-    role: "Headline",
-    spec: "40 to 44px · ExtraBold 800",
-    note: "Sentence case",
-    sample: "Make it look like Ordergroove",
-    className: "text-[40px] font-extrabold leading-[1.08] tracking-tight [text-wrap:balance] md:text-[44px]",
-  },
-  {
-    role: "Subhead",
-    spec: "21px · Regular 400",
-    sample: "Clear words. Consistent design",
-    className: "text-[21px] leading-[1.45]",
-  },
-  {
-    role: "Body",
-    spec: "15px · Regular 400",
-    sample: "Write clearly. Let evidence carry the message.",
-    className: "measure text-[15px] leading-[1.65]",
-  },
-];
+/** Points a visual section at the copy-and-paste kits at the bottom of Home. */
+function TokensLink({ children }: { children: ReactNode }) {
+  if (!isEmployeeSectionVisible("tokens")) return null;
+  return (
+    <a href="#tokens" className="action-focus mt-8 inline-flex items-center gap-1.5 rounded-sm text-sm font-semibold text-og-midnight underline decoration-og-green-light decoration-2 underline-offset-4 hover:decoration-og-midnight">
+      {children} <ArrowDown size={15} aria-hidden="true" />
+    </a>
+  );
+}
 
 function HubSection({
   id,
@@ -218,6 +186,7 @@ export default function BrandHub() {
             <GradientDetails />
           </div>
           <ColorExamples />
+          <TokensLink>Copy these colors as code or an AI brief</TokensLink>
         </HubSection>
 
         <HubSection
@@ -286,6 +255,7 @@ export default function BrandHub() {
             </div>
           </div>
           <LayoutExample />
+          <TokensLink>Copy type styles as code or an AI brief</TokensLink>
         </HubSection>
 
         <HubSection
@@ -336,38 +306,10 @@ export default function BrandHub() {
         {isEmployeeSectionVisible("tokens") && <HubSection
           id="tokens"
           eyebrow="Brand systems"
-          title="Marketing color tokens"
-          intro="Hex and RGB values for marketing work. Product UI uses its own tokens, managed separately."
+          title="Design tokens"
+          intro="Copy brand colors, type, and the gradient into code or an AI tool."
         >
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr]">
-            <div className="overflow-hidden rounded-lg border border-border bg-white">
-              <div className="grid grid-cols-[1fr_100px] bg-og-midnight px-5 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white md:grid-cols-[1fr_120px_1fr]">
-                <span>Token</span><span>Hex</span><span className="hidden md:block">RGB</span>
-              </div>
-              {CORE.swatches.map((swatch) => (
-                <div key={swatch.hex} className="grid grid-cols-[1fr_100px] items-center border-t border-border px-5 py-4 text-sm md:grid-cols-[1fr_120px_1fr]">
-                  <span className="flex items-center gap-2 font-semibold"><span className="h-4 w-4 rounded-[3px]" style={{ backgroundColor: swatch.hex }} />{swatch.name}</span>
-                  <code className="text-xs text-muted-foreground">{swatch.hex}</code>
-                  <code className="hidden text-xs text-muted-foreground md:block">{swatch.rgb}</code>
-                </div>
-              ))}
-            </div>
-            <div className="rounded-lg border border-border bg-white p-6">
-              <div className="flex flex-wrap items-center gap-2">
-                <Heading as="h3" className="text-lg font-bold">Token kits</Heading>
-                <DraftBadge>Pending green approval</DraftBadge>
-              </div>
-              <p className="measure mt-3 text-sm leading-6 text-foreground">Both kits publish once the remaining green values are approved.</p>
-              <div className="mt-5 space-y-2">
-                {["tokens.json", "tokens.css"].map((file) => (
-                  <div key={file} className="flex items-center justify-between rounded-lg bg-og-gray-950 px-3 py-2.5">
-                    <code className="text-sm font-semibold">{file}</code>
-                    <span className="text-xs font-semibold text-muted-foreground">Pending</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <TokenKits />
         </HubSection>}
 
         <HubHelp />

@@ -7,7 +7,7 @@
 ## Canon
 - Category: Autonomous Subscriptions (never "Relationship Commerce")
 - Typeface: Figtree everywhere
-- Core color: Midnight #17132F, Groovy Green #00FF85 (dark bg) / #009A50 (light bg)
+- Core color: Midnight #17132F, Groovy Green #00FF85 (dark bg) / #008847 (light bg)
 - Never lead with "AI". No em-dashes. "Everychannel" is one word. Never name competitors.
 
 ## Pages

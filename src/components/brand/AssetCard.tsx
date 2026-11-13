@@ -28,7 +28,7 @@ export function AssetCard({ asset, showDescription = true }: { asset: Asset; sho
             className={cn("max-h-full max-w-full object-contain", !asset.tags.includes("logomark") && "p-6")}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-og-signature opacity-90" />
+          <div className="flex h-full w-full items-center justify-center bg-og-gradient opacity-90" />
         )}
       </div>
 

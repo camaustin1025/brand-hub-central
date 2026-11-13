@@ -21,8 +21,10 @@ function DownloadGlyph() {
  * arrow, and the green marker on hover. Use it wherever a file sits next to its
  * preview (asset tiles, gradient details); keep buttons for page actions.
  */
-export function DownloadLink({ href, label, children, className }: {
+export function DownloadLink({ href, filename, label, children, className }: {
   href: string;
+  /** Saved file name. Needed for generated (blob) files, which have no name of their own. */
+  filename?: string;
   /** Accessible name, e.g. "Download Logo for dark backgrounds (PNG)". */
   label: string;
   children: ReactNode;
@@ -33,7 +35,7 @@ export function DownloadLink({ href, label, children, className }: {
   useEffect(() => () => clearTimeout(timer.current), []);
 
   return (
-    <a href={href} download aria-label={label} data-download
+    <a href={href} download={filename ?? true} aria-label={label} data-download
       onClick={() => {
         setSaved(true);
         clearTimeout(timer.current);
