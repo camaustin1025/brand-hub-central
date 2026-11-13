@@ -39,7 +39,7 @@ export function Sidebar({
   // Guests only see the sections that live on Home.
   const nav = isGuest
     ? HUB_NAV.map((group) => ({ ...group, items: group.linkTitle ? [] : group.items.filter((item) => !item.disabled && isGuestPath(item.path)) })).filter((group) => group.items.length > 0)
-    : HUB_NAV;
+    : HUB_NAV.map((group) => ({ ...group, items: group.items.filter((item) => !item.hiddenInNav) })).filter((group) => group.items.length > 0);
 
   function chooseSection(id: string) {
     if (document.getElementById(id)) {

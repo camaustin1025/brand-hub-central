@@ -26,7 +26,7 @@ export function VoiceContent() {
         <ol className="mt-6 grid gap-x-10 border-t border-border lg:grid-cols-2">
           {VOICE_RULES.map((rule, index) => (
             <li key={rule} className="flex gap-3 border-b border-border py-4">
-              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-og-radish/10 text-xs font-extrabold text-og-radish">{index + 1}</span>
+              <span aria-hidden="true" className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-og-midnight text-xs font-bold tabular-nums text-white">{index + 1}</span>
               <span className="text-sm leading-6">{rule}</span>
             </li>
           ))}

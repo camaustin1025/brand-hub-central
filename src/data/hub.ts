@@ -13,6 +13,8 @@ export type HubNavItem = {
   wip?: boolean;
   /** Visible announcement only; no navigation or search result until released. */
   disabled?: boolean;
+  /** Left out of the sidebar entirely (disabled items otherwise show greyed out). */
+  hiddenInNav?: boolean;
 };
 
 export type HubNavGroup = {
@@ -80,7 +82,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         id: ZOOM_BACKGROUNDS_NAV_ID,
         path: ZOOM_BACKGROUNDS_PATH,
         label: "Zoom backgrounds",
-        description: "Six backgrounds for video calls, with setup steps for Zoom, Google Meet, and Teams.",
+        description: "Six backgrounds for video calls, with setup steps for Zoom.",
         keywords: "zoom backgrounds background video call meeting virtual teams google meet download",
       },
       {
@@ -145,6 +147,7 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
         wip: true,
         // Temporarily hidden on the live site while the page is rewritten; still reachable in local dev.
         disabled: true,
+        hiddenInNav: true,
         label: "Voice & language",
         description: "Personality, pass/fail rules, and preferred terms.",
         keywords: "tone words copy writing language rules use avoid ai em dash",

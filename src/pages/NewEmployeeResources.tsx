@@ -23,7 +23,7 @@ const announcementTemplates = DESIGN_CANVAS_CATEGORIES.find(({ category }) => ca
 const FIRST_WEEK = [
   {
     title: "Set up your video calls",
-    body: "Download an approved background and add it in Zoom, Google Meet, or Microsoft Teams.",
+    body: "Download an approved background and add it in Zoom.",
     to: ZOOM_BACKGROUNDS_PATH,
     action: "Get a Zoom background",
   },

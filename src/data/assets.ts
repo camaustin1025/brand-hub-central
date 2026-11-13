@@ -75,20 +75,6 @@ const RECORDS: AssetRecord[] = [
     files: [{ format: "PNG", href: BACKGROUND_GRADIENT.image }],
   },
   {
-    id: "zoom-bg", title: "Office lounge",
-    description: "Green wall and glass meeting room.",
-    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "lounge", "green wall"],
-    preview: "/zoom-backgrounds/previews/office-lounge.jpg", section: "zoom-backgrounds",
-    files: [{ format: "PNG", href: "/zoom-backgrounds/office-lounge.png" }],
-  },
-  {
-    id: "zoom-office-workspace", title: "Office workspace",
-    description: "Open office with a green wall and meeting pod.",
-    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "desks", "green wall"],
-    preview: "/zoom-backgrounds/previews/office-workspace.jpg", section: "zoom-backgrounds",
-    files: [{ format: "PNG", href: "/zoom-backgrounds/office-workspace.png" }],
-  },
-  {
     id: "zoom-midnight-loop", title: "Midnight",
     description: "Plain Midnight with the Ordergroove logo in the upper left.",
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "plain", "logo"],
@@ -108,6 +94,20 @@ const RECORDS: AssetRecord[] = [
     type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "midnight", "glow", "gradient"],
     preview: "/zoom-backgrounds/previews/midnight-glow.jpg", section: "zoom-backgrounds",
     files: [{ format: "PNG", href: "/zoom-backgrounds/midnight-glow.png" }],
+  },
+  {
+    id: "zoom-bg", title: "Office lounge",
+    description: "Green wall and glass meeting room.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "lounge", "green wall"],
+    preview: "/zoom-backgrounds/previews/office-lounge.jpg", section: "zoom-backgrounds",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/office-lounge.png" }],
+  },
+  {
+    id: "zoom-office-workspace", title: "Office workspace",
+    description: "Open office with a green wall and meeting pod.",
+    type: "background", tags: ["zoom", "background", "video", "meeting", "calls", "16:9", "office", "desks", "green wall"],
+    preview: "/zoom-backgrounds/previews/office-workspace.jpg", section: "zoom-backgrounds",
+    files: [{ format: "PNG", href: "/zoom-backgrounds/office-workspace.png" }],
   },
   {
     id: "zoom-office-reception", title: "Office reception",
