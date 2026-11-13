@@ -12,6 +12,7 @@ import LayoutLab from "@/pages/LayoutLab";
 import ButtonLab from "@/pages/ButtonLab";
 import ZoomBackgrounds from "@/pages/ZoomBackgrounds";
 import WorkingAtOG from "@/pages/WorkingAtOG";
+import NewEmployeeResources from "@/pages/NewEmployeeResources";
 import { employeeSectionId } from "@/data/employee-launch";
 import AdminGuests from "@/pages/AdminGuests";
 import { useAccess } from "@/hooks/use-access";
@@ -86,7 +87,8 @@ export function HubRoutes() {
       {/* Internal links (Slack, Confluence, security policy), so staff-only like Design canvas. */}
       {!isGuest && <Route path={RESOURCE_PAGE_PATHS["ai-skills"]} element={<AiResources />} />}
       {/* Links into staff-only pages (graphic editor, Zoom backgrounds, AI resources), so staff-only too. */}
-      {!isGuest && <Route path={NEW_EMPLOYEE_PATH} element={<Navigate to="/" replace />} />}
+      {/* New employees is a WIP page hidden from nav and search. Live keeps sending its URL to Home; dev builds render it for editing, like Voice. */}
+      {!isGuest && <Route path={NEW_EMPLOYEE_PATH} element={import.meta.env.DEV ? <NewEmployeeResources /> : <Navigate to="/" replace />} />}
       <Route path="/ai-skills" element={<Navigate to={RESOURCE_PAGE_PATHS["ai-skills"]} replace />} />
       {/* The ladder layout now lives on /foundation; keep old preview links working. */}
       <Route path="/foundation-preview" element={<Navigate to="/foundation" replace />} />

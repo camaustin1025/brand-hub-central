@@ -16,7 +16,7 @@ const ICON_LIBRARY_ITEM: HubSearchItem = {
 
 // Download pages are listed once, as assets, not also as guides.
 const ASSET_PAGE_IDS: string[] = [ICON_LIBRARY_NAV_ID, ZOOM_BACKGROUNDS_NAV_ID];
-const ZOOM_ITEM = HUB_NAV.flatMap((group) => group.items).find((item) => item.id === ZOOM_BACKGROUNDS_NAV_ID);
+const ZOOM_ITEM = HUB_NAV.flatMap((group) => group.items).find((item) => item.id === ZOOM_BACKGROUNDS_NAV_ID && isSearchableSection(item));
 
 /**
  * Where an asset result opens: its tile on a standalone page (Zoom backgrounds), its tile
@@ -28,8 +28,13 @@ function assetPath(asset: Asset): string | undefined {
   return HOME_TILE_TYPES.includes(asset.type) ? undefined : "/#" + asset.section;
 }
 
+/** Search lists what the sidebar lists: disabled and hidden (WIP) sections never come back as results. */
+export function isSearchableSection(item: HubNavItem) {
+  return !item.disabled && !item.hiddenInNav;
+}
+
 export const HUB_SEARCH_ITEMS: HubSearchItem[] = [
-  ...HUB_NAV.flatMap((group) => group.items).filter((item) => !item.disabled && !ASSET_PAGE_IDS.includes(item.id)).map((item) => ({ ...item, kind: "Guide" as const })),
+  ...HUB_NAV.flatMap((group) => group.items).filter((item) => isSearchableSection(item) && !ASSET_PAGE_IDS.includes(item.id)).map((item) => ({ ...item, kind: "Guide" as const })),
   ICON_LIBRARY_ITEM,
   ...(ZOOM_ITEM ? [{ ...ZOOM_ITEM, kind: "Asset" as const }] : []),
   ...availableAssets().map((asset) => ({
