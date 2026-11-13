@@ -70,11 +70,15 @@ export function ChapterHero({
           <div className="flex flex-col items-end gap-2">
             <CopyPageLinkButton />
           {date && (
-            <p className="inline-flex items-center gap-1.5 text-white">
+            <Link
+              to="/changelog"
+              title="See what changed"
+              className="inline-flex items-center gap-1.5 rounded text-white underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green"
+            >
               <Clock size={14} aria-hidden="true" />
               Updated{" "}
               <time dateTime={updated}>{date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time>
-            </p>
+            </Link>
           )}
           </div>
         </div>

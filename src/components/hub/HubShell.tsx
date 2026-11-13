@@ -139,15 +139,24 @@ export function Sidebar({
 
 /** Masthead date of the last commit (or build), set by vite.config.ts. Noon keeps
  *  the calendar day from shifting in the reader's time zone. */
-function LastUpdated() {
+function LastUpdated({ linked }: { linked: boolean }) {
   const date = new Date(`${__LAST_UPDATED__}T12:00:00`);
-  return (
-    <time
-      dateTime={__LAST_UPDATED__}
-      className="hidden whitespace-nowrap rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/55 xl:inline-flex"
-    >
+  const pill = "hidden whitespace-nowrap rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white/55 xl:inline-flex";
+  const label = (
+    <time dateTime={__LAST_UPDATED__}>
       Updated {date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
     </time>
+  );
+  // Staff get the change log behind the date; guests can't open it, so theirs stays plain text.
+  if (!linked) return <span className={pill}>{label}</span>;
+  return (
+    <Link
+      to="/changelog"
+      title="See what changed"
+      className={cn(pill, "transition-colors hover:border-white/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green")}
+    >
+      {label}
+    </Link>
   );
 }
 
@@ -198,7 +207,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
           <div className={cn("ml-auto hidden transition-opacity duration-200 md:block", heroSearchVisible && "invisible opacity-0")}>
             <SearchBox />
           </div>
-          <LastUpdated />
+          <LastUpdated linked={!isGuest} />
         </div>
       </header>
 
