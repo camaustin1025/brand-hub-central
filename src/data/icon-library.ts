@@ -37,7 +37,7 @@ export const ICON_TREATMENTS: { id: IconTreatment; label: string; description: s
 ];
 
 export const ICON_FORMATS: { id: IconFormat; label: string; description: string }[] = [
-  { id: "png", label: "PNG", description: "512 px, transparent. Works in Google Slides." },
+  { id: "png", label: "PNG", description: "512px with a transparent background. Works in Google Slides." },
   { id: "svg", label: "SVG", description: "Scalable. PowerPoint, Keynote, Canva, Figma." },
 ];
 

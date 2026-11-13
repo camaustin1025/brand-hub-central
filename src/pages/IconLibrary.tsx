@@ -13,7 +13,7 @@ export default function IconLibraryPage() {
         wip={isWipSection(ICON_LIBRARY_NAV_ID)}
         updated="2026-11-05"
         title="Icon library"
-        intro={`All ${ICON_COUNT} Ordergroove icons in every icon color. Pick a background, color and style, then click any icon to download it, or download a whole set as a ZIP.`}
+        intro={`All ${ICON_COUNT} Ordergroove icons. Pick a background, color, and style, then download one icon or the whole set as a ZIP.`}
         primaryAction={<HeroAction to="/#icons">How to use icons</HeroAction>}
       >
         <IconLibrary />

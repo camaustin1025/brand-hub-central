@@ -41,7 +41,7 @@ export type SwatchGroup = {
 
 export const CORE: SwatchGroup = {
   title: "Primary",
-  note: "Use #009A50 accents on light surfaces and #00FF85 on dark.\nUse Midnight for small text on light surfaces.",
+  note: "Use Green (#009A50) on light backgrounds and Groovy Green (#00FF85) on dark.\nSet small text in Midnight.",
   swatches: [
     {
       name: "Midnight",
@@ -76,7 +76,7 @@ export const CORE: SwatchGroup = {
       onDark: true,
     },
     {
-      name: "Green (light-bg)",
+      name: "Green on light",
       hex: "#009A50",
       rgb: "0, 154, 80",
       usage: "Accent on light backgrounds only",
@@ -105,7 +105,7 @@ export const SUPPORTING: SwatchGroup = {
       name: "Muted",
       hex: "#4F4A6A",
       rgb: "79, 74, 106",
-      usage: "Text tone on light",
+      usage: "Supporting text on light",
       cmyk: "25, 30, 0, 58",
       pantone: "5265 C",
       onLight: true,
@@ -115,7 +115,7 @@ export const SUPPORTING: SwatchGroup = {
       name: "Soft",
       hex: "#666279",
       rgb: "102, 98, 121",
-      usage: "Secondary text tone on light",
+      usage: "Captions and metadata on light",
       cmyk: "16, 19, 0, 53",
       pantone: "5275 C",
       onLight: true,
@@ -146,7 +146,7 @@ export const SUPPORTING: SwatchGroup = {
 
 export const SECONDARY: SwatchGroup = {
   title: "Secondary",
-  note: "Decorative pop only, never leading. Laser Lemon is never text on white.",
+  note: "Use these as small accents, never as the main color. Never set Laser Lemon text on white.",
   swatches: [
     { name: "Intense Cyan", hex: "#00FAFF", rgb: "0, 250, 255", cmyk: "100, 2, 0, 0", usage: "Decorative accent.", pantone: "311 C", onLight: false, onDark: true },
     { name: "Laser Lemon", tileNote: "Never use on white", hex: "#EAFF00", rgb: "234, 255, 0", cmyk: "8, 0, 100, 0", usage: "Decorative accent. Never text on white.", pantone: "809 C", onLight: false, onDark: true },

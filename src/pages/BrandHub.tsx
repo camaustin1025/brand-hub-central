@@ -46,21 +46,19 @@ const TYPE_HIERARCHY = [
   {
     role: "Headline",
     spec: "40 to 44px · ExtraBold 800",
-    note: "Sentence case, 60 characters or fewer",
+    note: "Sentence case",
     sample: "Make it look like Ordergroove",
     className: "text-[40px] font-extrabold leading-[1.08] tracking-tight [text-wrap:balance] md:text-[44px]",
   },
   {
     role: "Subhead",
     spec: "21px · Regular 400",
-    note: "140 characters or fewer",
     sample: "Clear words. Consistent design",
     className: "text-[21px] leading-[1.45]",
   },
   {
     role: "Body",
     spec: "15px · Regular 400",
-    note: "About four lines in display layouts",
     sample: "Write clearly. Let evidence carry the message.",
     className: "measure text-[15px] leading-[1.65]",
   },
@@ -195,7 +193,7 @@ export default function BrandHub() {
           id="color"
           eyebrow="Visual identity"
           title="Color and gradients"
-          intro="Midnight, white, and Groovy Green lead. Use one gradient per section. Select a color to copy its hex."
+          intro="Lead with Midnight, white, and Groovy Green. Select a color to copy its hex."
         >
           <ColorTiers />
           <div className="mt-10">
@@ -248,7 +246,7 @@ export default function BrandHub() {
                 <div className="text-sm leading-6">
                   <p className="font-semibold">{level.role}</p>
                   <p className="tabular-nums">{level.spec}</p>
-                  <p>{level.note}</p>
+                  {"note" in level && <p>{level.note}</p>}
                 </div>
                 <p className={level.className}>{level.sample}</p>
               </div>
@@ -263,11 +261,11 @@ export default function BrandHub() {
             </div>
             <div>
               <Heading as="h4" className="text-base font-semibold">Use Figtree only</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-foreground">Check for fallback fonts in exports.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Before you share, check that exports didn’t swap Figtree for a fallback font.</p>
             </div>
             <div>
               <Heading as="h4" className="text-base font-semibold">Keep display layouts simple</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-foreground">Use tight headline spacing and open body spacing. Match primary and secondary headline colors. Skip emoji.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Set headlines with tight line spacing and body text with open line spacing. Keep a two-color headline to brand colors. Skip emoji.</p>
             </div>
           </div>
           <LayoutExample />
@@ -297,7 +295,7 @@ export default function BrandHub() {
             </div>
             <div>
               <Heading as="h3" className="text-base font-semibold">Keep it readable</Heading>
-              <p className="measure mt-2 text-sm leading-6 text-foreground">Use plain Midnight or white backgrounds. Keep the logo crisp at its final size.</p>
+              <p className="measure mt-2 text-sm leading-6 text-foreground">Use plain Midnight or white backgrounds. Use a file large enough to stay sharp at its final size.</p>
             </div>
             <div>
               <Heading as="h3" className="text-base font-semibold">Use the original file</Heading>

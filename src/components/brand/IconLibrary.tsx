@@ -199,7 +199,7 @@ export function IconLibrary() {
         </button>
       </div>
       <p className="mt-3 text-xs leading-5 text-foreground">
-        Every ZIP has a folder per category, plus the Material Symbols license (Apache 2.0) and a notice. Icons not in this library? Use Material Symbols Rounded at weight 400, or ask Marketing.
+        Every ZIP has a folder per category, plus the Material Symbols license (Apache 2.0) and its notice file. Need an icon that isn’t here? Use Material Symbols Rounded at weight 400, or ask Marketing.
       </p>
       <div className="mt-2 min-h-5 text-sm">
         {error ? <p role="alert" className="font-semibold text-og-radish dark:text-og-flamingo">{error}</p> : <p role="status" className="text-muted-foreground">{status}</p>}

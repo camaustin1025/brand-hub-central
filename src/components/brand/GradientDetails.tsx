@@ -23,7 +23,7 @@ export function GradientDetails() {
         <div className="p-6">
           <Heading as="h4" className="text-xl font-bold">{BACKGROUND_GRADIENT.name}</Heading>
           <p className="mt-2 text-sm leading-6 text-foreground">
-            Download the PNG for backgrounds or copy the CSS for web.
+            Use one gradient per section. Download the PNG for slides and backgrounds, or copy the CSS for web.
           </p>
           <dl className="mt-5 space-y-4">
             {BACKGROUND_GRADIENT.stops.map((stop) => (
@@ -31,12 +31,12 @@ export function GradientDetails() {
                 <span aria-hidden="true" className="h-9 w-9 shrink-0 rounded-md ring-1 ring-inset ring-og-midnight/10" style={{ backgroundColor: stop.hex }} />
                 <div>
                   <dt className="text-sm font-semibold">{stop.name}</dt>
-                  <dd className="text-sm text-muted-foreground"><code>{stop.hex}</code> at {stop.position}%</dd>
+                  <dd className="text-sm text-muted-foreground"><code>{stop.hex}</code> at {Math.round(stop.position)}%</dd>
                 </div>
               </div>
             ))}
             <div className="flex flex-wrap gap-x-8 gap-y-3 border-t border-border pt-4 text-sm">
-              <div><dt className="font-semibold">Angle</dt><dd className="mt-1 text-muted-foreground">{BACKGROUND_GRADIENT.angle.toFixed(2)}° (CSS)</dd></div>
+              <div><dt className="font-semibold">Angle</dt><dd className="mt-1 text-muted-foreground">{Math.round(BACKGROUND_GRADIENT.angle)}° (CSS)</dd></div>
               <div><dt className="font-semibold">Original file</dt><dd className="mt-1 text-muted-foreground">PNG · {BACKGROUND_GRADIENT.width} × {BACKGROUND_GRADIENT.height} · 16:9</dd></div>
             </div>
           </dl>

@@ -25,7 +25,7 @@ export function LogoExamples() {
       <Heading as="h3" className="mb-5 text-xl font-bold">Match the logo to its background</Heading>
 
       <div className="grid grid-cols-1 gap-5">
-        <Example good coloredIcons note="White wordmark on Midnight; Midnight wordmark on white.">
+        <Example good coloredIcons note="Use the white wordmark on Midnight and the Midnight wordmark on white.">
           <div className="grid sm:grid-cols-2">
             <div className="flex h-24 items-center justify-center bg-og-midnight px-8"><img src={darkLogo} alt="Correct: white wordmark on Midnight" className="h-auto w-full max-w-80 object-contain" /></div>
             <div className="flex h-24 items-center justify-center bg-white px-8"><img src={lightLogo} alt="Correct: Midnight wordmark on white" className="h-auto w-full max-w-80 object-contain" /></div>
@@ -42,13 +42,13 @@ export function ColorExamples() {
       <Heading as="h3" className="mb-5 text-xl font-bold">Keep the message readable</Heading>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Example good note="Midnight text on white; Groovy Green on Midnight. Light-background green is an accent.">
+        <Example good note="Midnight text on white, Groovy Green text on Midnight. Use Green (#009A50) on white for accents only.">
           <div className="space-y-4 p-5">
             <div className="flex min-h-20 items-center gap-3 rounded-md border border-border p-4 text-sm text-og-midnight"><span className="h-8 w-2 shrink-0 rounded-full bg-[#009A50]" aria-hidden="true" />Clear words. Consistent design.</div>
             <div className="flex min-h-20 items-center rounded-md bg-og-midnight p-4 text-sm text-[#00FF85]">Clear words. Consistent design.</div>
           </div>
         </Example>
-        <Example good={false} note="Avoid neon green on white and small white text on green.">
+        <Example good={false} note="Avoid Groovy Green on white and small white text on green.">
           <div className="space-y-4 p-5" aria-label="Incorrect color combinations, shown for comparison">
             <div className="flex min-h-20 items-center rounded-md border border-border p-4 text-sm text-[#00FF85]">Clear words. Consistent design.</div>
             <div className="flex min-h-20 items-center rounded-md bg-[#009A50] p-4 text-sm text-white">Clear words. Consistent design.</div>
@@ -75,7 +75,7 @@ export function LayoutExample() {
             <img src={BACKGROUND_GRADIENT.image} alt="" className="mt-6 h-9 w-full rounded-md object-cover" />
           </div>
         </Example>
-        <Example good={false} note="Competing text and a busy background obscure the reading order.">
+        <Example good={false} note="Competing text and a busy background make it hard to tell what to read first.">
           <div className="flex min-h-72 items-center p-3" style={{ backgroundImage: `url(${BACKGROUND_GRADIENT.image})`, backgroundSize: "cover" }}>
             <div className="w-full text-center text-xl font-bold leading-tight text-og-midnight">
               <p>ORDERGROOVE BRAND HUB</p><p>Make your work look and sound like Ordergroove</p><p>Brand assets and guidance</p>

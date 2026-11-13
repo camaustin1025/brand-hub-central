@@ -18,8 +18,7 @@ function trailFor(navId: string | undefined, title: string): Crumb[] {
 
 /**
  * Page frame for a standalone brand chapter: a Midnight ChapterHero (breadcrumb, updated
- * date, title, intro, actions), the content on the hub's 1060px column, then a footer
- * naming the page's owner.
+ * date, title, intro, actions), then the content on the hub's 1060px column. The site footer names the owner.
  */
 export function ChapterPage({
   navId,
@@ -28,7 +27,6 @@ export function ChapterPage({
   intro,
   wip,
   updated,
-  owner = "Brand & Content",
   primaryAction,
   heroFooter,
   width = "wide",
@@ -43,7 +41,6 @@ export function ChapterPage({
   wip?: boolean;
   /** ISO date (YYYY-MM-DD) this page's content last changed. */
   updated?: string;
-  owner?: string;
   /** One HeroAction for the thing most visitors came for. Copy link is always present. */
   primaryAction?: ReactNode;
   /** Optional block at the foot of the hero. */
@@ -78,9 +75,6 @@ export function ChapterPage({
       <div className="px-6 pb-16 pt-12 md:px-10 md:pb-20 md:pt-14">
         <div className={cn("mx-auto max-w-[1060px]", width === "reading" && "[&>*]:max-w-[57rem]")}>{children}</div>
       </div>
-      <footer className="border-t border-border px-6 py-8 md:px-10">
-        <p className="mx-auto max-w-[1060px] text-sm font-semibold">Owned by {owner}</p>
-      </footer>
     </>
   );
 }
