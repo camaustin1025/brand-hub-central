@@ -202,7 +202,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
             <img src="/logo-dark.png" alt="Ordergroove" className="h-12 w-auto md:h-14" />
           </Link>
           <span className="hidden h-6 w-px bg-white/20 sm:block" />
-          <span className="hidden truncate text-sm text-white/62 sm:block">Brand Hub · Internal reference</span>
+          <span className="hidden truncate text-sm text-white/62 sm:block">Brand Hub</span>
           {/* One search on screen at a time: hide this one while the Home hero search is visible. */}
           <div className={cn("ml-auto hidden transition-opacity duration-200 md:block", heroSearchVisible && "invisible opacity-0")}>
             <SearchBox />
