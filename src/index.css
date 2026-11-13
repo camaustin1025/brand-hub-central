@@ -336,3 +336,32 @@ html[data-guest] section[aria-labelledby="nav-employee-resources"] {
 .heading-copy-status { position: absolute; bottom: 100%; right: 0; width: max-content; max-width: 200px; padding: 5px 8px; border-radius: 4px; background: #131126; color: white; font: 500 12px/1.4 sans-serif; letter-spacing: normal; }
 @media (hover: none) { .heading-copy-link { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .heading-copy-link { transition: none; } }
+
+/* Mission & values (Working at OG): one Midnight panel. The mission is display-size
+   so it leads; the values are still, white statements on faint rules below it.
+   Sized by the panel's own width, since the rail takes 284px from lg up. */
+.mission-panel { padding: 24px; border-radius: 8px; background: theme('colors.og.midnight'); color: #fff; container-type: inline-size; }
+@media (min-width: 640px) { .mission-panel { padding: 48px; } }
+.mission-panel .eyebrow { color: theme('colors.og.green.DEFAULT'); }
+/* Display role up to 56px with the panel's width; 32px floor (the phone headline size) so "relationships" fits a phone. */
+.mission-statement { margin-top: 12px; max-width: 24ch; font-size: clamp(2rem, 6cqi, 3.5rem); line-height: 1.04; font-weight: 800; letter-spacing: -0.03em; text-wrap: balance; }
+.mission-values-label { margin-top: 56px; padding-bottom: 12px; font-size: 11px; line-height: 1.45; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(255 255 255 / 0.7); border-bottom: 1px solid rgb(255 255 255 / 0.24); }
+.value-row { display: grid; gap: 12px; padding: 24px 0; }
+/* The icon sits beside its title, centered on the title whether it runs one line or two. */
+.value-head { display: flex; align-items: center; gap: 16px; }
+.value-icon { display: block; flex-shrink: 0; }
+.value-row + .value-row { border-top: 1px solid rgb(255 255 255 / 0.12); }
+.value-row:last-child { padding-bottom: 0; }
+.value-title { font-size: 1.5rem; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; color: #fff; }
+/* One sentence per line; a lone long sentence splits into two even lines. A touch more
+   leading than light-surface body copy, since white on Midnight reads tighter. */
+.value-body { max-width: var(--measure); font-size: 1rem; line-height: 1.7; text-wrap: pretty; color: #fff; }
+.value-body > span { display: block; }
+@container (min-width: 44rem) {
+  /* Head and sentences share the row's center line, so one- and two-line titles both sit level. */
+  .value-row { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); column-gap: 56px; align-items: center; padding: 28px 0; }
+  .value-head { gap: 24px; }
+  .value-title { font-size: 1.75rem; }
+  /* Side by side, each sentence fits one line; balance evens the one long sentence into two. */
+  .value-body { text-wrap: balance; }
+}

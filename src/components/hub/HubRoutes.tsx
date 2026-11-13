@@ -11,11 +11,12 @@ import HeroLab from "@/pages/HeroLab";
 import LayoutLab from "@/pages/LayoutLab";
 import ButtonLab from "@/pages/ButtonLab";
 import ZoomBackgrounds from "@/pages/ZoomBackgrounds";
+import WorkingAtOG from "@/pages/WorkingAtOG";
 import { employeeSectionId } from "@/data/employee-launch";
 import AdminGuests from "@/pages/AdminGuests";
 import { useAccess } from "@/hooks/use-access";
 import { ASSETS, assetAnchor } from "@/data/assets";
-import { DESIGN_CANVAS_PATH, isDisabledSection, designCanvasTemplatePath, ICON_LIBRARY_PATH, NEW_EMPLOYEE_PATH, RESOURCE_PAGE_PATHS, sectionPagePath, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
+import { DESIGN_CANVAS_PATH, EMPLOYEE_RESOURCES_PATH, isDisabledSection, designCanvasTemplatePath, ICON_LIBRARY_PATH, NEW_EMPLOYEE_PATH, RESOURCE_PAGE_PATHS, sectionPagePath, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
 
 const SocialCustomizer = lazy(() => import("@/pages/SocialCustomizer"));
 
@@ -63,7 +64,8 @@ export function HubRoutes() {
     <Routes>
       {access === "admin" && <Route path="/admin/guests" element={<AdminGuests />} />}
       <Route path="/" element={<HomeRoute />} />
-      {!isGuest && <Route path="/employee-resources" element={<Navigate to="/" replace />} />}
+      {/* People and benefits info is internal, so staff-only. */}
+      {!isGuest && <Route path={EMPLOYEE_RESOURCES_PATH} element={<WorkingAtOG />} />}
       {!isGuest && <Route path="/team-culture" element={<Navigate to="/" replace />} />}
       <Route path="/changelog" element={<Changelog />} />
       <Route path="/foundation" element={<Foundation />} />

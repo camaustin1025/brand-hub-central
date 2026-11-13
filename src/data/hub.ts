@@ -49,6 +49,9 @@ export const ICON_LIBRARY_NAV_ID = "icon-library";
 export const NEW_EMPLOYEE_PATH = "/new-employee-resources";
 export const NEW_EMPLOYEE_NAV_ID = "new-employee-resources";
 
+export const EMPLOYEE_RESOURCES_PATH = "/employee-resources";
+export const EMPLOYEE_RESOURCES_NAV_ID = "employee-resources";
+
 export const ZOOM_BACKGROUNDS_PATH = "/zoom-backgrounds";
 export const ZOOM_BACKGROUNDS_NAV_ID = "zoom-backgrounds";
 
@@ -182,13 +185,11 @@ const DRAFT_HUB_NAV: HubNavGroup[] = [
     label: "Working at OG",
     items: [
       {
-        id: "employee-resources",
-        wip: true,
-        disabled: true,
-        path: "/employee-resources",
+        id: EMPLOYEE_RESOURCES_NAV_ID,
+        path: EMPLOYEE_RESOURCES_PATH,
         label: "Employee resources",
-        description: "People tools, benefits, time off, learning and growth.",
-        keywords: "rippling benefits payroll holidays time off learning growth reviews training insperity",
+        description: "Mission and values, 2026 company holidays, Rippling, and perks & benefits.",
+        keywords: "mission values holidays holiday calendar time off pto refresh week rippling hris benefits perks insperity health fsa insurance calm boon parental leave adoption 401k retirement productivity allowance relationship commerce allowance ramp",
       },
       {
         id: "team-culture",
