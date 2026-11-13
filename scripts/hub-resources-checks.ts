@@ -4,9 +4,7 @@ import path from "node:path";
 import { ASSETS, availableAssets, assetAnchor, getAsset, getAssetFile, isAssetAvailable } from "../src/data/assets";
 import { HUB_SEARCH_ITEMS, searchHub } from "../src/lib/hub-search";
 import { HUB_NAV } from "../src/data/hub";
-import { AI_DIRECTORY, RESOURCE_TYPES, WORKFLOWS, countByType, filterResources, groupResources } from "../src/data/ai-directory";
-import { OG_AI_CHANNEL } from "../src/data/ai-resources";
-import { ACCESS, FOLDERS, KINDS, PLATFORMS, accessOf, actionOf, blocksFor, filterFacets, kindOf, platformOf, rowAnchor } from "../src/components/brand/ai-directory-options/model";
+import { AI_DIRECTORY, CATEGORIES, RESOURCE_TYPES, WORKFLOWS, countByType, filterResources, groupResources } from "../src/data/ai-directory";
 
 const available = availableAssets();
 assert.equal(new Set(ASSETS.map((asset) => asset.id)).size, ASSETS.length);
@@ -88,37 +86,20 @@ console.log("PASS: homepage asset references resolve and Zoom collection has six
 }
 console.log("PASS: AI resources group by type, roll SBR into one workflow row, and scope the team filter to skills");
 
-// AI resources layout options (Library and Filtered table): unfiltered, their rows hold every resource once,
-// every row keeps a working link, and every folder or facet adds back up to the whole directory.
+// AI resources category card: "All" holds the whole directory, the type categories add back up to it,
+// the team categories add up to every skill, and every skill row links straight to its skill page.
 {
-  const rows = blocksFor(AI_DIRECTORY).flat();
-  const resources = rows.flatMap((row) => (row.kind === "resource" ? [row.resource] : []));
-  assert.deepEqual(resources.map((r) => r.id).sort(), AI_DIRECTORY.map((r) => r.id).sort(), "Options show every AI resource exactly once");
-  assert.equal(new Set(rows.map(rowAnchor)).size, rows.length, "Option rows have unique anchors");
-  for (const r of AI_DIRECTORY) {
-    const action = actionOf(r);
-    assert.equal(action.href, r.url ?? OG_AI_CHANNEL.url, "Option row lost its link: " + r.id);
-    assert(KINDS.includes(kindOf(r)) && PLATFORMS.includes(platformOf(r)) && ACCESS.includes(accessOf(r)), "Option row has no facet value: " + r.id);
+  const count = (id: string) => { const c = CATEGORIES.find((x) => x.id === id)!; return filterResources(AI_DIRECTORY, "", c.type, c.team).length; };
+  assert.equal(count("all"), AI_DIRECTORY.length);
+  assert.equal(CATEGORIES.filter((c) => c.type && !c.team).reduce((sum, c) => sum + count(c.id), 0), AI_DIRECTORY.length, "Type categories cover the directory");
+  assert.equal(CATEGORIES.filter((c) => c.nested).reduce((sum, c) => sum + count(c.id), 0), count("skills"), "Team categories cover every skill");
+  for (const r of AI_DIRECTORY.filter((x) => x.type === "Skills" && x.source !== "Org plugin")) {
+    assert(r.url?.startsWith("https://claude.ai/customize/skills/id/plugin_") && !r.catalog, "Skill should link straight to its page: " + r.id);
   }
-  for (const w of WORKFLOWS) {
-    const steps = rows.flatMap((row) => (row.kind === "resource" && row.workflow ? [row] : []));
-    assert.deepEqual(steps.map((row) => row.resource.id), w.steps, "Option workflow steps out of order: " + w.id);
-    assert.deepEqual(steps.map((row) => row.step), w.steps.map((_, i) => i + 1));
-  }
-  const folderCount = (id: string) => { const f = FOLDERS.find((x) => x.id === id)!; return filterResources(AI_DIRECTORY, "", f.type, f.team).length; };
-  assert.equal(folderCount("all"), AI_DIRECTORY.length);
-  assert.equal(FOLDERS.filter((f) => f.type && !f.team && f.id !== "all").reduce((sum, f) => sum + folderCount(f.id), 0), AI_DIRECTORY.length, "Type folders cover the directory");
-  assert.equal(FOLDERS.filter((f) => f.nested).reduce((sum, f) => sum + folderCount(f.id), 0), folderCount("skills"), "Team folders cover every skill");
-  const none = { query: "", type: "", team: "", platform: "", access: "" };
-  assert.equal(filterFacets(none).length, AI_DIRECTORY.length);
-  assert.equal(PLATFORMS.reduce((sum, platform) => sum + filterFacets({ ...none, platform }).length, 0), AI_DIRECTORY.length, "Platform chip covers the directory");
-  assert.equal(ACCESS.reduce((sum, access) => sum + filterFacets({ ...none, access }).length, 0), AI_DIRECTORY.length, "Access chip covers the directory");
-  // Production renders only DIRECTORY_LAYOUT; the option code and the switcher load behind the dev gate.
   const page = fs.readFileSync("src/components/brand/AiResources.tsx", "utf8");
-  assert(page.includes("const LayoutSwitcher = import.meta.env.DEV ?"), "Layout switcher must stay dev-only");
-  assert(page.includes("if (!import.meta.env.DEV) return DIRECTORY_LAYOUT;"), "?layout= must only work in dev");
+  assert(page.includes("<AiCategoriesDirectory />") && !page.includes("ai-directory-options"), "AI Resources renders the category directory, with no layout options left");
 }
-console.log("PASS: AI resources layout options keep every resource, link and workflow step, and stay behind the dev gate");
+console.log("PASS: AI resources categories cover the directory and every skill links to its page");
 
 // Hidden WIP pages (Team & culture, New employees): their nav data stays, but the sidebar, search and Home never offer them.
 {

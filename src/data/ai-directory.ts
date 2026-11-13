@@ -17,6 +17,15 @@ export const AI_DIRECTORY: AiResource[] = [
   { id: 'offer-builder', title: 'Offer Builder one-pager', body: 'Ordergroove Offer Builder Skill reference on the shared drive.', type: 'Assets' as const, url: OFFER_BUILDER_ONE_PAGER.url, source: 'Shared drive' },
   ...SLACK_CHANNELS.map(r => ({ id: r.label, title: r.label, body: r.body, type: 'Help & channels' as const, url: r.url, source: 'Slack' })),
 ].sort((a, b) => a.title.localeCompare(b.title));
+/** The category card: everything, each type, and the skill teams nested under Skills. */
+export type Category = { id: string; label: string; type: ResourceType | ''; team: string; nested?: boolean };
+export const CATEGORIES: Category[] = [
+  { id: 'all', label: 'All resources', type: '', team: '' },
+  ...RESOURCE_TYPES.flatMap((type): Category[] => type === 'Skills'
+    ? [{ id: 'skills', label: 'Skills', type, team: '' }, ...SKILL_GROUPS.map(g => ({ id: `skills-${g.id}`, label: g.label, type, team: g.label, nested: true }))]
+    : [{ id: type.toLowerCase().replace(/[^a-z]+/g, '-'), label: type, type, team: '' }]),
+];
+
 /** Team narrows skills only. Guides, assets, and channels belong to everyone, so they stay visible. */
 export function filterResources(resources: AiResource[], query: string, type: string, team: string) {
   const words = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);

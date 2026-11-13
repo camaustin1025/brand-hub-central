@@ -1,26 +1,25 @@
 /**
- * Option C, "Categories" (2026-11-13, after the 9:05 critique). The current directory with Option A's
- * category card beside it once the pane is wide enough: search stays first and full width, groups and
- * folds stay, every row keeps its platform icon, and the type chips and team pill give way to the card
- * (they come back when the pane narrows and on phones).
- * 9:45 round: the chosen category carries the rail's highlighter; descriptions are 13px across the list
- * column so most fit one line, with Details at the end of the description; a #link's row title is
- * highlighted the same way.
+ * The AI Resources directory (promoted 2026-11-13 from the "Categories" review option): the grouped list
+ * with a category card beside it once the pane is wide enough. Search stays first and full width, groups
+ * and phone folds stay, every row keeps its platform icon, and the type chips and team pill give way to
+ * the card (they come back when the pane narrows and on phones). The chosen category carries the rail's
+ * highlighter; descriptions are 13px across the list column so most fit one line, with Details at the end
+ * of the description; a #link's row title is highlighted the same way.
  */
 import { useEffect } from 'react';
 import { LayoutGrid, type LucideIcon } from 'lucide-react';
 import { AI_DIRECTORY, filterResources } from '@/data/ai-directory';
 import { cn } from '@/lib/utils';
-import { DirectoryGroups, DirectoryStatus, DirectoryToolbar, TYPE_ICONS, useDirectoryFilters, type RowStyle } from '../AiDirectoryList';
-import { FOLDERS, type Folder } from './model';
-import c from './Categories.module.css';
+import { CATEGORIES, type Category } from '@/data/ai-directory';
+import { DirectoryGroups, DirectoryStatus, DirectoryToolbar, TYPE_ICONS, useDirectoryFilters, type RowStyle } from './AiDirectoryList';
+import c from './AiCategories.module.css';
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = { '': LayoutGrid, ...TYPE_ICONS };
 const ROW_STYLE: RowStyle = { description: c.description, inlineDetails: c.inlineDetails, markLinked: true };
 
 /**
- * This option loads after the page, so the browser's own jump to a #row link has already missed.
- * Once the rows exist, land on the linked one (its title carries the highlighter, via ROW_STYLE).
+ * Land on a #row link once the rows exist (a phone fold or a workflow may have opened to reveal it, after
+ * the browser's own jump). The row's title carries the highlighter, via ROW_STYLE.
  */
 function useLandOnLinkedRow() {
   useEffect(() => {
@@ -32,12 +31,12 @@ function useLandOnLinkedRow() {
   }, []);
 }
 
-export default function CategoriesDirectory() {
+export function AiCategoriesDirectory() {
   const f = useDirectoryFilters();
   useLandOnLinkedRow();
-  const current = FOLDERS.find(x => x.type === f.type && x.team === f.team);
+  const current = CATEGORIES.find(x => x.type === f.type && x.team === f.team);
   // Each count applies the search, so the card says what every category holds for this query.
-  const countFor = (x: Folder) => filterResources(AI_DIRECTORY, f.query, x.type, x.team).length;
+  const countFor = (x: Category) => filterResources(AI_DIRECTORY, f.query, x.type, x.team).length;
 
   return <section aria-label="AI resource directory" id="ai-skills-library" className={cn(c.root, 'scroll-mt-24')}>
     <DirectoryToolbar f={f} filterRowClassName={c.filtersBesideCard} />
@@ -45,7 +44,7 @@ export default function CategoriesDirectory() {
       <div className={c.card} role="group" aria-labelledby="directory-categories-label">
         <p id="directory-categories-label" className={c.cardLabel}>Categories</p>
         <ul className={c.categoryList}>
-          {FOLDERS.map(x => {
+          {CATEGORIES.map(x => {
             const Icon = x.nested ? null : CATEGORY_ICONS[x.type];
             const chosen = current?.id === x.id;
             return <li key={x.id}>

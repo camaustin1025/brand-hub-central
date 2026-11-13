@@ -1,56 +1,19 @@
 import { Heading } from "@/components/layout/Heading";
-import { Suspense, lazy, type ComponentType, type LazyExoticComponent } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 import { APPROVAL_STEPS, APPROVAL_CRITERIA, APPROVAL_DECISIONS, APPROVED_CONNECTORS, SECURITY_GUIDELINES, SECURITY_CHANNEL, INFOSEC_CHANNEL, SHARING_RULES } from '@/data/ai-resources';
 import { cn } from '@/lib/utils';
-import { DIRECTORY_LAYOUT, DIRECTORY_LAYOUTS, type DirectoryLayout } from './ai-directory-layout';
-import { DirectoryGroups, DirectoryStatus, DirectoryToolbar, External, useDirectoryFilters } from './AiDirectoryList';
+import { AiCategoriesDirectory } from './AiCategoriesDirectory';
+import { External } from './AiDirectoryList';
 import s from './AiResources.module.css';
 
-/*
- * Layout review (2026-11-13): Options A (library), B (filtered table) and C (categories: the current
- * list with A's category card) load only in dev, or once DIRECTORY_LAYOUT promotes one, so production
- * ships the current directory and nothing else.
- */
-const OPTIONS_ENABLED = import.meta.env.DEV || DIRECTORY_LAYOUT !== 'current';
-const OPTION_DIRECTORIES: Partial<Record<DirectoryLayout, LazyExoticComponent<ComponentType>>> = OPTIONS_ENABLED
-  ? {
-      library: lazy(() => import('./ai-directory-options/LibraryDirectory')),
-      table: lazy(() => import('./ai-directory-options/TableDirectory')),
-      categories: lazy(() => import('./ai-directory-options/CategoriesDirectory')),
-    }
-  : {};
-const LayoutSwitcher = import.meta.env.DEV ? lazy(() => import('./ai-directory-options/LayoutSwitcher')) : null;
-
-function useDirectoryLayout(): DirectoryLayout {
-  const [params] = useSearchParams();
-  if (!import.meta.env.DEV) return DIRECTORY_LAYOUT;
-  const requested = params.get('layout') as DirectoryLayout | null;
-  return requested && DIRECTORY_LAYOUTS.includes(requested) ? requested : DIRECTORY_LAYOUT;
-}
-
 export function AiResources() {
-  const layout = useDirectoryLayout();
-  const Option = OPTION_DIRECTORIES[layout];
   return <div className="ai-directory [container-type:inline-size]">
-    {Option ? <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}><Option /></Suspense> : <CurrentDirectory />}
+    <AiCategoriesDirectory />
     <AiPolicySections />
-    {LayoutSwitcher && <Suspense fallback={null}><LayoutSwitcher layout={layout} /></Suspense>}
   </div>;
 }
 
-/** The shipped directory: grouped lists with type chips and the team filter. */
-function CurrentDirectory() {
-  const f = useDirectoryFilters();
-  return <section aria-label="AI resource directory" id="ai-skills-library" className="scroll-mt-24">
-    <DirectoryToolbar f={f} />
-    <DirectoryStatus f={f} />
-    <DirectoryGroups f={f} />
-  </section>;
-}
-
-/** What you can share and Get a new tool approved: the same under every directory layout. */
+/** What you can share and Get a new tool approved, under the directory. */
 function AiPolicySections() {
   return <>
     <section id="ai-sharing" className={cn('dark', s.panel)} aria-labelledby="what-you-can-share">

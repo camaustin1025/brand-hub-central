@@ -1,7 +1,7 @@
 /**
  * The AI Resources directory's building blocks: URL-backed filters, the search and filter toolbar,
- * the result count, and the grouped resource lists. The shipped directory (AiResources) and the
- * Categories review option compose the same pieces, so a row renders the same way in both.
+ * the result count, and the grouped resource lists. AiCategoriesDirectory composes them with the
+ * category card.
  */
 import { Heading } from "@/components/layout/Heading";
 import { useEffect, useState, type ReactNode } from 'react';
@@ -34,7 +34,7 @@ function PlatformIcon({ resource: r }: { resource: AiResource }) {
 }
 
 /**
- * Optional row styling for a review layout. The shipped list passes none and renders exactly as before.
+ * Optional row styling, set by the directory that composes these rows.
  * description: a class added to each description. inlineDetails: a class for a Details toggle that sits
  * at the end of the description instead of under the row's link. markLinked: the row a #link points at
  * carries the rail's highlighter on its title.
