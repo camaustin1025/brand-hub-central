@@ -361,11 +361,13 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
           >
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>}
-          <Link to="/" className="flex shrink-0 items-center" aria-label="Ordergroove brand hub home">
+          {/* The launch video's lockup: "Brand Hub" in Figtree Bold at about a quarter of the wordmark's width.
+              The logo PNG carries ~21px of transparent padding on the right, so the negative margin pulls the divider in. */}
+          <Link to="/" className="flex shrink-0 items-center sm:-mr-[22px] md:-mr-6" aria-label="Ordergroove brand hub home">
             <img src="/logo-dark.png" alt="Ordergroove" className="h-12 w-auto md:h-14" />
           </Link>
-          <span className="hidden h-6 w-px bg-white/20 sm:block" />
-          <span className="hidden truncate text-sm text-white/62 sm:block">Brand Hub</span>
+          <span className="hidden h-[22px] w-px bg-white/30 sm:block md:h-[26px]" />
+          <span className="-ml-1.5 hidden truncate text-[24px] font-bold leading-none tracking-[-0.025em] text-white sm:block md:text-[28px]">Brand Hub</span>
           {/* One search on screen at a time: hide this one while the Home hero search is visible. */}
           <div className={cn("ml-auto hidden transition-opacity duration-200 md:block", heroSearchVisible && "invisible opacity-0")}>
             <SearchBox />

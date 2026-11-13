@@ -423,11 +423,11 @@ console.log("PASS: text layout keeps typed spacing between words and drops it at
     assert.deepEqual(validateSocialTemplates([template], SOCIAL_ASSETS), [], template.id);
     assert.deepEqual(template.fields.map(field => [field.key, field.required]), [["name", true], ["jobTitle", true], ["quarter", true], ["award", true]]);
     assert.deepEqual(emptySocialFields(template, "Local Preview"), { name: "", jobTitle: "", quarter: "Q4 2026", award: "Groovy Award Winner" }, "no Google prefill: the winner may not be the editor");
-    assert.deepEqual(template.sample, { photoAssetId: "groovy-award-sample-portrait", fields: { name: "Jordan Avery", jobTitle: "Senior Account Manager" } }, "fictional sample only");
+    assert.deepEqual(template.sample, { photoAssetId: "groovy-award-sample-portrait", fields: { name: "Groovy Guy", jobTitle: "Senior Account Manager" } }, "fictional sample only");
     assert.ok(template.lockedLayers[0].belowPhoto && !template.lockedLayers[1].belowPhoto, "gradient backdrop under the photo, artwork over it");
     assert.ok(template.photo?.required && template.photo.opaqueClip, "photo required, with a panel for opaque photos");
     assert.ok(/node-id=80-(617|837|1055|1122)$/.test(template.sourceUrl));
-    assert.equal(socialDownloadFilename(template, { name: "Jordan Avery", quarter: "Q4 2026" }), `ordergroove-${template.id}-Jordan-Avery.png`, "file name uses the winner's name");
+    assert.equal(socialDownloadFilename(template, { name: "Groovy Guy", quarter: "Q4 2026" }), `ordergroove-${template.id}-Groovy-Guy.png`, "file name uses the winner's name");
   }
   const [landscape] = groovy;
   const cutout = socialPhotoFrame(landscape.photo!, { hasTransparency: true });
@@ -489,12 +489,12 @@ console.log("PASS: 4 Groovy Award designs with fictional samples, cut-out and op
     assert.deepEqual(Object.keys(errors).sort(), ["jobTitle", "name"], "sample values still block download");
     // The last drawImage copies the detached surface to the target canvas.
     assert.deepEqual(ops.filter(op => op.startsWith("image:groovy")), ["image:groovy-award-midnight-tag-landscape-backdrop", "image:groovy-award-sample-portrait", "image:groovy-award-midnight-tag-landscape"]);
-    assert.deepEqual(texts.slice(0, 3).map(item => item.text), ["Jordan Avery", "Senior Account Manager", "Q4 2026"], "sample text drawn, quarter uppercased");
+    assert.deepEqual(texts.slice(0, 3).map(item => item.text), ["Groovy Guy", "Senior Account Manager", "Q4 2026"], "sample text drawn, quarter uppercased");
     assert.equal(texts.slice(3).map(item => item.text).join(" "), "Groovy Award Winner");
     assert.equal(texts[0].spacing, `${-0.01 * 35}px`, "name tracking follows Figma's -1%");
     ops.length = 0; texts.length = 0;
     drawSocialGraphic(canvas(), template, inputs({}), resources, null);
-    assert.ok(!ops.includes("image:groovy-award-sample-portrait") && !texts.some(item => item.text === "Jordan Avery"), "export path never draws the sample");
+    assert.ok(!ops.includes("image:groovy-award-sample-portrait") && !texts.some(item => item.text === "Groovy Guy"), "export path never draws the sample");
     assert.ok(ops.includes("roundRect"), "the empty placeholder takes the rounded panel");
     texts.length = 0;
     drawSocialGraphic(canvas(), template, inputs({ name: "Sam Lee", jobTitle: "Engineer" }), resources, null);

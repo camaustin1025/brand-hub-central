@@ -107,10 +107,10 @@ export const SOCIAL_FONT_FILES = {
 
 /* Groovy Awards: 4 options from Figma "Groovy Award" (section 80:580). Artwork is rebuilt from the
  * Figma logo, trophy and sparkle vectors; no photo or text is baked in. The sample below is fictional
- * and the portrait is a stock model, not an Ordergroove employee or award winner. */
+ * and the portrait is a generated image of no real person, not an Ordergroove employee or award winner. */
 const GROOVY_AWARD_SAMPLE: NonNullable<SocialTemplate["sample"]> = {
   photoAssetId: "groovy-award-sample-portrait",
-  fields: { name: "Jordan Avery", jobTitle: "Senior Account Manager" }, // Fictional sample text
+  fields: { name: "Groovy Guy", jobTitle: "Senior Account Manager" }, // Fictional sample text
 };
 const GROOVY_AWARD_META = {
   version: 1,
@@ -147,7 +147,7 @@ export const GROOVY_AWARD_TEMPLATES: SocialTemplate[] = [
       { id: "nameCard", x: 462.1, y: 433.68, width: 241.2, height: 103.95, gap: 3.97, verticalAlign: "center" },
     ],
     fields: [
-      { key: "name", type: "text", label: "Name", required: true, placeholder: "Jordan Avery", stack: "nameCard", x: 462.1, y: 433.68, width: 241.2, height: 55.18, fontFamily: "Figtree", fontWeight: 700, minFontSize: 20, maxFontSize: 35, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01 },
+      { key: "name", type: "text", label: "Name", required: true, placeholder: "Groovy Guy", stack: "nameCard", x: 462.1, y: 433.68, width: 241.2, height: 55.18, fontFamily: "Figtree", fontWeight: 700, minFontSize: 20, maxFontSize: 35, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01 },
       { key: "jobTitle", type: "text", label: "Job title", required: true, placeholder: "Senior Account Manager", stack: "nameCard", x: 463.1, y: 433.68, width: 240.2, height: 44.8, fontFamily: "Figtree", fontWeight: 500, minFontSize: 13, maxFontSize: 18, lineHeight: 1.4, maxLines: 2 },
       { key: "quarter", type: "text", label: "Quarter", required: true, defaultValue: "Q4 2026", stack: "headline", x: 58.13, y: 159.57, width: 698, height: 34, fontFamily: "Figtree", fontWeight: 700, minFontSize: 20, maxFontSize: 30.72, lineHeight: 1.104, maxLines: 1, textTransform: "uppercase" },
       { key: "award", type: "text", label: "Award", required: true, defaultValue: "Groovy Award Winner", stack: "headline", x: 56.13, y: 159.57, width: 700, height: 154, fontFamily: "Figtree", fontWeight: 700, minFontSize: 36, maxFontSize: 66.852, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01 },
@@ -174,7 +174,7 @@ export const GROOVY_AWARD_TEMPLATES: SocialTemplate[] = [
       { id: "nameCard", x: 461.58, y: 433.68, width: 241.79, height: 103.95, gap: 3.97, verticalAlign: "center" },
     ],
     fields: [
-      { key: "name", type: "text", label: "Name", required: true, placeholder: "Jordan Avery", stack: "nameCard", x: 461.58, y: 433.68, width: 241.79, height: 55.18, fontFamily: "Figtree", fontWeight: 700, minFontSize: 20, maxFontSize: 35, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01, color: "#FFFFFF" },
+      { key: "name", type: "text", label: "Name", required: true, placeholder: "Groovy Guy", stack: "nameCard", x: 461.58, y: 433.68, width: 241.79, height: 55.18, fontFamily: "Figtree", fontWeight: 700, minFontSize: 20, maxFontSize: 35, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01, color: "#FFFFFF" },
       { key: "jobTitle", type: "text", label: "Job title", required: true, placeholder: "Senior Account Manager", stack: "nameCard", x: 462.58, y: 433.68, width: 240.79, height: 44.8, fontFamily: "Figtree", fontWeight: 500, minFontSize: 13, maxFontSize: 18, lineHeight: 1.4, maxLines: 2, color: "#FFFFFF" },
       { key: "quarter", type: "text", label: "Quarter", required: true, defaultValue: "Q4 2026", stack: "headline", x: 58.13, y: 132.03, width: 466.9, height: 34, fontFamily: "Figtree", fontWeight: 700, minFontSize: 20, maxFontSize: 30.72, lineHeight: 1.104, maxLines: 1, textTransform: "uppercase", color: "#009A50" },
       { key: "award", type: "text", label: "Award", required: true, defaultValue: "Groovy Award Winner", stack: "headline", x: 56.13, y: 132.03, width: 468.9, height: 207, fontFamily: "Figtree", fontWeight: 700, minFontSize: 36, maxFontSize: 66.852, lineHeight: 1.15, maxLines: 3, letterSpacing: -0.01 },
@@ -201,7 +201,7 @@ export const GROOVY_AWARD_TEMPLATES: SocialTemplate[] = [
       { id: "nameCard", x: 84.95, y: 588.28, width: 234.56, height: 86.94, gap: 4.8, verticalAlign: "top" },
     ],
     fields: [
-      { key: "name", type: "text", label: "Name", required: true, placeholder: "Jordan Avery", stack: "nameCard", x: 84.95, y: 588.28, width: 234.56, height: 41.4, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 36, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01 },
+      { key: "name", type: "text", label: "Name", required: true, placeholder: "Groovy Guy", stack: "nameCard", x: 84.95, y: 588.28, width: 234.56, height: 41.4, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 36, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01 },
       { key: "jobTitle", type: "text", label: "Job title", required: true, placeholder: "Senior Account Manager", stack: "nameCard", x: 86.95, y: 588.28, width: 232.56, height: 40.74, fontFamily: "Figtree", fontWeight: 500, minFontSize: 13, maxFontSize: 18, lineHeight: 1.4, maxLines: 2 },
       { key: "quarter", type: "text", label: "Quarter", required: true, defaultValue: "Q4 2026", stack: "headline", x: 58.3, y: 108, width: 685.57, height: 28.3, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 25.6, lineHeight: 1.104, maxLines: 1, textTransform: "uppercase" },
       { key: "award", type: "text", label: "Award", required: true, defaultValue: "Groovy Award Winner", stack: "headline", x: 56.13, y: 108, width: 687.74, height: 88.32, fontFamily: "Figtree", fontWeight: 700, minFontSize: 32, maxFontSize: 66.852, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01 },
@@ -228,7 +228,7 @@ export const GROOVY_AWARD_TEMPLATES: SocialTemplate[] = [
       { id: "nameCard", x: 84.95, y: 608.17, width: 234.56, height: 86.94, gap: 4.8, verticalAlign: "top" },
     ],
     fields: [
-      { key: "name", type: "text", label: "Name", required: true, placeholder: "Jordan Avery", stack: "nameCard", x: 84.95, y: 608.17, width: 234.56, height: 41.4, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 36, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01, color: "#FFFFFF" },
+      { key: "name", type: "text", label: "Name", required: true, placeholder: "Groovy Guy", stack: "nameCard", x: 84.95, y: 608.17, width: 234.56, height: 41.4, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 36, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01, color: "#FFFFFF" },
       { key: "jobTitle", type: "text", label: "Job title", required: true, placeholder: "Senior Account Manager", stack: "nameCard", x: 86.95, y: 608.17, width: 232.56, height: 40.74, fontFamily: "Figtree", fontWeight: 500, minFontSize: 13, maxFontSize: 18, lineHeight: 1.4, maxLines: 2, color: "#FFFFFF" },
       { key: "quarter", type: "text", label: "Quarter", required: true, defaultValue: "Q4 2026", stack: "headline", x: 58.3, y: 108, width: 685.57, height: 28.3, fontFamily: "Figtree", fontWeight: 700, minFontSize: 18, maxFontSize: 25.6, lineHeight: 1.104, maxLines: 1, textTransform: "uppercase", color: "#009A50" },
       { key: "award", type: "text", label: "Award", required: true, defaultValue: "Groovy Award Winner", stack: "headline", x: 56.13, y: 108, width: 687.74, height: 88.32, fontFamily: "Figtree", fontWeight: 700, minFontSize: 32, maxFontSize: 66.852, lineHeight: 1.15, maxLines: 2, letterSpacing: -0.01 },

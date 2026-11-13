@@ -1,6 +1,6 @@
 import { Heading } from "@/components/layout/Heading";
 import { PlatformHierarchy } from "@/components/brand/PlatformHierarchy";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Ban, Check, Copy, Filter, ShieldCheck, Target, TrendingUp } from "lucide-react";
 import { DraftBadge } from "@/components/brand/DraftBadge";
 import { TintedIcon } from "@/components/brand/TintedIcon";
@@ -186,36 +186,69 @@ const RIGHTS_FRAME: Record<string, { what: string; why: string }> = {
   },
 };
 
+/** Loops from the ordergroove.com homepage pillars (Cameron's exports in Drive, June 2026). Decorative: the copy carries the meaning. */
+const RIGHTS_VISUAL: Record<string, string> = {
+  "1": "everychannel-rail",
+  "2": "groove-network-globe",
+  "3": "testing-velocity-lift-curve",
+};
+
+function useReducedMotion() {
+  const query = "(prefers-reduced-motion: reduce)";
+  const [reduced, setReduced] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setReduced(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  return reduced;
+}
+
+/** Chrome renders the videos' Midnight background as #181537, so the tile uses that and the letterbox has no seam. With reduced motion, the poster frame stays still. */
+function RightsLoop({ name }: { name: string }) {
+  const reduced = useReducedMotion();
+  const src = `/foundation/rights/${name}`;
+  const media = "aspect-[4/3] w-full object-contain";
+  return (
+    <div aria-hidden="true" className="overflow-hidden rounded-lg bg-[#181537]">
+      {reduced
+        ? <img src={`${src}-poster.jpg`} alt="" loading="lazy" className={media} />
+        : <video src={`${src}.mp4`} poster={`${src}-poster.jpg`} autoPlay muted loop playsInline preload="metadata" className={media} />}
+    </div>
+  );
+}
+
 function RightsTable() {
   return (
     <section id="rights" aria-labelledby="rights-title" className="scroll-mt-24">
       <SectionHead id="rights-title" title="Rights to Win" lede="The three reasons brands choose Ordergroove, and why each one matters to a buyer." />
       <div className="mt-6 overflow-hidden rounded-lg border border-border bg-white">
-        <div aria-hidden="true" className={cn("hidden border-b border-border bg-og-midnight/[0.03] px-8 py-3 text-sm font-semibold [@container(min-width:52rem)]:grid [@container(min-width:52rem)]:grid-cols-[15rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:52rem)]:gap-8", SUPPORTING)}>
-          <span>Right to win</span>
-          <span>What it is</span>
-          <span>Why it matters</span>
-        </div>
         <ol>
           {RIGHTS.map((item) => {
             const frame = RIGHTS_FRAME[item.n];
             return (
-              <li key={item.n} className="grid gap-4 border-b border-border p-6 last:border-b-0 md:px-8 [@container(min-width:52rem)]:grid-cols-[15rem_minmax(0,1fr)_minmax(0,1fr)] [@container(min-width:52rem)]:gap-8">
-                <div className="flex gap-4">
-                  {/* The ol already numbers the rows for screen readers. 24px keeps #009A50 above 3:1. */}
-                  <span aria-hidden="true" className="w-6 shrink-0 text-2xl font-extrabold leading-7 tabular-nums text-primary">{item.n}</span>
-                  <div>
-                    <Heading as="h3" className="reference-item-title">{item.title}</Heading>
-                    <p className="mt-1 text-[15px] font-semibold leading-6 text-og-midnight">{item.tagline}</p>
+              <li key={item.n} className="grid gap-5 border-b border-border p-6 last:border-b-0 md:px-8 [@container(min-width:52rem)]:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] [@container(min-width:52rem)]:items-center [@container(min-width:52rem)]:gap-8">
+                <RightsLoop name={RIGHTS_VISUAL[item.n]} />
+                <div>
+                  <div className="flex gap-4">
+                    {/* The ol already numbers the rows for screen readers. 24px keeps #009A50 above 3:1. */}
+                    <span aria-hidden="true" className="w-6 shrink-0 text-2xl font-extrabold leading-7 tabular-nums text-primary">{item.n}</span>
+                    <div>
+                      <Heading as="h3" className="reference-item-title">{item.title}</Heading>
+                      <p className="mt-1 text-[15px] font-semibold leading-6 text-og-midnight">{item.tagline}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="pl-10 [@container(min-width:52rem)]:pl-0">
-                  <p className={cn("text-sm font-semibold [@container(min-width:52rem)]:sr-only", SUPPORTING)}>What it is</p>
-                  <p className="mt-1 leading-7 [@container(min-width:52rem)]:mt-0">{frame.what}</p>
-                </div>
-                <div className="pl-10 [@container(min-width:52rem)]:pl-0">
-                  <p className={cn("text-sm font-semibold [@container(min-width:52rem)]:sr-only", SUPPORTING)}>Why it matters</p>
-                  <p className="mt-1 leading-7 [@container(min-width:52rem)]:mt-0">{frame.why}</p>
+                  <div className="mt-5 grid gap-5 pl-10 [@container(min-width:64rem)]:grid-cols-2 [@container(min-width:64rem)]:gap-8">
+                    <div>
+                      <p className={cn("text-sm font-semibold", SUPPORTING)}>What it is</p>
+                      <p className="mt-1 leading-7">{frame.what}</p>
+                    </div>
+                    <div>
+                      <p className={cn("text-sm font-semibold", SUPPORTING)}>Why it matters</p>
+                      <p className="mt-1 leading-7">{frame.why}</p>
+                    </div>
+                  </div>
                 </div>
               </li>
             );
