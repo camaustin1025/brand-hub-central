@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { HUB_NAV, isGuestPath } from "@/data/hub";
 import { SearchBox } from "./HubSearch";
 import { jumpTo } from "@/lib/hub-navigation";
@@ -11,18 +11,40 @@ import { useAccess } from "@/hooks/use-access";
 export { SearchBox } from "./HubSearch";
 export { jumpTo } from "@/lib/hub-navigation";
 
-const NAV_ITEM_CLASS = "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
+const NAV_ITEM_CLASS = "relative flex min-h-9 items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
 const NAV_ITEM_ACTIVE =
-  "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:-left-[11px] before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
-const NAV_ITEM_IDLE = "text-og-midnight hover:bg-white/70 hover:text-og-midnight";
+  "bg-white font-semibold text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:-left-[11px] before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
+const NAV_ITEM_IDLE = "text-og-midnight hover:bg-og-midnight/[0.06]";
 
-const NAV_TITLE_CLASS = "rounded-lg bg-og-indigo/[0.06] px-3 py-2 text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-indigo";
-// A group title that is itself the link (Design canvas). Every other title is a
-// static label, so hover flips this one to the masthead's Midnight to show it is clickable.
-const NAV_TITLE_LINK = "group relative flex items-center justify-between transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight/40";
-const NAV_TITLE_LINK_ACTIVE =
-  "bg-white text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:left-0 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
-const NAV_TITLE_LINK_IDLE = "hover:bg-og-midnight hover:text-white";
+/* Group headers are disclosure buttons: 11px caps in Midnight with a chevron, set apart from the
+   14px links below them by weight, case and a hairline above each group (not by a tinted block). */
+const NAV_GROUP_BUTTON =
+  "group/header flex min-h-9 w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-midnight transition-colors hover:bg-og-midnight/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
+const NAV_TITLE_LINK =
+  "flex min-h-9 items-center rounded-lg px-3 py-2 text-[11px] font-bold uppercase leading-4 tracking-[0.12em] text-og-midnight transition-colors hover:bg-og-midnight/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-midnight [@media(pointer:coarse)]:min-h-11";
+
+/** Groups a reader folded away, remembered per browser. Storage can be missing (private windows), so every access is guarded. */
+const COLLAPSED_KEY = "hub-nav-collapsed";
+function readCollapsed(): string[] {
+  try {
+    const value = JSON.parse(window.localStorage.getItem(COLLAPSED_KEY) ?? "[]");
+    return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === "string") : [];
+  } catch {
+    return [];
+  }
+}
+function writeCollapsed(labels: string[]) {
+  try {
+    window.localStorage.setItem(COLLAPSED_KEY, JSON.stringify(labels));
+  } catch {
+    // Storage blocked: the rail still works, it just won't remember folded groups.
+  }
+}
+
+/** Every control a keyboard user can reach in the rail, in order, skipping folded groups. */
+function railControls(nav: HTMLElement) {
+  return [...nav.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")].filter((element) => element.getClientRects().length > 0);
+}
 
 export function Sidebar({
   activeId,
@@ -34,12 +56,77 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const navigate = useNavigate();
+  const navRef = useRef<HTMLElement>(null);
+  const asideRef = useRef<HTMLElement>(null);
   // External internal sites (Product Hub) are staff-only; guests can't sign in to them.
   const isGuest = useAccess() === "guest";
-  // Guests only see the sections that live on Home.
+  // Guests only see the sections that live on Home. Disabled and hidden (WIP) items never show.
   const nav = isGuest
-    ? HUB_NAV.map((group) => ({ ...group, items: group.linkTitle ? [] : group.items.filter((item) => !item.disabled && isGuestPath(item.path)) })).filter((group) => group.items.length > 0)
+    ? HUB_NAV.map((group) => ({ ...group, items: group.linkTitle ? [] : group.items.filter((item) => !item.disabled && !item.hiddenInNav && isGuestPath(item.path)) })).filter((group) => group.items.length > 0)
     : HUB_NAV.map((group) => ({ ...group, items: group.items.filter((item) => !item.hiddenInNav) })).filter((group) => group.items.length > 0);
+  const activeGroup = nav.find((group) => group.items.some((item) => item.id === activeId))?.label;
+  // The group you are in always opens, so the active page is never folded out of sight.
+  const [collapsed, setCollapsed] = useState<string[]>(() => readCollapsed().filter((label) => label !== activeGroup));
+
+  function toggleGroup(label: string, force?: boolean) {
+    setCollapsed((current) => {
+      const isOpen = !current.includes(label);
+      const nextOpen = force ?? !isOpen;
+      const next = nextOpen ? current.filter((entry) => entry !== label) : [...current, label];
+      writeCollapsed(next);
+      return next;
+    });
+  }
+
+  // The drawer is off screen below 1024px when closed: take it out of the tab order and the accessibility tree.
+  const [isDrawer, setIsDrawer] = useState(() => typeof window !== "undefined" && !window.matchMedia("(min-width: 1024px)").matches);
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDrawer(!query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  useEffect(() => {
+    const aside = asideRef.current;
+    if (!aside) return;
+    if (isDrawer && !open) aside.setAttribute("inert", "");
+    else aside.removeAttribute("inert");
+  }, [isDrawer, open]);
+  // Opening the drawer moves focus into it, starting at the current page.
+  useEffect(() => {
+    if (!open || !isDrawer || !navRef.current) return;
+    const current = navRef.current.querySelector<HTMLElement>("[aria-current]") ?? railControls(navRef.current)[0];
+    current?.focus({ preventScroll: true });
+    current?.scrollIntoView({ block: "center" });
+  }, [open, isDrawer]);
+
+  function onNavKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (!navRef.current) return;
+    const target = event.target as HTMLElement;
+    const controls = railControls(navRef.current);
+    const index = controls.indexOf(target);
+    if (index < 0) return;
+    const header = target.dataset.navGroup;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const next = (index + (event.key === "ArrowDown" ? 1 : -1) + controls.length) % controls.length;
+      controls[next].focus();
+    } else if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      controls[event.key === "Home" ? 0 : controls.length - 1].focus();
+    } else if (header && (event.key === "ArrowRight" || event.key === "ArrowLeft")) {
+      event.preventDefault();
+      toggleGroup(header, event.key === "ArrowRight");
+    } else if (event.key === "ArrowLeft") {
+      // From a link, Left goes back up to its group header.
+      const owner = target.closest<HTMLElement>("[data-nav-section]")?.querySelector<HTMLElement>("[data-nav-group]");
+      if (owner) {
+        event.preventDefault();
+        owner.focus();
+      }
+    }
+  }
 
   function chooseSection(id: string) {
     if (document.getElementById(id)) {
@@ -56,81 +143,124 @@ export function Sidebar({
         <button
           className="fixed inset-0 top-16 z-30 bg-og-midnight/35 backdrop-blur-sm lg:hidden"
           aria-label="Close section menu"
+          tabIndex={-1}
           onClick={onClose}
         />
       )}
       <aside
+        ref={asideRef}
+        id="hub-section-menu"
         className={cn(
-          "fixed bottom-0 left-0 top-16 z-40 w-[284px] overflow-y-auto border-r border-border bg-[#F8F8FA] transition-transform lg:translate-x-0",
+          "fixed bottom-0 left-0 top-16 z-40 w-[284px] overflow-y-auto overscroll-contain border-r border-border bg-[#F8F8FA] transition-transform motion-reduce:transition-none lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <nav className="px-4 py-5" aria-label="Brand hub sections">
-          {nav.map((group) => group.linkTitle ? (
-            <div key={group.label} className="mb-6 last:mb-0">
-              <Link
-                to={group.items[0].path!}
-                onClick={onClose}
-                aria-current={activeId === group.items[0].id ? "page" : undefined}
-                className={cn(NAV_TITLE_CLASS, NAV_TITLE_LINK, activeId === group.items[0].id ? NAV_TITLE_LINK_ACTIVE : NAV_TITLE_LINK_IDLE)}
-              >
-                {group.label}
-              </Link>
-            </div>
-          ) : (
-            <section key={group.label} aria-labelledby={`nav-${group.items[0].id}`} className="mb-6 last:mb-0">
-              <h2 id={`nav-${group.items[0].id}`} className={NAV_TITLE_CLASS}>
-                {group.label}
-              </h2>
-              <ul className="ml-3 mt-1.5 space-y-0.5 border-l border-og-midnight/10 pl-2">
-                {group.externalLink && !isGuest && (
-                  <li>
-                    <a
-                      href={group.externalLink.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(NAV_ITEM_CLASS, NAV_ITEM_IDLE, "group flex items-center justify-between gap-2 font-semibold")}
+        {/* Extra space at the foot so the admin "Manage guests" pill never covers the last link. */}
+        <nav ref={navRef} className="px-4 pb-20 pt-4" aria-label="Brand hub sections" onKeyDown={onNavKeyDown}>
+          <ul>
+            {nav.map((group, groupIndex) => {
+              const isOpen = !collapsed.includes(group.label);
+              const listId = `nav-list-${group.items[0].id}`;
+              const holdsActive = group.label === activeGroup;
+              const divider = groupIndex > 0 && "mt-3 border-t border-og-midnight/10 pt-3";
+              if (group.linkTitle) {
+                return (
+                  <li key={group.label} className={cn(divider)}>
+                    <Link
+                      to={group.items[0].path!}
+                      onClick={onClose}
+                      aria-current={activeId === group.items[0].id ? "page" : undefined}
+                      className={cn(NAV_TITLE_LINK, activeId === group.items[0].id && "bg-white shadow-sm ring-1 ring-og-midnight/5")}
                     >
-                      {group.externalLink.label}
-                      <span aria-hidden="true" className="grid h-5 w-5 place-items-center rounded bg-og-midnight transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px">
-                        <ArrowUpRight size={12} strokeWidth={2.5} className="text-og-green" />
-                      </span>
-                      <span className="sr-only"> (opens in a new tab)</span>
-                    </a>
+                      {group.label}
+                    </Link>
                   </li>
-                )}
-                {group.items.map((item) => (
-                  <li key={item.id}>
-                    {item.disabled ? (
-                      <span aria-disabled="true" className={cn(NAV_ITEM_CLASS, "flex items-center gap-2 text-og-midnight/55 cursor-default")}>
-                        <span className="flex-1">{item.label}</span>
-                        {item.wip && <WipTag />}
-                      </span>
-                    ) : item.path ? (
-                      <Link
-                        to={item.path}
-                        onClick={onClose}
-                        aria-current={activeId === item.id ? "page" : undefined}
-                        className={cn(NAV_ITEM_CLASS, "group flex items-center gap-2", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
-                      >
-                        <span className="flex-1">{item.label}</span>
-                        {item.wip && <WipTag />}
-                      </Link>
-                    ) : (
+                );
+              }
+              return (
+                <li key={group.label} className={cn(divider)}>
+                  <section aria-labelledby={`nav-${group.items[0].id}`} data-nav-section="">
+                    <h2 id={`nav-${group.items[0].id}`}>
                       <button
-                        onClick={() => chooseSection(item.id)}
-                        aria-current={activeId === item.id ? "location" : undefined}
-                        className={cn(NAV_ITEM_CLASS, "flex w-full items-center justify-between gap-2 text-left", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                        type="button"
+                        data-nav-group={group.label}
+                        aria-expanded={isOpen}
+                        aria-controls={listId}
+                        onClick={() => toggleGroup(group.label)}
+                        className={NAV_GROUP_BUTTON}
                       >
-                        {item.label}
-                        {item.wip && <WipTag />}
+                        <span className="flex items-center gap-2">
+                          {group.label}
+                          {/* Folded, the group still says it holds the page you are on. */}
+                          {holdsActive && !isOpen && (
+                            <span className="size-1.5 rounded-full bg-og-green-light" aria-hidden="true" />
+                          )}
+                        </span>
+                        <span className="flex items-center gap-1.5 text-og-midnight/60">
+                          {!isOpen && <span className="text-[11px] font-semibold tracking-normal tabular-nums">{group.items.length + (group.externalLink && !isGuest ? 1 : 0)}</span>}
+                          <ChevronDown
+                            size={16}
+                            strokeWidth={2.25}
+                            aria-hidden="true"
+                            className={cn("shrink-0 text-og-midnight transition-transform duration-200 motion-reduce:transition-none", !isOpen && "-rotate-90")}
+                          />
+                        </span>
+                        {holdsActive && !isOpen && <span className="sr-only">, contains the current page</span>}
                       </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+                    </h2>
+                    <ul id={listId} hidden={!isOpen} className="ml-3 mt-1 space-y-0.5 border-l border-og-midnight/10 pl-2">
+                      {group.externalLink && !isGuest && (
+                        <li>
+                          <a
+                            href={group.externalLink.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={cn(NAV_ITEM_CLASS, NAV_ITEM_IDLE, "group justify-between gap-2 font-semibold")}
+                          >
+                            {group.externalLink.label}
+                            <span aria-hidden="true" className="grid h-5 w-5 place-items-center rounded bg-og-midnight transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px">
+                              <ArrowUpRight size={12} strokeWidth={2.5} className="text-og-green" />
+                            </span>
+                            <span className="sr-only"> (opens in a new tab)</span>
+                          </a>
+                        </li>
+                      )}
+                      {group.items.map((item) => (
+                        <li key={item.id}>
+                          {item.disabled ? (
+                            <span aria-disabled="true" className={cn(NAV_ITEM_CLASS, "gap-2 text-og-midnight/55 cursor-default")}>
+                              <span className="flex-1">{item.label}</span>
+                              {item.wip && <WipTag />}
+                            </span>
+                          ) : item.path ? (
+                            <Link
+                              to={item.path}
+                              onClick={onClose}
+                              aria-current={activeId === item.id ? "page" : undefined}
+                              className={cn(NAV_ITEM_CLASS, "group gap-2", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                            >
+                              <span className="flex-1">{item.label}</span>
+                              {item.wip && <WipTag />}
+                            </Link>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => chooseSection(item.id)}
+                              aria-current={activeId === item.id ? "location" : undefined}
+                              className={cn(NAV_ITEM_CLASS, "w-full justify-between gap-2 text-left", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                            >
+                              {item.label}
+                              {item.wip && <WipTag />}
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </li>
+              );
+            })}
+          </ul>
         </nav>
       </aside>
     </>
@@ -184,17 +314,34 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
   heroSearch?: boolean;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const isGuest = useAccess() === "guest";
   const heroSearchVisible = useHeroSearchVisible(heroSearch);
+
+  // Escape closes the phone menu and hands focus back to the button that opened it.
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onKey(event: globalThis.KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-white/10 bg-og-midnight text-white">
         <div className="flex h-full items-center gap-4 px-4 md:px-6">
           {!focused && <button
+            ref={menuButtonRef}
+            type="button"
             onClick={() => setMenuOpen((value) => !value)}
-            className="rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white lg:hidden"
+            className="grid size-11 place-items-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green lg:hidden"
             aria-label={menuOpen ? "Close section menu" : "Open section menu"}
+            aria-expanded={menuOpen}
+            aria-controls="hub-section-menu"
           >
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>}
