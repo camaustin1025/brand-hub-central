@@ -159,10 +159,14 @@ components:
     rounded: "{rounded.base}"
     padding: "8px 12px"
   nav-item-active:
-    backgroundColor: "{colors.white}"
     textColor: "{colors.midnight}"
+    typography: "{typography.body-sm}"
     rounded: "{rounded.base}"
     padding: "8px 12px"
+  nav-highlight:
+    backgroundColor: "{colors.groovy-green}"
+    textColor: "{colors.midnight}"
+    padding: "1px 5px"
   nav-group-label:
     textColor: "{colors.dark-indigo}"
     typography: "{typography.nav-label}"
@@ -208,8 +212,8 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 
 ### Primary
 - **Midnight** (#17132F): The desk. Masthead, page header bands, primary button fill, all body text on light surfaces, labels on green fills.
-- **Groovy Green** (#00FF85): The spark, on dark only. Eyebrows and accents on Midnight, the download highlighter fill (with Midnight text on it), hover arrows in the masthead and rail.
-- **Green on Light** (#009A50): The same spark on light surfaces. Focus rings, the active rail indicator bar, saved-download checks, any green text on white.
+- **Groovy Green** (#00FF85): The spark, on dark only. Eyebrows and accents on Midnight, the download highlighter fill and the rail's current-page highlighter (both with Midnight text on them), hover arrows in the masthead and rail.
+- **Green on Light** (#009A50): The same spark on light surfaces. Focus rings, the folded-group dot in the rail, saved-download checks, any green text on white.
 
 ### Secondary
 - **Dark Indigo** (#2E2A47): Cards and secondary surfaces in dark mode; the footer's "What's changed" link.
@@ -221,7 +225,7 @@ A Midnight-and-light system with one electric accent and a reserve of brand acce
 ### Neutral
 - **Canvas** (#F5F5F8): Page background behind content.
 - **Rail** (#F8F8FA): The left section rail, a half-step lighter than the canvas.
-- **White** (#FFFFFF): Cards, table rows, inputs, the active rail item.
+- **White** (#FFFFFF): Cards, table rows, inputs.
 - **Hairline** (#D8D7DF): Every border and divider on light surfaces.
 - **Slate** (#666279): Secondary text where Midnight is too strong.
 - **Ink on Dark** (#EBEAF0): Body text on Midnight surfaces.
@@ -265,11 +269,10 @@ Directories put search and filters first, then results as grouped lists: one whi
 
 ## Elevation & Depth
 
-Flat by default. Depth comes from tonal layering: canvas, then white surfaces with hairline borders, then the Midnight frame. Shadows appear only on layers that float above the page (search results, menus) and as a soft lift on the active rail item.
+Flat by default. Depth comes from tonal layering: canvas, then white surfaces with hairline borders, then the Midnight frame. Shadows appear only on layers that float above the page (search results, menus).
 
 ### Shadow Vocabulary
 - **Floating layer** (`box-shadow: 0 25px 50px -12px rgba(23, 19, 47, 0.2)`): Search results and popovers.
-- **Active item** (`box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)` plus a 1px Midnight ring at 5%): The current rail item.
 
 ### Named Rules
 **The Flat Desk Rule.** Cards and rows never carry a resting shadow. If something needs to read as separate, give it a white surface and a hairline, not a shadow.
@@ -313,7 +316,7 @@ The hub's signature control. A file is a link, not a button: the format name and
 
 ### Navigation
 - **Masthead:** Midnight, 64px, white logo; search sits right as a translucent field. No visible shortcut hint; Cmd or Ctrl+K still focuses it.
-- **Rail:** #F8F8FA with a hairline right edge. Each group title is a disclosure button: 11px bold uppercase Midnight with a chevron, a hairline divider above every group after the first, open by default and remembered per browser. The group holding the current page always reopens; folded, it shows a green dot and its item count. Arrow keys move through the rail, Home and End jump, Left and Right fold and unfold. Items are 14px medium Midnight with an arrow on links that open their own page. The active item is a white, softly lifted chip with a 2px #009A50 bar on the rail's guide line.
+- **Rail:** #F8F8FA with a hairline right edge. Each group title is a disclosure button: 11px bold uppercase Midnight with a chevron, a hairline divider above every group after the first, open by default and remembered per browser. The group holding the current page always reopens; folded, it shows a green dot and its item count. Arrow keys move through the rail, Home and End jump, Left and Right fold and unfold. Items are 14px medium Midnight with an arrow on links that open their own page. The current page is marked the way a download is: its label carries the Groovy Green highlighter (Midnight text, slanted ends, about two thirds of the line height), swiped in left to right when the page opens (0.42s; no animation with reduced motion). No chip, no bar. The same green band says "yours" on a download and "you are here" in the rail. Hover is a 6% Midnight tint.
 - **Mobile:** The rail becomes a drawer over a blurred Midnight scrim. Opening it moves focus to the current page; while it is open the page behind is inert, so Tab stays in the masthead and the drawer. Escape closes it and returns focus to the menu button. Touch targets are 44px.
 
 ### Status Tags

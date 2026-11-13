@@ -13,7 +13,7 @@ export type NavTheme = "light" | "dark";
  * The nav that ships. Change this one value to promote an option ("highlight", "tree" or "sidebar");
  * production then loads only that option. ("framer" was dropped after the 2026-11-13 critique.) While it is "rail", no option code reaches the production bundle.
  */
-export const PROMOTED_NAV: NavOption = "rail";
+export const PROMOTED_NAV: NavOption = "highlight";
 /** The promoted option's theme, for options that come in both ("sidebar"). Others ignore it. */
 export const PROMOTED_NAV_THEME: NavTheme = "dark";
 
