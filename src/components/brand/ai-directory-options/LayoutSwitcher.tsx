@@ -7,6 +7,7 @@ const OPTIONS: { id: DirectoryLayout; label: string }[] = [
   { id: 'current', label: 'Current' },
   { id: 'library', label: 'A · Library' },
   { id: 'table', label: 'B · Table' },
+  { id: 'categories', label: 'C · Categories' },
 ];
 
 export default function LayoutSwitcher({ layout }: { layout: DirectoryLayout }) {

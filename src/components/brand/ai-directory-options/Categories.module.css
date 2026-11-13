@@ -1,0 +1,45 @@
+/*
+ * Option C "Categories" (2026-11-13). The current directory's toolbar, groups and rows, plus Option
+ * A's category card in a left column once the directory is 52rem wide. Type at DESIGN.md roles:
+ * 14px category labels (nav items), 13px counts, the 11px caps label of a rail group title.
+ */
+
+/* The list column is its own container, so rows and groups lay out for the width they actually get. */
+.main { container-type: inline-size; }
+.card { display: none; }
+
+.cardLabel { padding: 6px 10px 8px; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: theme('colors.og.midnight'); }
+.categoryList { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.category { position: relative; display: flex; width: 100%; min-height: 36px; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: 8px; text-align: left; font-size: 14px; line-height: 20px; font-weight: 500; color: theme('colors.og.midnight'); transition: background-color .15s; }
+.category:hover { background: rgb(23 19 47 / 0.04); }
+.categoryLabel { display: flex; min-width: 0; align-items: flex-start; gap: 10px; text-wrap: pretty; }
+.categoryIcon { flex-shrink: 0; margin-top: 2px; color: rgb(23 19 47 / 0.7); }
+/* Team categories sit under Skills, their text lined up with the labels beside the icons (10px pad + 16px icon + 10px gap). */
+.nested { padding-left: 36px; font-weight: 400; }
+.count { flex-shrink: 0; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: hsl(var(--muted-foreground)); }
+/* The chosen category reads like the rail's current page: a quiet fill and the same 2px green bar. No box-shadow here, so the focus ring still shows. */
+.category[aria-pressed="true"] { background: rgb(23 19 47 / 0.06); font-weight: 600; }
+.category[aria-pressed="true"] .categoryIcon { color: theme('colors.og.midnight'); }
+.category[aria-pressed="true"]::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 0 2px 2px 0; background: theme('colors.og.green.light'); }
+
+/* A shared link to a row lands on it and marks it with the rail's green bar. */
+.main li[data-linked], .main li:has(> div > div > h3:target) { background: #f7f7fa; box-shadow: inset 2px 0 0 theme('colors.og.green.light'); }
+
+@media (pointer: coarse) {
+  .category { min-height: 44px; align-items: center; }
+}
+/*
+ * From 52rem the card takes a 248px column and the type chips and team pill step aside (the card
+ * holds both). The list column then tops out at 788px inside the 1060px content cap, under the 52rem
+ * two-across breakpoint, so rows stay one per line and every description keeps its width.
+ */
+@container (min-width: 52rem) {
+  .filtersBesideCard { display: none !important; }
+  .layout { display: grid; grid-template-columns: 248px minmax(0, 1fr); align-items: start; gap: 24px; }
+  /* Sticks under the toolbar (4rem masthead + 64px search row). */
+  .card { position: sticky; top: calc(4rem + 80px); display: block; margin-top: 12px; padding: 8px; border: 1px solid hsl(var(--border)); border-radius: 8px; background: #fff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category { transition: none; }
+}
