@@ -1,6 +1,6 @@
-import { CONNECTORS, HOW_TO_POSTS, OFFER_BUILDER_ONE_PAGER, ORG_PLUGINS, SKILL_GROUPS, SLACK_CHANNELS, TRAINING, TRAINING_CHANNEL, type ResourceLink } from './ai-resources';
+import { HOW_TO_POSTS, OFFER_BUILDER_ONE_PAGER, ORG_PLUGINS, SKILL_GROUPS, SLACK_CHANNELS, TRAINING, TRAINING_CHANNEL, type ResourceLink } from './ai-resources';
 
-export const RESOURCE_TYPES = ['Skills', 'Guides & training', 'Tools & plugins', 'Assets', 'Help & channels'] as const;
+export const RESOURCE_TYPES = ['Skills', 'Guides & training', 'Assets', 'Help & channels'] as const;
 export type ResourceType = typeof RESOURCE_TYPES[number];
 export type AiResource = { id: string; title: string; identifier?: string; body: string; type: ResourceType; team?: string; url?: string; catalog?: boolean; source: string; related?: ResourceLink; };
 const TITLES: Record<string, string> = {
@@ -13,12 +13,11 @@ export const AI_DIRECTORY: AiResource[] = [
   ...SKILL_GROUPS.flatMap(group => group.skills.map(s => ({ id: s.name, title: TITLES[s.name] ?? s.name, identifier: s.name, body: s.body, type: 'Skills' as const, team: group.label, url: s.url, catalog: s.status === 'catalog', source: 'Claude', related: s.extra }))),
   ...TRAINING.map((r, i) => ({ id: `training-${i}`, title: r.label, body: r.body, type: (r.label.includes('kickoff') ? 'Assets' : 'Guides & training') as ResourceType, url: r.url, source: r.owner, related: i === 0 ? { ...TRAINING_CHANNEL, label: 'Share your Claude 101 certificate' } : r.extra })),
   ...HOW_TO_POSTS.map((r, i) => ({ id: `how-to-${i}`, title: r.title, body: r.body, type: 'Guides & training' as const, url: r.url, source: `Slack · ${r.byline}` })),
-  ...ORG_PLUGINS.map(r => ({ id: r.name, title: TITLES[r.name] ?? r.name.replace(/-/g, ' '), identifier: r.name, body: r.body, type: 'Tools & plugins' as const, source: 'Org plugin' })),
-  ...CONNECTORS.map((r, i) => ({ id: `tool-${i}`, title: r.name, body: r.body, type: 'Tools & plugins' as const, source: 'Tool / connector' })),
+  ...ORG_PLUGINS.map(r => ({ id: r.name, title: TITLES[r.name] ?? r.name.replace(/-/g, ' '), identifier: r.name, body: r.body, type: 'Skills' as const, team: r.team, source: 'Org plugin' })),
   { id: 'offer-builder', title: 'Offer Builder one-pager', body: 'Ordergroove Offer Builder Skill reference on the shared drive.', type: 'Assets' as const, url: OFFER_BUILDER_ONE_PAGER.url, source: 'Shared drive' },
   ...SLACK_CHANNELS.map(r => ({ id: r.label, title: r.label, body: r.body, type: 'Help & channels' as const, url: r.url, source: 'Slack' })),
 ].sort((a, b) => a.title.localeCompare(b.title));
-/** Team narrows skills only. Guides, tools, assets, and channels belong to everyone, so they stay visible. */
+/** Team narrows skills only. Guides, assets, and channels belong to everyone, so they stay visible. */
 export function filterResources(resources: AiResource[], query: string, type: string, team: string) {
   const words = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
   return resources.filter(r => (!type || r.type === type) && (!team || !r.team || r.team === team) && words.every(word => [r.title, r.identifier, r.body, r.team, r.source, r.related?.label].filter(Boolean).join(' ').toLocaleLowerCase().includes(word)));

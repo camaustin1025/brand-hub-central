@@ -203,9 +203,10 @@ export const SKILL_GROUPS: { id: string; label: string; skills: Skill[] }[] = [
   },
 ];
 
+/** Org plugins list with the skills of the team that uses them (the Tools & plugins section was cut on 2026-11-13). No install link yet, so their rows point to #og-ai. */
 export const ORG_PLUGINS = [
-  { name: "ordergroove-platform", body: "Merchant analytics from the Ordergroove BigQuery warehouse, plus a live copy of the dbt data dictionary." },
-  { name: "vet-incentives-builder-for-shopify", body: "Checks a Shopify merchant’s storefront before and after go-live on Incentives Builder. For Solutions; uses the Ordergroove MCP." },
+  { name: "ordergroove-platform", team: "CS and account management", body: "Merchant analytics from the Ordergroove BigQuery warehouse, plus a live copy of the dbt data dictionary." },
+  { name: "vet-incentives-builder-for-shopify", team: "Brand, content, and Solutions", body: "Checks a Shopify merchant’s storefront before and after go-live on Incentives Builder. For Solutions; uses the Ordergroove MCP." },
 ];
 
 /** Its skill isn't in the catalog list, so it sits as one line under the Brand group. */
@@ -214,12 +215,8 @@ export const OFFER_BUILDER_ONE_PAGER: ResourceLink = {
   url: "https://drive.google.com/file/d/1DUiqc4DsmoqvptnnrKDhccbJNeFuoZQ3/view",
 };
 
-export const CONNECTORS = [
-  { name: "Claude Team", body: "The main AI tool. ChatGPT and Gemini Team accounts are also covered by the security guidelines." },
-  { name: "Salesforce", body: "A read-only connector is live in Claude." },
-  { name: "Claude for Google Workspace", body: "An add-on for editing Sheets and Slides from inside Google." },
-  { name: "Gong AI briefs", body: "8 brief templates: account health, risk, churn, closed lost, closed won, next-call prep, SDR-to-AE handoff, and sales-to-services handoff." },
-];
+/** Connectors already approved, shown as one line under "Get a new tool approved" (they were rows in the cut Tools & plugins section). */
+export const APPROVED_CONNECTORS = "the Salesforce connector (read-only) and Claude for Google Workspace (Sheets and Slides)";
 
 export const HOW_TO_POSTS = [
   { title: "Token-saving tips", url: ogAiPost("1774893684.767989"), byline: "Ethan Jones, Mar 30", body: "Reduce token use in Claude." },

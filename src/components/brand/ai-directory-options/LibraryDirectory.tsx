@@ -5,7 +5,7 @@
  * The categories carry the same icons as the current directory's filter pills.
  */
 import { useState } from 'react';
-import { ArrowDown, ArrowUp, ArrowUpRight, BookOpen, Boxes, ChevronDown, ChevronsUpDown, FileText, LayoutGrid, MessageCircle, Search, Sparkles, type LucideIcon } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpRight, BookOpen, ChevronDown, ChevronsUpDown, FileText, LayoutGrid, MessageCircle, Search, Sparkles, type LucideIcon } from 'lucide-react';
 import { AI_DIRECTORY, filterResources } from '@/data/ai-directory';
 import { OG_AI_CHANNEL } from '@/data/ai-resources';
 import { cn } from '@/lib/utils';
@@ -22,7 +22,7 @@ const typeOf = (r: Row) => (r.kind === 'workflow' ? 'Workflow' : kindOf(r.resour
 const ownerFor = (r: Row) => r.resource.team ?? ownerOf(r.resource);
 const SORT_VALUE: Record<SortKey, (r: Row) => string> = { name: nameOf, type: typeOf, owner: ownerFor };
 /** The current directory's filter-pill icons, keyed by resource type ('' is All). Team folders nest without one. */
-const FOLDER_ICONS: Record<string, LucideIcon> = { '': LayoutGrid, 'Skills': Sparkles, 'Guides & training': BookOpen, 'Tools & plugins': Boxes, 'Assets': FileText, 'Help & channels': MessageCircle };
+const FOLDER_ICONS: Record<string, LucideIcon> = { '': LayoutGrid, 'Skills': Sparkles, 'Guides & training': BookOpen, 'Assets': FileText, 'Help & channels': MessageCircle };
 
 function FolderIcon({ type }: { type: string }) {
   const Icon = FOLDER_ICONS[type];

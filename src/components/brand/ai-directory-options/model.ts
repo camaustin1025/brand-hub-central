@@ -6,12 +6,12 @@
 import { AI_DIRECTORY, RESOURCE_TYPES, WORKFLOWS, filterResources, groupResources, type AiResource, type ResourceType } from '@/data/ai-directory';
 import { OG_AI_CHANNEL, SKILL_GROUPS } from '@/data/ai-resources';
 
-export type Kind = 'Skill' | 'Guide' | 'Tool' | 'Plugin' | 'Asset' | 'Channel';
-export const KINDS: readonly Kind[] = ['Skill', 'Guide', 'Tool', 'Plugin', 'Asset', 'Channel'];
-/** The short type a row shows. Tools & plugins split on their source: org plugins vs tools and connectors. */
+export type Kind = 'Skill' | 'Guide' | 'Plugin' | 'Asset' | 'Channel';
+export const KINDS: readonly Kind[] = ['Skill', 'Guide', 'Plugin', 'Asset', 'Channel'];
+/** The short type a row shows. Org plugins list under Skills but keep their own label. */
 export function kindOf(r: AiResource): Kind {
+  if (r.source === 'Org plugin') return 'Plugin';
   if (r.type === 'Skills') return 'Skill';
-  if (r.type === 'Tools & plugins') return r.source === 'Org plugin' ? 'Plugin' : 'Tool';
   if (r.type === 'Guides & training') return 'Guide';
   if (r.type === 'Assets') return 'Asset';
   return 'Channel';

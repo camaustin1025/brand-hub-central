@@ -11,7 +11,7 @@ import { AI_DIRECTORY, RESOURCE_TYPES, countByType, filterResources, groupResour
 import { cn } from '@/lib/utils';
 import s from './AiResources.module.css';
 
-export const TYPE_ICONS = { 'Skills': Sparkles, 'Guides & training': BookOpen, 'Tools & plugins': Boxes, 'Assets': FileText, 'Help & channels': MessageCircle };
+export const TYPE_ICONS = { 'Skills': Sparkles, 'Guides & training': BookOpen, 'Assets': FileText, 'Help & channels': MessageCircle };
 export const LINK = 'action-focus rounded-sm font-semibold underline underline-offset-4 hover:text-foreground';
 export function External({ href, children, className = LINK }: { href: string; children: ReactNode; className?: string }) {
   return <a className={className} href={href} target="_blank" rel="noopener noreferrer">{children}<span className="sr-only"> (opens in a new tab)</span></a>;
@@ -163,7 +163,9 @@ function GroupSection({ section, searching, filtered, rowStyle }: { section: Dir
 export function useDirectoryFilters() {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
-  const type = params.get('type') ?? '';
+  // An old link to a type that no longer exists (Tools & plugins) shows everything instead of an empty list.
+  const rawType = params.get('type') ?? '';
+  const type = (RESOURCE_TYPES as readonly string[]).includes(rawType) ? rawType : '';
   const team = params.get('team') ?? '';
   function set(values: Record<string, string>) {
     const next = new URLSearchParams(params);
