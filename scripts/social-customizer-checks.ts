@@ -512,3 +512,30 @@ console.log("PASS: 4 Groovy Award designs with fictional samples, cut-out and op
   }
 }
 console.log("PASS: Groovy Award rendering keeps samples out of export, paints the backdrop under the photo, stacks wrapped text without overlap and applies tracking and uppercase");
+
+// Bonus: in-browser background removal helpers (the browser run covers the model itself).
+import { confidenceToAlpha, guidedMask } from "../src/lib/social-background";
+{
+  assert.equal(confidenceToAlpha(0), 0);
+  assert.equal(confidenceToAlpha(0.35), 0);
+  assert.equal(confidenceToAlpha(0.55), 128);
+  assert.equal(confidenceToAlpha(0.75), 255);
+  assert.equal(confidenceToAlpha(1), 255);
+  for (let c = 0; c < 1; c += 0.05) assert.ok(confidenceToAlpha(c + 0.05) >= confidenceToAlpha(c), "alpha never decreases as confidence rises");
+  // A blurry mask edge snaps to a sharp edge in the photo: left half dark, right half light.
+  const width = 40, height = 8;
+  const guide = new Float32Array(width * height), coarse = new Float32Array(width * height);
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    guide[y * width + x] = x < 20 ? 0.1 : 0.9;
+    coarse[y * width + x] = Math.min(1, Math.max(0, (x - 12) / 16));
+  }
+  const refined = guidedMask(guide, coarse, width, height, 4);
+  const row = (values: Float32Array, x: number) => values[4 * width + x];
+  assert.ok(row(refined, 17) < row(coarse, 17) && row(refined, 22) > row(coarse, 22), "refinement sharpens toward the photo's edge");
+  assert.ok(Math.abs(row(refined, 2)) < 0.05 && Math.abs(row(refined, 37) - 1) < 0.05, "flat areas keep their mask value");
+  // Static guard: the runtime and model are self-hosted, never fetched from a CDN.
+  const source = (await import("node:fs")).readFileSync(path.resolve("src/lib/social-background.ts"), "utf8");
+  assert.ok(!/https?:\/\//.test(source) && source.includes("BASE_URL"), "background removal loads only from this site");
+  for (const file of ["mediapipe/selfie_segmenter.tflite", "mediapipe/wasm/vision_wasm_internal.wasm", "mediapipe/wasm/vision_wasm_internal.js", "mediapipe/LICENSE.txt"]) assert.ok((await import("node:fs")).existsSync(path.resolve("public", file)), file);
+}
+console.log("PASS: background removal alpha ramp, guided edge refinement and self-hosted runtime");

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { Download, Info, X, ZoomIn, ZoomOut } from "lucide-react";
+import { Download, Info, Undo2, Wand2, X, ZoomIn, ZoomOut } from "lucide-react";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { HubShell } from "@/components/hub/HubShell";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { getPublishedSocialTemplate, publishedSocialTemplates, PUBLISHED_SOCIAL_
 import { DESIGN_CANVAS_NAV_ID, DESIGN_CANVAS_PATH, designCanvasCategoryId, designCanvasTemplatePath } from "@/data/hub";
 import { cn } from "@/lib/utils";
 import { canvasBlob, processSocialPhoto, restoreSocialPhoto, type ProcessedPhoto } from "@/lib/social-photo";
+import { BACKGROUND_REMOVAL_ERROR, removeSocialPhotoBackground, type BackgroundStage } from "@/lib/social-background";
 import {
   currentSocialInputs, currentSocialPhotoId, deleteSocialRecord, isFirstSocialDownload, loadSocialState, migratedSocialDraft, saveSocialDraft, saveSocialVersion,
   socialDeletionRemovesPhoto, socialPhotoId, SOCIAL_STORAGE_ERROR, type SocialSnapshot, type SocialVersion,
@@ -17,7 +18,7 @@ import {
 import { emptySocialFields, formatSocialField, socialPrimaryValue } from "@/lib/social-fields";
 import { recordSocialUsage } from "@/lib/social-usage";
 import {
-  DEFAULT_PHOTO_CROP, drawSocialGraphic, exportSocialPng, loadSocialResources, socialDownloadFilename,
+  DEFAULT_PHOTO_CROP, drawSocialGraphic, exportSocialPng, loadSocialResources, socialDownloadFilename, socialPhotoFrame, suggestCutoutCrop,
   type SocialFieldErrors, type SocialInputs, type SocialResources,
 } from "@/lib/social-renderer";
 
@@ -62,6 +63,11 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
   const [resources, setResources] = useState<SocialResources | null>(null);
   const [photo, setPhoto] = useState<ProcessedPhoto | null>(null);
   const [photoBusy, setPhotoBusy] = useState(false);
+  // Background removal keeps the upload it started from, so "Use original photo" restores it exactly.
+  const [cutoutStage, setCutoutStage] = useState<BackgroundStage | null>(null);
+  const [cutoutError, setCutoutError] = useState(false);
+  const [originalPhoto, setOriginalPhoto] = useState<{ photo: ProcessedPhoto; id: string | null } | null>(null);
+  const originalRef = useRef<{ photo: ProcessedPhoto; id: string | null } | null>(null);
   const [switching, setSwitching] = useState(false);
   const [storageInfoOpen, setStorageInfoOpen] = useState(false);
   const [photoError, setPhotoError] = useState("");
@@ -107,8 +113,13 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
     saveQueue.current = next;
     return next;
   };
-  const replacePhoto = (next: ProcessedPhoto | null, id: string | null) => {
-    if (photoRef.current) URL.revokeObjectURL(photoRef.current.url);
+  const keepOriginal = (original: { photo: ProcessedPhoto; id: string | null } | null) => {
+    if (originalRef.current && originalRef.current.photo !== original?.photo && originalRef.current.photo !== photoRef.current) URL.revokeObjectURL(originalRef.current.photo.url);
+    originalRef.current = original;
+    setOriginalPhoto(original);
+  };
+  const replacePhoto = (next: ProcessedPhoto | null, id: string | null, { keepPrevious = false } = {}) => {
+    if (photoRef.current && !keepPrevious && photoRef.current !== originalRef.current?.photo) URL.revokeObjectURL(photoRef.current.url);
     photoRef.current = next;
     photoIdRef.current = id;
     setPhoto(next);
@@ -119,6 +130,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
     const photoId = currentSocialPhotoId(saved, definition);
     const restored = photoId && blob ? await restoreSocialPhoto(blob) : null;
     if (!mounted.current || request !== photoRequest.current) { if (restored) URL.revokeObjectURL(restored.url); return; }
+    keepOriginal(null);
     replacePhoto(restored, photoId);
     setInputs(currentSocialInputs(saved, definition, initialName));
     setDesignUpdated(saved.templateVersion !== definition.version);
@@ -137,7 +149,9 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
       mounted.current = false;
       photoRequest.current += 1;
       if (photoRef.current) URL.revokeObjectURL(photoRef.current.url);
+      if (originalRef.current && originalRef.current.photo !== photoRef.current) URL.revokeObjectURL(originalRef.current.photo.url);
       photoRef.current = null;
+      originalRef.current = null;
       urls.forEach((url) => URL.revokeObjectURL(url)); urls.clear();
       if (canvas) canvas.width = canvas.height = 0;
     };
@@ -232,8 +246,12 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
       let id: string | null;
       try { id = await socialPhotoId(next.blob); } catch { URL.revokeObjectURL(next.url); throw new Error("We couldn't read this photo. Save it as JPEG and try again."); }
       if (!mounted.current || request !== photoRequest.current) { URL.revokeObjectURL(next.url); return; }
+      keepOriginal(null);
       replacePhoto(next, id);
-      setInputs((previous) => ({ ...previous, crop: { ...DEFAULT_PHOTO_CROP } }));
+      setCutoutError(false);
+      // A cut-out upload in a cut-out design starts where the designs place the person.
+      const crop = next.hasTransparency && definition.photo.opaqueClip ? suggestCutoutCrop(next, socialPhotoFrame(definition.photo, next)) : { ...DEFAULT_PHOTO_CROP };
+      setInputs((previous) => ({ ...previous, crop }));
       setChanged((value) => value + 1);
     } catch (error) {
       if (mounted.current && request === photoRequest.current) setPhotoError(error instanceof Error ? error.message : "We couldn't read this photo. Save it as JPEG and try again.");
@@ -262,8 +280,43 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
     finally { if (mounted.current) setExporting(false); }
   };
 
+  const removeBackground = async () => {
+    const source = photoRef.current;
+    if (!source || !definition.photo || source.hasTransparency) return;
+    const sourceId = photoIdRef.current;
+    const request = ++photoRequest.current;
+    setPhotoBusy(true); setCutoutError(false); setPhotoError(""); setStatus(""); setExportError(""); setPreparedPng(null);
+    try {
+      const cut = await removeSocialPhotoBackground(source, definition.photo, (stage) => { if (mounted.current && request === photoRequest.current) setCutoutStage(stage); });
+      let id: string | null;
+      try { id = await socialPhotoId(cut.blob); } catch { URL.revokeObjectURL(cut.url); throw new Error(BACKGROUND_REMOVAL_ERROR); }
+      if (!mounted.current || request !== photoRequest.current) { URL.revokeObjectURL(cut.url); return; }
+      keepOriginal({ photo: source, id: sourceId });
+      replacePhoto(cut, id, { keepPrevious: true });
+      // Cut-out designs change frame and add headroom, so place the person again; other frames keep the crop.
+      if (definition.photo.opaqueClip) setInputs((previous) => ({ ...previous, crop: suggestCutoutCrop(cut, socialPhotoFrame(definition.photo!, cut)) }));
+      setChanged((value) => value + 1);
+    } catch {
+      if (mounted.current && request === photoRequest.current) setCutoutError(true);
+    } finally {
+      if (mounted.current && request === photoRequest.current) { setPhotoBusy(false); setCutoutStage(null); }
+    }
+  };
+  const useOriginalPhoto = () => {
+    const original = originalRef.current;
+    if (!original) return;
+    photoRequest.current += 1;
+    originalRef.current = null;
+    setOriginalPhoto(null);
+    replacePhoto(original.photo, original.id);
+    setCutoutError(false);
+    updateInputs({ ...inputs, crop: { ...DEFAULT_PHOTO_CROP } });
+  };
+
   const removePhoto = () => {
     photoRequest.current += 1;
+    keepOriginal(null);
+    setCutoutError(false);
     replacePhoto(null, null);
     setPhotoError("");
     updateInputs({ ...inputs, crop: { ...DEFAULT_PHOTO_CROP } });
@@ -348,7 +401,7 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
       } else {
         pendingSave.current = null;
         photoRequest.current += 1;
-        replacePhoto(null, null); setInputs(emptyInputs(definition, initialName)); setChanged(0); setHasDraft(false);
+        keepOriginal(null); replacePhoto(null, null); setInputs(emptyInputs(definition, initialName)); setChanged(0); setHasDraft(false);
         setTouched({}); setAttempted(false); setDesignUpdated(false); setPreparedPng(null);
       }
       setSaveStatus(""); setStatus(versionId ? "Version deleted" : "Draft deleted");
@@ -474,7 +527,16 @@ function SocialEditor({ definition, initialName, ownerUserId, assets }: { defini
                 const file = event.currentTarget.files?.[0]; event.currentTarget.value = "";
                 if (file) void choosePhoto(file);
               }} />
-              {definition.photo.opaqueClip && <p className="text-xs leading-5 text-muted-foreground">A PNG with the background removed sits right on the design. Other photos fill a rounded panel.</p>}
+              {definition.photo.opaqueClip && <p className="text-xs leading-5 text-muted-foreground">Remove the background, or add a PNG without one, to place the person right on the design. Other photos fill a rounded panel.</p>}
+              {photo && (originalPhoto || !photo.hasTransparency) && <div className="space-y-1.5 pt-1">
+                {originalPhoto
+                  ? <Button type="button" size="sm" variant="outline" onClick={useOriginalPhoto}><Undo2 size={14} aria-hidden="true" />Use original photo</Button>
+                  : <Button type="button" size="sm" variant="outline" onClick={() => void removeBackground()}><Wand2 size={14} aria-hidden="true" />{cutoutStage === "loading" ? "Loading background remover…" : cutoutStage === "removing" ? "Removing background…" : "Remove background"}</Button>}
+                <p role="status" aria-live="polite" className="text-xs leading-5 text-muted-foreground">
+                  {cutoutStage ? "This runs in your browser. Your photo isn't uploaded." : originalPhoto ? "Background removed in your browser. Check the edges, or go back to your original photo." : "Runs in your browser, so your photo isn't uploaded. Check the edges before you download."}
+                </p>
+                {cutoutError && <p role="alert" className="text-sm text-destructive">{BACKGROUND_REMOVAL_ERROR}</p>}
+              </div>}
               {photoError && <p role="alert" className="text-sm text-destructive">{photoError}</p>}
               {attempted && !photo && definition.photo.required && !photoError && <p role="alert" className="text-sm text-destructive">Add a photo to download.</p>}
             </div>}

@@ -145,6 +145,12 @@ For each approved design change, replace the artwork/rules and bump `version`. B
 
 The editor revokes processed-photo and download object URLs on replacement/unmount. An in-flight photo operation cannot restore state after sign-out. Google metadata initializes the designated prefill field once per keyed account/template mount; field edits are never overwritten by metadata updates.
 
+## Background removal
+
+When a template has a photo frame and the current photo is opaque, the editor offers **Remove background**. `src/lib/social-background.ts` runs MediaPipe's Selfie Segmenter (Apache-2.0) in the browser: the `@mediapipe/tasks-vision` module is a lazy chunk, and its wasm runtime and model are self-hosted in `public/mediapipe/` (versions, checksum and license in `public/mediapipe/README.md`). Nothing loads until someone clicks the button, photos never leave the device, and no third-party host is contacted. The model's 256-pixel person mask is upscaled, snapped to edges in the photo with a guided filter, and turned into alpha with a narrow ramp. A result that keeps under 3% or over 97% of the photo is treated as a failure.
+
+The original upload stays in memory: **Use original photo** restores it exactly (same pixels, same photo ID), and replacing or removing the photo discards both. The cut-out becomes the draft and version photo like any upload, so after a reload the original is no longer offered; upload it again to go back. In cut-out designs (`photo.opaqueClip`), cut-outs and transparent uploads get 20% transparent headroom and a suggested crop that puts the top of the person about 7% below the top of the frame. Other frames keep the current crop. Failures show "We couldn't remove the background from this photo. Your original photo is still in place." and leave the original untouched.
+
 ## Local drafts and saved versions
 
 `src/lib/social-drafts.ts` owns the hand-written IndexedDB database `brand-hub-social`, schema 1. Drafts use `[ownerUserId, templateId]` keys. Field, variant, crop and photo changes debounce for 500 ms, then write photo and metadata in one transaction. Route unmount flushes a pending debounce; browser termination is not a save guarantee. The latest completed write wins. There are no draft revisions or cross-tab checks. The saved status follows transaction completion. Persistent storage is requested on the first save, with no dependency on its result.

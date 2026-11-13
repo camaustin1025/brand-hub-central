@@ -100,6 +100,32 @@ export function photoSourceRect(photo: Pick<ProcessedPhoto, "width" | "height">,
   return { x: (photo.width - width) * Math.min(1, Math.max(0, crop.x)), y: (photo.height - height) * Math.min(1, Math.max(0, crop.y)), width, height };
 }
 
+/** Place a cut-out (transparent) photo the way the designs do: the top of the person about 7% below the
+ * top of the frame and the head a little right of center. Reads a small copy of the alpha channel. */
+export function suggestCutoutCrop(photo: Pick<ProcessedPhoto, "image" | "width" | "height">, frame: Bounds & { maxZoom: number }): PhotoCropValue {
+  const sample = document.createElement("canvas");
+  try {
+    const k = Math.min(1, 256 / Math.max(photo.width, photo.height));
+    sample.width = Math.max(1, Math.round(photo.width * k));
+    sample.height = Math.max(1, Math.round(photo.height * k));
+    const ctx = sample.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return { ...DEFAULT_PHOTO_CROP };
+    ctx.drawImage(photo.image, 0, 0, sample.width, sample.height);
+    const alpha = ctx.getImageData(0, 0, sample.width, sample.height).data;
+    let top = -1;
+    for (let y = 0; y < sample.height && top < 0; y++) for (let x = 0; x < sample.width; x++) if (alpha[(y * sample.width + x) * 4 + 3] > 128) { top = y; break; }
+    if (top < 0) return { ...DEFAULT_PHOTO_CROP };
+    // Head centre: average opaque column across a band just below the top of the person.
+    let sum = 0, count = 0;
+    for (let y = top; y < Math.min(sample.height, top + sample.height * 0.15); y++) for (let x = 0; x < sample.width; x++) if (alpha[(y * sample.width + x) * 4 + 3] > 128) { sum += x; count++; }
+    const headX = (count ? sum / count : sample.width / 2) / k;
+    const source = photoSourceRect(photo, frame, DEFAULT_PHOTO_CROP);
+    const scale = frame.width / source.width;
+    const position = (target: number, size: number, window: number) => size - window > 0 ? Math.min(1, Math.max(0, target / (size - window))) : 0.5;
+    return { zoom: 1, x: position(headX - frame.width * 0.53 / scale, photo.width, source.width), y: position(top / k - frame.height * 0.07 / scale, photo.height, source.height) };
+  } finally { sample.width = sample.height = 0; }
+}
+
 /** Move the photo by logical output pixels, using the same source window as rendering. */
 export function dragSocialCrop(crop: PhotoCropValue, photoSize: Pick<ProcessedPhoto, "width" | "height">, frame: Bounds & { maxZoom: number }, dxOutput: number, dyOutput: number): PhotoCropValue {
   const source = photoSourceRect(photoSize, frame, crop);

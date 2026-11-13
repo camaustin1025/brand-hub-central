@@ -16,6 +16,8 @@ export default defineConfig([
       // Research snapshots and local tool-generated code are not app sources.
       "docs/**",
       "src/impeccable/**",
+      // Vendored MediaPipe runtime, copied unchanged from @mediapipe/tasks-vision.
+      "public/mediapipe/**",
     ],
   },
   {
