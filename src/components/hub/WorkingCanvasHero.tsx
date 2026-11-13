@@ -1,25 +1,46 @@
 import { Heading } from "@/components/layout/Heading";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { Link } from "react-router-dom";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, Download, X } from "lucide-react";
 import { SearchBox, jumpTo } from "@/components/hub/HubShell";
 import { HomeTasks } from "@/components/hub/HomeTasks";
 import { getAsset, findAssetFile } from "@/data/assets";
 import { BACKGROUND_GRADIENT_CSS } from "@/data/tokens";
+import { DESIGN_CANVAS_PATH, ZOOM_BACKGROUNDS_PATH } from "@/data/hub";
+import { useAccess } from "@/hooks/use-access";
 import styles from "./WorkingCanvasHero.module.css";
 
 const ARTWORK = {
   logo: { title: "Ordergroove logo", detail: getAsset("logo-light").description, ...findAssetFile("logo-light", "SVG"), label: "Download SVG", section: getAsset("logo-light").section },
-  gradient: { title: "Brand gradient", detail: getAsset("brand-gradient").description, ...findAssetFile("brand-gradient", "PNG"), label: "Download PNG", section: getAsset("brand-gradient").section },
   type: { title: "Figtree", detail: "Our brand typeface. This file is Regular only; the font kit has all five weights.", ...findAssetFile("font-kit", "TTF"), label: "Download font", section: getAsset("font-kit").section },
   icons: { title: "Brand icons", detail: getAsset("icon-examples").description, ...findAssetFile("icon-examples", "SVG"), label: "Download SVG", section: getAsset("icon-examples").section },
 };
 type ArtworkId = keyof typeof ARTWORK;
-type ArtworkAnchor = "logo" | "gradient" | "type" | "payment" | "heart" | "chart";
-type Spotlight = { id: ArtworkId; anchor: ArtworkAnchor; element: HTMLElement };
-const POPUP_SIDE: Record<ArtworkAnchor, "above" | "below"> = {
-  logo: "above", gradient: "below", type: "below", payment: "below", heart: "below", chart: "above",
+type ArtworkAnchor = "logo" | "type" | "payment" | "heart" | "chart" | "social" | "zoom";
+type LinkSpotlight = "social" | "zoom";
+type Spotlight = { id: ArtworkId | LinkSpotlight; anchor: ArtworkAnchor; element: HTMLElement };
+/** Pieces whose popup is a single link to another hub page. */
+const LINK_POPUPS: Record<LinkSpotlight, { label: string; to: string }> = {
+  social: { label: "Social assets", to: DESIGN_CANVAS_PATH },
+  zoom: { label: "Zoom backgrounds", to: ZOOM_BACKGROUNDS_PATH },
 };
+const POPUP_SIDE: Record<ArtworkAnchor, "above" | "below"> = {
+  logo: "below", type: "below", payment: "below", heart: "below", chart: "above", social: "below", zoom: "below",
+};
+
+
+/** Tools on the outer orbit, each linked to the hub page that covers it. */
+const TOOLS = [
+  { id: "slack", label: "Slack channels", to: "/ai-resources#ai-slack" },
+  { id: "google-drive", label: "Google Drive connector", to: "/ai-resources#ai-connectors" },
+  { id: "claude", label: "AI resources and Claude skills", to: "/ai-resources" },
+  { id: "zoom", label: "Zoom backgrounds", to: ZOOM_BACKGROUNDS_PATH },
+  { id: "linkedin", label: "LinkedIn graphics", to: DESIGN_CANVAS_PATH },
+] as const;
+
+/** The desktop composition is drawn on a fixed 1100 × 300 stage and scaled to fit. */
+const STAGE_WIDTH = 1100;
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), Math.max(min, max));
 
@@ -28,6 +49,8 @@ export function WorkingCanvasHero() {
   const [spotlight, setSpotlight] = useState<Spotlight | null>(null);
   const [pillPosition, setPillPosition] = useState<{ left: number; top: number } | null>(null);
   const [selected, setSelected] = useState<ArtworkId | null>(null);
+  const [scale, setScale] = useState(1);
+  const isGuest = useAccess() === "guest";
   const artworkTrigger = useRef<HTMLButtonElement | null>(null);
   const artworkRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLDivElement>(null);
@@ -43,7 +66,7 @@ export function WorkingCanvasHero() {
     setSpotlight(null);
   }
 
-  function light(id: ArtworkId, anchor: ArtworkAnchor, element: HTMLElement) {
+  function light(id: Spotlight["id"], anchor: ArtworkAnchor, element: HTMLElement) {
     keepSpotlight();
     setSpotlight({ id, anchor, element });
   }
@@ -58,6 +81,17 @@ export function WorkingCanvasHero() {
     if (closeTimer.current !== null) clearTimeout(closeTimer.current);
   }, []);
 
+  // Scale the fixed stage to the content column so the orbits keep their proportions.
+  useLayoutEffect(() => {
+    const artwork = artworkRef.current;
+    if (!artwork) return;
+    const fit = () => setScale(Math.min(1, artwork.clientWidth / STAGE_WIDTH));
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(artwork);
+    return () => observer.disconnect();
+  }, []);
+
   // Anchor each popup to its own specimen, following the approved above/below map.
   // Let lower popups extend beyond the artwork band; clamp only to the visible page.
   useLayoutEffect(() => {
@@ -68,9 +102,7 @@ export function WorkingCanvasHero() {
       const canvas = artwork.getBoundingClientRect();
       const target = spotlight.element.getBoundingClientRect();
       const contentLeft = artwork.closest("main")?.getBoundingClientRect().left ?? 0;
-      const desiredLeft = spotlight.anchor === "logo"
-        ? target.right - canvas.left - pill.offsetWidth - 12
-        : spotlight.anchor === "payment"
+      const desiredLeft = spotlight.anchor === "payment"
           ? target.left - canvas.left
           : spotlight.anchor === "chart"
             ? target.left - canvas.left - 16
@@ -128,52 +160,106 @@ export function WorkingCanvasHero() {
     jumpTo(ARTWORK[id].section);
   }
 
-  const lit = spotlight ? ARTWORK[spotlight.id] : null;
+  const linkPopup = spotlight && spotlight.id in LINK_POPUPS ? LINK_POPUPS[spotlight.id as LinkSpotlight] : null;
+  const lit = spotlight && !linkPopup ? ARTWORK[spotlight.id as ArtworkId] : null;
+  // The LinkedIn graphic and its LinkedIn tile share one popup, anchored to the graphic.
+  const socialRef = useRef<HTMLAnchorElement>(null);
+  const linkHover = (id: LinkSpotlight) => ({
+    onPointerEnter: (event: React.PointerEvent<HTMLElement>) => { if (event.pointerType === "mouse") light(id, id, event.currentTarget); },
+    onFocus: (event: React.FocusEvent<HTMLElement>) => light(id, id, event.currentTarget),
+  });
+  const socialHover = {
+    onPointerEnter: (event: React.PointerEvent) => { if (event.pointerType === "mouse" && socialRef.current) light("social", "social", socialRef.current); },
+    onFocus: () => { if (socialRef.current) light("social", "social", socialRef.current); },
+  };
+  // The LinkedIn preview's avatar is an empty gray circle; lay a person silhouette
+  // exactly over it (circle sits at 462-665 x 81-283 in the 720 x 376 export).
+  const socialArt = (
+    <span className={styles.socialArt}>
+      <img src="/social/new-employee-split-dark-preview.png" alt="" width="720" height="376" />
+      <svg className={styles.avatar} viewBox="0 0 100 100" aria-hidden="true">
+        <clipPath id="hero-avatar-clip"><circle cx="50" cy="50" r="50" /></clipPath>
+        <g clipPath="url(#hero-avatar-clip)">
+          <circle cx="50" cy="39" r="18" />
+          <ellipse cx="50" cy="96" rx="35" ry="31" />
+        </g>
+      </svg>
+    </span>
+  );
 
   return (
     <section id="overview" data-hub-section className={styles.hero}>
       <div className={styles.intro}>
         <Heading as="h1" copyLink={false} className={styles.title}>
-          <span>Make your work look</span>{" "}<span>and sound like Ordergroove</span>
+          Stay in the{" "}
+          <span className={styles.groove} style={{ "--groove-fill": BACKGROUND_GRADIENT_CSS } as React.CSSProperties}>groove</span>
         </Heading>
-        <p className={styles.subhead}>Brand assets and guidance</p>
+        <p className={styles.subhead}>Your first stop for the resources, tools and know-how to do great work.</p>
       </div>
 
       <div ref={artworkRef} className={styles.artwork} data-spotlight={spotlight ? "" : undefined} onPointerEnter={keepSpotlight} onPointerLeave={leaveArtwork} onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) clearSpotlight();
       }} onKeyDown={(event) => { if (event.key === "Escape") clearSpotlight(); }}>
-      <div className={styles.worktable}>
-        <a className={styles.palette} href="#color" aria-label="Jump to color palette" onPointerEnter={clearSpotlight} onFocus={clearSpotlight} onClick={(event) => { event.preventDefault(); jumpTo("color"); }}>
-          <i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" />
-        </a>
-        <button {...artworkControl("logo")} className={styles.logoCard}>
-          <img src={ARTWORK.logo.href} alt="" width="436" height="75" />
-        </button>
-        <button {...artworkControl("gradient")} className={styles.gradient} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} />
-        <button {...artworkControl("type")} className={styles.typePaper}>
-          <span className={styles.specimenLabel}>Our typeface</span>
-          <span className={styles.typeName}>Figtree</span>
-          <span className={styles.typeRegular}>Made for</span>
-          <span className={styles.typeSemibold}>everyday work.</span>
-          <span className={styles.typeWeights}>Regular / Semibold / Bold</span>
-        </button>
-        {/* Reveal each tile from the unchanged 320 × 80 export in its own crop. */}
-        {(["payment", "heart", "chart"] as const).map((anchor) => (
-          <button {...artworkControl("icons", anchor)} key={anchor} className={`${styles.iconCutout} ${styles[`${anchor}Icon`]}`}>
-            <img src={ARTWORK.icons.href} alt="" width="320" height="80" />
+      <div className={styles.worktable} style={{ "--s": scale } as CSSProperties}>
+        <div className={styles.stage}>
+          {/* Brand pieces sit on the inner orbit, everyday tools on the outer one. */}
+          <svg className={styles.orbits} viewBox="0 0 1100 300" preserveAspectRatio="none" aria-hidden="true">
+            <ellipse cx="550" cy="150" rx="200" ry="72" />
+            <ellipse className={styles.outerOrbit} cx="550" cy="150" rx="340" ry="124" />
+          </svg>
+          <svg className={styles.orbitsPhone} viewBox="0 0 400 340" preserveAspectRatio="none" aria-hidden="true">
+            <ellipse cx="200" cy="170" rx="128" ry="62" />
+            <ellipse className={styles.outerOrbit} cx="200" cy="170" rx="182" ry="136" />
+          </svg>
+          <a className={styles.swatches} href="#color" aria-label="Jump to color palette" onPointerEnter={clearSpotlight} onFocus={clearSpotlight} onClick={(event) => { event.preventDefault(); jumpTo("color"); }}>
+            <i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" />
+          </a>
+          <button {...artworkControl("logo")} className={styles.logoCard}>
+            <img src={ARTWORK.logo.href} alt="" width="436" height="75" />
           </button>
-        ))}
+          <button {...artworkControl("type")} className={styles.typePaper}>
+            <span className={styles.specimenLabel}>Our typeface</span>
+            <span className={styles.typeName}>Figtree</span>
+            <span className={styles.typeRegular}>Made for</span>
+            <span className={styles.typeSemibold}>everyday work.</span>
+            <span className={styles.typeWeights}>Regular / Semibold / Bold</span>
+          </button>
+          {/* Reveal each tile from the unchanged 320 × 80 export in its own crop. */}
+          {(["payment", "heart", "chart"] as const).map((anchor) => (
+            <button {...artworkControl("icons", anchor)} key={anchor} className={`${styles.iconCutout} ${styles[`${anchor}Icon`]}`}>
+              <img src={ARTWORK.icons.href} alt="" width="320" height="80" />
+            </button>
+          ))}
+          {TOOLS.map((tool) => {
+            const className = `${styles.appTile} ${styles[`${tool.id.replace("-", "")}Tile`]}`;
+            const icon = <img src={`/platform-icons/${tool.id}.svg`} alt="" width="28" height="28" />;
+            return isGuest
+              ? <span key={tool.id} className={className} aria-hidden="true">{icon}</span>
+              : <Link key={tool.id} to={tool.to} className={className} aria-label={tool.label} {...(tool.id === "linkedin" ? socialHover : tool.id === "zoom" ? linkHover("zoom") : { onPointerEnter: clearSpotlight, onFocus: clearSpotlight })}>{icon}</Link>;
+          })}
+          {isGuest
+            ? <span className={styles.socialCard} aria-hidden="true">{socialArt}</span>
+            : <Link ref={socialRef} to={DESIGN_CANVAS_PATH} className={styles.socialCard} aria-label="LinkedIn graphics" {...socialHover}>
+                {socialArt}
+              </Link>}
+        </div>
       </div>
-      {spotlight && lit && <div ref={pillRef} className={styles.assetPill} data-side={POPUP_SIDE[spotlight.anchor]} data-anchor={spotlight.anchor} onPointerEnter={keepSpotlight} style={pillPosition ?? { visibility: "hidden" }}>
-        <strong>{lit.title}</strong>
-        {lit.href && <a href={lit.href} download aria-label={`${lit.label}: ${lit.title}`}><Download size={14} /> {lit.format}</a>}
-        <button type="button" onClick={() => guidance(spotlight.id)}>Guidance <ArrowRight size={14} /></button>
+      {spotlight && (lit || linkPopup) && <div ref={pillRef} className={styles.assetPill} data-side={POPUP_SIDE[spotlight.anchor]} data-anchor={spotlight.anchor} data-single={spotlight.id === "icons" || linkPopup ? "" : undefined} onPointerEnter={keepSpotlight} style={pillPosition ?? { visibility: "hidden" }}>
+        {linkPopup ? (
+          <Link to={linkPopup.to}>{linkPopup.label} <ArrowRight size={12} /></Link>
+        ) : spotlight.id === "icons" ? <>
+          {/* Hero icons point to the Icons section on this page. */}
+          <a href="#icons" onClick={(event) => { event.preventDefault(); clearSpotlight(); jumpTo("icons"); }}>Brand icons <ArrowRight size={12} /></a>
+        </> : lit && <>
+          <strong>{lit.title}</strong>
+          {lit.href && <a href={lit.href} download aria-label={`${lit.label}: ${lit.title}`}><Download size={12} /> {lit.format}</a>}
+        </>}
       </div>}
       </div>
 
-      <section className={`dark ${styles.searchDock}`} style={{ backgroundImage: BACKGROUND_GRADIENT_CSS }} aria-label="Search resources">
-        <Heading as="h2" className={styles.searchTitle}>Find what you need</Heading>
-        <div className={styles.searchBox}><SearchBox hero /></div>
+      <section className={`dark ${styles.searchDock}`} aria-label="Search resources">
+        <Heading as="h2" copyLink={false} className={styles.searchTitle}>Find what you need</Heading>
+        <div className={styles.searchBox} data-hero-search><SearchBox hero /></div>
       </section>
 
       <HomeTasks className={styles.tasks} />

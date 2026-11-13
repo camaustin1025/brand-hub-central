@@ -24,7 +24,11 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
       // Only the visible masthead/mobile search owns the global shortcut.
       if (!hero && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k" && inputRef.current?.getClientRects().length) {
         event.preventDefault();
-        inputRef.current.focus();
+        // On Home the masthead search hides while the hero search is on screen; send the shortcut there.
+        const target = getComputedStyle(inputRef.current).visibility === "hidden"
+          ? document.querySelector<HTMLInputElement>("[data-hero-search] input") ?? inputRef.current
+          : inputRef.current;
+        target.focus();
       }
     }
     window.addEventListener("keydown", shortcut);
@@ -75,8 +79,9 @@ export function SearchBox({ compact = false, hero = false }: { compact?: boolean
             choose(results[0]);
           }
         }}
-        placeholder={hero ? "Search brand rules and assets" : "Search the brand hub"}
-        aria-label={hero ? "Search brand rules and assets" : "Search the brand hub"}
+        type="search"
+        placeholder={hero ? "Search resources, files and guides" : "Search the brand hub"}
+        aria-label={hero ? "Search resources, files and guides" : "Search the brand hub"}
         aria-controls={open ? id + "-results" : undefined}
         aria-describedby={id + "-hint"}
         className={cn("w-full outline-none transition-colors", hero

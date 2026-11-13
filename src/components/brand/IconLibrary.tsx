@@ -59,7 +59,8 @@ export function IconLibrary() {
   const [treatment, setTreatment] = useState<IconTreatment>("tinted");
   const [format, setFormat] = useState<IconFormat>("png");
   const [categoryId, setCategoryId] = useState("all");
-  const [query, setQuery] = useState("");
+  // ?q= opens the library pre-searched (the homepage hero icons link here this way).
+  const [query, setQuery] = useState(() => new URLSearchParams(window.location.search).get("q") ?? "");
 
   const [zipProgress, setZipProgress] = useState<{ done: number; total: number } | null>(null);
   const [status, setStatus] = useState("");

@@ -137,7 +137,8 @@ export function ColorTierRow({ tier }: { tier: Tier }) {
   const { group, badge, hideUsage } = tier;
   return (
     <div className="mt-9 first:mt-0">
-      <div className="flex items-center gap-2 border-b border-border pb-2">
+      {/* Divider stops at the note's measure (68ch of the 12px note), not the full column. */}
+      <div className="flex max-w-[68ch] items-center gap-2 border-b border-border pb-2 text-xs">
         <Heading as="h3"
           id={group === CORE ? "core" : slug(group.title)}
           className="scroll-mt-20 text-[15px] font-semibold leading-normal tracking-normal text-og-midnight"

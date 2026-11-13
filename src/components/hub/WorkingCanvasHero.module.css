@@ -9,47 +9,85 @@
 .intro { padding: 52px 40px 0; text-align: center; }
 .title { max-width: 890px; margin: 0 auto; font-size: 52px; font-weight: 800; letter-spacing: -2.35px; line-height: 1.06; text-wrap: initial; }
 .title span { display: block; }
+/* "groove" is laid on the worktable like the specimens below it: a brand-gradient
+   strip, notched on one corner, tilted, swiped in once like the download
+   highlighter. Midnight text stays on top, so this is a fill, not gradient text. */
+.title .groove { position: relative; display: inline-block; isolation: isolate; padding: 0 .1em; }
+.groove::before {
+  content: ""; position: absolute; z-index: -1; inset: .2em -.04em .02em -.02em;
+  background-image: var(--groove-fill); border-radius: 6px 0 6px 6px;
+  transform: rotate(-2.5deg); transform-origin: 0 60%;
+  clip-path: inset(0 100% 0 0);
+  animation: grooveSwipe .75s cubic-bezier(.16, 1, .3, 1) .35s forwards;
+  transition: transform .45s cubic-bezier(.34, 1.56, .64, 1);
+}
+.groove:hover::before { transform: rotate(1.5deg) translateY(-.02em); }
+@keyframes grooveSwipe { to { clip-path: inset(0 0 0 0); } }
 .subhead { max-width: 740px; margin: 26px auto 0; color: #17132f; font-size: 18px; line-height: 1.4; }
 .tasks { padding: 28px max(24px, calc((100% - 1060px) / 2)) 0; }
 
 .artwork { position: relative; width: 100%; max-width: 1100px; margin: 32px auto 0; }
-.worktable { height: 280px; position: relative; overflow: clip; user-select: none; background: #fff; }
+.worktable { height: calc(300px * var(--s, 1)); position: relative; overflow: clip; user-select: none; background: #fff; }
 .worktable img { pointer-events: none; }
 .worktable button { cursor: pointer; }
 /* A white veil recedes the surrounding specimens, leaving the selected one crisp. */
-.worktable::after { content: ""; position: absolute; inset: 0; z-index: 1; background: #fff; opacity: 0; pointer-events: none; transition: opacity .2s cubic-bezier(.16, 1, .3, 1); }
-.artwork[data-spotlight] .worktable::after { opacity: .62; }
 .worktable button[data-lit] { z-index: 2; }
 .worktable button:focus-visible { outline: 2px solid #17132f; outline-offset: 4px; }
-.logoCard { position: absolute; left: 5%; top: 64px; display: flex; align-items: center; justify-content: center; width: 240px; height: 116px; padding: 20px; background: #fff; transform: rotate(-9deg); border: 1px solid #d8d7df; }
+/* Two orbits around the logo: brand pieces on the inner ring, everyday tools on the
+   outer one. Drawn on a fixed 1100 x 300 stage that scales down to the column. */
+.stage { position: absolute; top: 0; left: 50%; width: 1100px; height: 300px; transform: translateX(-50%) scale(var(--s, 1)); transform-origin: top center; }
+.orbits, .orbitsPhone { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: #d8d7df; stroke-width: 1.5; pointer-events: none; }
+.orbits ellipse, .orbitsPhone ellipse { vector-effect: non-scaling-stroke; }
+.outerOrbit { stroke-dasharray: 4 7; }
+.orbitsPhone { display: none; }
+.logoCard { position: absolute; left: 405px; top: 118px; display: block; width: 290px; padding: 6px; }
 .logoCard img { display: block; width: 100%; height: auto; }
-.gradient { position: absolute; left: 37%; top: 41px; width: 234px; aspect-ratio: 1.317; transform: rotate(7deg); border-radius: 9px 0 9px 9px; box-shadow: 0 4px 8px #17132f12; }
-.typePaper { position: absolute; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #d8d7df; }
-.typePaper { left: 68%; top: 28px; width: 210px; height: 218px; padding: 18px 16px 24px; flex-direction: column; align-items: flex-start; transform: rotate(-6deg); }
-.specimenLabel { font-size: 8px; font-weight: 600; line-height: 1.2; letter-spacing: 1px; text-transform: uppercase; }
-.typeName { margin: 6px 0 12px; font-size: 38px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
-.typeRegular { font-size: 17px; font-weight: 400; line-height: 1.35; }
-.typeSemibold { font-size: 18px; font-weight: 600; line-height: 1.35; letter-spacing: -.4px; white-space: nowrap; }
-.typeWeights { margin-top: 12px; font-size: 7px; font-weight: 400; letter-spacing: .1px; }
+.swatches { position: absolute; left: 483px; top: 60px; display: flex; gap: 6px; padding: 8px 10px; border: 1px solid #d8d7df; border-radius: 999px; background: #fff; box-shadow: 0 6px 14px #17132f14; transform: rotate(-3deg); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.swatches i { width: 18px; height: 18px; border-radius: 50%; background: #17132f; }
+.swatches i:nth-child(2) { background: #009a50; }
+.swatches i:nth-child(3) { background: #00ff85; }
+.swatches i:nth-child(4) { background: #eaff00; box-shadow: inset 0 0 0 1px #17132f14; }
+.swatches i:nth-child(5) { background: #ff61d3; }
+.swatches:hover { transform: rotate(-3deg) translateY(-3px); }
+.swatches:focus-visible { outline: 2px solid #17132f; outline-offset: 4px; }
+.typePaper { position: absolute; display: flex; background: #fff; border: 1px solid #d8d7df; box-shadow: 0 8px 20px #17132f14; }
+.typePaper { left: 52px; top: 64px; width: 150px; padding: 11px 11px 13px; flex-direction: column; align-items: flex-start; transform: rotate(-5deg); }
+.specimenLabel { font-size: 7px; font-weight: 600; line-height: 1.2; letter-spacing: 1px; text-transform: uppercase; }
+.typeName { margin: 5px 0 8px; font-size: 32px; font-weight: 700; letter-spacing: -1.2px; line-height: 1; }
+.typeRegular { font-size: 14px; font-weight: 400; line-height: 1.35; }
+.typeSemibold { font-size: 15px; font-weight: 600; line-height: 1.35; letter-spacing: -.3px; white-space: nowrap; }
+.typeWeights { margin-top: 9px; font-size: 6px; font-weight: 400; letter-spacing: .1px; }
 /* Crop the three 80px tiles at x=0/120/240; preserve the exact exported artwork. */
-.iconCutout { position: absolute; display: block; width: 58px; height: 58px; overflow: hidden; border-radius: 50%; background: #fff; box-shadow: 1px 3px 4px #17132f15; }
+.iconCutout { position: absolute; display: block; width: 44px; height: 44px; overflow: hidden; border-radius: 50%; background: #fff; box-shadow: 1px 3px 6px #17132f1f; }
 .iconCutout img { position: absolute; top: 0; width: 400%; max-width: none; height: auto; }
-.paymentIcon { left: 27%; top: 5px; transform: rotate(-14deg); }
+.paymentIcon { left: 358px; top: 96px; transform: rotate(-10deg); }
 .paymentIcon img { left: 0; }
-.heartIcon { left: 61%; top: 205px; transform: rotate(11deg); }
+.heartIcon { left: 700px; top: 170px; transform: rotate(10deg); }
 .heartIcon img { left: -150%; }
-.chartIcon { right: 0; top: 151px; transform: rotate(14deg); }
+.chartIcon { left: 700px; top: 92px; transform: rotate(8deg); }
 .chartIcon img { left: -300%; }
-.palette { position: absolute; display: flex; left: 11%; top: 212px; gap: 5px; width: 225px; height: 44px; padding-block: 11px; transform: rotate(-4deg); cursor: pointer; }
-.palette i { flex: 1; background: #17132f; }
-.palette i:nth-child(2) { background: #009a50; }
-.palette i:nth-child(3) { background: #00ff85; }
-.palette i:nth-child(4) { background: #eaff00; }
-.palette i:nth-child(5) { background: #ff61d3; }
-.palette:hover, .palette:focus-visible { z-index: 2; outline: 2px solid #17132f; outline-offset: 4px; }
+.appTile { position: absolute; display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid #d8d7df; border-radius: 14px; background: #fff; box-shadow: 0 6px 14px #17132f14; transition: transform .3s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s ease-out; }
+.appTile img { width: 27px; height: 27px; }
+a.appTile:hover, .socialCard[href]:hover { transform: translateY(-3px); box-shadow: 0 10px 22px #17132f24; }
+.appTile:focus-visible, .socialCard:focus-visible { outline: 2px solid #17132f; outline-offset: 4px; }
+.slackTile { left: 250px; top: 52px; }
+.googledriveTile { left: 800px; top: 52px; }
+.claudeTile { left: 226px; top: 198px; }
+.zoomTile { left: 824px; top: 200px; }
+/* LinkedIn sits on the corner of the LinkedIn graphic it opens. */
+.linkedinTile { left: 1034px; top: 58px; width: 44px; height: 44px; border-radius: 12px; transform: rotate(8deg); z-index: 1; }
+.linkedinTile img { width: 24px; height: 24px; }
+a.linkedinTile:hover { transform: rotate(8deg) translateY(-3px); }
+.socialCard { position: absolute; left: 892px; top: 86px; display: block; width: 180px; padding: 6px; border: 1px solid #d8d7df; background: #fff; box-shadow: 0 8px 20px #17132f14; transform: rotate(6deg); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s ease-out; }
+.socialCard img { display: block; width: 100%; height: auto; }
+.socialArt { position: relative; display: block; }
+.avatar { position: absolute; left: 64.17%; top: 21.54%; width: 28.19%; height: 53.72%; fill: #fff; opacity: .9; }
+.socialCard[href]:hover { transform: rotate(6deg) translateY(-3px); }
 
-.searchDock { position: relative; background-color: #b5ff65; color: #17132f; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)); }
-.searchTitle { margin-bottom: 16px; font-size: 22px; font-weight: 700; }
+/* Midnight band so the white search bar is the clearest action on the page and
+   "groove" stays the only gradient above the fold. */
+.searchDock { position: relative; background-color: #17132f; color: #fff; border-block: 2px solid #17132f; padding: 30px max(24px, calc((100% - 1060px) / 2)); }
+.searchTitle { margin-bottom: 16px; color: #fff; font-size: 22px; font-weight: 700; }
 /* Style only this use of the existing SearchBox; masthead/mobile search stay intact. */
 .searchBox > div > svg { left: 25px; width: 28px; height: 28px; color: #17132f; stroke-width: 1.8; }
 .searchBox input { height: 64px; padding: 0 80px 0 69px; border-radius: 18px; background: #fff; color: #17132f; font-size: 16px; font-weight: 500; border: 1px solid #17132f26; box-shadow: 0 3px 12px #17132f12; }
@@ -59,17 +97,17 @@
 .searchBox > div > div { min-width: 0; }
 
 /* Popups sit above/below the selected specimen, with a transparent hover bridge. */
-.assetPill { position: absolute; z-index: 3; display: flex; align-items: center; height: 42px; padding: 0 4px 0 16px; border-radius: 999px; background: #17132f; color: #fff; white-space: nowrap; box-shadow: 0 8px 24px #17132f40; }
+/* A quiet label: the compact 32px size, white with a hairline, so the specimen stays the focus. */
+.assetPill { position: absolute; z-index: 3; display: flex; align-items: center; gap: 4px; height: 32px; padding: 0 3px 0 12px; border: 1px solid #d8d7df; border-radius: 999px; background: #fff; color: #17132f; white-space: nowrap; box-shadow: 0 6px 16px #17132f1f; }
 .assetPill::before { content: ""; position: absolute; left: 0; right: 0; height: 14px; }
 .assetPill[data-side="above"]::before { top: 100%; }
 .assetPill[data-side="below"]::before { bottom: 100%; }
-.assetPill strong { font-size: 14px; font-weight: 700; }
-.assetPill a, .assetPill button { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; }
-.assetPill a { margin-left: 12px; background: #00ff85; color: #17132f; }
-.assetPill a:hover { background: #fff; }
-.assetPill button { color: #ffffffd0; }
-.assetPill button:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-.assetPill :focus-visible { outline: 2px solid #00ff85; outline-offset: 2px; }
+.assetPill[data-single] { padding: 0 3px; }
+.assetPill strong { font-size: 12px; font-weight: 600; }
+/* Same as the hub download link: arrow + format, Groovy Green highlighter on hover. */
+.assetPill a { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 999px; color: #17132f; font-size: 12px; font-weight: 600; background: linear-gradient(#00ff85, #00ff85) no-repeat left / 0% 100%; transition: background-size .2s cubic-bezier(.16, 1, .3, 1); }
+.assetPill a:hover, .assetPill a:focus-visible { background-size: 100% 100%; }
+.assetPill :focus-visible { outline: 2px solid #17132f; outline-offset: 2px; }
 .dialogContent { padding: 20px; border: 1px solid #d8d7df; border-radius: 12px; background: #fff; color: #17132f; box-shadow: 0 8px 32px #17132f26; }
 .assetTitle { padding-right: 22px; font-size: 18px; font-weight: 700; }
 .assetDescription { margin-top: 8px; font-size: 14px; line-height: 1.45; }
@@ -80,51 +118,47 @@
 .dialogContent { position: fixed; z-index: 61; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(380px, calc(100% - 32px)); }
 .dialogClose { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 8px; }
 
-/* Preserve the specimens' proportions in the narrower content column beside the sidebar. */
-@media (min-width: 768px) and (max-width: 1279px) {
-  .logoCard { left: 4%; width: 200px; height: 96px; padding: 16px; }
-  .gradient { left: 38%; width: 190px; }
-  .typePaper { left: 69%; width: 174px; height: 205px; padding: 14px 12px; }
-  .typeName { font-size: 32px; margin-bottom: 9px; }
-  .typeRegular { font-size: 14px; }
-  .typeSemibold { font-size: 14px; }
-  .typeWeights { font-size: 6px; margin-top: 9px; }
-  .iconCutout { width: 46px; height: 46px; }
-}
-
 @media (max-width: 767px) {
   .intro { padding: 34px 20px 0; }
   .title { font-size: 38px; line-height: 1.08; letter-spacing: -1.25px; max-width: 350px; }
   .title span { display: inline; }
   .subhead { font-size: 17px; line-height: 1.45; max-width: 348px; margin-top: 20px; }
   .tasks { padding: 20px 16px 0; }
-  .artwork { margin-top: 22px; }
-  .worktable { height: 350px; }
-  .logoCard { left: 24px; top: 34px; width: 190px; height: 90px; padding: 18px; }
-  .gradient { left: auto; right: 26px; top: 151px; width: 140px; }
-  .typePaper { left: 27px; top: 162px; width: 160px; height: 171px; padding: 15px 12px; }
-  .typeName { font-size: 30px; }
-  .typeRegular, .typeSemibold { font-size: 15px; }
-  .typeWeights { display: none; }
-  .iconCutout { width: 42px; height: 42px; }
-  .paymentIcon { left: auto; right: 22px; top: 20px; }
-  .heartIcon { left: auto; right: 102px; top: 90px; }
-  .chartIcon { right: 45px; top: 293px; }
-  .palette { left: 31px; top: 122px; width: 160px; height: 44px; padding-block: 15px; transform: rotate(-9deg); }
+  /* Phones get their own orbit drawn at phone width, capped and centered. The type
+     card and LinkedIn graphic step out so the rings stay readable. */
+  .artwork { max-width: 400px; margin-top: 22px; }
+  .worktable { height: 340px; }
+  .stage { left: 0; width: 100%; height: 340px; transform: none; }
+  .orbits { display: none; }
+  .orbitsPhone { display: block; }
+  .logoCard { left: calc(50% - 95px); top: 151px; width: 190px; padding: 4px; }
+  .swatches { left: calc(50% - 62px); top: 92px; gap: 5px; padding: 7px 9px; }
+  .swatches i { width: 16px; height: 16px; }
+  .typePaper, .socialCard { display: none; }
+  .iconCutout { width: 40px; height: 40px; }
+  .paymentIcon { left: calc(12% - 20px); top: 150px; }
+  .chartIcon { left: calc(76% - 20px); top: 110px; }
+  .heartIcon { left: calc(75% - 20px); top: 198px; }
+  .appTile { width: 46px; height: 46px; border-radius: 12px; }
+  .appTile img { width: 24px; height: 24px; }
+  .slackTile { left: calc(17.5% - 23px); top: 46px; }
+  .googledriveTile { left: calc(82.5% - 23px); top: 46px; }
+  .claudeTile { left: calc(17.5% - 23px); top: 248px; }
+  .zoomTile { left: calc(82.5% - 23px); top: 248px; }
+  .linkedinTile { display: none; }
   .searchDock { padding: 22px 16px; }
   .searchBox > div > svg { left: 15px; width: 22px; height: 22px; }
-  .searchBox input { height: 56px; padding: 0 64px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
+  .searchBox input { height: 56px; padding: 0 16px 0 47px; font-size: 16px; letter-spacing: -.1px; border-radius: 16px; }
   /* WIP tag: same inset as the search icon on the left. */
   .searchBox > div > span { right: 15px; }
   .assetPill { display: none; }
 }
 
 @media (max-width: 359px) {
-  .logoCard { width: 170px; height: 82px; }
-  .gradient { right: 18px; width: 112px; }
-  .typePaper { left: 22px; width: 150px; }
+  .logoCard { left: calc(50% - 82px); width: 164px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .worktable button, .worktable::after { transition: none; }
+  .worktable button, .appTile, .swatches, .socialCard { transition: none; }
+  .groove::before { animation: none; clip-path: none; transition: none; }
 }

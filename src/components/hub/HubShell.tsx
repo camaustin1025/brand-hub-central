@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { HUB_NAV, isGuestPath } from "@/data/hub";
@@ -151,6 +151,20 @@ function LastUpdated() {
   );
 }
 
+/** Tracks whether the homepage's own search box is on screen (below the 64px masthead). */
+function useHeroSearchVisible(enabled: boolean) {
+  const [visible, setVisible] = useState(enabled);
+  useEffect(() => {
+    if (!enabled) return setVisible(false);
+    const target = document.querySelector("[data-hero-search]");
+    if (!target) return setVisible(false);
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: "-64px 0px 0px 0px" });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [enabled]);
+  return visible;
+}
+
 /** The hub chrome: fixed masthead, section sidebar, and search. Shared by the
  *  single-page hub and the standalone chapter pages so navigation never changes shape. */
 export function HubShell({ activeId, children, focused = false, heroSearch = false }: {
@@ -162,6 +176,7 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const isGuest = useAccess() === "guest";
+  const heroSearchVisible = useHeroSearchVisible(heroSearch);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -179,7 +194,8 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
           </Link>
           <span className="hidden h-6 w-px bg-white/20 sm:block" />
           <span className="hidden truncate text-sm text-white/62 sm:block">Brand Hub · Internal reference</span>
-          <div className="ml-auto hidden md:block">
+          {/* One search on screen at a time: hide this one while the Home hero search is visible. */}
+          <div className={cn("ml-auto hidden transition-opacity duration-200 md:block", heroSearchVisible && "invisible opacity-0")}>
             <SearchBox />
           </div>
           <LastUpdated />
