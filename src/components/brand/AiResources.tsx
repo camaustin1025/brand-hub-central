@@ -90,6 +90,7 @@ export function AiResources() {
     const legacy: Record<string, string> = { '#ai-training': 'Guides & training', '#ai-how-to': 'Guides & training', '#ai-slack': 'Help & channels' };
     const target = legacy[window.location.hash];
     if (target) { update('type', target); document.getElementById('ai-skills-library')?.scrollIntoView(); }
+    else if (window.location.hash === '#ai-skills-library') document.getElementById('ai-skills-library')?.scrollIntoView();
   }, []);
   const teams = [...new Set(AI_DIRECTORY.flatMap(r => r.team ? [r.team] : []))];
   return <div className="ai-directory [container-type:inline-size]">

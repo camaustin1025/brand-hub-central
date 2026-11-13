@@ -33,7 +33,7 @@ const POPUP_SIDE: Record<ArtworkAnchor, "above" | "below"> = {
 /** Tools on the outer orbit, each linked to the hub page that covers it. */
 const TOOLS = [
   { id: "slack", label: "Slack channels", to: "/ai-resources#ai-slack" },
-  { id: "google-drive", label: "Google Drive connector", to: "/ai-resources#ai-connectors" },
+  { id: "google-slides", label: "Ordergroove slides skill", to: "/ai-resources?q=ordergroove-slides#ai-skills-library" },
   { id: "claude", label: "AI resources and Claude skills", to: "/ai-resources" },
   { id: "zoom", label: "Zoom backgrounds", to: ZOOM_BACKGROUNDS_PATH },
   { id: "linkedin", label: "LinkedIn graphics", to: DESIGN_CANVAS_PATH },

@@ -71,7 +71,7 @@
 a.appTile:hover, .socialCard[href]:hover { transform: translateY(-3px); box-shadow: 0 10px 22px #17132f24; }
 .appTile:focus-visible, .socialCard:focus-visible { outline: 2px solid #17132f; outline-offset: 4px; }
 .slackTile { left: 250px; top: 52px; }
-.googledriveTile { left: 800px; top: 52px; }
+.googleslidesTile { left: 800px; top: 52px; }
 .claudeTile { left: 226px; top: 198px; }
 .zoomTile { left: 824px; top: 200px; }
 /* LinkedIn sits on the corner of the LinkedIn graphic it opens. */
@@ -142,7 +142,7 @@ a.linkedinTile:hover { transform: rotate(8deg) translateY(-3px); }
   .appTile { width: 46px; height: 46px; border-radius: 12px; }
   .appTile img { width: 24px; height: 24px; }
   .slackTile { left: calc(17.5% - 23px); top: 46px; }
-  .googledriveTile { left: calc(82.5% - 23px); top: 46px; }
+  .googleslidesTile { left: calc(82.5% - 23px); top: 46px; }
   .claudeTile { left: calc(17.5% - 23px); top: 248px; }
   .zoomTile { left: calc(82.5% - 23px); top: 248px; }
   .linkedinTile { display: none; }

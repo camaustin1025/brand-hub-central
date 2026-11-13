@@ -13,6 +13,8 @@ type Task = {
   /** Staff-only destination, so guests don't get a door that sends them back here. */
   staffOnly?: boolean;
   wip?: boolean;
+  /** Launch sticker pinned to the card's corner, e.g. "New". Remove once the launch is old news. */
+  sticker?: string;
   /** Destination is paused on the live site, so the card is left out. */
   hidden?: boolean;
   /** A real glimpse of the destination, shown when the cards have room for it. */
@@ -56,10 +58,12 @@ const TASKS: Task[] = [
     label: "AI and Claude guidance",
     to: RESOURCE_PAGE_PATHS["ai-skills"],
     staffOnly: true,
+    sticker: "New",
     preview: (
       <span className="flex h-full flex-col justify-center gap-1.5 bg-og-midnight px-5 text-white">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-og-green">Claude skill</span>
-        <code className="text-[13px] font-semibold">ordergroove-slides</code>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-og-green">Now live</span>
+        <code className="text-[13px] font-semibold">/ordergroove-slides</code>
+        <span className="text-[12px] text-white/80">New and improved</span>
       </span>
     ),
   },
@@ -79,7 +83,15 @@ export function HomeTasks({ className }: { className?: string }) {
       <h2 id="home-tasks-heading" className="sr-only">Popular resources</h2>
       <ul className={cn("grid gap-2.5 [@container(min-width:40rem)]:grid-cols-2 [@container(min-width:56rem)]:gap-3", tasks.length === 3 ? "[@container(min-width:56rem)]:grid-cols-3" : "[@container(min-width:56rem)]:grid-cols-4")}>
         {tasks.map((task) => (
-          <li key={task.to}>
+          <li key={task.to} className="relative">
+            {task.sticker && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-2 -top-2.5 z-10 rotate-[8deg] rounded-full border-2 border-og-midnight bg-og-green px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-og-midnight motion-safe:animate-sticker-wobble"
+              >
+                {task.sticker}
+              </span>
+            )}
             <Link
               to={task.to}
               className={cn(
@@ -95,6 +107,7 @@ export function HomeTasks({ className }: { className?: string }) {
                   <span className="flex flex-wrap items-center gap-2 text-[15px] font-bold leading-5">
                     {task.label}
                     {task.wip && <WipTag />}
+                    {task.sticker && <span className="sr-only">({task.sticker}: /ordergroove-slides is new and improved)</span>}
                   </span>
                 </span>
                 <ArrowRight size={16} aria-hidden="true" className="shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
