@@ -36,15 +36,19 @@ export default function DesignCanvas() {
   }, [requestedId]);
   return (
     <HubShell activeId={DESIGN_CANVAS_NAV_ID}>
-      <ChapterPage navId={DESIGN_CANVAS_NAV_ID} updated="2026-10-29" title="LinkedIn graphics" intro="Pick a design, add your photo and details, then download a PNG for LinkedIn.">
+      <ChapterPage navId={DESIGN_CANVAS_NAV_ID} updated="2026-11-13" title="LinkedIn graphics" intro="Pick a design, add your photo and details, then download a PNG for LinkedIn.">
         <div className="space-y-12">
           {DESIGN_CANVAS_CATEGORIES.map(({ id, category, templates: entries }) => (
             <section key={id} id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-24">
               <Heading as="h2" id={`${id}-heading`} className="mb-5 reference-section-title">{category}</Heading>
+              {entries.some((template) => template.sample) && <p className="-mt-2 mb-5 text-sm text-muted-foreground">Previews show a fictional sample person and name, not a real employee.</p>}
               <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {entries.map((template) => (
                   <div key={template.id} className="flex flex-col overflow-hidden rounded-lg border border-border bg-white">
-                    {template.previewAssetId && <img src={SOCIAL_ASSETS[template.previewAssetId]} alt={`${template.title} design preview`} width={template.width} height={template.height} className="h-auto w-full" />}
+                    {/* In the grid, one preview height per row: square designs sit centered in a landscape frame. One column shows each at full width. */}
+                    {template.previewAssetId && <div className="relative bg-[#F5F5F8] sm:aspect-[1200/627]">
+                      <img src={SOCIAL_ASSETS[template.previewAssetId]} alt={`${template.title} design preview${template.sample ? " with a fictional sample person" : ""}`} width={template.width} height={template.height} className="h-auto w-full sm:absolute sm:inset-0 sm:h-full sm:object-contain" />
+                    </div>}
                     <div className="flex flex-1 flex-col p-6">
                       <div className="flex-1">
                         <Heading as="h3" className="reference-item-title">{template.title}</Heading>

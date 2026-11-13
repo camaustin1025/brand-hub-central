@@ -6,6 +6,8 @@ export type ProcessedPhoto = {
   url: string;
   width: number;
   height: number;
+  /** Intake stores PNG only when pixels are transparent (a cut-out); everything else is JPEG. */
+  hasTransparency: boolean;
 };
 
 const DECODE_ERROR = "We couldn't read this photo. Save it as JPEG and try again.";
@@ -20,7 +22,7 @@ export async function restoreSocialPhoto(blob: Blob): Promise<ProcessedPhoto> {
   image.src = url;
   try {
     await image.decode();
-    return { image, url, blob, width: image.naturalWidth, height: image.naturalHeight };
+    return { image, url, blob, width: image.naturalWidth, height: image.naturalHeight, hasTransparency: blob.type === "image/png" };
   } catch {
     URL.revokeObjectURL(url);
     throw new Error(DECODE_ERROR);
@@ -78,6 +80,19 @@ function hasTransparentPixels(ctx: CanvasRenderingContext2D, width: number, heig
   return false;
 }
 
+/** Cut-outs usually touch the top of the photo. Transparent space above lets people drag the head
+ * lower in a cut-out frame, clear of headline text. Returns a new canvas; the source is left unchanged. */
+export function withCutoutHeadroom(source: HTMLCanvasElement, fraction = 0.2): HTMLCanvasElement {
+  const padded = document.createElement("canvas");
+  const top = Math.round(source.height * fraction);
+  padded.width = source.width;
+  padded.height = source.height + top;
+  const ctx = padded.getContext("2d");
+  if (!ctx) throw new Error(DECODE_ERROR);
+  ctx.drawImage(source, 0, top);
+  return padded;
+}
+
 /** Normalize EXIF orientation, freeze frame 1, and retain only output-sized pixels. */
 export async function processSocialPhoto(file: File, frame: NonNullable<SocialTemplate["photo"]>): Promise<ProcessedPhoto> {
   if (file.size > 25_000_000) throw new Error("Choose a photo that is 25 MB or smaller.");
@@ -125,7 +140,12 @@ export async function processSocialPhoto(file: File, frame: NonNullable<SocialTe
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error(DECODE_ERROR);
     ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
-    const encoding = socialPhotoEncoding(hasTransparentPixels(ctx, canvas.width, canvas.height));
+    const transparent = hasTransparentPixels(ctx, canvas.width, canvas.height);
+    const encoding = socialPhotoEncoding(transparent);
+    if (transparent && frame.opaqueClip) {
+      const padded = withCutoutHeadroom(canvas);
+      try { return await restoreSocialPhoto(await canvasBlob(padded, "image/png")); } finally { padded.width = padded.height = 0; }
+    }
     return await restoreSocialPhoto(await canvasBlob(canvas, encoding.type, encoding.quality));
   } finally {
     if (probeUrl) URL.revokeObjectURL(probeUrl);
