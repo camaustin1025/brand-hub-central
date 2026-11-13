@@ -3,15 +3,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { HUB_NAV, isGuestPath } from "@/data/hub";
 import { SearchBox } from "./HubSearch";
-import { jumpTo } from "@/lib/hub-navigation";
+import { jumpTo, revealCurrent, skipToContent } from "@/lib/hub-navigation";
 import { WipTag } from "@/components/brand/WorkInProgress";
 import { cn } from "@/lib/utils";
 import { useAccess } from "@/hooks/use-access";
-import { isNavOption, isNavTheme, PROMOTED_NAV, PROMOTED_NAV_THEME, resolveNavTheme, type NavOption, type NavTheme } from "./nav/options";
+import { isNavOption, isNavTheme, isRailFamily, PROMOTED_NAV, PROMOTED_NAV_THEME, resolveNavTheme, type NavOption, type NavTheme } from "./nav/options";
 
 /* Nav options under review (src/components/hub/nav). Local dev switches with ?nav= and a floating switcher;
    production renders PROMOTED_NAV, and while that is "rail" both loaders below compile away. */
-const NavOptionHost = import.meta.env.DEV || PROMOTED_NAV !== "rail" ? lazy(() => import("./nav/NavOptionHost")) : null;
+const NavOptionHost = import.meta.env.DEV || !isRailFamily(PROMOTED_NAV) ? lazy(() => import("./nav/NavOptionHost")) : null;
 const NavSwitcher = import.meta.env.DEV ? lazy(() => import("./nav/NavSwitcher")) : null;
 const NAV_OPTION_KEY = "hub-nav-option";
 
@@ -67,6 +67,8 @@ const NAV_ITEM_CLASS = "relative flex min-h-9 items-center rounded-lg px-3 py-2 
 const NAV_ITEM_ACTIVE =
   "bg-white font-semibold text-og-midnight shadow-sm ring-1 ring-og-midnight/5 before:absolute before:-left-[11px] before:top-1/2 before:h-6 before:w-0.5 before:-translate-y-1/2 before:bg-og-green-light";
 const NAV_ITEM_IDLE = "text-og-midnight hover:bg-og-midnight/[0.06]";
+/** Nav option "highlight": no chip; the label itself carries the download highlighter (.nav-highlight in index.css). */
+const NAV_ITEM_HIGHLIGHTED = "font-semibold text-og-midnight hover:bg-og-midnight/[0.06]";
 
 /* Group headers are disclosure buttons: 11px caps in Midnight with a chevron, set apart from the
    14px links below them by weight, case and a hairline above each group (not by a tinted block). */
@@ -102,11 +104,16 @@ export function Sidebar({
   activeId,
   open,
   onClose,
+  marker = "chip",
 }: {
   activeId: string;
   open: boolean;
   onClose: () => void;
+  /** How the current page is marked: the white chip with a green bar, or the green highlighter swipe. */
+  marker?: "chip" | "highlighter";
 }) {
+  const activeItem = marker === "highlighter" ? NAV_ITEM_HIGHLIGHTED : NAV_ITEM_ACTIVE;
+  const label = (text: string, isActive: boolean) => (marker === "highlighter" && isActive ? <span className="nav-highlight">{text}</span> : text);
   const navigate = useNavigate();
   const navRef = useRef<HTMLElement>(null);
   const asideRef = useRef<HTMLElement>(null);
@@ -152,6 +159,12 @@ export function Sidebar({
     current?.focus({ preventScroll: true });
     current?.scrollIntoView({ block: "center" });
   }, [open, isDrawer]);
+  // Desktop: keep the current page in view inside the rail on arrival and on every page change.
+  useEffect(() => {
+    if (isDrawer) return;
+    const frame = requestAnimationFrame(() => revealCurrent(navRef.current));
+    return () => cancelAnimationFrame(frame);
+  }, [isDrawer, activeId]);
 
   function onNavKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (!navRef.current) return;
@@ -289,9 +302,9 @@ export function Sidebar({
                               to={item.path}
                               onClick={onClose}
                               aria-current={activeId === item.id ? "page" : undefined}
-                              className={cn(NAV_ITEM_CLASS, "group gap-2", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                              className={cn(NAV_ITEM_CLASS, "group gap-2", activeId === item.id ? activeItem : NAV_ITEM_IDLE)}
                             >
-                              <span className="flex-1">{item.label}</span>
+                              <span className="flex-1">{label(item.label, activeId === item.id)}</span>
                               {item.wip && <WipTag />}
                             </Link>
                           ) : (
@@ -299,9 +312,9 @@ export function Sidebar({
                               type="button"
                               onClick={() => chooseSection(item.id)}
                               aria-current={activeId === item.id ? "location" : undefined}
-                              className={cn(NAV_ITEM_CLASS, "w-full justify-between gap-2 text-left", activeId === item.id ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
+                              className={cn(NAV_ITEM_CLASS, "w-full justify-between gap-2 text-left", activeId === item.id ? activeItem : NAV_ITEM_IDLE)}
                             >
-                              {item.label}
+                              <span>{label(item.label, activeId === item.id)}</span>
                               {item.wip && <WipTag />}
                             </button>
                           )}
@@ -403,6 +416,14 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-white/10 bg-og-midnight text-white">
+        {/* First Tab stop on every page: skip the masthead and the section rail. */}
+        <a
+          href="#content"
+          onClick={skipToContent}
+          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-3 focus-visible:z-[80] focus-visible:inline-flex focus-visible:h-10 focus-visible:items-center focus-visible:rounded-full focus-visible:bg-white focus-visible:px-5 focus-visible:text-[13px] focus-visible:font-semibold focus-visible:text-og-midnight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-og-green focus-visible:ring-offset-2 focus-visible:ring-offset-og-midnight"
+        >
+          Skip to content
+        </a>
         <div className="flex h-full items-center gap-4 px-4 md:px-6">
           {!focused && <button
             ref={menuButtonRef}
@@ -432,13 +453,13 @@ export function HubShell({ activeId, children, focused = false, heroSearch = fal
       </header>
 
       <div className="h-16" />
-      {!focused && (navOption === "rail" || !NavOptionHost
-        ? <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} />
-        : <Suspense fallback={null}><NavOptionHost option={navOption} theme={navTheme} activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} /></Suspense>)}
+      {!focused && (isRailFamily(navOption) || !NavOptionHost
+        ? <Sidebar activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} marker={navOption === "highlight" ? "highlighter" : "chip"} />
+        : <Suspense fallback={null}><NavOptionHost option={navOption as Exclude<NavOption, "rail" | "highlight">} theme={navTheme} activeId={activeId} open={menuOpen} onClose={() => setMenuOpen(false)} /></Suspense>)}
       {NavSwitcher && <Suspense fallback={null}><NavSwitcher current={navOption} theme={navTheme} /></Suspense>}
 
       {/* Options publish their docked width as --hub-nav-w (the sidebar option narrows to an icon rail). */}
-      <main ref={mainRef} className={cn(!focused && (navOption === "rail" ? "lg:ml-[284px]" : "lg:ml-[var(--hub-nav-w,284px)] lg:transition-[margin] lg:duration-200 motion-reduce:transition-none"))}>
+      <main ref={mainRef} id="content" tabIndex={-1} className={cn("outline-none", !focused && (isRailFamily(navOption) ? "lg:ml-[284px]" : "lg:ml-[var(--hub-nav-w,284px)] lg:transition-[margin] lg:duration-200 motion-reduce:transition-none"))}>
         {!focused && !heroSearch && <div className="bg-og-midnight px-4 py-3 md:hidden">
           <SearchBox compact />
         </div>}

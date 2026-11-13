@@ -6,7 +6,7 @@
 import { useEffect, useState, type KeyboardEvent, type RefObject } from "react";
 import { useNavigate } from "react-router-dom";
 import { HUB_NAV, isGuestPath, type HubNavGroup } from "@/data/hub";
-import { jumpTo } from "@/lib/hub-navigation";
+import { jumpTo, revealCurrent } from "@/lib/hub-navigation";
 import { useAccess } from "@/hooks/use-access";
 import type { NavTheme } from "./options";
 
@@ -74,7 +74,7 @@ export function navControls(nav: HTMLElement) {
 }
 
 /** Drawer behavior from the default rail: inert while closed off screen, focus to the current page on open. */
-export function useDrawerFocus(asideRef: RefObject<HTMLElement>, navRef: RefObject<HTMLElement>, open: boolean) {
+export function useDrawerFocus(asideRef: RefObject<HTMLElement>, navRef: RefObject<HTMLElement>, open: boolean, activeId?: string) {
   const isDrawer = useIsDrawer();
   useEffect(() => {
     const aside = asideRef.current;
@@ -88,6 +88,12 @@ export function useDrawerFocus(asideRef: RefObject<HTMLElement>, navRef: RefObje
     current?.focus({ preventScroll: true });
     current?.scrollIntoView({ block: "center" });
   }, [navRef, open, isDrawer]);
+  // Desktop: keep the current page in view inside the rail on arrival and on every page change.
+  useEffect(() => {
+    if (isDrawer) return;
+    const frame = requestAnimationFrame(() => revealCurrent(navRef.current));
+    return () => cancelAnimationFrame(frame);
+  }, [navRef, isDrawer, activeId]);
   return isDrawer;
 }
 

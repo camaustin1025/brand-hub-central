@@ -87,7 +87,7 @@ export default function TreeNav({ activeId, open, onClose }: NavOptionProps) {
   const { collapsed, toggleGroup } = useCollapsedGroups(activeGroup);
   const chooseSection = useChooseSection(onClose);
   const onKeyDown = useNavKeys(navRef, toggleGroup);
-  useDrawerFocus(asideRef, navRef, open);
+  useDrawerFocus(asideRef, navRef, open, activeId);
   useDockedWidth(WIDTH);
 
   // One pill for the whole nav: it rests on the active row and follows hover or focus.

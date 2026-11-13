@@ -365,3 +365,24 @@ html[data-guest] section[aria-labelledby="nav-employee-resources"] {
   /* Side by side, each sentence fits one line; balance evens the one long sentence into two. */
   .value-body { text-wrap: balance; }
 }
+
+/* Nav option "highlight" (2026-11-13 review): "you are here" as the Hub's download highlighter. The same
+   Groovy Green band with Midnight text as DownloadLink's hover, slanted at the ends, swiped in left to right
+   when a page opens. box-decoration-break keeps a wrapped label highlighted line by line. */
+.nav-highlight {
+  margin: -1px -5px;
+  padding: 1px 5px;
+  background-image: linear-gradient(102deg, transparent 0 4px, #00ff85 4px calc(100% - 4px), transparent calc(100% - 4px));
+  background-repeat: no-repeat;
+  background-position: 0 72%;
+  background-size: 100% 68%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: nav-highlight-swipe 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+@keyframes nav-highlight-swipe {
+  from { background-size: 0% 68%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-highlight { animation: none; }
+}

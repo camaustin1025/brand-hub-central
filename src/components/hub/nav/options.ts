@@ -1,6 +1,7 @@
 /** The left nav designs under review. "rail" is the current Sidebar in HubShell. */
 export const NAV_OPTIONS = [
   { id: "rail", label: "Current", themes: ["light"] },
+  { id: "highlight", label: "Highlighter", themes: ["light"] },
   { id: "tree", label: "Tree", themes: ["light"] },
   { id: "sidebar", label: "Sidebar", themes: ["dark", "light"] },
   { id: "framer", label: "Framer", themes: ["dark", "light"] },
@@ -19,6 +20,11 @@ export const PROMOTED_NAV_THEME: NavTheme = "dark";
 
 export function isNavOption(value: string | null | undefined): value is NavOption {
   return NAV_OPTIONS.some((option) => option.id === value);
+}
+
+/** "rail" and "highlight" are the same rail in HubShell; only the "you are here" marker differs. */
+export function isRailFamily(option: NavOption): option is "rail" | "highlight" {
+  return option === "rail" || option === "highlight";
 }
 
 export function isNavTheme(value: string | null | undefined): value is NavTheme {

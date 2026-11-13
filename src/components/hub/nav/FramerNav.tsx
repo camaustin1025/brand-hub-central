@@ -89,7 +89,7 @@ export default function FramerNav({ activeId, open, onClose, theme }: NavOptionP
   const chooseSection = useChooseSection(onClose);
   // Framer's panel has no folding groups, so Left and Right have nothing to do here; Up, Down, Home and End still move.
   const onKeyDown = useNavKeys(navRef);
-  useDrawerFocus(asideRef, navRef, open);
+  useDrawerFocus(asideRef, navRef, open, activeId);
   useDockedWidth(WIDTH);
   const isAdmin = useAccess() === "admin";
   const external = isGuest ? undefined : nav.find((group) => group.externalLink)?.externalLink;

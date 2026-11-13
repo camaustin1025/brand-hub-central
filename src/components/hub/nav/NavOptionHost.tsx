@@ -9,7 +9,7 @@ const OPTIONS = {
   framer: lazy(() => import("./FramerNav")),
 };
 
-export default function NavOptionHost({ option, ...props }: NavOptionProps & { option: Exclude<NavOption, "rail"> }) {
+export default function NavOptionHost({ option, ...props }: NavOptionProps & { option: Exclude<NavOption, "rail" | "highlight"> }) {
   const Option = OPTIONS[option];
   return (
     <Suspense fallback={null}>

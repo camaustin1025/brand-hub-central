@@ -135,7 +135,7 @@ export default function SidebarNav({ activeId, open, onClose, theme }: NavOption
   const chooseSection = useChooseSection(onClose);
   const onKeyDown = useNavKeys(navRef, toggleGroup);
   const isDrawer = useIsDrawer();
-  useDrawerFocus(asideRef, navRef, open);
+  useDrawerFocus(asideRef, navRef, open, activeId);
   const user = useAuthUser();
   const isAdmin = useAccess() === "admin";
 
